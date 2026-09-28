@@ -745,6 +745,16 @@
 .agent-tool-event.error summary {
   color: var(--red);
 }
+.agent-tool-event.earlier-attempt summary {
+  color: #70766b;
+}
+.agent-tool-event.earlier-attempt summary small {
+  color: #4c654c;
+  opacity: 1;
+}
+.agent-tool-event .agent-attempt-outcome {
+  color: #4c654c;
+}
 .agent-tool-event.running summary {
   color: #857654;
 }

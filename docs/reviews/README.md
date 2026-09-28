@@ -6,6 +6,8 @@ Public repository: https://github.com/Digidai/wenbu. Initial application commit 
 
 ## Agent workspace release (1.1.0)
 
+The follow-up [report retry fix](report-retry-fix.md) corrects the source-preparation failure and misleading historical attempt status identified by the user. Its [production evidence](report-retry-live.json) is separate from the initial release acceptance below.
+
 The independent Agent entry is a later release. Its current evidence is in [Agent release verification](agent-release.md), with [harness research](../research/agent-harness-2026-09-28.md), [design review](agent-design-review.md), [code review](agent-code-review.md), and [focused verification](agent-fixes-review.md). These reviews returned actual Grok CLI verdicts; fixes and limits are recorded separately. The earlier 54-test release below remains historical evidence, not the current test count. `live-smoke.json` is the most recent public regression check; initial AI evidence is preserved in `local-ai-smoke.json` and the original release records.
 
 ## Original four-tool release (1.0)

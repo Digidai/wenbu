@@ -558,3 +558,119 @@ it('carries prior report drafts for revision without treating them as read evide
     }).success,
   ).toBe(false);
 });
+
+describe('report revision source preparation', () => {
+  const report = (ids: string[]) => ({
+    title: 'Two rules',
+    summary: 'Revise this draft',
+    sections: [{ heading: 'Rule', body: 'A draft is not verified evidence.', sourceIds: ids }],
+    questions: [],
+  });
+  it('reads a prior report reference before the first model call and saves on the first attempt', async () => {
+    const { env } = testEnv();
+    const reference = libraryDocuments('zh').find((d) => d.kind === 'reference')!;
+    const refreshed = 'Fresh evidence from a public reference. '.repeat(8);
+    const fetcher = vi
+      .spyOn(globalThis, 'fetch')
+      .mockImplementationOnce(async (url) => {
+        expect(url).toBe(reference.url);
+        return new Response(refreshed, { headers: { 'Content-Type': 'text/plain' } });
+      })
+      .mockImplementationOnce(async (url, init) => {
+        expect(url).toBe('https://api.deepseek.com/chat/completions');
+        const snapshot = JSON.parse(init?.body as string).messages[1].content;
+        expect(snapshot).toContain(refreshed);
+        expect(snapshot).toContain('"unverifiedPriorReferenceIds":[]');
+        return model(null, [{ name: 'write_report', args: report([reference.id]) }]);
+      })
+      .mockResolvedValueOnce(model('Updated report saved.'));
+    const result = await events(
+      await agentResponse(
+        { message: 'Revise the report', context: { reports: [report([reference.id])] }, consent: true },
+        request(),
+        env,
+      ),
+    );
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(result.filter((e) => e.type === 'artifact')).toHaveLength(1);
+    expect(result.some((e) => e.type === 'tool_end' && e.status === 'error')).toBe(false);
+    expect(result.at(-1)).toMatchObject({ type: 'done', status: 'complete', modelCalls: 2, toolCalls: 2 });
+    const toolNames = result
+      .filter((e) => e.type === 'tool_start')
+      .map((e) => e.type === 'tool_start' && e.tool.name);
+    expect(toolNames).toEqual(['read_reference', 'write_report']);
+  });
+  it('keeps failed revalidation visible and refuses to promote a stale citation', async () => {
+    const { env } = testEnv();
+    const id = libraryDocuments('zh').find((d) => d.kind === 'reference')!.id;
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(new Response('Unavailable', { status: 503 }))
+      .mockImplementationOnce(async (_url, init) => {
+        const snapshot = JSON.parse(init?.body as string).messages[1].content;
+        expect(snapshot).toContain('"verifiedLibrarySources":[]');
+        expect(snapshot).toContain(`"unverifiedPriorReferenceIds":["${id}"]`);
+        return model(null, [{ name: 'write_report', args: report([id]) }]);
+      })
+      .mockResolvedValueOnce(model('The external source could not be verified; no report was saved.'));
+    const result = await events(
+      await agentResponse(
+        { message: 'Revise the report', context: { reports: [report([id])] }, consent: true },
+        request(),
+        env,
+      ),
+    );
+    expect(result.some((e) => e.type === 'source' || e.type === 'artifact')).toBe(false);
+    expect(result.filter((e) => e.type === 'tool_end' && e.status === 'error')).toHaveLength(2);
+  });
+  it('cancels reference preparation before any model request when the stream is cancelled', async () => {
+    const { env } = testEnv();
+    const reference = libraryDocuments('zh').find((d) => d.kind === 'reference')!;
+    let sourceSignal: AbortSignal | undefined;
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(
+      async (url, init) =>
+        new Promise((_resolve, reject) => {
+          expect(url).toBe(reference.url);
+          sourceSignal = init?.signal as AbortSignal;
+          sourceSignal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), {
+            once: true,
+          });
+        }),
+    );
+    const response = await agentResponse(
+      { message: 'Revise the report', context: { reports: [report([reference.id])] }, consent: true },
+      request(),
+      env,
+    );
+    await response.body!.cancel();
+    expect(sourceSignal?.aborted).toBe(true);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it('bounds preparation to three known sources and grants no authority to extra or invented IDs', async () => {
+    const { env } = testEnv();
+    const ids = libraryDocuments('zh')
+      .filter((d) => d.kind === 'reference')
+      .slice(0, 4)
+      .map((d) => d.id);
+    ids.push('reference-invented');
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, init) => {
+      if (url === 'https://api.deepseek.com/chat/completions') {
+        const snapshot = JSON.parse(init?.body as string).messages[1].content;
+        expect(snapshot).toContain(`"unverifiedPriorReferenceIds":["${ids[3]}"]`);
+        return model('Three references read; the fourth still needs verification.');
+      }
+      return new Response('A public reference excerpt. '.repeat(10), {
+        headers: { 'Content-Type': 'text/plain' },
+      });
+    });
+    const result = await events(
+      await agentResponse(
+        { message: 'Compare these drafts', context: { reports: [report(ids)] }, consent: true },
+        request(),
+        env,
+      ),
+    );
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    expect(result.filter((e) => e.type === 'source')).toHaveLength(3);
+    expect(result.at(-1)).toMatchObject({ type: 'done', toolCalls: 3, modelCalls: 1 });
+  });
+});

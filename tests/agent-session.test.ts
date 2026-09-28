@@ -8,6 +8,7 @@ import {
   contextHistory,
   readingReference,
   isSafeSource,
+  hasLaterReport,
 } from '../src/lib/agent-session';
 import { drawTarot } from '../src/lib/tarot';
 import { restoreReading } from '../worker/agent-schema';
@@ -94,4 +95,69 @@ it('discards corrupted or unsafe stored source URLs during recovery', () => {
   ).toEqual([source]);
   expect(isSafeSource({ ...source, url: 'javascript:alert(1)' })).toBe(false);
   expect(isSafeSource({ ...source, url: 'https://aa.usno.navy.mil/faq/eqtime' })).toBe(true);
+});
+
+it('describes a later report without rewriting the original failed attempt', () => {
+  const message = newMessage('assistant', 'Report saved');
+  message.status = 'complete';
+  message.tools = [
+    {
+      id: 'first',
+      name: 'write_report',
+      label: 'Report',
+      status: 'error',
+      detail: 'A citation was not read or verified. Read its source first.',
+    },
+    { id: 'read', name: 'read_reference', label: 'Read', status: 'complete' },
+    { id: 'last', name: 'write_report', label: 'Report', status: 'complete' },
+  ];
+  message.artifacts = [
+    {
+      id: 'report',
+      type: 'report',
+      title: 'Two rules',
+      createdAt: '2026-09-28',
+      summary: 'Summary',
+      sections: [],
+      questions: [],
+    },
+  ];
+  expect(hasLaterReport(message, 'first')).toBe(true);
+  expect(message.tools[0].status).toBe('error');
+  expect(hasLaterReport(message, 'read')).toBe(false);
+  expect(hasLaterReport({ ...message, status: 'running' }, 'first')).toBe(false);
+  expect(hasLaterReport({ ...message, status: 'error' }, 'first')).toBe(false);
+  expect(hasLaterReport({ ...message, artifacts: [] }, 'first')).toBe(false);
+  expect(
+    hasLaterReport(
+      { ...message, artifacts: [...message.artifacts, { ...message.artifacts[0], id: 'other' }] },
+      'first',
+    ),
+  ).toBe(false);
+  expect(hasLaterReport({ ...message, tools: message.tools.filter((t) => t.id !== 'read') }, 'first')).toBe(
+    false,
+  );
+  expect(
+    hasLaterReport(
+      {
+        ...message,
+        tools: message.tools.map((t) =>
+          t.id === 'first' ? { ...t, detail: 'Unrelated upstream failure' } : t,
+        ),
+      },
+      'first',
+    ),
+  ).toBe(false);
+  expect(
+    hasLaterReport(
+      {
+        ...message,
+        tools: [
+          ...message.tools,
+          { id: 'other', name: 'write_report', label: 'Other report', status: 'error' },
+        ],
+      },
+      'first',
+    ),
+  ).toBe(false);
 });

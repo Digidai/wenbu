@@ -1,0 +1,55 @@
+{
+  "verifiedAt": "2026-09-28T11:10:18.565Z",
+  "origin": "https://wenbu.genedai.me/agent/",
+  "workerVersion": "b54b3f90-64d9-46df-aca1-e06eeb236731",
+  "method": "Actual production browser interaction and downloaded conversation JSON; public-source synthetic research only.",
+  "legacyAttempt": {
+    "rawErrorRetained": "A citation was not read or verified. Read its source first, or remove the unsupported citation.",
+    "rawStatus": "error",
+    "visibleOutcome": "后续已生成报告"
+  },
+  "newRevision": {
+    "status": "complete",
+    "toolSequence": [
+      {
+        "id": "context:reference:0",
+        "name": "read_reference",
+        "label": "核验原报告引用",
+        "status": "complete",
+        "detail": "已重新读取来源，接下来整理报告。"
+      },
+      {
+        "id": "1:call_00_Cknbkeq0z2FXh6pfMDCz2175",
+        "name": "write_report",
+        "label": "整理研究报告",
+        "status": "complete",
+        "detail": "已完成"
+      }
+    ],
+    "reports": [
+      "真太阳时：简明说明"
+    ],
+    "model": "deepseek-flash",
+    "readSourceCount": 4
+  },
+  "retainedReportVersions": [
+    "真太阳时对八字的影响：有出处的说明",
+    "真太阳时：两条规则",
+    "真太阳时：简明说明"
+  ],
+  "mobile": {
+    "viewport": 390,
+    "documentWidth": 390,
+    "bodyWidth": 390
+  },
+  "inspectedConsoleErrors": 0,
+  "local": {
+    "tests": 106,
+    "typecheck": "passed",
+    "lint": "passed",
+    "buildPages": 65,
+    "indexablePages": 62,
+    "internalReferences": 2735
+  },
+  "publicSmoke": "live-smoke.json"
+}

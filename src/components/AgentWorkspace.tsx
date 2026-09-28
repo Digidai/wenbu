@@ -40,6 +40,7 @@ import {
 import {
   artifactMarkdown,
   contextHistory,
+  hasLaterReport,
   downloadMarkdown,
   newMessage,
   newSession,
@@ -727,31 +728,53 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     <div className="agent-tool-log" aria-label={t('实际执行记录', 'Execution activity')}>
                       {message.tools
                         .filter((tool) => tool.name !== 'update_plan')
-                        .map((tool) => (
-                          <details key={tool.id} className={`agent-tool-event ${tool.status}`}>
-                            <summary>
-                              {tool.status === 'running' ? (
-                                <LoaderCircle size={13} className="spin" />
-                              ) : tool.status === 'complete' ? (
-                                <Check size={13} />
-                              ) : (
-                                <Circle size={12} />
+                        .map((tool) => {
+                          const laterReport = hasLaterReport(message, tool.id);
+                          return (
+                            <details
+                              key={tool.id}
+                              className={`agent-tool-event ${laterReport ? 'earlier-attempt' : tool.status}`}
+                            >
+                              <summary>
+                                {laterReport ? (
+                                  <History size={13} />
+                                ) : tool.status === 'running' ? (
+                                  <LoaderCircle size={13} className="spin" />
+                                ) : tool.status === 'complete' ? (
+                                  <Check size={13} />
+                                ) : (
+                                  <Circle size={12} />
+                                )}
+                                <span>
+                                  {laterReport
+                                    ? t('报告整理 · 早先尝试', 'Report · earlier attempt')
+                                    : tool.label}
+                                </span>
+                                <small>
+                                  {laterReport
+                                    ? t('后续已生成报告', 'Report generated later')
+                                    : tool.status === 'running'
+                                      ? t('进行中', 'Running')
+                                      : tool.status === 'error'
+                                        ? t('本次未成功', 'Attempt failed')
+                                        : tool.status === 'stopped'
+                                          ? t('已停止', 'Stopped')
+                                          : t('完成', 'Done')}
+                                </small>
+                                <ChevronRight size={12} />
+                              </summary>
+                              {laterReport && (
+                                <p className="agent-attempt-outcome">
+                                  {t(
+                                    '这次尝试未保存报告。之后已补读参考资料，并生成了下方的报告；此处保留当时的过程记录。',
+                                    'This attempt did not save a report. Reference reading and a saved report followed; the original attempt remains recorded below.',
+                                  )}
+                                </p>
                               )}
-                              <span>{tool.label}</span>
-                              <small>
-                                {tool.status === 'running'
-                                  ? t('进行中', 'Running')
-                                  : tool.status === 'error'
-                                    ? t('未完成', 'Failed')
-                                    : tool.status === 'stopped'
-                                      ? t('已停止', 'Stopped')
-                                      : t('完成', 'Done')}
-                              </small>
-                              <ChevronRight size={12} />
-                            </summary>
-                            <p>{tool.detail ?? t('请求正在处理中。', 'The request is in progress.')}</p>
-                          </details>
-                        ))}
+                              <p>{tool.detail ?? t('请求正在处理中。', 'The request is in progress.')}</p>
+                            </details>
+                          );
+                        })}
                     </div>
                   )}
                   {message.text && (
