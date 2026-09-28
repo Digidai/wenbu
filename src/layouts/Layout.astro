@@ -120,7 +120,7 @@ const schema = {
         </span>
         <span class="brand-zh">问卜</span>
       </a>
-      <nav aria-label={t('主导航', 'Main navigation')} class="desktop-nav">
+      <nav aria-label={t('主导航', 'Main navigation')} class="desktop-nav" data-track="navigation">
         <a
           class="agent-nav-link"
           href={href(locale, 'agent')}
@@ -138,6 +138,7 @@ const schema = {
         <a href={href(locale, 'tarot')} aria-current={path === 'tarot' ? 'page' : undefined}>
           {t('塔罗', 'Tarot')}
         </a>
+        <a href={href(locale, 'ziwei')} aria-current={path === 'ziwei' ? 'page' : undefined}>{t('紫微', 'Zi Wei')}</a>
         <a href={href(locale, 'learn')} aria-current={path.startsWith('learn') ? 'page' : undefined}>
           {t('知识手册', 'The library')}
         </a>
@@ -239,6 +240,8 @@ const schema = {
       </div>
     </footer>
     <script>
+      import { initializeAnalytics } from '../lib/analytics';
+      initializeAnalytics();
       const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const nav = document.getElementById('mobile-nav');
       menu?.addEventListener('click', () => {

@@ -1,0 +1,17 @@
+
+> wenbu@1.1.0 test
+> vitest run
+
+
+ RUN  v5.0.2 /Users/dai/Developer/CursorProjects/wenbu
+
+(node:14137) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14136) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  10 passed (10)
+      Tests  133 passed (133)
+   Start at  02:56:46
+   Duration  622ms (import 48%, transform 36%, tests 15%, worker 1%)
+

@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "audit:site": "node scripts/audit-site.mjs",
-    "verify": "npm run check && npm test && npm run build && npm run audit:site",
+    "audit:art": "node scripts/audit-art.mjs",
+    "verify": "npm run check && npm test && npm run build && npm run audit:site && npm run audit:art",
     "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {

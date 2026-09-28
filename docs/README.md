@@ -1,5 +1,9 @@
 # Wenbu 文档导航
 
+- [2026-09-29 系统评估与优化：插画、准确度、GTM、可读性](research/product-audit-2026-09-29.md)
+- [78 张原创牌面与生成提示词](art/README.md)
+- [数据统计：事件、归因、后台与隐私口径](analytics.md)
+- [本次上线与验证记录](reviews/deck-analytics-release.md)
 - [Agent 工作台设计](plans/2026-09-28-agent-workspace-design.md)
 - [Agent 图解札记：图标、对照、步骤与分层阅读](plans/2026-09-28-agent-visual-notebook-design.md)
 - [Agent harness 与对话研究](research/agent-harness-2026-09-28.md)

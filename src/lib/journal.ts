@@ -1,3 +1,4 @@
+import { track } from './analytics';
 import type { Reading } from './tools';
 export type Answer = {
   title: string;
@@ -50,6 +51,14 @@ export function downloadJson(data: unknown, name: string) {
   a.href = url;
   a.download = name;
   a.click();
+  track(
+    name === 'wenbu-conversation.json'
+      ? 'conversation_exported'
+      : name === 'wenbu-journal.json'
+        ? 'journal_exported'
+        : 'context_exported',
+    { action: 'export' },
+  );
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export function agentContext(result: Reading, question: string, context: string, includeBirth: boolean) {

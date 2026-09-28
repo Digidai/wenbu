@@ -213,6 +213,50 @@ describe('DeepSeek Agent harness', () => {
     expect(result.some((e) => e.type === 'artifact' && e.artifact.type === 'report')).toBe(true);
     expect(result.at(-1)).toMatchObject({ type: 'done', status: 'complete', modelCalls: 5 });
   });
+  it('counts a complete explore answer in the final model slot as complete', async () => {
+    const { env } = testEnv();
+    const receipt = vi.fn();
+    const fetcher = vi.spyOn(globalThis, 'fetch');
+    for (let i = 0; i < 4; i++)
+      fetcher.mockResolvedValueOnce(
+        model(null, [{ name: 'read_library', args: { id: 'guide-bazi-basics' } }]),
+      );
+    fetcher.mockResolvedValueOnce(model('资料核对完毕。'));
+    const result = await events(
+      await agentResponse(
+        { message: '解释八字基础', mode: 'explore', consent: true },
+        request(),
+        env,
+        receipt,
+      ),
+    );
+    expect(result.at(-1)).toMatchObject({ type: 'done', status: 'complete', modelCalls: 5 });
+    expect(receipt).toHaveBeenCalledOnce();
+    expect(receipt.mock.calls[0][0]).toMatchObject({ status: 'complete', modelCalls: 5 });
+  });
+  it.each([12, 13])('marks limited only when the tool cap skips required work (%s calls)', async (count) => {
+    const { env } = testEnv();
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'read_library', args: { id: 'guide-bazi-basics' } }]))
+      .mockResolvedValueOnce(
+        model(
+          null,
+          Array.from({ length: count - 1 }, () => ({
+            name: 'read_library',
+            args: { id: 'guide-bazi-basics' },
+          })),
+        ),
+      )
+      .mockResolvedValueOnce(model('已整理读取到的资料。'));
+    const result = await events(
+      await agentResponse({ message: '解释基础', mode: 'explore', consent: true }, request(), env),
+    );
+    expect(result.at(-1)).toMatchObject({
+      type: 'done',
+      status: count === 12 ? 'complete' : 'limited',
+      toolCalls: 12,
+    });
+  });
   it('preserves the original six lines when the model asks to cast on follow-up', async () => {
     const { env } = testEnv();
     const fetcher = vi
@@ -310,9 +354,12 @@ describe('DeepSeek Agent harness', () => {
           });
         }),
     );
-    const response = await agentResponse({ message: 'hi', consent: true }, request(), env);
+    const receipt = vi.fn();
+    const response = await agentResponse({ message: 'hi', consent: true }, request(), env, receipt);
     await response.body!.cancel();
     expect(upstreamSignal?.aborted).toBe(true);
+    await vi.waitFor(() => expect(receipt).toHaveBeenCalledOnce());
+    expect(receipt.mock.calls[0][0]).toMatchObject({ status: 'cancelled', modelCalls: 1 });
   });
   it('never accepts a missing or duplicate random result as prior context', () => {
     expect(() => restoreReading({ kind: 'iching', input: {} })).toThrow();

@@ -8,7 +8,7 @@ const fetchSafe = (url, init = {}) => fetch(url, { ...init, signal: AbortSignal.
 async function post(path, body, extra = {}) {
   return fetchSafe(base + path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...extra },
+    headers: { 'Content-Type': 'application/json', 'X-Wenbu-Test': 'true', ...extra },
     body: JSON.stringify(body),
   });
 }
@@ -17,7 +17,9 @@ assert.equal(health.status, 200);
 evidence.health = await health.json();
 const sitemap = await (await fetchSafe(base + '/sitemap.xml')).text();
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => new URL(x[1]).pathname);
-assert.equal(urls.length, 62);
+assert.equal(urls.length, 64);
+assert.ok(urls.includes('/tarot/deck/') && urls.includes('/en/tarot/deck/'));
+assert.ok(!urls.some((url) => url.includes('/insights/')));
 for (let i = 0; i < urls.length; i += 4) {
   await Promise.all(
     urls.slice(i, i + 4).map(async (path) => {
@@ -79,7 +81,11 @@ assert.equal(
 assert.equal((await post('/api/v1/agent', { message: 'x'.repeat(100000), consent: true })).status, 413);
 const client = new Client({ name: 'wenbu-release-verification', version: '1.0' });
 try {
-  await client.connect(new StreamableHTTPClientTransport(new URL(base + '/mcp')));
+  await client.connect(
+    new StreamableHTTPClientTransport(new URL(base + '/mcp'), {
+      requestInit: { headers: { 'X-Wenbu-Test': 'true' } },
+    }),
+  );
   const listed = await client.listTools();
   assert.equal(listed.tools.length, 6);
   for (const tool of listed.tools) evidence.mcp.push(tool.name);

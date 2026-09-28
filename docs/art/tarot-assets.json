@@ -1,0 +1,567 @@
+{
+  "generatedWith": "built-in image_gen",
+  "finalSize": [
+    600,
+    900
+  ],
+  "thumbnailSize": [
+    260,
+    390
+  ],
+  "total": 79,
+  "assets": [
+    {
+      "file": "00-fool.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 208732,
+      "sha256": "0be9bef10a1578c7fc08e22405ad43a8c8f9017afec870d402e1560d088865f8"
+    },
+    {
+      "file": "01-magician.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 204220,
+      "sha256": "a7c908f9e60835dbff5a1aedd53ec8d982b225cbacfffb71ec7ab58d1ae570b2"
+    },
+    {
+      "file": "02-high-priestess.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 185790,
+      "sha256": "116327874e252fcfe5eaddded23fa8512c7c8729878e22965c6ceb02ddbed6f2"
+    },
+    {
+      "file": "03-empress.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 224316,
+      "sha256": "345d61df702023319a58730445d337d66e3f820f1945d085e3f86ada9d528abc"
+    },
+    {
+      "file": "04-emperor.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 192892,
+      "sha256": "e8bb73c0b336a96f7c462fb2fb69884da90d1f00cf53ac3b2526aeb2f8fd0a1a"
+    },
+    {
+      "file": "05-hierophant.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 192120,
+      "sha256": "a422d737415764d27c22140c59928b75c264909bc2aad5708c7d40c81fdf2d66"
+    },
+    {
+      "file": "06-lovers.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 214284,
+      "sha256": "6d5f22857b6d421e4574f3c9649e851db063164ce5cfc56be0b075fc67699449"
+    },
+    {
+      "file": "07-chariot.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 207440,
+      "sha256": "662a9cc633da8fd6bac39d104f92a4798c4c2f1ee3eafca9210b2a5ba5c67361"
+    },
+    {
+      "file": "08-strength.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 198300,
+      "sha256": "f8911e8b11c7b97c67387b3f10d356b01b313f78309d5b04332a84551d30e7fa"
+    },
+    {
+      "file": "09-hermit.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 180858,
+      "sha256": "33251394143c05cc676c25ed30a99424e3a796d250c6f9dcafb26b53b18f05f9"
+    },
+    {
+      "file": "10-wheel-of-fortune.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 198102,
+      "sha256": "3438fe008a59c45008c0da36c97862a44c8c05cf0bebc973e9a09d29be04144a"
+    },
+    {
+      "file": "11-justice.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 207296,
+      "sha256": "41e832249ea6db081f4caeb1161d68c9133be8e403268ae32b970678bd95855a"
+    },
+    {
+      "file": "12-hanged-man.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 220776,
+      "sha256": "c7d022fc7fd1fdb4fbde78744113ad943537b22b6d511ed520a9eb23f455601f"
+    },
+    {
+      "file": "13-death.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 219764,
+      "sha256": "bb0d37fcf944b494aeffe57c4bf9b6d6cf0286c6c6dfcd2d1b5861204ba52dc3"
+    },
+    {
+      "file": "14-temperance.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 209122,
+      "sha256": "d4b7cad2a5c7af1ef1bd28ba9c8fe2624f1b5708e86ec3d5442cede1c19a5853"
+    },
+    {
+      "file": "15-devil.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 197180,
+      "sha256": "5b70f2322299007358982ed230bd017e72da92d197d76b79f3fab5a442f3f4ec"
+    },
+    {
+      "file": "16-tower.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 227518,
+      "sha256": "b78db3f2452eb58cecf64b6ee6af1b327fa56fb562af441c7d6b5a81573f58d2"
+    },
+    {
+      "file": "17-star.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 212388,
+      "sha256": "73ef1cc3e1327d3b3e689c29a7c43c04da1d4a05523bac986a96434dd89b18bb"
+    },
+    {
+      "file": "18-moon.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 221000,
+      "sha256": "de47409de1bdc832cb32a351cf06f9590fbf6c34def62890614cc532f84a4824"
+    },
+    {
+      "file": "19-sun.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 208882,
+      "sha256": "aa5147c48b760dac87ef1ced4acce2cfd0bb127538d78c5c3b0f5724b563e4d7"
+    },
+    {
+      "file": "20-judgement.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 192614,
+      "sha256": "1cc9c9fc311120c9b3e47538fbe4fa8e654508b6b5ae7e0d59519138f48ca035"
+    },
+    {
+      "file": "21-world.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 204996,
+      "sha256": "1970d7e47d0b58d183a7e1d20d238d200bf5e2dc2fa68a2880cf99123bd6e371"
+    },
+    {
+      "file": "22-ace-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 187556,
+      "sha256": "ca3418d24e9dbcf99803e58e8b4ce074bcc32c1317dabdbe72b9fe7c0b35e34a"
+    },
+    {
+      "file": "23-two-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 181266,
+      "sha256": "af6a900942d88744670bfffb8359dae8664bd9d56c05707f607bbdea7a4c7f51"
+    },
+    {
+      "file": "24-three-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 201996,
+      "sha256": "0d4793925882957dc7995188e26d771a88a54a141cc420bee87ef295b88c3e4a"
+    },
+    {
+      "file": "25-four-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 193204,
+      "sha256": "6646fef6173dc9165133d7a11e5d5bb43154950ac9856add82ababe9287699ca"
+    },
+    {
+      "file": "26-five-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 217562,
+      "sha256": "6c04837055f045e3fdac6f39a8128b7cd57268e7f623f75e11a2b8928768f589"
+    },
+    {
+      "file": "27-six-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 197542,
+      "sha256": "fc81518b7282e529412434af3c79aee4162e507ead06ed98cbc6c19724aed878"
+    },
+    {
+      "file": "28-seven-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 183514,
+      "sha256": "1e658d50109d70d4f58a1ee520b45c5fec044be71739c6e378acb08c9a0800d2"
+    },
+    {
+      "file": "29-eight-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 160878,
+      "sha256": "f4ff4d46e7678872d0385597ca2c0a781b9c8fe997737a3c0419af0f73a052a1"
+    },
+    {
+      "file": "30-nine-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 203406,
+      "sha256": "76d55a3c158fae7ae3f190f7df717b8339119f98a5dc8d87500ac54c41b0d575"
+    },
+    {
+      "file": "31-ten-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 217176,
+      "sha256": "ea84141710977e26dd285de1e98ff64935dd846db7c165a63e7d0df28658dcb0"
+    },
+    {
+      "file": "32-page-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 170288,
+      "sha256": "96a2e9013942e2816ad850c79190b7bca70eb71b397c728cd1a57bd357182895"
+    },
+    {
+      "file": "33-knight-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 193402,
+      "sha256": "4afd55888f2b96ab439a7635f5267667c9b9c31821845e40ead6499b2460f44a"
+    },
+    {
+      "file": "34-queen-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 195530,
+      "sha256": "af3ff88f898ad39b2bf9d63b9c4f84d24898cad8f9082607c68faa403caad9d7"
+    },
+    {
+      "file": "35-king-wands.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 202518,
+      "sha256": "a53bff1a2ea82c95a15571ecc5ded8d8f630f7898126849dd4ed7b4603539046"
+    },
+    {
+      "file": "36-ace-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 166272,
+      "sha256": "a9d9ba73ddbe17c20b93b53fa7908032a05e9895b07fe03cf1272d3997a13e49"
+    },
+    {
+      "file": "37-two-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 206528,
+      "sha256": "69fd4a821f43cd059c1917e80b34508ccde76624e602bf319a3041bc3d388383"
+    },
+    {
+      "file": "38-three-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 203294,
+      "sha256": "337ee8de3405b827fa3efad6c04bf53a701804e280f427b33993a17051233db5"
+    },
+    {
+      "file": "39-four-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 197934,
+      "sha256": "a19814132e3e2918829ff30ae1643d1a3cf889d2a4ead59d5eda992003daf967"
+    },
+    {
+      "file": "40-five-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 190554,
+      "sha256": "d3696b1de45e87bbdc625ca29fb6e29c4a03f85d3ee3e11ec931eaf93708e06e"
+    },
+    {
+      "file": "41-six-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 199422,
+      "sha256": "9b424fb08b29f99a29b5a81427f6380b9a14464ed417cb4fce65fd57c39a67b6"
+    },
+    {
+      "file": "42-seven-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 172584,
+      "sha256": "03c288039038f2b6fea767575478b437b912df6904d5d3115e99fbbaff16cd84"
+    },
+    {
+      "file": "43-eight-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 205892,
+      "sha256": "7c5367f40d5de7be10b1a0ffb2d1a878c879b504609de8b58095f92d107961cc"
+    },
+    {
+      "file": "44-nine-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 143102,
+      "sha256": "92021d5ddecd23b5bb4192150a0fcddb8caafa77b17ea211903885b350818fc3"
+    },
+    {
+      "file": "45-ten-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 198452,
+      "sha256": "f64c0bb95686f707ad3a2919138ce20327f03c578af3baa707d63888f8628542"
+    },
+    {
+      "file": "46-page-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 196548,
+      "sha256": "960f93b403cd1c0b0ddf91353823165aa0fb1531d52ee62fb2b817d87409416c"
+    },
+    {
+      "file": "47-knight-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 212548,
+      "sha256": "6f4c9d128405d03fca1885bb748a2aa0b700b8dbe903a6a88acb1cd1b7756a6a"
+    },
+    {
+      "file": "48-queen-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 203128,
+      "sha256": "e9a4d06e45bf299f0e4c4df80e218a3c00b26992b516a19724ddecc8ea5ef85f"
+    },
+    {
+      "file": "49-king-cups.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 199584,
+      "sha256": "fc81f9b567a8aa778d08a2b624877f5100250fa859c432c7cd5a797940fabac1"
+    },
+    {
+      "file": "50-ace-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 182074,
+      "sha256": "23eb5db6b2f2a8c6261582e1aa25d62f71130c75cd1b21615ce331e9528f5f82"
+    },
+    {
+      "file": "51-two-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 184784,
+      "sha256": "d3914a7868ca2fd06d9fce3b19526d3a0d24b599bb440b910d96d56726b82e9e"
+    },
+    {
+      "file": "52-three-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 191684,
+      "sha256": "68947f8694cfe4968da3a262d0803e40612d02ca900fe383ecb4d32090e8c9cc"
+    },
+    {
+      "file": "53-four-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 181752,
+      "sha256": "26fda660c215ffa891c8f1a99861a5a0eb818314db436e132530e06a738a8620"
+    },
+    {
+      "file": "54-five-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 202988,
+      "sha256": "6ccd460f442da24d5939429317d3efce1a549addb56f7424a7278eadac85236c"
+    },
+    {
+      "file": "55-six-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 175850,
+      "sha256": "68fb7a1f3687a88578c7e9289b1a61fea5b6059317c729a5a1a5119361c9f526"
+    },
+    {
+      "file": "56-seven-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 219544,
+      "sha256": "91b46830ff2761ae5e7eefe1386fc10e3830dcb563402b7b554881d24236013b"
+    },
+    {
+      "file": "57-eight-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 210076,
+      "sha256": "3cc0684fae1b49ab0d0e81e6c6ae350494eb64f330884ab32cefe13cdc0f3b48"
+    },
+    {
+      "file": "58-nine-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 158572,
+      "sha256": "57f1c305a4f4c0f2807c8db824aae1b1786e07af7e220ea9b45b8b361f71cba4"
+    },
+    {
+      "file": "59-ten-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 199058,
+      "sha256": "717659bef0980e507db7b55a0ff153e440e749007f1c9205a4accd666728be3e"
+    },
+    {
+      "file": "60-page-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 200194,
+      "sha256": "99c994224e36e205c9a45e042143092ce8b71f3f65e23dafa3cea72689a2d856"
+    },
+    {
+      "file": "61-knight-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 213604,
+      "sha256": "061b3fd89305d828c28ae714463eb6c3a9bde1267bcc24d0a901ca52d9de54b7"
+    },
+    {
+      "file": "62-queen-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 168178,
+      "sha256": "bc0af418bd0c18f0118e39aeb3a7e80477d55c6f32b42048d8e514ce394204c7"
+    },
+    {
+      "file": "63-king-swords.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 194500,
+      "sha256": "fbf102df96469fa0111d96a1346facbe90539849f96f5499bb37b5085bef1582"
+    },
+    {
+      "file": "64-ace-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 207436,
+      "sha256": "83fefaefa5120eba8e13f115a0c21ad4d2a3d8caa4a2856195a2c1041b777b49"
+    },
+    {
+      "file": "65-two-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 193066,
+      "sha256": "7f5eeb7249e87c0b9f5a2a6cac3e1da96c6a504ad7a1536634d32f58053b390e"
+    },
+    {
+      "file": "66-three-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 203666,
+      "sha256": "e37e6d546a4a5c40593791c02076ad5c437a0bbb028021743dc0a337f5d041b2"
+    },
+    {
+      "file": "67-four-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 205656,
+      "sha256": "d86e962edb3dc5e9454654bf60b3a2a9ff7d149baa70e095abd15be9976a00e3"
+    },
+    {
+      "file": "68-five-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 203640,
+      "sha256": "08e2c3fd5bb8b9bf11c4f37734643224b89e98634512422b01a1828e4801a074"
+    },
+    {
+      "file": "69-six-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 204502,
+      "sha256": "6a276037b6fc6406d11d87896172ce23f12e19f8bbcf9109be07729e8e86fb0e"
+    },
+    {
+      "file": "70-seven-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 205134,
+      "sha256": "fc902e795fdb665b060d836d9ae366d82ee5474301dd53314e1f7ac99d0896ea"
+    },
+    {
+      "file": "71-eight-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 164454,
+      "sha256": "9b77e79da7c55731b6ef26361d58e6465207a4ae0ac4848c88c670a25e0a9d74"
+    },
+    {
+      "file": "72-nine-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 215908,
+      "sha256": "cd9b52440b96abc7de4d15c8f55dc8c180e665c8f75bdb4df2e7429f5589a10a"
+    },
+    {
+      "file": "73-ten-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 172250,
+      "sha256": "ff39ae174c871b6d2aaa8082fe127592b9ee219592a95419066c902dbfa50831"
+    },
+    {
+      "file": "74-page-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 202110,
+      "sha256": "f43e8b40486042b14e192a03d3051d5ff3e0637f9b3fd263bd0e18beca0ef491"
+    },
+    {
+      "file": "75-knight-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 200550,
+      "sha256": "2b9f064c0535ac2de08c84b9247f4cd6512e4b093c2168d7f030bb22e8aedf08"
+    },
+    {
+      "file": "76-queen-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 212488,
+      "sha256": "ea006a34dd01ef08bb5a797f51d5c8f895343527f630686e62c81f57049185c9"
+    },
+    {
+      "file": "77-king-pentacles.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 198872,
+      "sha256": "513f43db3b976de18da4af1ec64df12b2afa0c7e07fa040bee8f1572f834b6cd"
+    },
+    {
+      "file": "back.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 223018,
+      "sha256": "1e470873e0b59ae15461c198b4b81c1d0d8888df076161c26efe1d01cbf4c278"
+    }
+  ]
+}

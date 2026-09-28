@@ -71,7 +71,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '八字：时间规则要先说清楚',
           paragraphs: [
-            '采用 lunar-typescript 1.8.6。出生资料为 1901–2099 年公历日期、当地时间、IANA 时区或明确偏移。年、月柱用对应绝对时刻在北京时间下的节气规则；日、时柱用所选当地时钟。',
+            '采用 lunar-typescript 1.8.6。出生资料为 1901–2099 年公历日期、当地时间、IANA 时区或明确偏移。年、月柱用对应绝对时刻在固定东八区标准时（UTC+08:00，不叠加历史夏令时）下的节气规则；日、时柱用所选当地时钟。',
             '默认零点换日（sect=2），可选子初换日（sect=1）。默认规则下晚子时时干仍使用库的次日约定。可选真太阳时采用经度与低阶均时差近似，不承诺天文历表级精度。未知时间不生成时柱，年、月柱以中午暂定并提示交节不确定性。',
             '五行图每个可见干支各计一次，不加入藏干权重、季节强度或喜用神判定。',
           ],
@@ -118,7 +118,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'BaZi: explicit time conventions',
           paragraphs: [
-            'The engine is lunar-typescript 1.8.6. Input is a Gregorian date from 1901–2099, local time, and IANA zone or explicit offset. Year/month pillars follow solar terms at the absolute instant expressed in Beijing time; day/hour pillars follow the selected local clock.',
+            'The engine is lunar-typescript 1.8.6. Input is a Gregorian date from 1901–2099, local time, and IANA zone or explicit offset. Year/month pillars follow solar terms at the absolute instant expressed in fixed UTC+08:00 standard time; day/hour pillars follow the selected local clock.',
             'The default is midnight (sect=2), with a 23:00 Zi option (sect=1). Under the default late-Zi convention, the library advances the hour stem. Optional solar correction uses longitude and a low-order equation-of-time approximation, not a precision ephemeris. Unknown time omits the hour pillar and flags provisional noon-based year/month results.',
             'The element chart counts each visible stem and branch once. It does not weight hidden stems, season or favorable elements.',
           ],
@@ -174,6 +174,14 @@ export const pages: Record<string, Page> = {
           ],
         },
         {
+          heading: '匿名使用统计，可随时关闭',
+          paragraphs: [
+            '为了了解哪些页面和功能真正有用，我们通过本站接口向 Cloudflare D1 发送页面路径、来源类别、预先定义的推广活动、语言、国家级区域、设备与浏览器类别、功能事件、成功状态和耗时。不会发送出生日期、问题、聊天、命盘内容、笔记、原始 IP、完整来源网址或网址参数。',
+            '浏览器保存一个 30 天到期的随机访客标识和 30 分钟无活动后重置的会话标识。这些是浏览器访问估计，不等于真实人数。事件保留 90 天，后台只向持有管理凭据的人提供汇总统计。',
+            '本页可关闭本浏览器的统计；同时尊重 Do Not Track 和 Global Privacy Control。关闭后不再发送后续统计，不影响排盘或对话；已接收记录按保留期限移除。必要的额度与限速仍会运行。API、CLI 和 MCP 默认只记不含浏览器标识的功能、状态、耗时、国家与设备类别；可发送 X-Wenbu-Analytics: off，CLI 也可设置 WENBU_ANALYTICS=off。',
+          ],
+        },
+        {
           heading: '免费额度与基础设施',
           paragraphs: [
             '为了控制滥用，Cloudflare 会处理请求的 IP。AI 额度使用每天变化的加密哈希，持久层只存日期、哈希和次数，按过期清理机制移除。边缘请求限速不等于真实用户识别，共享网络可能共用额度。',
@@ -183,7 +191,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '反馈与更新',
           paragraphs: [
-            '本说明更新于 2026-09-28。反馈入口位于 GitHub 项目；公开问题中请勿包含私人出生资料、聊天内容或密钥。需要删除本地记录，可在手记页面操作，或清除该站点的浏览器存储。',
+            '本说明更新于 2026-09-29。反馈入口位于 GitHub 项目；公开问题中请勿包含私人出生资料、聊天内容或密钥。需要删除本地记录，可在手记页面操作，或清除该站点的浏览器存储。',
           ],
         },
       ],
@@ -207,6 +215,14 @@ export const pages: Record<string, Page> = {
             'Agent conversations save automatically in this browser. Delete individual conversations, export JSON or download reports as Markdown. Deselecting context does not erase already shared history; a new conversation starts fresh. Tasks stop when the page closes, and received results survive reloads. Storage failures show a backup warning.',
             'Research searches Wenbu’s library and curated catalogue. External reading requests only listed public page URLs, without adding your question or birth details. Source websites may still process server request metadata.',
             'You can remove individual entries, undo a removal on the current page and export JSON backups. Agent exports can be previewed and omit original birth details unless selected. A chart or personal question may still be sensitive even without a birth date.',
+          ],
+        },
+        {
+          heading: 'Optional anonymous usage measurement',
+          paragraphs: [
+            'Our first-party endpoint records page paths, source categories, registered campaigns, language, country-level region, device/browser categories, feature events, outcomes and durations in Cloudflare D1. It excludes birth details, questions, chat, chart contents, notes, raw IPs, full referrer URLs and URL query parameters.',
+            'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events are retained for 90 days. Aggregate reports require administrator credentials.',
+            'Disable measurement on this page at any time. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; existing records expire under the retention policy. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
           ],
         },
         {

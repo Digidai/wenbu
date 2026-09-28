@@ -11,3 +11,7 @@ playwright-report/
 .DS_Store
 *.log
 docs/reviews/*-raw.txt
+
+# Full-resolution image generation masters remain local; production WebP assets are versioned.
+docs/art/originals/
+.analytics-admin-token

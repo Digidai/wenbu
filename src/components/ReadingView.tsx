@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TarotCard from './TarotCard';
 import type { Reading } from '../lib/tools';
 import type { Locale } from '../lib/schema';
 import { choose } from '../lib/i18n';
@@ -200,18 +201,7 @@ export default function ReadingView({ result, locale }: { result: Reading; local
                   result.cards.length === 1 ? 'REFLECTION' : ['SITUATION', 'TENSION', 'NEXT STEP'][i],
                 )}
               </span>
-              <div
-                className={`tarot-face ${card.reversed ? 'reversed' : ''}`}
-                style={{ '--card-color': card.color } as React.CSSProperties}
-              >
-                <span className="card-index">{String(card.number).padStart(2, '0')}</span>
-                <div className="tarot-art">
-                  <i />
-                  <span>{card.symbol}</span>
-                  <i />
-                </div>
-                <span className="card-bottom">WENBU · {card.arcana.toUpperCase()}</span>
-              </div>
+              <TarotCard card={card} locale={locale} />
               <h3>{t(card.zh, card.en)}</h3>
               <span className="card-orientation">
                 {t(card.reversed ? '逆位' : '正位', card.reversed ? 'Reversed' : 'Upright')}

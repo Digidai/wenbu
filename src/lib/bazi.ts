@@ -77,7 +77,9 @@ export function birthMoment(input: BirthInput) {
 export function calculateBazi(raw: unknown) {
   const input = birthSchema.parse(raw);
   const moment = birthMoment(input);
-  const beijing = moment.withTimeZone('Asia/Shanghai');
+  // The ephemeris adds 1/3 day (UTC+8). Shanghai's historic DST must not
+  // shift the solar-term comparison by another hour. Local day/hour retain the chosen zone.
+  const beijing = moment.withTimeZone('+08:00');
   let local = moment.toPlainDateTime();
   let correctionMinutes = 0;
   if (input.solarTime && input.longitude !== undefined) {
@@ -142,7 +144,7 @@ export function calculateBazi(raw: unknown) {
     );
   return {
     kind: 'bazi' as const,
-    version: 'wenbu-bazi-1.0',
+    version: 'wenbu-bazi-1.1',
     input,
     calendar: {
       lunar: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
@@ -163,7 +165,7 @@ export function calculateBazi(raw: unknown) {
     warnings,
     method: {
       engine: 'lunar-typescript@1.8.6',
-      yearMonth: 'Absolute solar-term boundaries in Asia/Shanghai',
+      yearMonth: 'Absolute solar-term boundaries in fixed UTC+08:00',
       dayHour: input.solarTime ? 'Approximate local apparent solar time' : 'Local civil clock',
       dayBoundary: input.dayBoundary,
       elements:

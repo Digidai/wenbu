@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 const [command, arg, ...extra] = process.argv.slice(2);
 if (!command || ['help', '--help', '-h'].includes(command)) {
   console.log(
-    'Wenbu CLI\n\n  node wenbu.mjs bazi \'{"date":"2000-08-16","time":"03:30","timezone":"Asia/Shanghai"}\'\n  node wenbu.mjs iching \'{}\'\n  node wenbu.mjs tarot \'{"count":3}\'\n  node wenbu.mjs ziwei --file private-input.json\n  cat private-input.json | node wenbu.mjs bazi -\n  node wenbu.mjs agent --file selected-context.json\n\nAgent input requires {"message":"...","consent":true}; sends selected context to DeepSeek.\nAgent stdout is newline-delimited JSON events, including text, artifacts and completion.\nNo history is read or saved automatically. See /agent-protocol.md and /openapi.json.\nUse a file or stdin to keep personal information out of shell history.\nWENBU_URL may select another HTTPS deployment or a local development server.\nThese tools calculate cultural symbols, not factual predictions.',
+    'Wenbu CLI\n\n  node wenbu.mjs bazi \'{"date":"2000-08-16","time":"03:30","timezone":"Asia/Shanghai"}\'\n  node wenbu.mjs iching \'{}\'\n  node wenbu.mjs tarot \'{"count":3}\'\n  node wenbu.mjs ziwei --file private-input.json\n  cat private-input.json | node wenbu.mjs bazi -\n  node wenbu.mjs agent --file selected-context.json\n\nAgent input requires {"message":"...","consent":true}; sends selected context to DeepSeek.\nAgent stdout is newline-delimited JSON events, including text, artifacts and completion.\nNo history is read or saved automatically. See /agent-protocol.md and /openapi.json.\nUse a file or stdin to keep personal information out of shell history.\nWENBU_ANALYTICS=off disables coarse service-usage measurement; request content is never recorded.\nWENBU_URL may select another HTTPS deployment or a local development server.\nThese tools calculate cultural symbols, not factual predictions.',
   );
   process.exit(0);
 }
@@ -38,7 +38,11 @@ try {
     throw new Error('Agent requires explicit consent:true to send this context to DeepSeek.');
   const res = await fetch(new URL('/api/v1/' + command, base), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Wenbu-Client': 'cli',
+      ...(process.env.WENBU_ANALYTICS === 'off' ? { 'X-Wenbu-Analytics': 'off' } : {}),
+    },
     body: JSON.stringify(input),
     signal: AbortSignal.timeout(command === 'agent' ? 130000 : 15000),
   });

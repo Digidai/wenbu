@@ -6,6 +6,8 @@ import { castIching } from '../src/lib/iching';
 import { drawTarot } from '../src/lib/tarot';
 import { calculateZiwei } from '../src/lib/ziwei';
 import { searchLibrary, readLibrary } from './agent-library';
+import type { ToolKind } from '../src/lib/schema';
+type ToolReceipt = (tool: ToolKind | 'mcp', success: boolean, duration: number) => void;
 
 const language = z.enum(['zh', 'en']).default('en');
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -15,7 +17,7 @@ const pack = (data: Record<string, unknown>) => ({
   structuredContent: data,
 });
 
-export function createMcpServer() {
+export function createMcpServer(receipt?: ToolReceipt) {
   const server = new McpServer(
     { name: 'wenbu', version: '1.1.0' },
     {
@@ -43,9 +45,22 @@ export function createMcpServer() {
         },
       },
       async (args) => {
+        const started = Date.now();
+        const kind =
+          (
+            {
+              calculate_bazi: 'bazi',
+              calculate_ziwei: 'ziwei',
+              cast_iching: 'iching',
+              draw_tarot: 'tarot',
+            } as Record<string, ToolKind>
+          )[name] ?? 'mcp';
         try {
-          return pack(fn(args));
+          const result = fn(args);
+          receipt?.(kind, true, Date.now() - started);
+          return pack(result);
         } catch {
+          receipt?.(kind, false, Date.now() - started);
           return {
             isError: true,
             content: [
@@ -126,14 +141,14 @@ export function createMcpServer() {
       {
         uri: 'wenbu://methodology',
         mimeType: 'text/plain',
-        text: 'Wenbu v1.1. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in Asia/Shanghai; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.genedai.me/en/methodology/',
+        text: 'Wenbu v1.1. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in fixed UTC+08:00 standard time; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.genedai.me/en/methodology/',
       },
     ],
   }));
   return server;
 }
-export async function handleMcp(request: Request) {
-  const server = createMcpServer();
+export async function handleMcp(request: Request, receipt?: ToolReceipt) {
+  const server = createMcpServer(receipt);
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true,

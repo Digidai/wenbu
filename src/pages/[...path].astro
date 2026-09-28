@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AnalyticsDashboard from '../components/AnalyticsDashboard';
+import TarotGallery from '../components/TarotGallery';
+import AnalyticsPreference from '../components/AnalyticsPreference';
 import Home from '../components/Home.astro';
 import ToolDesk from '../components/ToolDesk';
 import Journal from '../components/Journal';
@@ -18,6 +21,7 @@ export function getStaticPaths() {
     'bazi',
     'iching',
     'tarot',
+    'tarot/deck',
     'ziwei',
     'journal',
     'learn',
@@ -25,6 +29,7 @@ export function getStaticPaths() {
     'agents',
     'agent',
     'sources',
+    'insights',
     ...Object.keys(pages),
     ...articles.map((a) => `${a.category}/${a.slug}`),
     ...comparisons.map((c) => `compare/${c.slug}`),
@@ -47,6 +52,7 @@ const titles: Record<string, [string, string]> = {
   '': ['免费八字、易经、塔罗与紫微工具', 'Free BaZi, I Ching, tarot & Zi Wei tools'],
   bazi: ['免费八字排盘，读懂你的五行底色', 'Free BaZi calculator & Four Pillars chart'],
   iching: ['免费易经占卜，从一卦看见变化', 'Free I Ching reading & hexagram oracle'],
+  'tarot/deck': ['78 张塔罗牌图鉴 · 问卜原创插画与牌义', '78 tarot cards · the illustrated Wenbu deck'],
   tarot: ['免费塔罗占卜，遇见新的视角', 'Free tarot reading · one & three cards'],
   ziwei: ['免费紫微斗数排盘，十二宫可视化', 'Free Zi Wei Dou Shu chart calculator'],
   journal: ['我的手记', 'Your reading journal'],
@@ -54,12 +60,17 @@ const titles: Record<string, [string, string]> = {
   blog: ['问卜札记', 'The Wenbu journal'],
   agents: ['与你的 Agent 一起探索', 'Wenbu for agents · MCP, CLI & Skills'],
   agent: ['命理 Agent · 对话、排盘与有依据的研习', 'Wenbu Agent · chat, charts & sourced research'],
+  insights: ['访问与使用 · 管理后台', 'Product analytics · administration'],
   sources: ['参考资料与研究来源', 'Sources & further reading'],
 };
 const descriptions: Record<string, [string, string]> = {
   '': [
     '免费探索八字命盘、易经问卦、78 张塔罗和紫微星盘。无需注册，计算依据透明，可选 AI 解读、本地手记和 MCP Agent 接口。',
     'Explore free BaZi charts, I Ching casts, a full 78-card tarot deck and Zi Wei. No account needed. Transparent methods, optional AI and a local journal.',
+  ],
+  'tarot/deck': [
+    '浏览完整 78 张塔罗牌：22 张大阿卡纳与四组小阿卡纳。原创 AI 插画、正逆位关键词、放大查看。免费探索传统象征与自己的问题。',
+    'Browse all 78 tarot cards: original AI illustrations, upright and reversed themes, major arcana and four suits. Open each artwork and explore for free.',
   ],
   journal: [
     '留住当时的问题，也留住后来的理解。记录只在当前浏览器里，由你保存、回看和导出。',
@@ -111,12 +122,16 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
   description={description}
   locale={locale}
   path={path}
-  noindex={path === 'journal'}
+  noindex={path === 'journal' || path === 'insights'}
   article={Boolean(article)}
   workspace={path === 'agent'}
 >
   {path === '' ? (
     <Home locale={locale} />
+  ) : path === 'tarot/deck' ? (
+    <TarotGallery locale={locale} client:visible />
+  ) : path === 'insights' ? (
+    <AnalyticsDashboard client:load />
   ) : path === 'agent' ? (
     <>
       <AgentWorkspace locale={locale} client:load />
@@ -331,6 +346,7 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
       {content && (
         <div class="prose-grid">
           <article class="prose">
+            {path === 'privacy' && <AnalyticsPreference locale={locale} client:load />}
             {content.sections.map((s, i) => (
               <section id={`section-${i}`}>
                 <h2>{s.heading}</h2>

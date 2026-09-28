@@ -6,6 +6,14 @@ import { handleMcp } from './mcp';
 import type { Env } from './types';
 import { agentResponse } from './agent';
 import { AGENT_BODY_LIMIT } from '../src/lib/agent-protocol';
+import {
+  collectEvents,
+  recordService,
+  authorizedAnalytics,
+  analyticsReport,
+  pruneAnalytics,
+  type ServiceMetric,
+} from './analytics';
 export { UsageGate } from './quota';
 
 const apiHeaders = {
@@ -69,13 +77,45 @@ export function originAllowed(request: Request, env: Env) {
   return false;
 }
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx?: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
     if (!path.startsWith('/api/') && path !== '/mcp' && path !== '/mcp/') return env.ASSETS.fetch(request);
     if (!originAllowed(request, env))
       return json({ error: { code: 'origin_denied', message: 'Origin not allowed.' } }, 403);
+    const started = Date.now();
+    const observedTool = path.match(/^\/api\/v1\/(bazi|iching|tarot|ziwei|agent|interpret)$/)?.[1] as
+      ServiceMetric['tool'] | undefined;
+    let locale: 'zh' | 'en' = 'en';
+    const record = (metric: ServiceMetric) => {
+      const task = recordService(request, env, metric).catch(() => undefined);
+      if (ctx) ctx.waitUntil(task);
+    };
     try {
+      if (path === '/api/events') {
+        if (request.method !== 'POST') return json({ error: { code: 'method_not_allowed' } }, 405);
+        if (request.headers.get('Origin') !== url.origin)
+          return json({ error: { code: 'origin_denied' } }, 403);
+        if (
+          env.ANALYTICS_LIMITER &&
+          !(await env.ANALYTICS_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') ?? 'local' }))
+            .success
+        )
+          return json({ error: { code: 'rate_limited' } }, 429);
+        if (!env.ANALYTICS) return json({ error: { code: 'analytics_unavailable' } }, 503);
+        return json(await collectEvents(await boundedBody(request, 16000), request, env));
+      }
+      if (path === '/api/admin/analytics') {
+        if (
+          env.ADMIN_LIMITER &&
+          !(await env.ADMIN_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') ?? 'local' }))
+            .success
+        )
+          return json({ error: { code: 'rate_limited' } }, 429);
+        if (request.method !== 'GET') return json({ error: { code: 'method_not_allowed' } }, 405);
+        if (!(await authorizedAnalytics(request, env))) return json({ error: { code: 'unauthorized' } }, 401);
+        return json(await analyticsReport(url, env));
+      }
       if (path === '/api/health' && request.method === 'GET')
         return json({
           status: 'ok',
@@ -89,7 +129,8 @@ export default {
           headers: {
             ...apiHeaders,
             'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Accept, MCP-Protocol-Version',
+            'Access-Control-Allow-Headers':
+              'Content-Type, Accept, MCP-Protocol-Version, X-Wenbu-Client, X-Wenbu-Analytics, X-Wenbu-Action',
             'Access-Control-Allow-Origin': request.headers.get('Origin') || env.SITE_URL,
             Vary: 'Origin',
           },
@@ -98,8 +139,16 @@ export default {
         const result = await env.RATE_LIMITER.limit({
           key: request.headers.get('CF-Connecting-IP') ?? 'local',
         });
-        if (!result.success)
+        if (!result.success) {
+          if (observedTool)
+            record({
+              event: 'api_failed',
+              tool: observedTool,
+              status: 'rate_limited',
+              duration: Date.now() - started,
+            });
           return json({ error: { code: 'rate_limited', message: 'Please slow down. / 请稍后再试。' } }, 429);
+        }
       }
       if (path === '/mcp' || path === '/mcp/') {
         if (request.method === 'POST') {
@@ -110,7 +159,14 @@ export default {
             body: JSON.stringify(body),
           });
         }
-        const response = await handleMcp(request);
+        const response = await handleMcp(request, (tool, success, duration) =>
+          record({
+            event: tool === 'mcp' ? 'mcp_finished' : success ? 'calculation_succeeded' : 'api_failed',
+            tool,
+            status: success ? 'complete' : 'invalid_input',
+            duration,
+          }),
+        );
         const headers = new Headers(response.headers);
         for (const [k, v] of Object.entries(apiHeaders)) if (k !== 'Content-Type') headers.set(k, v);
         return new Response(response.body, { status: response.status, headers });
@@ -118,12 +174,51 @@ export default {
       if (request.method !== 'POST')
         return json({ error: { code: 'method_not_allowed', message: 'Use POST with a JSON body.' } }, 405);
       const raw = await boundedBody(request, path === '/api/v1/agent' ? AGENT_BODY_LIMIT : 8192);
-      if (path === '/api/v1/agent') return await agentResponse(raw, request, env);
-      if (path === '/api/v1/interpret') return json(await interpret(raw, request, env));
+      locale = raw && typeof raw === 'object' && raw.locale === 'zh' ? 'zh' : 'en';
+      if (path === '/api/v1/agent')
+        return await agentResponse(raw, request, env, (metric) =>
+          record({ ...metric, locale, duration: Date.now() - started }),
+        );
+      if (path === '/api/v1/interpret') {
+        const result = await interpret(raw, request, env);
+        record({
+          event: 'interpret_succeeded',
+          tool: 'interpret',
+          status: 'complete',
+          locale,
+          duration: Date.now() - started,
+        });
+        return json(result);
+      }
       const kind = path.match(/^\/api\/v1\/(bazi|iching|tarot|ziwei)$/)?.[1] as ToolKind | undefined;
       if (!kind) return json({ error: { code: 'not_found', message: 'Unknown endpoint.' } }, 404);
-      return json(calculate(kind, raw));
+      const result = calculate(kind, raw);
+      record({
+        event: 'calculation_succeeded',
+        tool: kind,
+        status: 'complete',
+        locale,
+        duration: Date.now() - started,
+      });
+      return json(result);
     } catch (error) {
+      if (observedTool)
+        record({
+          event: 'api_failed',
+          tool: observedTool,
+          locale,
+          status:
+            error instanceof ApiError && error.status === 429
+              ? 'rate_limited'
+              : error instanceof InputError ||
+                  error instanceof z.ZodError ||
+                  (error instanceof ApiError && error.status >= 400 && error.status < 500)
+                ? 'invalid_input'
+                : error instanceof ApiError && error.status === 503
+                  ? 'unavailable'
+                  : 'error',
+          duration: Date.now() - started,
+        });
       if (error instanceof ApiError)
         return json({ error: { code: error.code, message: error.message } }, error.status);
       if (error instanceof InputError)
@@ -149,5 +244,8 @@ export default {
         500,
       );
     }
+  },
+  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil(pruneAnalytics(env));
   },
 } satisfies ExportedHandler<Env>;

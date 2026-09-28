@@ -15,11 +15,17 @@ import type { Reading } from '../lib/tools';
 import { choose, href } from '../lib/i18n';
 import { agentContext, downloadJson, readJournal, writeJournal, type Answer } from '../lib/journal';
 import ReadingView from './ReadingView';
+import { analyticsHeaders, track } from '../lib/analytics';
 
-async function post<T>(path: string, input: unknown, signal?: AbortSignal): Promise<T> {
+async function post<T>(
+  path: string,
+  input: unknown,
+  signal?: AbortSignal,
+  action: 'example' | 'calculate' | 'none' = 'none',
+): Promise<T> {
   const response = await fetch(path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...analyticsHeaders(), 'X-Wenbu-Action': action },
     body: JSON.stringify(input),
     signal,
   });
@@ -95,6 +101,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
   async function run(demo = false) {
     if (lock.current) return;
     lock.current = true;
+    track('tool_started', { tool: kind, action: demo ? 'example' : 'calculate' });
     setBusy(true);
     setError('');
     setAiError('');
@@ -131,8 +138,9 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
           : { date: '2000-08-16', time: '03:30', sex, locale };
     }
     try {
-      const data = await post<Reading>(`/api/v1/${kind}`, payload);
+      const data = await post<Reading>(`/api/v1/${kind}`, payload, undefined, demo ? 'example' : 'calculate');
       setResult(data);
+      track('result_viewed', { tool: kind });
       entryId.current = crypto.randomUUID();
       setSelected([]);
       requestAnimationFrame(() =>
@@ -142,6 +150,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         }),
       );
     } catch (e) {
+      track('client_error', { tool: kind, status: 'error' });
       setError(
         e instanceof Error ? e.message : t('连接失败，请重试。', 'Connection failed. Please try again.'),
       );
@@ -159,6 +168,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
   }
   async function ask() {
     if (!result || aiBusy || !consent || question.trim().length < 2) return;
+    track('ai_requested', { tool: kind });
     setAiBusy(true);
     setAiError('');
     const controller = new AbortController();
@@ -177,6 +187,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
       );
       if (controller.signal.aborted) return;
       setAnswer(data.answer);
+      track('ai_result_viewed', { tool: kind });
       setRemaining(data.remaining);
       setProvenance(data.provenance.servedModel);
       setSaved(false);
@@ -208,6 +219,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         ...entries.filter((e) => e.id !== id),
       ]);
       setSaved(true);
+      track('journal_saved', { tool: kind, action: 'save' });
     } catch {
       setAiError(
         t('浏览器无法保存，请使用导出备份。', 'Browser storage is unavailable. Please export a backup.'),
@@ -452,10 +464,13 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                     {busy
                       ? t('正在展开牌面…', 'Revealing your cards…')
                       : t(
-                          `选 ${count} 张牌 · 已选 ${selected.length} 张`,
+                          `从完整 78 张中抽 ${count} 张 · 已选 ${selected.length} 张`,
                           `Choose ${count} · ${selected.length} selected`,
                         )}
                   </p>
+                  <a className="deck-gallery-link" href={href(locale, 'tarot/deck')}>
+                    {t('翻阅 78 张牌图鉴', 'Browse all 78 cards')} ↗
+                  </a>
                   <button type="submit" className="button primary full" disabled={busy}>
                     {t('为我抽牌', 'Draw for me')}
                     <ArrowRight size={18} />

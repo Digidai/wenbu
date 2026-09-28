@@ -44,6 +44,26 @@ Deployment is through the CLI under the user's existing Cloudflare account. GitH
 
 See [brand-and-growth.md](research/brand-and-growth.md). Change all absolute identifiers together and preserve old links with permanent redirects. A hostname change does not automatically migrate localStorage journals; users should export records before switching domains.
 
+## Product analytics
+
+Cloudflare D1 `wenbu-analytics` is bound as `ANALYTICS`; schema is versioned in `migrations/0001_analytics.sql`. Apply migrations before code deployment:
+
+```sh
+npx wrangler d1 migrations apply wenbu-analytics --local
+npx wrangler d1 migrations apply wenbu-analytics --remote
+npx wrangler secret put ANALYTICS_ADMIN_TOKEN
+npx wrangler whoami
+npm run deploy
+```
+
+The database and production secret were provisioned for the 2026-09-29 release. Do not recreate them for routine deployments. The administrator opens `/insights/` and supplies the secret in the password field. An ignored mode-0600 `.analytics-admin-token` file contains the initial local copy; do not publish it. The report API requires `Authorization: Bearer ...`, sends no-store/noindex, and has a separate rate limit. See [analytics.md](analytics.md) for dimensions, privacy, opt-out and definitions.
+
+Cron `15 19 * * *` deletes raw events older than 90 days. Indexes bound time-window reads and retention deletes. Monitor D1 reads, writes, storage and Worker errors in Cloudflare; growth requires daily pre-aggregation before repeatedly querying large 90-day ranges. Public page beacons are approximate product measurement; server calculation receipts are recorded independently. Neither is a billing ledger.
+
+QA sets `X-Wenbu-Test: true` for native requests or `sessionStorage['wenbu.analytics.test']='true'` in the dedicated QA browser tab before loading the page. Test traffic is excluded from the default dashboard. Automated smoke now sets this header, including MCP. Do not clear production tables to reset QA.
+
+Worker rollback does not roll back D1 schema or data. This initial migration only adds a separate analytics table; the previous app version can continue without it. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [deck-analytics-release.md](reviews/deck-analytics-release.md).
+
 ## Issue reporting
 
 Use GitHub issues with synthetic data. Never post birth details or keys in public bug reports. Reproduce calendar issues with exact timezone, date, chosen convention and expected independent reference.

@@ -1,0 +1,22 @@
+
+ ⛅️ wrangler 4.142.0 (update available 4.143.0)
+───────────────────────────────────────────────
+Resource location: remote 
+
+Migrations to be applied:
+┌────────────────────┐
+│ name               │
+├────────────────────┤
+│ 0001_analytics.sql │
+└────────────────────┘
+? About to apply 1 migration(s)
+Your database may not be available to serve requests during the migration, continue?
+🤖 Using fallback value in non-interactive context: yes
+🌀 Executing on remote database wenbu-analytics (ad0bb9f2-43d5-47f0-a404-06f071b85935):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 5 commands in 1.17ms
+┌────────────────────┬────────┐
+│ name               │ status │
+├────────────────────┼────────┤
+│ 0001_analytics.sql │ ✅     │
+└────────────────────┴────────┘

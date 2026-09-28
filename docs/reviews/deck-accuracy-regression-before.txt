@@ -1,0 +1,31 @@
+
+ RUN  v5.0.2 /Users/dai/Developer/CursorProjects/wenbu
+
+ ❯ tests/calculations.test.ts (32 tests | 1 failed) 90ms
+   ❯ calendar contracts (19)
+     × compares 1988 solar terms in fixed UTC+8, not Shanghai summer time 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/calculations.test.ts > calendar contracts > compares 1988 solar terms in fixed UTC+8, not Shanghai summer time
+AssertionError: expected '丁巳' to be '丙辰' // Object.is equality
+
+Expected: "丙辰"
+Received: "丁巳"
+
+ ❯ tests/calculations.test.ts:59:37
+     57|     const after = calculateBazi({ date: '1988-05-05', time: '16:02', t…
+     58|     expect(before.calendar.offset).toBe('+09:00');
+     59|     expect(before.pillars[1].value).toBe('丙辰');
+       |                                     ^
+     60|     expect(before.pillars[1].value).toBe(fixed.pillars[1].value);
+     61|     expect(after.pillars[1].value).toBe('丁巳');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 31 passed (32)
+   Start at  00:13:15
+   Duration  505ms (import 45%, transform 27%, tests 26%, worker 1%)
+

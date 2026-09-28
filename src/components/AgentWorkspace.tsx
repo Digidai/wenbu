@@ -1,3 +1,4 @@
+import { analyticsHeaders, track } from '../lib/analytics';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   ArrowUp,
@@ -249,6 +250,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   function stop() {
     const running = pending.current;
     if (!running) return;
+    track('agent_stopped', { tool: 'agent', status: 'cancelled' });
     pending.current = null;
     running.controller.abort();
     patchMessage(running.sessionId, running.messageId, (m) => ({
@@ -289,6 +291,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     setDeleteId('');
   }
   function openContext(resume = false) {
+    track('context_opened', { tool: 'agent', action: 'context' });
     if (!active) return;
     setResumeAfterContext(resume);
     setContextDraft({
@@ -311,6 +314,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }));
   }
   function openArtifact(id: string) {
+    track('artifact_opened', { tool: 'agent' });
     setArrivingArtifacts([]);
     setSelectedArtifact(id);
     setPanel('results');
@@ -335,6 +339,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }
     setNotice('');
     setDraft('');
+    track('agent_started', { tool: 'agent', mode: session.mode });
     setBusy(true);
     setMobilePane('chat');
     stickToBottom.current = true;
@@ -371,7 +376,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     try {
       const response = await fetch('/api/v1/agent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...analyticsHeaders() },
         signal: controller.signal,
         body: JSON.stringify({
           message: value.trim().slice(0, 3000),
@@ -408,7 +413,14 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           if (!isCurrent()) return;
           const event = JSON.parse(data) as AgentEvent;
           if (event.type === 'start') setRemaining(event.remaining);
-          if (event.type === 'done' || event.type === 'error') terminal = true;
+          if (event.type === 'done' || event.type === 'error') {
+            terminal = true;
+            track('agent_received', {
+              tool: 'agent',
+              mode: session.mode,
+              status: event.type === 'done' ? event.status : 'error',
+            });
+          }
           if (event.type === 'artifact') {
             setSelectedArtifact(event.artifact.id);
             setPanel('results');
@@ -464,6 +476,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
         },
         ...entries.filter((e) => e.id !== id),
       ]);
+      track('journal_saved', { tool: item.reading.kind, action: 'save' });
       setNotice(t('已存入我的手记。', 'Saved to your journal.'));
     } catch {
       setStorageError(true);
@@ -1096,7 +1109,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                           ? t('已读取网页片段', 'Web excerpt read')
                           : t('问卜原创资料', 'Wenbu library note')}
                       </span>
-                      <a href={source.url} target="_blank" rel="noopener noreferrer">
+                      <a data-track="source" href={source.url} target="_blank" rel="noopener noreferrer">
                         {source.title}
                         <ArrowUpRight size={14} />
                       </a>
@@ -1185,7 +1198,12 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   />
                 )}
                 <div className="agent-artifact-actions">
-                  <button onClick={() => downloadMarkdown(artifactMarkdown(artifact, sources))}>
+                  <button
+                    onClick={() => {
+                      downloadMarkdown(artifactMarkdown(artifact, sources));
+                      track('report_exported', { tool: 'agent', action: 'export' });
+                    }}
+                  >
                     <Download size={14} />
                     {t('导出', 'Export')}
                   </button>

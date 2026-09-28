@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-09-28T18:59:18.766Z",
+  "checks": [
+    {
+      "expected": 400,
+      "actual": 400
+    },
+    {
+      "expected": 413,
+      "actual": 413
+    },
+    {
+      "expected": 415,
+      "actual": 415
+    }
+  ],
+  "summary": {
+    "events": 3,
+    "pageviews": 0,
+    "sessions": 0,
+    "visitors": 0,
+    "engaged_sessions": 0,
+    "calculations": 0,
+    "examples": 0,
+    "interpretations": 0,
+    "agent_complete": 0,
+    "agent_waiting": 0,
+    "agent_limited": 0,
+    "failures": 0,
+    "invalid_inputs": 3,
+    "throttled": 0,
+    "cancellations": 0,
+    "model_calls": 0,
+    "tool_calls": 0,
+    "last_event": 1790621958434
+  },
+  "result": "passed"
+}

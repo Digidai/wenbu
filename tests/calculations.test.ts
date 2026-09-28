@@ -49,6 +49,24 @@ describe('calendar contracts', () => {
     expect(before.pillars[0].value).toBe('癸卯');
     expect(after.pillars[0].value).toBe('甲辰');
   });
+  it('compares 1988 solar terms in fixed UTC+8, not Shanghai summer time', () => {
+    // Upstream ephemeris: 1988 Li Xia = 15:01:43 at UTC+8.
+    // Shanghai civil clocks were UTC+9, so 15:30 civil is still BEFORE the term.
+    const before = calculateBazi({ date: '1988-05-05', time: '15:30', timezone: 'Asia/Shanghai' });
+    const fixed = calculateBazi({ date: '1988-05-05', time: '14:30', timezone: '+08:00' });
+    const after = calculateBazi({ date: '1988-05-05', time: '16:02', timezone: 'Asia/Shanghai' });
+    expect(before.calendar.offset).toBe('+09:00');
+    expect(before.pillars[1].value).toBe('丙辰');
+    expect(before.pillars[1].value).toBe(fixed.pillars[1].value);
+    expect(after.pillars[1].value).toBe('丁巳');
+  });
+  it('solar correction does not move year/month across a term instant', () => {
+    const args = { date: '2024-02-04', time: '16:28', timezone: 'Asia/Shanghai' };
+    const clock = calculateBazi(args);
+    const corrected = calculateBazi({ ...args, solarTime: true, longitude: 75 });
+    expect(corrected.pillars.slice(0, 2)).toEqual(clock.pillars.slice(0, 2));
+    expect(corrected.pillars[3].value).not.toBe(clock.pillars[3].value);
+  });
   it('requires longitude for solar correction', () =>
     expect(() => calculateBazi({ date: '2000-08-16', time: '03:30', solarTime: true })).toThrow());
   it('reports approximate correction', () => {

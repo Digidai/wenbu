@@ -22,7 +22,7 @@ function Citations({ ids, sources, locale }: { ids: string[]; sources: AgentSour
       <BookOpen size={12} aria-hidden="true" />
       {cited.length > 0 &&
         cited.map((source) => (
-          <a key={source.id} href={source.url} target="_blank" rel="noopener noreferrer">
+          <a key={source.id} data-track="source" href={source.url} target="_blank" rel="noopener noreferrer">
             {source.title}
             <ArrowUpRight size={11} />
           </a>

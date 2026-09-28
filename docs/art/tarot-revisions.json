@@ -1,0 +1,28 @@
+{
+  "revisions": [
+    {
+      "id": 12,
+      "slug": "12-hanged-man",
+      "prompt": "Use case: illustration-story. Asset type: final original tarot card illustration for Wenbu, a refined cultural reflection website. Create ONE portrait card artwork, full image aspect ratio 2:3. Hand-colored antique copperplate engraving and delicate woodcut on warm ivory cotton paper. Restrained forest green, faded vermilion, ochre and ink, richly detailed yet spacious and legible at small size. Flat printed illustration, beautiful hand-drawn linework and subtle paper grain, elegant narrow ornamental rectangular border, consistent deck design. No typography, letters, numbers, logos, watermark, card name, photorealistic mockup or 3D render. Image fills entire canvas; do not show a physical card on a table. No modern objects. Symbolic, thoughtful, warm, never horror. Subject: The Hanged Man, reinterpreted through the idea of a changed perspective. No hanging or suspended person. A tranquil person sits upright in meditation beside a still pool under a living tree; the pool reflects the tree upside down inside a golden halo. An hourglass rests on a stone beside the pool. Quiet pause, patience and seeing differently. No ropes, restraints, injury or distress.",
+      "note": "Symbolic reflection and pause; deliberate reinterpretation with no suspended person."
+    }
+  ],
+  "back": {
+    "prompt": "Use case: illustration-story. Asset type: final original tarot card illustration for Wenbu, a refined cultural reflection website. Create ONE portrait card artwork, full image aspect ratio 2:3. Hand-colored antique copperplate engraving and delicate woodcut on warm ivory cotton paper. Restrained forest green, faded vermilion, ochre and ink, richly detailed yet spacious and legible at small size. Flat printed illustration, beautiful hand-drawn linework and subtle paper grain, elegant narrow ornamental rectangular border, consistent deck design. No typography, letters, numbers, logos, watermark, card name, photorealistic mockup or 3D render. Image fills entire canvas; do not show a physical card on a table. No modern objects. Symbolic, thoughtful, warm, never horror. Subject: Back design of the Wenbu tarot deck. Perfectly rotationally symmetric ornamental botanical engraving: interwoven laurel, pomegranate blossoms, fern fronds and delicate celestial compass geometry around a small central eight-petal flower. Dense forest-green ground with warm ivory engraved linework and very subtle vermilion small blossoms. Frame matches a fine antique print. Elegant, readable as a 60 pixel-wide card back. No words, numbers, faces or hands.",
+    "asset": "/images/tarot/back.webp"
+  },
+  "countCorrections": [
+    {
+      "slug": "44-nine-cups",
+      "prompt": "Edit this tarot illustration, preserving every visual detail, composition, frame, linework and palette. There must be exactly NINE golden cups total. Keep the nine cups on the curved shelf unchanged. REMOVE ONLY the extra cup in the seated person's hand. Instead let that hand rest naturally, empty, on their lap. No replacement vessel or extra cup elsewhere. No other change."
+    },
+    {
+      "slug": "71-eight-pentacles",
+      "prompt": "Edit this tarot illustration, preserving the artisan, workbench, border, palette and engraving. Exactly EIGHT pentacle coins must remain total. It currently has nine: six hanging on the tree, one being engraved, two on the ground. REMOVE ONLY the lower right ground coin, replacing it with ordinary leaves and grass. Keep the other ground coin, all six tree coins and the workbench coin. No other changes."
+    },
+    {
+      "slug": "73-ten-pentacles",
+      "prompt": "Edit this tarot illustration, preserving all people, dogs, courtyard, border and exact engraving style and palette. There must be exactly TEN golden pentacle coins total. The image currently has nine gold pentacle medallions around the upper arch. ADD ONE matching gold pentacle medallion at lower-left on the leafy border below the current lowest left medallion, avoiding faces and hands. Keep the existing nine medallions. No other changes."
+    }
+  ]
+}

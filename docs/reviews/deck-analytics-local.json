@@ -1,0 +1,101 @@
+{
+  "base": "http://127.0.0.1:8787",
+  "checkedAt": "2026-09-28T18:41:57.938Z",
+  "checks": {
+    "deduplication": true,
+    "privateTextRejected": true,
+    "forgedServerEventRejected": true,
+    "originAndAdminAuth": true,
+    "historicalDstBoundary": {
+      "monthPillar": "丙辰"
+    },
+    "optOutAcceptedZero": true,
+    "receipts": [
+      {
+        "label": "calculation_succeeded",
+        "origin": "server",
+        "status": "complete",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "journal_saved",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "page_view",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "result_viewed",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "tool_started",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      }
+    ],
+    "sessionCoverage": {
+      "visited": 1,
+      "started": 1,
+      "succeeded": 1,
+      "saved": 1
+    },
+    "testExcludedByDefault": true
+  },
+  "defaultTraffic": {
+    "before": {
+      "events": 26,
+      "pageviews": 9,
+      "sessions": 3,
+      "visitors": 2,
+      "engaged_sessions": 3,
+      "calculations": 1,
+      "examples": 0,
+      "interpretations": 0,
+      "agent_complete": 0,
+      "agent_waiting": 0,
+      "agent_limited": 0,
+      "failures": 0,
+      "invalid_inputs": 0,
+      "throttled": 0,
+      "cancellations": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "last_event": 1790620703466
+    },
+    "after": {
+      "events": 26,
+      "pageviews": 9,
+      "sessions": 3,
+      "visitors": 2,
+      "engaged_sessions": 3,
+      "calculations": 1,
+      "examples": 0,
+      "interpretations": 0,
+      "agent_complete": 0,
+      "agent_waiting": 0,
+      "agent_limited": 0,
+      "failures": 0,
+      "invalid_inputs": 0,
+      "throttled": 0,
+      "cancellations": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "last_event": 1790620703466
+    }
+  },
+  "result": "passed"
+}

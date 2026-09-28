@@ -1,0 +1,137 @@
+
+ ⛅️ wrangler 4.142.0 (update available 4.143.0)
+───────────────────────────────────────────────
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+🌀 Building list of assets...
+✨ Read 365 files from the assets directory /Users/dai/Developer/CursorProjects/wenbu/dist
+🌀 Starting asset upload...
+🌀 Found 246 new or modified static assets to upload. Proceeding with upload...
++ /_astro/download.B35cCTnZ.js
++ /_astro/trash.Bny3Cbnq.js
++ /_astro/AnalyticsPreference.CIMFBIKn.js
++ /_astro/analytics.CS0Cfh5p.js
++ /404.html
++ /en/blog/index.html
++ /en/about/index.html
++ /en/free/index.html
++ /compare/chatbot/index.html
++ /compare/fatetell/index.html
++ /methodology/index.html
++ /learn/iching-three-coins/index.html
++ /learn/five-elements/index.html
++ /learn/ziwei-twelve-palaces/index.html
++ /en/learn/unknown-birth-time/index.html
++ /en/blog/a-reading-you-can-return-to/index.html
++ /en/learn/tarot-beginner/index.html
++ /en/blog/why-calculation-comes-first/index.html
++ /en/learn/bazi-vs-western-astrology/index.html
++ /en/learn/ai-divination/index.html
++ /learn/index.html
++ /journal/index.html
++ /insights/index.html
++ /en/sources/index.html
++ /en/iching/index.html
++ /tarot/index.html
++ /bazi/index.html
++ /images/tarot/58-nine-swords-small.webp
++ /images/tarot/42-seven-cups-small.webp
++ /images/tarot/09-hermit-small.webp
++ /images/tarot/52-three-swords-small.webp
++ /images/tarot/55-six-swords-small.webp
++ /images/tarot/40-five-cups-small.webp
++ /images/tarot/63-king-swords-small.webp
++ /images/tarot/15-devil-small.webp
++ /images/tarot/59-ten-swords-small.webp
++ /images/tarot/28-seven-wands-small.webp
++ /images/tarot/11-justice-small.webp
++ /images/tarot/39-four-cups-small.webp
++ /images/tarot/60-page-swords-small.webp
++ /images/tarot/49-king-cups-small.webp
++ /images/tarot/77-king-pentacles-small.webp
++ /images/tarot/74-page-pentacles-small.webp
++ /images/tarot/14-temperance-small.webp
++ /images/tarot/30-nine-wands-small.webp
++ /images/tarot/35-king-wands-small.webp
++ /images/tarot/41-six-cups-small.webp
++ /images/tarot/61-knight-swords-small.webp
++ /images/tarot/01-magician-small.webp
++ /images/tarot/18-moon-small.webp
++ /en/agent/index.html
++ /images/tarot/47-knight-cups-small.webp
++ /images/tarot/16-tower-small.webp
++ /images/tarot/72-nine-pentacles-small.webp
++ /images/tarot/73-ten-pentacles-small.webp
++ /en/tarot/deck/index.html
++ /images/tarot/29-eight-wands.webp
++ /images/tarot/62-queen-swords.webp
++ /images/tarot/42-seven-cups.webp
++ /images/tarot/23-two-wands.webp
++ /images/tarot/28-seven-wands.webp
++ /images/tarot/22-ace-wands.webp
++ /images/tarot/05-hierophant.webp
++ /images/tarot/65-two-pentacles.webp
++ /images/tarot/63-king-swords.webp
++ /images/tarot/15-devil.webp
++ /images/tarot/10-wheel-of-fortune.webp
++ /images/tarot/77-king-pentacles.webp
++ /images/tarot/49-king-cups.webp
++ /images/tarot/24-three-wands.webp
++ /images/tarot/54-five-swords.webp
++ /images/tarot/30-nine-wands.webp
++ /images/tarot/01-magician.webp
++ /images/tarot/70-seven-pentacles.webp
++ /images/tarot/37-two-cups.webp
++ /images/tarot/07-chariot.webp
++ /images/tarot/14-temperance.webp
++ /images/tarot/76-queen-pentacles.webp
++ /images/tarot/06-lovers.webp
++ /images/tarot/26-five-wands.webp
++ /images/tarot/12-hanged-man.webp
++ /images/tarot/03-empress.webp
++ /_astro/refresh-cw.B4TCLYme.js
++ /_astro/Layout.astro_astro_type_script_index_0_lang.WPo-UhzI.js
++ /_astro/analytics-contract.DrytpjRt.js
++ /sitemap.xml
++ /_astro/Journal.BdS4VVQr.js
++ /blog/index.html
++ /free/index.html
++ /en/terms/index.html
++ /en/compare/labyrinthos/index.html
++ /en/compare/fatetell/index.html
++ /en/methodology/index.html
++ /en/learn/chinese-zodiac-vs-bazi/index.html
++ /_astro/AnalyticsDashboard.Tgb9-jnC.js
++ /learn/bazi-vs-western-astrology/index.html
++ /blog/why-calculation-comes-first/index.html
++ /en/learn/iching-three-coins/index.html
++ /learn/birth-time-timezone/index.html
++ /learn/ai-divination/index.html
+   (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
+Uploaded 82 of 246 assets
+Uploaded 164 of 246 assets
+Uploaded 246 of 246 assets
+✨ Success! Uploaded 246 files (46 already uploaded) (39.31 sec)
+
+Total Upload: 3146.97 KiB / gzip: 647.91 KiB
+Worker Startup Time: 78 ms
+Your Worker has access to the following bindings:
+Binding                                                          Resource                  
+env.QUOTA (UsageGate)                                            Durable Object            
+env.ANALYTICS (wenbu-analytics)                                  D1 Database               
+env.ADMIN_LIMITER (10 requests/60s)                              Rate Limit                
+env.ANALYTICS_LIMITER (30 requests/60s)                          Rate Limit                
+env.RATE_LIMITER (60 requests/60s)                               Rate Limit                
+env.ASSETS                                                       Assets                    
+env.SITE_URL ("https://wenbu.genedai.me")                        Environment Variable      
+env.DEEPSEEK_MODEL ("deepseek-v4-flash")                         Environment Variable      
+env.AI_DAILY_LIMIT ("1000")                                      Environment Variable      
+env.AI_PER_USER_DAILY_LIMIT ("5")                                Environment Variable      
+env.AGENT_PER_USER_DAILY_LIMIT ("12")                            Environment Variable      
+env.AGENT_GLOBAL_DAILY_LIMIT ("600")                             Environment Variable      
+
+Uploaded wenbu (56.58 sec)
+Deployed wenbu triggers (3.77 sec)
+  wenbu.genedai.me (custom domain)
+  schedule: 15 19 * * *
+Current Version ID: c6dc9085-6645-4c61-a68d-91b69560d94a

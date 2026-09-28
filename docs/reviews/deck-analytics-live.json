@@ -1,0 +1,101 @@
+{
+  "base": "https://wenbu.genedai.me",
+  "checkedAt": "2026-09-28T18:45:05.929Z",
+  "checks": {
+    "deduplication": true,
+    "privateTextRejected": true,
+    "forgedServerEventRejected": true,
+    "originAndAdminAuth": true,
+    "historicalDstBoundary": {
+      "monthPillar": "丙辰"
+    },
+    "optOutAcceptedZero": true,
+    "receipts": [
+      {
+        "label": "calculation_succeeded",
+        "origin": "server",
+        "status": "complete",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "journal_saved",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "page_view",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "result_viewed",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      },
+      {
+        "label": "tool_started",
+        "origin": "client",
+        "status": "none",
+        "count": 1,
+        "sessions": 1
+      }
+    ],
+    "sessionCoverage": {
+      "visited": 1,
+      "started": 1,
+      "succeeded": 1,
+      "saved": 1
+    },
+    "testExcludedByDefault": true
+  },
+  "defaultTraffic": {
+    "before": {
+      "events": 0,
+      "pageviews": null,
+      "sessions": 0,
+      "visitors": 0,
+      "engaged_sessions": 0,
+      "calculations": null,
+      "examples": null,
+      "interpretations": null,
+      "agent_complete": null,
+      "agent_waiting": null,
+      "agent_limited": null,
+      "failures": null,
+      "invalid_inputs": null,
+      "throttled": null,
+      "cancellations": null,
+      "model_calls": null,
+      "tool_calls": null,
+      "last_event": null
+    },
+    "after": {
+      "events": 0,
+      "pageviews": null,
+      "sessions": 0,
+      "visitors": 0,
+      "engaged_sessions": 0,
+      "calculations": null,
+      "examples": null,
+      "interpretations": null,
+      "agent_complete": null,
+      "agent_waiting": null,
+      "agent_limited": null,
+      "failures": null,
+      "invalid_inputs": null,
+      "throttled": null,
+      "cancellations": null,
+      "model_calls": null,
+      "tool_calls": null,
+      "last_event": null
+    }
+  },
+  "result": "passed"
+}

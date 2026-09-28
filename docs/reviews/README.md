@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: original deck and analytics (2026-09-29)
+
+The [deck and analytics release](deck-analytics-release.md) records 78 generated illustrations, historical DST calculation repair, clearer product entry points and first-party usage measurement. It separates local validation, Grok review, Cloudflare deployment and actual data receipts. Historical counts and deployment IDs below refer to earlier releases.
+
 Verification date: 2026-09-28. Records distinguish local checks, deployed responses, browser checks and search outcomes.
 
 Public repository: https://github.com/Digidai/wenbu. Initial application commit acb9ee01288ab6afba75ffc764d52c260fade633 passed the GitHub Linux clean-install, typecheck, 54 tests, build, site audit and lint workflow: https://github.com/Digidai/wenbu/actions/runs/36400663693. The repository's Quality workflow runs the same checks on subsequent pushes. The deployed application recheck is recorded separately in live-final.json; the final CSS-only polish is checked against the served asset in asset-final.json.

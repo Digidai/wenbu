@@ -1,0 +1,157 @@
+/** Deliberately closed vocabulary: no prompts, birth inputs, arbitrary URLs or labels. */
+export const clientEvents = [
+  'page_view',
+  'engaged',
+  'scroll_depth',
+  'cta_click',
+  'tool_started',
+  'result_viewed',
+  'ai_requested',
+  'ai_result_viewed',
+  'agent_started',
+  'agent_received',
+  'agent_stopped',
+  'artifact_opened',
+  'report_exported',
+  'conversation_exported',
+  'context_exported',
+  'journal_exported',
+  'journal_saved',
+  'context_opened',
+  'card_inspected',
+  'source_opened',
+  'form_started',
+  'client_error',
+] as const;
+export type ClientEvent = (typeof clientEvents)[number];
+export const tools = ['none', 'bazi', 'iching', 'tarot', 'ziwei', 'agent', 'interpret', 'mcp'] as const;
+export const sources = [
+  'direct',
+  'google',
+  'bing',
+  'baidu',
+  'duckduckgo',
+  'chatgpt',
+  'perplexity',
+  'claude',
+  'deepseek',
+  'github',
+  'x',
+  'weibo',
+  'xiaohongshu',
+  'youtube',
+  'newsletter',
+  'other',
+  'internal',
+] as const;
+export const mediums = ['none', 'organic', 'referral', 'social', 'email', 'cpc', 'ai', 'other'] as const;
+// Add campaign slugs here BEFORE distribution. Never collect arbitrary UTM values.
+export const campaigns = [
+  'none',
+  'launch',
+  'tarot-deck',
+  'agent-studio',
+  'bazi-guide',
+  'developer-tools',
+] as const;
+export const actions = [
+  'none',
+  'hero-agent',
+  'hero-chart',
+  'home-agent',
+  'tool-entry',
+  'navigation',
+  'article-tool',
+  'example',
+  'calculate',
+  'export',
+  'save',
+  'inspect',
+  'source',
+  'context',
+] as const;
+export const statuses = [
+  'none',
+  'complete',
+  'waiting',
+  'limited',
+  'error',
+  'cancelled',
+  'timeout',
+  'rate_limited',
+  'invalid_input',
+  'unavailable',
+] as const;
+export const pagePaths = [
+  '',
+  'bazi',
+  'iching',
+  'tarot',
+  'tarot/deck',
+  'ziwei',
+  'journal',
+  'learn',
+  'blog',
+  'agents',
+  'agent',
+  'sources',
+  'about',
+  'methodology',
+  'privacy',
+  'terms',
+  'free',
+  'compare/fatetell',
+  'compare/labyrinthos',
+  'compare/chatbot',
+  'learn/bazi-basics',
+  'learn/five-elements',
+  'learn/birth-time-timezone',
+  'learn/iching-three-coins',
+  'learn/tarot-beginner',
+  'learn/ziwei-twelve-palaces',
+  'learn/unknown-birth-time',
+  'learn/ai-divination',
+  'learn/chinese-zodiac-vs-bazi',
+  'learn/bazi-vs-western-astrology',
+  'learn/choose-a-tool',
+  'blog/a-reading-you-can-return-to',
+  'blog/why-calculation-comes-first',
+] as const;
+export function safePage(path: string): string {
+  const p = path
+    .split(/[?#]/)[0]
+    .replace(/^\//, '')
+    .replace(/^en\/?/, '')
+    .replace(/\/$/, '');
+  return (pagePaths as readonly string[]).includes(p) ? '/' + (p ? p + '/' : '') : '/other/';
+}
+export function referrerSource(referrer: string, origin: string): (typeof sources)[number] {
+  if (!referrer) return 'direct';
+  try {
+    const url = new URL(referrer);
+    if (url.origin === origin) return 'internal';
+    const host = url.hostname.replace(/^www\./, '');
+    const known: Record<string, (typeof sources)[number]> = {
+      'google.com': 'google',
+      'google.co.uk': 'google',
+      'bing.com': 'bing',
+      'baidu.com': 'baidu',
+      'duckduckgo.com': 'duckduckgo',
+      'chatgpt.com': 'chatgpt',
+      'chat.openai.com': 'chatgpt',
+      'perplexity.ai': 'perplexity',
+      'claude.ai': 'claude',
+      'chat.deepseek.com': 'deepseek',
+      'github.com': 'github',
+      't.co': 'x',
+      'x.com': 'x',
+      'twitter.com': 'x',
+      'weibo.com': 'weibo',
+      'xiaohongshu.com': 'xiaohongshu',
+      'youtube.com': 'youtube',
+    };
+    return known[host] ?? 'other';
+  } catch {
+    return 'other';
+  }
+}

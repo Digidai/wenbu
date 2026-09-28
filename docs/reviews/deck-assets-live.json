@@ -1,0 +1,402 @@
+{
+  "checkedAt": "2026-09-28T18:49:53.289Z",
+  "assets": [
+    {
+      "file": "00-fool.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "01-magician.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "02-high-priestess.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "03-empress.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "04-emperor.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "05-hierophant.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "06-lovers.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "07-chariot.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "08-strength.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "09-hermit.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "10-wheel-of-fortune.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "11-justice.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "12-hanged-man.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "13-death.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "14-temperance.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "15-devil.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "16-tower.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "17-star.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "18-moon.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "19-sun.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "20-judgement.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "21-world.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "22-ace-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "23-two-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "24-three-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "25-four-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "26-five-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "27-six-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "28-seven-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "29-eight-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "30-nine-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "31-ten-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "32-page-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "33-knight-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "34-queen-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "35-king-wands.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "36-ace-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "37-two-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "38-three-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "39-four-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "40-five-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "41-six-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "42-seven-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "43-eight-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "44-nine-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "45-ten-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "46-page-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "47-knight-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "48-queen-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "49-king-cups.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "50-ace-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "51-two-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "52-three-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "53-four-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "54-five-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "55-six-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "56-seven-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "57-eight-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "58-nine-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "59-ten-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "60-page-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "61-knight-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "62-queen-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "63-king-swords.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "64-ace-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "65-two-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "66-three-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "67-four-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "68-five-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "69-six-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "70-seven-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "71-eight-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "72-nine-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "73-ten-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "74-page-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "75-knight-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "76-queen-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "77-king-pentacles.webp",
+      "status": 200,
+      "hashMatch": true
+    },
+    {
+      "file": "back.webp",
+      "status": 200,
+      "hashMatch": true
+    }
+  ],
+  "privatePageNoindex": true,
+  "result": "passed"
+}
