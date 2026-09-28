@@ -2,6 +2,8 @@
 
 Verification date: 2026-09-28. Records distinguish local checks, deployed responses, browser checks and search outcomes.
 
+Public repository: https://github.com/Digidai/wenbu. Initial application commit acb9ee01288ab6afba75ffc764d52c260fade633 passed the GitHub Linux clean-install, typecheck, 54 tests, build, site audit and lint workflow: https://github.com/Digidai/wenbu/actions/runs/36400663693. The repository's Quality workflow runs the same checks on subsequent pushes. The deployed application recheck is recorded separately in live-final.json; the final CSS-only polish is checked against the served asset in asset-final.json.
+
 ## Completed checks
 
 - Production build: 63 HTML pages; 60 indexable pages. Journal pages and 404 are noindex.
@@ -14,26 +16,33 @@ Verification date: 2026-09-28. Records distinguish local checks, deployed respon
 - Official DeepSeek authentication and real synthetic requests: successful. Requested deepseek-v4-flash; served deepseek-flash. See local-ai-smoke.json and live-smoke.json.
 - CLI: actual HTTP call from public/wenbu.mjs; known all-yang hexagram returned1.
 - Cloudflare first deployment: live custom hostname and TLS verified. workers.dev and preview URLs disabled.
+- Final deployed version: 04fc86dc-566b-45cd-a2f3-e8ef4a24b3a2. See deploy-final.txt.
 - Live smoke: 60 indexable pages plus8public assets/error routes; all four APIs; official MCP Client initialize/list/call/resource listing; privacy headers; invalid-input, oversize and foreign-Origin checks. See live-smoke.json.
 
 ## Browser checks
 
 Codex browser at desktop viewport and390×844mobile viewport:
+
 - Homepage, responsive navigation, typography and bespoke SVG illustration.
 - BaZi example chart, visible element counts, mobile no-horizontal-overflow.
 - Actual DeepSeek request with explicit consent and synthetic data; structured result, model provenance and remaining allowance.
 - Save reading and note, navigate to journal and open persisted details.
 - English tarot: three separate selection actions produce three distinct cards; card reveal, reversed label and mobile layout checked.
 - I Ching: real cast, original/resulting hexagrams and marked moving lines; context-export preview.
+- BaZi context download: the browser produced an actual JSON file; its contents were independently inspected. Birth details were excluded by default. See download-smoke.json. The browser download-event waiter timed out, so the filesystem receipt is the evidence of download success.
 - Zi Wei: live calculation and final local traditional branch-position layout; selectable palace, stars and age interval; mobile layout checked.
 - No browser console errors in inspected tool flows. Additional browser engines, real mobile hardware, Lighthouse and real-user Core Web Vitals are not claimed as tested.
+
+Saved evidence: [desktop homepage](screenshots/home-desktop.png), [mobile homepage](screenshots/home-mobile.png).
 
 ## grok-cli review
 
 ### Architecture review — completed
-Invoked installed grok-cli read-only against the design contract and Wrangler config before runtime implementation. Its P0 entries were missing implementation requirements, not observed production defects.
+
+Invoked installed grok-cli read-only against the design contract and Wrangler config before runtime implementation. Its P0 entries were missing implementation requirements, not observed production defects. The returned report is preserved in [grok-architecture.md](grok-architecture.md); the dispositions below supersede its preimplementation status statements.
 
 Disposition:
+
 - Calendar conventions, DST rejection, late Zi options, unknown-hour omission and upstream/independent fixtures implemented.
 - Singleton global SQLite object, atomic dual-counter reservation, input/output limits, timeout and explicit Shanghai day implemented.
 - Stateless Web-Standard MCP; both slash variants; real official-client smoke implemented.
@@ -42,11 +51,15 @@ Disposition:
 - Alarm pruning preserves current-day allowance and expires older rows.
 
 Two recommendations were deliberately not adopted:
+
 1. Refund every failed upstream request: a timed-out provider can still bill. Attempts remain counted and this is disclosed.
 2. Accept Origin:null and arbitrary loopback Origins on production: native clients omit Origin; only production same-origin is accepted in browsers, with loopback allowed solely for local development targets.
 
-### Implementation review — in progress at initial source publication
-The broad read-only attempt and first focused attempts did not produce final findings within their bounded observation windows; logs included a telemetry export network error. An isolated grok-cli session was started for the supplied source snapshot. Raw CLI logs are retained locally and ignored by Git; they are not evidence of a completed review until a final report exists. The final disposition will be appended when available.
+### Implementation review — no verdict returned
+
+Broad, focused, isolated-session and small-function attempts did not produce a final verdict. The last attempt used grok-4.7-build-fast with a verbatim source snapshot, a read-only prompt, web search and subagents disabled, and one model turn. After more than 11 minutes with no output it was interrupted on 2026-09-28. Earlier logs included a telemetry export network error; that does not establish the cause of the missing inference response. The prompt is retained as release-prompt.md. Raw CLI logs remain local and Git-ignored.
+
+The architecture review is complete. The full implementation review by grok-cli is **unverified**, not passed. The deterministic tests, CI, manual source checks and live browser/API checks above are separate evidence and do not replace that requested review.
 
 ## Defects found and repaired during implementation
 
@@ -59,6 +72,7 @@ The broad read-only attempt and first focused attempts did not produce final fin
 - Preserve original question, selected context and model provenance in saved readings.
 - Reject I Ching interpretation input without original lines instead of silently casting again.
 - Added accessible name to the mobile journal icon; fixed duplicated“宫”suffix.
+- Increased the contrast of empty-state and resulting-hexagram secondary text.
 - Keep secrets out of browser builds and public Git files.
 
 ## Bounds of this release

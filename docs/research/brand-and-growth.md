@@ -19,8 +19,8 @@
 
 | 项目                     | 本次证据                                 | 建议                                             |
 | ------------------------ | ---------------------------------------- | ------------------------------------------------ |
-| github.com/Digidai/wenbu | 建站前GitHub API返回404                  | 使用此仓库名称，最终创建状态以交付记录为准       |
-| wenbu.genedai.me         | Cloudflare DoH查询没有A记录，返回父域SOA | 使用用户现有域名先上线                           |
+| github.com/Digidai/wenbu | 建站前GitHub API返回404；现已创建公开仓库 | [查看已发布源码](https://github.com/Digidai/wenbu) |
+| wenbu.genedai.me         | 建站前无A记录；现已部署并验证HTTPS和实际工具 | [当前正式站点](https://wenbu.genedai.me/) |
 | wenbu.app                | Google Registry RDAP返回404，无注册记录  | **优先购买候选**；适合Web产品，精确匹配5字母品牌 |
 | wenbu.com                | Verisign RDAP有注册记录，创建于2009年    | 不作为可立即注册的选择，不预算未知二手价格       |
 | getwenbu.com             | 一次RDAP404，复核有连接问题              | 备选；购买时重新确认                             |

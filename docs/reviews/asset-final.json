@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-09-28T09:19:05.875Z",
+  "base": "https://wenbu.genedai.me",
+  "cloudflareVersion": "04fc86dc-566b-45cd-a2f3-e8ef4a24b3a2",
+  "homepage": 200,
+  "assets": [
+    {
+      "path": "/_astro/Layout.DaTAMK7E.css",
+      "status": 200,
+      "sha256": "d856c49832bb3ad2de9140e5a6b5dbc0136fb14cb5778fee9742316f992a1c78",
+      "matchesLocalBuild": true
+    }
+  ],
+  "result": "passed"
+}

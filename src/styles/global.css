@@ -1123,7 +1123,7 @@ html[lang='en'] .section-heading h2 {
   left: 30px;
 }
 .empty-reading .eyebrow {
-  color: #8a9082;
+  color: var(--muted);
   font-size: 8px;
 }
 .empty-reading h2 {
@@ -1707,7 +1707,7 @@ html[lang='en'] .section-heading h2 {
 .hexagram-block h3 em {
   font-size: 17px;
   font-style: normal;
-  color: #929780;
+  color: var(--muted);
   margin-left: 10px;
 }
 .hexagram-block p {

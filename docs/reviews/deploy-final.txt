@@ -4,31 +4,8 @@
 🌀 Building list of assets...
 ✨ Read 177 files from the assets directory /Users/dai/Developer/CursorProjects/wenbu/dist
 🌀 Starting asset upload...
-🌀 Found 67 new or modified static assets to upload. Proceeding with upload...
+🌀 Found 64 new or modified static assets to upload. Proceeding with upload...
 + /404.html
-+ /blog/index.html
-+ /en/about/index.html
-+ /en/terms/index.html
-+ /compare/chatbot/index.html
-+ /en/privacy/index.html
-+ /methodology/index.html
-+ /learn/unknown-birth-time/index.html
-+ /en/learn/chinese-zodiac-vs-bazi/index.html
-+ /learn/tarot-beginner/index.html
-+ /learn/bazi-vs-western-astrology/index.html
-+ /blog/why-calculation-comes-first/index.html
-+ /en/learn/iching-three-coins/index.html
-+ /en/learn/choose-a-tool/index.html
-+ /learn/ai-divination/index.html
-+ /en/learn/birth-time-timezone/index.html
-+ /learn/index.html
-+ /en/journal/index.html
-+ /iching/index.html
-+ /en/ziwei/index.html
-+ /bazi/index.html
-+ /_astro/ToolDesk.q1xr3toM.js
-+ /_astro/Layout.FLEu6vxr.css
-+ /_astro/Journal.CEDQm32f.js
 + /about/index.html
 + /en/free/index.html
 + /privacy/index.html
@@ -49,7 +26,7 @@
 + /ziwei/index.html
 + /tarot/index.html
 + /en/bazi/index.html
-+ /index.html
++ /_astro/Layout.DaTAMK7E.css
 + /en/blog/index.html
 + /free/index.html
 + /terms/index.html
@@ -70,15 +47,35 @@
 + /en/sources/index.html
 + /en/iching/index.html
 + /en/tarot/index.html
-+ /_astro/ReadingView.Bfwvnva7.js
++ /index.html
++ /blog/index.html
++ /en/about/index.html
++ /en/terms/index.html
++ /compare/chatbot/index.html
++ /en/privacy/index.html
++ /methodology/index.html
++ /learn/unknown-birth-time/index.html
++ /en/learn/chinese-zodiac-vs-bazi/index.html
++ /learn/tarot-beginner/index.html
++ /learn/bazi-vs-western-astrology/index.html
++ /blog/why-calculation-comes-first/index.html
++ /en/learn/iching-three-coins/index.html
++ /en/learn/choose-a-tool/index.html
++ /learn/ai-divination/index.html
++ /en/learn/birth-time-timezone/index.html
++ /learn/index.html
++ /en/journal/index.html
++ /iching/index.html
++ /en/ziwei/index.html
++ /bazi/index.html
 + /en/index.html
-Uploaded 22 of 67 assets
-Uploaded 44 of 67 assets
-Uploaded 67 of 67 assets
-✨ Success! Uploaded 67 files (45 already uploaded) (2.08 sec)
+Uploaded 21 of 64 assets
+Uploaded 43 of 64 assets
+Uploaded 64 of 64 assets
+✨ Success! Uploaded 64 files (48 already uploaded) (1.59 sec)
 
 Total Upload: 2940.53 KiB / gzip: 587.79 KiB
-Worker Startup Time: 51 ms
+Worker Startup Time: 48 ms
 Your Worker has access to the following bindings:
 Binding                                                       Resource                  
 env.QUOTA (UsageGate)                                         Durable Object            
@@ -89,7 +86,7 @@ env.DEEPSEEK_MODEL ("deepseek-v4-flash")                      Environment Variab
 env.AI_DAILY_LIMIT ("1000")                                   Environment Variable      
 env.AI_PER_USER_DAILY_LIMIT ("5")                             Environment Variable      
 
-Uploaded wenbu (9.60 sec)
-Deployed wenbu triggers (5.40 sec)
+Uploaded wenbu (8.76 sec)
+Deployed wenbu triggers (4.33 sec)
   wenbu.genedai.me (custom domain)
-Current Version ID: 0bbc26fc-481c-4446-9437-74ae5eb8168c
+Current Version ID: 04fc86dc-566b-45cd-a2f3-e8ef4a24b3a2

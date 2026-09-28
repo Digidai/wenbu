@@ -17,6 +17,8 @@ Free bilingual tools for BaZi, I Ching, tarot and Zi Wei, with visible calculati
 - Stateless MCP, a dependency-free Node CLI, a Skill and OpenAPI 3.1.
 - Chinese and English static pages, original guides, comparisons, source notes, sitemap and RSS.
 
+![Wenbu desktop preview](docs/reviews/screenshots/home-desktop.png)
+
 These are cultural and reflective tools, not scientifically established predictions. Calendar correctness and symbolic interpretation are deliberately separate.
 
 ## Run locally
