@@ -1339,4 +1339,3 @@ describe('report revision source preparation', () => {
     expect(result.at(-1)).toMatchObject({ type: 'done', toolCalls: 3, modelCalls: 1 });
   });
 });
-

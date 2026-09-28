@@ -4,8 +4,7 @@
 
 02:56:41 [types] Generated 44ms
 02:56:41 [check] Getting diagnostics for Astro files in /Users/dai/Developer/CursorProjects/wenbu...
-Result (42 files): 
+Result (42 files):
 - 0 errors
 - 0 warnings
 - 0 hints
-

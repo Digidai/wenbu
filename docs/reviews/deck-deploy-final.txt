@@ -8,19 +8,19 @@ No updated asset files to upload. Proceeding with deployment...
 Total Upload: 3147.66 KiB / gzip: 648.20 KiB
 Worker Startup Time: 79 ms
 Your Worker has access to the following bindings:
-Binding                                                          Resource                  
-env.QUOTA (UsageGate)                                            Durable Object            
-env.ANALYTICS (wenbu-analytics)                                  D1 Database               
-env.ADMIN_LIMITER (10 requests/60s)                              Rate Limit                
-env.ANALYTICS_LIMITER (30 requests/60s)                          Rate Limit                
-env.RATE_LIMITER (60 requests/60s)                               Rate Limit                
-env.ASSETS                                                       Assets                    
-env.SITE_URL ("https://wenbu.genedai.me")                        Environment Variable      
-env.DEEPSEEK_MODEL ("deepseek-v4-flash")                         Environment Variable      
-env.AI_DAILY_LIMIT ("1000")                                      Environment Variable      
-env.AI_PER_USER_DAILY_LIMIT ("5")                                Environment Variable      
-env.AGENT_PER_USER_DAILY_LIMIT ("12")                            Environment Variable      
-env.AGENT_GLOBAL_DAILY_LIMIT ("600")                             Environment Variable      
+Binding                                                          Resource
+env.QUOTA (UsageGate)                                            Durable Object
+env.ANALYTICS (wenbu-analytics)                                  D1 Database
+env.ADMIN_LIMITER (10 requests/60s)                              Rate Limit
+env.ANALYTICS_LIMITER (30 requests/60s)                          Rate Limit
+env.RATE_LIMITER (60 requests/60s)                               Rate Limit
+env.ASSETS                                                       Assets
+env.SITE_URL ("https://wenbu.genedai.me")                        Environment Variable
+env.DEEPSEEK_MODEL ("deepseek-v4-flash")                         Environment Variable
+env.AI_DAILY_LIMIT ("1000")                                      Environment Variable
+env.AI_PER_USER_DAILY_LIMIT ("5")                                Environment Variable
+env.AGENT_PER_USER_DAILY_LIMIT ("12")                            Environment Variable
+env.AGENT_GLOBAL_DAILY_LIMIT ("600")                             Environment Variable
 
 Uploaded wenbu (18.28 sec)
 Deployed wenbu triggers (3.33 sec)

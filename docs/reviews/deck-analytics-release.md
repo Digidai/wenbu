@@ -43,4 +43,4 @@
 - DeepSeek 实际执行两个合成测试回合，请求 `deepseek-v4-flash`，返回模型名 `deepseek-flash`。第一回合 2 次模型调用、1 次真实抽牌工具、1 份卡牌产物；第二回合 1 次模型调用，沿用牌并明确说明自己未收到图像。D1 有 2 个 `agent_finished / complete` 回执。[汇总回执](deck-d1-live-receipts.json)、[实际对话](deck-agent-live-transcript.txt)、[卡牌放大](screenshots/deck-agent-card-live.png)。
 - 检查的浏览器会话没有控制台错误；所有已配置 secret 均未出现在源码、文档、公开资源或构建产物扫描中。
 
-GitHub CI 状态在提交后核对。没有把部署成功等同于 SEO 收录、排名、增长或预测效果，也没有把本次 responsive 模拟当成跨浏览器/真机认证。
+应用源码提交 `e8fdc11ce8533909ee7fcfd15f53a4906539e7b6` 已推送 main，GitHub Linux Quality 工作流通过： https://github.com/Digidai/wenbu/actions/runs/36470066660 。后续证据排版与说明提交不改变生产代码。没有把部署成功等同于 SEO 收录、排名、增长或预测效果，也没有把本次 responsive 模拟当成跨浏览器/真机认证。

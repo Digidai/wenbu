@@ -40,7 +40,7 @@ index 7050896..e05bc01 100644
    ArrowUp,
 @@ -247,6 +248,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
    }, [sidebar]);
- 
+
    function stop() {
 +    track('agent_stopped', { tool: 'agent', status: 'cancelled' });
      const running = pending.current;
@@ -307,7 +307,7 @@ index b8421bd..3d33e4e 100644
  import { agentContext, downloadJson, readJournal, writeJournal, type Answer } from '../lib/journal';
  import ReadingView from './ReadingView';
 +import { analyticsHeaders, track } from '../lib/analytics';
- 
+
  async function post<T>(path: string, input: unknown, signal?: AbortSignal): Promise<T> {
    const response = await fetch(path, {
      method: 'POST',
@@ -1220,7 +1220,7 @@ index 2ec7782..c990962 100644
 @@ -189,7 +190,12 @@ export function requestsNewDraw(message: string) {
    );
  }
- 
+
 -export async function agentResponse(raw: unknown, request: Request, env: Env) {
 +export async function agentResponse(
 +  raw: unknown,
@@ -1318,7 +1318,7 @@ index a796c7b..042653c 100644
 +  type ServiceMetric,
 +} from './analytics';
  export { UsageGate } from './quota';
- 
+
  const apiHeaders = {
 @@ -69,13 +77,39 @@ export function originAllowed(request: Request, env: Env) {
    return false;
@@ -1476,13 +1476,13 @@ index af80d83..6e2b051 100644
  import { searchLibrary, readLibrary } from './agent-library';
 +import type { ToolKind } from '../src/lib/schema';
 +type ToolReceipt = (tool: ToolKind | 'mcp', success: boolean, duration: number) => void;
- 
+
  const language = z.enum(['zh', 'en']).default('en');
  const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 @@ -15,7 +17,7 @@ const pack = (data: Record<string, unknown>) => ({
    structuredContent: data,
  });
- 
+
 -export function createMcpServer() {
 +export function createMcpServer(receipt?: ToolReceipt) {
    const server = new McpServer(
