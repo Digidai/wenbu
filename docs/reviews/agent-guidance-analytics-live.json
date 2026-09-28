@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-09-28T20:01:46.568Z",
+  "reports": [
+    {
+      "test": false,
+      "status": 200,
+      "guidance": []
+    },
+    {
+      "test": true,
+      "status": 200,
+      "guidance": [
+        {
+          "label": "agent_started_guided",
+          "count": 1,
+          "sessions": 1
+        },
+        {
+          "label": "guide_draft_created",
+          "count": 1,
+          "sessions": 1
+        },
+        {
+          "label": "guide_opened",
+          "count": 1,
+          "sessions": 1
+        },
+        {
+          "label": "guide_step_2",
+          "count": 1,
+          "sessions": 1
+        },
+        {
+          "label": "guide_step_3",
+          "count": 1,
+          "sessions": 1
+        },
+        {
+          "label": "suggestion_selected_clarification",
+          "count": 1,
+          "sessions": 1
+        }
+      ]
+    }
+  ]
+}

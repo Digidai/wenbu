@@ -1,6 +1,10 @@
 # Quality and review evidence
 
-## Latest: original deck and analytics (2026-09-29)
+## Latest: guided Agent conversations (2026-09-29)
+
+The [guided conversation release](agent-guidance-release.md) adds intent-based onboarding, editable clarification options, contextual follow-ups and a privacy-bounded guidance report. It records three Grok reviews and fixes, keyboard/mobile QA, real DeepSeek turns, Cloudflare deployment, exact served assets and analytics receipts. Earlier records below retain their historical scope.
+
+## Original deck and analytics (2026-09-29)
 
 The [deck and analytics release](deck-analytics-release.md) records 78 generated illustrations, historical DST calculation repair, clearer product entry points and first-party usage measurement. It separates local validation, Grok review, Cloudflare deployment and actual data receipts. Historical counts and deployment IDs below refer to earlier releases.
 

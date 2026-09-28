@@ -1536,7 +1536,7 @@ index ae47d5c..4fac416 100644
  import '../styles/agent-motion.css';
  import '../styles/agent-visuals.css';
 +import '../styles/agent-guidance.css';
- 
+
  class ChartBoundary extends Component<{ children: ReactNode; fallback: string }, { failed: boolean }> {
    state = { failed: false };
 @@ -84,6 +87,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
@@ -1562,7 +1562,7 @@ index ae47d5c..4fac416 100644
 @@ -321,6 +330,25 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
      setMobilePane('results');
    }
- 
+
 +  function prepareDraft(text: string, action: 'guided' | 'clarification' | 'followup' | 'example') {
 +    const { draft: next, suggestion } = stageSuggestion(draft, stagedSuggestion.current, text);
 +    if (next.length > 3000) {
