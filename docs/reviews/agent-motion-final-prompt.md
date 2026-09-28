@@ -264,7 +264,7 @@ index fe5bd41..0c871a4 100644
  import ReadingView from './ReadingView';
  import '../styles/agent.css';
 +import '../styles/agent-motion.css';
- 
+
  class ChartBoundary extends Component<{ children: ReactNode; fallback: string }, { failed: boolean }> {
    state = { failed: false };
 @@ -78,6 +82,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
