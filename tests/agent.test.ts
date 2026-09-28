@@ -566,6 +566,46 @@ describe('report revision source preparation', () => {
     sections: [{ heading: 'Rule', body: 'A draft is not verified evidence.', sourceIds: ids }],
     questions: [],
   });
+  it('revalidates external references cited only by a prior diagram', async () => {
+    const { env } = testEnv();
+    const reference = libraryDocuments('zh').find((d) => d.kind === 'reference')!;
+    const prior = {
+      ...report([]),
+      visual: {
+        type: 'comparison',
+        title: 'Two conventions',
+        note: '',
+        items: [
+          { label: 'A', detail: 'First convention', sourceIds: [reference.id] },
+          { label: 'B', detail: 'Second convention', sourceIds: [reference.id] },
+        ],
+      },
+    };
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(
+        new Response('<html><body>' + 'Fresh source content. '.repeat(15) + '</body></html>', {
+          headers: { 'content-type': 'text/html' },
+        }),
+      )
+      .mockImplementationOnce(async (_url, init) => {
+        const snapshot = JSON.parse(init?.body as string).messages[1].content;
+        expect(snapshot).toContain('Fresh source content.');
+        expect(snapshot).toContain('"unverifiedPriorReferenceIds":[]');
+        return model(null, [{ name: 'write_report', args: prior }]);
+      })
+      .mockResolvedValueOnce(model('Saved.'));
+    const result = await events(
+      await agentResponse(
+        { message: 'Revise the diagram', context: { reports: [prior] }, consent: true },
+        request(),
+        env,
+      ),
+    );
+    expect(result.some((event) => event.type === 'source' && event.source.id === reference.id)).toBe(true);
+    expect(result.find((event) => event.type === 'artifact')).toMatchObject({
+      artifact: { visual: prior.visual },
+    });
+  });
   it('reads a prior report reference before the first model call and saves on the first attempt', async () => {
     const { env } = testEnv();
     const reference = libraryDocuments('zh').find((d) => d.kind === 'reference')!;

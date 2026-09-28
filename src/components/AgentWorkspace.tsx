@@ -9,7 +9,6 @@ import {
   Circle,
   Compass,
   Download,
-  FileText,
   History,
   Menu,
   MessageSquare,
@@ -22,8 +21,6 @@ import {
   X,
   LoaderCircle,
   Bookmark,
-  Layers,
-  Feather,
   Pause,
   Play,
 } from 'lucide-react';
@@ -53,10 +50,15 @@ import {
   updateMessage,
 } from '../lib/agent-session';
 import AgentMarkdown from './AgentMarkdown';
+import AgentReport from './AgentReport';
+import AgentTrace from './AgentTrace';
+import InstrumentGlyph, { ReadingDeskIllustration, type InstrumentKind } from './InstrumentGlyph';
 import AgentRitual, { useAgentMotion } from './AgentRitual';
 import ReadingView from './ReadingView';
+import { readReportVisual } from '../lib/agent-report';
 import '../styles/agent.css';
 import '../styles/agent-motion.css';
+import '../styles/agent-visuals.css';
 
 class ChartBoundary extends Component<{ children: ReactNode; fallback: string }, { failed: boolean }> {
   state = { failed: false };
@@ -181,7 +183,8 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     );
   }, [sessions, loaded, busy]);
   useEffect(() => {
-    if (stickToBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
+    if (scroll.current && (!active?.messages.length || stickToBottom.current))
+      scroll.current.scrollTop = active?.messages.length ? scroll.current.scrollHeight : 0;
   }, [active?.messages, busy]);
   useEffect(() => {
     setArrivingArtifacts([]);
@@ -383,7 +386,13 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
             reports: sessionArtifacts(session)
               .filter((a) => a.type === 'report')
               .slice(-2)
-              .map(({ title, summary, sections, questions }) => ({ title, summary, sections, questions })),
+              .map(({ title, summary, sections, questions, visual }) => ({
+                title,
+                summary,
+                sections,
+                questions,
+                visual: readReportVisual(visual),
+              })),
             sourceIds: [...new Set(session.messages.flatMap((m) => m.sources.map((s) => s.id)))].slice(-12),
           },
         }),
@@ -462,13 +471,15 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   }
   const starters = [
     {
-      icon: Compass,
+      kind: 'bazi' as const,
+      description: t('四柱排盘 · 五行构成', 'Four pillars · Five elements'),
       label: t('看见自己', 'Understand yourself'),
       text: t('我想了解自己的八字，从哪里开始？', 'I want to explore my BaZi chart. Where do we begin?'),
       mode: 'explore' as const,
     },
     {
-      icon: Layers,
+      kind: 'tarot' as const,
+      description: t('三张牌 · 三个看问题的角度', 'Three cards · A new perspective'),
       label: t('眼前的问题', 'A question in mind'),
       text: t(
         '帮我抽三张塔罗，梳理最近工作上的犹豫。',
@@ -477,7 +488,8 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
       mode: 'explore' as const,
     },
     {
-      icon: BookOpen,
+      kind: 'library' as const,
+      description: t('查阅资料 · 整理图解札记', 'Read sources · Make a visual note'),
       label: t('带着依据研习', 'Follow the evidence'),
       text: t(
         '真太阳时会怎样影响八字？查阅资料，整理一份有出处的说明。',
@@ -486,7 +498,8 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
       mode: 'research' as const,
     },
     {
-      icon: Feather,
+      kind: 'iching' as const,
+      description: t('六爻成象 · 看见变化', 'Six lines · Reflect on change'),
       label: t('在变化中思考', 'Reflect on change'),
       text: t(
         '为我起一卦，看看如何面对一个还不确定的新开始。',
@@ -572,13 +585,13 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           <span className="eyebrow">THE INSTRUMENTS</span>
           <div className="agent-instruments">
             {[
-              ['bazi', '命', '八字', 'BaZi'],
-              ['iching', '☰', '易经', 'I Ching'],
-              ['tarot', '✧', '塔罗', 'Tarot'],
-              ['ziwei', '紫', '紫微', 'Zi Wei'],
-            ].map(([p, glyph, zh, en]) => (
+              ['bazi', '八字', 'BaZi'],
+              ['iching', '易经', 'I Ching'],
+              ['tarot', '塔罗', 'Tarot'],
+              ['ziwei', '紫微', 'Zi Wei'],
+            ].map(([p, zh, en]) => (
               <a key={p} href={href(locale, p)}>
-                <span>{glyph}</span>
+                <InstrumentGlyph kind={p as InstrumentKind} size={26} />
                 {t(zh, en)}
                 <ArrowUpRight size={12} />
               </a>
@@ -693,13 +706,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
         >
           {!active?.messages.length ? (
             <div className="agent-welcome">
-              <div className="agent-orbit" aria-hidden="true">
-                <span />
-                <span />
-                <i>问</i>
-                <b />
+              <div className="agent-welcome-kicker">
+                <InstrumentGlyph kind="ziwei" size={32} />
+                <span className="eyebrow">A QUESTION. A WAY FORWARD.</span>
               </div>
-              <span className="eyebrow">A QUESTION. A WAY FORWARD.</span>
               <h1>
                 {t('从一个问题，', 'Begin with a question.')}
                 <br />
@@ -723,10 +733,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                       textarea.current?.focus();
                     }}
                   >
-                    <s.icon size={18} strokeWidth={1.4} />
+                    <InstrumentGlyph kind={s.kind} size={48} />
                     <span>
                       <small>{s.label}</small>
-                      <strong>{s.text}</strong>
+                      <strong>{s.description}</strong>
                     </span>
                     <ArrowUpRight size={14} />
                   </button>
@@ -786,7 +796,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     </details>
                   )}
                   {!!message.tools.length && (
-                    <div className="agent-tool-log" aria-label={t('实际执行记录', 'Execution activity')}>
+                    <AgentTrace message={message} locale={locale}>
                       {message.tools
                         .filter((tool) => tool.name !== 'update_plan')
                         .map((tool) => {
@@ -836,7 +846,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                             </details>
                           );
                         })}
-                    </div>
+                    </AgentTrace>
                   )}
                   {message.text && (
                     <div
@@ -856,7 +866,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                           className={arrivingArtifacts.includes(a.id) ? 'is-arriving' : ''}
                           onClick={() => openArtifact(a.id)}
                         >
-                          {a.type === 'chart' ? <Compass size={16} /> : <FileText size={16} />}
+                          <InstrumentGlyph kind={a.type === 'chart' ? a.reading.kind : 'report'} size={38} />
                           <span>
                             <small>
                               {a.type === 'chart'
@@ -1076,7 +1086,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                 </p>
                 {sources.map((source, index) => (
                   <div className="agent-source-card" key={source.id}>
-                    <span className="agent-source-number">{String(index + 1).padStart(2, '0')}</span>
+                    <div className="agent-source-mark">
+                      <InstrumentGlyph kind="library" size={40} />
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                    </div>
                     <div>
                       <span className="agent-source-type">
                         {source.kind === 'reference'
@@ -1087,7 +1100,13 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                         {source.title}
                         <ArrowUpRight size={14} />
                       </a>
-                      <p>{source.excerpt}</p>
+                      <details className="source-excerpt">
+                        <summary>
+                          {t('阅读资料摘录', 'Read the excerpt')}
+                          <ChevronDown size={12} />
+                        </summary>
+                        <p>{source.excerpt}</p>
+                      </details>
                       <small>{new URL(source.url).hostname}</small>
                     </div>
                   </div>
@@ -1156,48 +1175,14 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     </ChartBoundary>
                   </div>
                 ) : (
-                  <div className="agent-report">
-                    <p className="agent-report-summary">{artifact.summary}</p>
-                    {artifact.sections.map((section, i) => (
-                      <section key={i}>
-                        <span className="agent-report-number">{String(i + 1).padStart(2, '0')}</span>
-                        <h3>{section.heading}</h3>
-                        <div className="agent-prose">
-                          <AgentMarkdown text={section.body} allowedUrls={sources.map((s) => s.url)} />
-                        </div>
-                        {section.sourceIds.length > 0 && (
-                          <div className="agent-report-citations">
-                            {section.sourceIds
-                              .map((id) => sourceMap.get(id))
-                              .filter(Boolean)
-                              .map((source) => (
-                                <a
-                                  key={source!.id}
-                                  href={source!.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <BookOpen size={11} />
-                                  {source!.title}
-                                  <ArrowUpRight size={11} />
-                                </a>
-                              ))}
-                          </div>
-                        )}
-                      </section>
-                    ))}
-                    {artifact.questions.length > 0 && (
-                      <div className="agent-report-questions">
-                        <span className="eyebrow">{t('把问题留给下一步', 'KEEP EXPLORING')}</span>
-                        {artifact.questions.map((q) => (
-                          <button key={q} disabled={busy} onClick={() => void send(q)}>
-                            {q}
-                            <ArrowUpRight size={14} />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <AgentReport
+                    key={artifact.id}
+                    report={artifact}
+                    sources={sources}
+                    locale={locale}
+                    busy={busy}
+                    onQuestion={(question) => void send(question)}
+                  />
                 )}
                 <div className="agent-artifact-actions">
                   <button onClick={() => downloadMarkdown(artifactMarkdown(artifact, sources))}>
@@ -1489,12 +1474,7 @@ function EmptyPanel({ locale, kind }: { locale: Locale; kind: 'results' | 'sourc
   return (
     <div className="agent-panel-empty">
       <span className="eyebrow">{kind === 'results' ? 'YOUR FIELD NOTES' : 'A TRACEABLE PERSPECTIVE'}</span>
-      <div className="agent-empty-figure" aria-hidden="true">
-        <div />
-        <div />
-        <div />
-        <i>{kind === 'results' ? '迹' : '据'}</i>
-      </div>
+      <ReadingDeskIllustration />
       <h2>
         {kind === 'results'
           ? t('让探索，留下脉络。', 'Give your exploration a shape.')

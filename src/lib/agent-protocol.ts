@@ -1,5 +1,6 @@
 import type { Reading } from './tools';
 import type { Locale, ToolKind } from './schema';
+import type { ReportVisual } from './agent-report';
 
 export const AGENT_MODEL_CALLS = 5;
 export const AGENT_TOOL_CALLS = 12;
@@ -19,7 +20,7 @@ export type AgentContext = {
   note: string;
   birth?: AgentBirth;
   readings: ReadingInput[];
-  reports?: Pick<ReportArtifact, 'title' | 'summary' | 'sections' | 'questions'>[];
+  reports?: Pick<ReportArtifact, 'title' | 'summary' | 'sections' | 'questions' | 'visual'>[];
   sourceIds: string[];
 };
 export type AgentSource = {
@@ -49,6 +50,7 @@ export type ReportArtifact = {
   summary: string;
   sections: { heading: string; body: string; sourceIds: string[] }[];
   questions: string[];
+  visual?: ReportVisual;
 };
 export type AgentArtifact = ChartArtifact | ReportArtifact;
 export type ToolTrace = {

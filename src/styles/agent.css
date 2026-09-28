@@ -360,46 +360,6 @@
   max-width: 700px;
   margin: 0 auto;
 }
-.agent-orbit {
-  height: 76px;
-  width: 90px;
-  position: relative;
-  display: grid;
-  place-items: center;
-  margin: 0 0 22px -2px;
-}
-.agent-orbit > span {
-  position: absolute;
-  width: 62px;
-  height: 62px;
-  border: 1px solid #b8bba8;
-  border-radius: 50%;
-  transform: rotate(-30deg) scaleX(1.3);
-}
-.agent-orbit > span:nth-child(2) {
-  transform: rotate(40deg) scaleX(1.3);
-  border-color: #d6c1a7;
-}
-.agent-orbit > i {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  color: #eacbaa;
-  font: normal 22px var(--serif);
-  display: grid;
-  place-items: center;
-  background: radial-gradient(circle at 35% 30%, #c77951, #a94732 70%);
-  box-shadow: 0 3px 8px #9b593215;
-}
-.agent-orbit > b {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: var(--red);
-  border-radius: 50%;
-  right: 3px;
-  top: 28px;
-}
 .agent-welcome > .eyebrow {
   color: #8a7660;
   font-size: 8px;
@@ -922,38 +882,6 @@
 .agent-panel-empty > .eyebrow {
   color: #89917a;
   font-size: 8px;
-}
-.agent-empty-figure {
-  height: 176px;
-  position: relative;
-  margin: 15px 0 24px;
-  display: grid;
-  place-items: center;
-}
-.agent-empty-figure > div {
-  width: 113px;
-  height: 134px;
-  position: absolute;
-  border: 1px solid #cbd0bd;
-  background: #f5f4eb;
-  transform: rotate(-13deg);
-}
-.agent-empty-figure > div:nth-child(2) {
-  transform: rotate(8deg);
-  background: #f6f5ec;
-  border-color: #bdc6ac;
-}
-.agent-empty-figure > div:nth-child(3) {
-  transform: rotate(-2deg);
-  background:
-    linear-gradient(to bottom, transparent 49%, #e0e3d3 50%, transparent 51%) center / 65% 20px no-repeat,
-    #f8f6ed;
-}
-.agent-empty-figure > i {
-  z-index: 1;
-  color: #a88468;
-  font: normal 39px var(--serif);
-  margin-top: -22px;
 }
 .agent-panel-empty h2 {
   font-family: var(--serif);
@@ -1555,13 +1483,6 @@
   .agent-welcome {
     padding-top: 23px;
   }
-  .agent-orbit {
-    height: 59px;
-    width: 77px;
-    margin-bottom: 14px;
-    transform: scale(0.8);
-    transform-origin: left center;
-  }
   .agent-welcome h1 {
     font-size: 35px;
     margin: 10px 0;
@@ -1748,13 +1669,6 @@
   .agent-welcome {
     padding: 27px 23px 22px;
     max-width: 550px;
-  }
-  .agent-orbit {
-    width: 78px;
-    height: 66px;
-    margin: 0 0 16px;
-    transform: scale(0.85);
-    transform-origin: left center;
   }
   .agent-welcome h1 {
     font-size: 34px;

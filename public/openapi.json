@@ -558,7 +558,7 @@
                       "reports": {
                         "type": "array",
                         "maxItems": 2,
-                        "description": "Prior drafts for revision, never verified evidence. Combined summary/section headings/bodies/questions <=1800 characters per report.",
+                        "description": "Prior drafts for revision, never verified evidence. Combined summary/section headings/bodies/questions/visual text <=1800 characters per report.",
                         "items": {
                           "type": "object",
                           "additionalProperties": false,
@@ -613,6 +613,67 @@
                                 "type": "string",
                                 "maxLength": 100
                               }
+                            },
+                            "visual": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "type": {
+                                  "enum": [
+                                    "comparison",
+                                    "steps"
+                                  ]
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 80
+                                },
+                                "items": {
+                                  "type": "array",
+                                  "minItems": 2,
+                                  "maxItems": 4,
+                                  "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "label": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 48
+                                      },
+                                      "detail": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 160
+                                      },
+                                      "sourceIds": {
+                                        "type": "array",
+                                        "maxItems": 4,
+                                        "items": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 120
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "label",
+                                      "detail"
+                                    ]
+                                  }
+                                },
+                                "note": {
+                                  "type": "string",
+                                  "maxLength": 160,
+                                  "default": ""
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "title",
+                                "items"
+                              ]
                             }
                           },
                           "required": [

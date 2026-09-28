@@ -3,6 +3,7 @@ import { calculate, type Reading } from '../src/lib/tools';
 import { castSchema, tarotSchema, ziweiSchema, type Locale } from '../src/lib/schema';
 import type { AgentEvent, AgentSource, ReadingInput, ToolTrace } from '../src/lib/agent-protocol';
 import { agentBirthSchema, reportSchema } from './agent-schema';
+import { reportSourceIds } from '../src/lib/agent-report';
 import { readLibrary, readReference, searchLibrary } from './agent-library';
 
 const planSchema = z
@@ -63,7 +64,7 @@ const descriptions: Record<keyof typeof schemas, string> = {
   ask_user:
     'Ask one focused question when necessary information is missing. Optional up to 4 answer options. Set form=birth to show the birth-information editor. This pauses the turn for the user; do not combine with other tools.',
   write_report:
-    'Create a concise structured report in the results panel: 2–4 short sections, under 800 Chinese characters or 1500 Latin characters total, including summary/questions. Cite only source IDs returned by successfully read_library/read_reference calls or the verified source snapshot. Separate calculation facts, tradition and interpretation. Use after gathering evidence. New calls create new report versions.',
+    'Create a concise structured report in the results panel: 2–4 short sections, under 800 Chinese characters or 1500 Latin characters total, including summary/questions/visual. For a meaningful comparison or ordered procedure, include one optional visual: type comparison for 2–4 parallel alternatives, or steps for 2–4 ordered stages. Keep each visual item label short and its detail under 60 Chinese characters or 130 Latin characters. Preserve qualifications; never invent percentages, scores, evidence or causal order. Each visual item has its own sourceIds. Cite only source IDs returned by successfully read_library/read_reference calls or the verified source snapshot. Separate calculation facts, tradition and interpretation. Put material uncertainty and unfinished work in the summary as well as the relevant section. Use after gathering evidence. New calls create new report versions.',
 };
 const labels: Record<keyof typeof schemas, [string, string]> = {
   update_plan: ['整理探索步骤', 'Organize the approach'],
@@ -139,7 +140,7 @@ export async function executeAgentTool(name: string, raw: unknown, ctx: ToolCont
   }
   if (key === 'write_report') {
     const report = reportSchema.parse(input);
-    const ids = report.sections.flatMap((s) => s.sourceIds);
+    const ids = reportSourceIds(report);
     if (ids.some((id) => !ctx.sources.has(id)))
       throw new Error(
         'A citation was not read or verified. Read its source first, or remove the unsupported citation.',

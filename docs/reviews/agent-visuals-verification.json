@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-09-28T15:33:53.767017+00:00",
+  "finalWorkerVersion": "929c08bf-681e-4579-bb49-bd8687c184a5",
+  "baseCommit": "31703252bb751bdd34899be7d9a6f1fa6e3a5b89",
+  "local": {
+    "tests": 117,
+    "testFiles": 9,
+    "typecheck": "passed",
+    "lint": "passed",
+    "htmlPages": 65,
+    "internalReferences": 2735,
+    "mobileWidthsChecked": [
+      390,
+      320
+    ],
+    "mobileOverflow": false,
+    "arrival": {
+      "animation": "ritual-section-in",
+      "transform": "matrix(1,0,0,1,0,2.1679)",
+      "opacity": "1"
+    },
+    "settledArrival": {
+      "animation": "none",
+      "transform": "none",
+      "opacity": "1"
+    },
+    "quietChapterAnimation": "none"
+  },
+  "production": {
+    "initialWorkerVersion": "b811ccb8-5d98-4c1d-8960-99cc817dc66f",
+    "source": "actual DeepSeek generation and subsequent revision in a new empty test session",
+    "requestedModel": "deepseek-v4-flash",
+    "reportedModel": "deepseek-flash",
+    "initialToolCalls": 5,
+    "revisionToolCalls": 1,
+    "reportVersions": 2,
+    "finalDiagramItems": 2,
+    "finalChapters": 3,
+    "resolvedDiagramSourceLinks": 2,
+    "phase": "settled",
+    "consoleErrors": 0,
+    "viewportWidth": 1280,
+    "responsiveScope": "Local responsive verification only; the requested production resize did not apply."
+  },
+  "export": {
+    "nativeDownloadVerified": true,
+    "downloadEventWaiter": "timed out; native file verified without repeating download",
+    "itemAndSectionCitationGroups": 5,
+    "evidence": "agent-visuals-live-export.md"
+  },
+  "assets": "agent-visuals-assets.json",
+  "reviewScope": "Two actual Grok source verdicts; repaired findings, separate tests/browser evidence. No blanket security, accessibility or scientific-validity certification."
+}

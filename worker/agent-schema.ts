@@ -4,6 +4,7 @@ import { calculate } from '../src/lib/tools';
 import type { Reading } from '../src/lib/tools';
 import { tarotDeck } from '../src/data/tarot';
 import type { ReadingInput } from '../src/lib/agent-protocol';
+import { reportVisualSchema } from '../src/lib/agent-report';
 
 export const agentBirthSchema = birthSchema.safeExtend({ timezone: z.string().trim().min(1).max(80) });
 
@@ -44,13 +45,19 @@ export const reportSchema = z
       .min(1)
       .max(4),
     questions: z.array(z.string().max(100)).max(3).default([]),
+    visual: reportVisualSchema.optional(),
   })
   .strict()
   .refine(
     (v) =>
       v.summary.length +
         v.sections.reduce((n, s) => n + s.heading.length + s.body.length, 0) +
-        v.questions.join('').length <=
+        v.questions.join('').length +
+        (v.visual
+          ? v.visual.title.length +
+            v.visual.note.length +
+            v.visual.items.reduce((n, item) => n + item.label.length + item.detail.length, 0)
+          : 0) <=
       1800,
     { message: 'Keep the report concise (under 1200 Chinese characters or 1800 Latin characters).' },
   );

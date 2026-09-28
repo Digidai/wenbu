@@ -8,6 +8,7 @@ import type {
 } from './agent-protocol';
 import type { Locale } from './schema';
 import type { Reading } from './tools';
+import { readReportVisual, reportSourceIds } from './agent-report';
 
 const KEY = 'wenbu.agent.sessions.v1';
 export function newSession(locale: Locale): AgentSession {
@@ -186,23 +187,56 @@ export function contextHistory(messages: AgentMessage[]) {
 export function sessionArtifacts(session: AgentSession): AgentArtifact[] {
   return session.messages.flatMap((m) => m.artifacts);
 }
+function markdownText(text: string) {
+  return text.replace(/[\r\n]+/g, ' ').replace(/[\\`*_[\]{}<>#+.!|()\-]/g, '\\$&');
+}
+function markdownCitation(source: { title: string; url: string }) {
+  return `[${markdownText(source.title)}](<${source.url.replace(/[<>\s\\]/g, (char) => encodeURIComponent(char))}>)`;
+}
 export function artifactMarkdown(
   artifact: AgentArtifact,
   sources: { id: string; title: string; url: string }[],
 ) {
   if (artifact.type === 'chart')
-    return `# ${artifact.title}\n\n\`\`\`json\n${JSON.stringify(artifact.reading, null, 2)}\n\`\`\`\n`;
-  const ids = new Set(artifact.sections.flatMap((s) => s.sourceIds));
+    return `# ${markdownText(artifact.title)}\n\n\`\`\`json\n${JSON.stringify(artifact.reading, null, 2)}\n\`\`\`\n`;
+  const ids = new Set(reportSourceIds(artifact));
+  const visual = readReportVisual(artifact.visual);
+  const citations = (sourceIds: string[]) =>
+    [...new Set(sourceIds)].map((id) => {
+      const source = sources.find((value) => value.id === id);
+      return source ? markdownCitation(source) : 'Unresolved citation / 引用未匹配';
+    });
   return (
-    `# ${artifact.title}\n\n${artifact.summary}\n\n` +
-    artifact.sections.map((s) => `## ${s.heading}\n\n${s.body}`).join('\n\n') +
+    `# ${markdownText(artifact.title)}\n\n${markdownText(artifact.summary)}\n\n` +
+    (visual
+      ? `## ${markdownText(visual.title)}\n\n` +
+        visual.items
+          .map((item, index) => {
+            const cited = citations(item.sourceIds);
+            return (
+              `${visual.type === 'steps' ? `${index + 1}.` : '-'} **${markdownText(item.label)}**: ${markdownText(item.detail)}` +
+              (cited.length ? `\n   Sources / 依据: ${cited.join('; ')}` : '')
+            );
+          })
+          .join('\n') +
+        (visual.note ? `\n\n${markdownText(visual.note)}` : '') +
+        '\n\n'
+      : '') +
+    artifact.sections
+      .map(
+        (section) =>
+          `## ${markdownText(section.heading)}\n\n${section.body}` +
+          (section.sourceIds.length ? `\n\nSources / 依据: ${citations(section.sourceIds).join('; ')}` : ''),
+      )
+      .join('\n\n') +
     (artifact.questions.length
-      ? '\n\n## ' + 'Questions / 继续思考\n\n' + artifact.questions.map((q) => '- ' + q).join('\n')
+      ? '\n\n## ' +
+        'Questions / 继续思考\n\n' +
+        artifact.questions.map((q) => '- ' + markdownText(q)).join('\n')
       : '') +
     '\n\n## Sources / 参考资料\n\n' +
-    sources
-      .filter((s) => ids.has(s.id))
-      .map((s) => `- [${s.title}](${s.url})`)
+    citations([...ids])
+      .map((citation) => '- ' + citation)
       .join('\n') +
     '\n\nGenerated with DeepSeek · Wenbu · Symbolic interpretation, not established prediction.\n'
   );

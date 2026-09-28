@@ -1,6 +1,7 @@
 # Wenbu 文档导航
 
 - [Agent 工作台设计](plans/2026-09-28-agent-workspace-design.md)
+- [Agent 图解札记：图标、对照、步骤与分层阅读](plans/2026-09-28-agent-visual-notebook-design.md)
 - [Agent harness 与对话研究](research/agent-harness-2026-09-28.md)
 - [Agent 生成动效：纸墨成章、真实进度与减少动效](research/agent-motion-2026-09-28.md)
 - [Agent 动效实现设计](plans/2026-09-28-agent-motion-design.md)

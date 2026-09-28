@@ -43,6 +43,12 @@ For a report follow-up, the harness re-reads up to three catalogue references ci
 
 Once research has read evidence, the harness reserves its penultimate model call for `write_report` if no report has been created. The last call can summarize the artifact. This bounds retrieval while keeping the requested deliverable visible. An unavailable provider, invalid report or exhausted shared budget can still leave partial results; the interface reports those limits. Free-text redraw authorization accepts only a standalone affirmative request such as “请重新抽三张牌” or “Please redraw”; ambiguous discussion preserves existing results.
 
+## Optional report diagrams
+
+Report artifacts and prior `context.reports` may contain a `visual` object. It is optional; older reports remain valid. Its `type` is `comparison` (parallel alternatives) or `steps` (an ordered explanation), with a `title`, 2–4 `items` (`label`, `detail`, `sourceIds`) and an optional `note`. Labels are limited to 48 characters, details to 160, titles to 80, notes to 160, and each item to four source IDs. Total report text, including the visual, is limited to 1,800 characters.
+
+Every diagram citation must have been read or revalidated, just like section citations. A diagram summarizes model-authored content; it is not an independent calculation or a confidence score. Diagrams use plain text; generated SVG, HTML and executable chart code are not interpreted. The schema accepts no custom rendering or color fields. Diagram text and references are retained in Markdown exports and subsequent revision context. The UI keeps all report sections available through chapter disclosures and an Expand all control.
+
 ## State, privacy and limits
 
 The API stores no conversations. Clients carry selected state forward. Browser conversations and report versions are stored locally, may be exported as JSON or Markdown, and stop executing when closed. Clearing storage does not reset network quotas. Changing the site domain does not migrate local history. Deselecting a profile does not remove facts already included in prior conversation messages or chart artifacts; begin a new conversation for empty context.

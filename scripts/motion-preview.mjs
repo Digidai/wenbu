@@ -162,6 +162,57 @@ createServer(async (req, res) => {
               },
             ],
             questions: [],
+            ...(prompt.includes('legacy')
+              ? {}
+              : {
+                  visual: {
+                    type: prompt.includes('steps') ? 'steps' : 'comparison',
+                    title: zh ? '同一个时刻，两种换日约定' : 'One moment, two day boundaries',
+                    items: prompt.includes('steps')
+                      ? [
+                          {
+                            label: zh ? '确认出生资料' : 'Confirm the input',
+                            detail: zh
+                              ? '先记录日期、时刻与时区，未知项保留为空。'
+                              : 'Record date, time and timezone; leave unknown details empty.',
+                            sourceIds: [source.id],
+                          },
+                          {
+                            label: zh ? '选择换日约定' : 'Choose a boundary',
+                            detail: zh
+                              ? '注明使用零点还是子初换日，再比较命盘。'
+                              : 'State midnight or early Zi before comparing charts.',
+                            sourceIds: [source.id],
+                          },
+                          {
+                            label: zh ? '保留计算出处' : 'Keep the source',
+                            detail: zh
+                              ? '将输入、结构与依据一起保存，方便复核。'
+                              : 'Keep the input, structure and source together.',
+                            sourceIds: [source.id],
+                          },
+                        ]
+                      : [
+                          {
+                            label: zh ? '零点换日' : 'At midnight',
+                            detail: zh
+                              ? '23:00–24:00，日柱仍保留在当日。'
+                              : 'Between 23:00 and midnight, keep the current day pillar.',
+                            sourceIds: [source.id],
+                          },
+                          {
+                            label: zh ? '子初换日' : 'At early Zi',
+                            detail: zh
+                              ? '23:00 起，日柱进入次日。'
+                              : 'From 23:00, use the following day pillar.',
+                            sourceIds: [source.id],
+                          },
+                        ],
+                    note: zh
+                      ? '这是合成的界面验收数据；图解与文字都不是模型输出。'
+                      : 'Synthetic UI fixture. The diagram and text are not model output.',
+                  },
+                }),
           };
       emit({ type: 'artifact', artifact });
       if (!kind)

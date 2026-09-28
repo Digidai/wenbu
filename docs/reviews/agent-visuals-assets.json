@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-09-28T15:27:51.296Z",
+  "workerVersion": "929c08bf-681e-4579-bb49-bd8687c184a5",
+  "assets": [
+    {
+      "path": "/_astro/AgentWorkspace.9pfk8Rcp.js",
+      "status": 200,
+      "sha256": "82242a94cb13d31f4e6f28e0a778e11110d6487ef6bad3887a6ce4227481bcdf",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/_astro/Layout.8EAYOO3X.css",
+      "status": 200,
+      "sha256": "f2ffb001a641acf996aaec82ee43519df84cb9a599eba2b1c5ce0fdd85351680",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/_astro/_..BjBbKL9U.css",
+      "status": 200,
+      "sha256": "83ad8af1d9b35980836a0eddd07ad93e5d3570cc55007e6bbc0a1481e2cea127",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/agent-request.schema.json",
+      "status": 200,
+      "sha256": "80a37702b93762b8cf10cbc10d43235fff47fce7b22710707ec23597b124a804",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/agent-protocol.md",
+      "status": 200,
+      "sha256": "f7654321a4edf7b9eecd3a8df69a95a6e529025dee777e113ae3f09095de6d1f",
+      "matchesLocalBuild": true
+    }
+  ]
+}

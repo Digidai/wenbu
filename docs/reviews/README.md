@@ -6,6 +6,8 @@ Public repository: https://github.com/Digidai/wenbu. Initial application commit 
 
 ## Agent workspace release (1.1.0)
 
+The [visual notebook release](agent-visuals-release.md) adds original instrument icons, compact tool activity, interactive report diagrams, chapter disclosures and expandable source excerpts. Its evidence separates scripted UI checks, actual DeepSeek generation and revision, source reviews, and deployment.
+
 The later [generation motion release](agent-motion-release.md) adds event-driven paper/ink motion, persistent pause and system reduced-motion support. Its research, actual Grok verdicts, controlled browser playback and real production checks are documented separately.
 
 The follow-up [report retry fix](report-retry-fix.md) corrects the source-preparation failure and misleading historical attempt status identified by the user. Its [production evidence](report-retry-live.json) is separate from the initial release acceptance below.

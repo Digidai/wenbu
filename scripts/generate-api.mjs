@@ -147,7 +147,7 @@ const agentSchema = body(
         type: 'array',
         maxItems: 2,
         description:
-          'Prior drafts for revision, never verified evidence. Combined summary/section headings/bodies/questions <=1800 characters per report.',
+          'Prior drafts for revision, never verified evidence. Combined summary/section headings/bodies/questions/visual text <=1800 characters per report.',
         items: body(
           {
             title: { type: 'string', minLength: 1, maxLength: 100 },
@@ -166,6 +166,31 @@ const agentSchema = body(
               ),
             },
             questions: { type: 'array', maxItems: 3, items: { type: 'string', maxLength: 100 } },
+            visual: body(
+              {
+                type: { enum: ['comparison', 'steps'] },
+                title: { type: 'string', minLength: 1, maxLength: 80 },
+                items: {
+                  type: 'array',
+                  minItems: 2,
+                  maxItems: 4,
+                  items: body(
+                    {
+                      label: { type: 'string', minLength: 1, maxLength: 48 },
+                      detail: { type: 'string', minLength: 1, maxLength: 160 },
+                      sourceIds: {
+                        type: 'array',
+                        maxItems: 4,
+                        items: { type: 'string', minLength: 1, maxLength: 120 },
+                      },
+                    },
+                    ['label', 'detail'],
+                  ),
+                },
+                note: { type: 'string', maxLength: 160, default: '' },
+              },
+              ['type', 'title', 'items'],
+            ),
           },
           ['title', 'summary', 'sections'],
         ),
