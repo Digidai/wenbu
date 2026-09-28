@@ -2,6 +2,8 @@
 
 - [Agent 工作台设计](plans/2026-09-28-agent-workspace-design.md)
 - [Agent harness 与对话研究](research/agent-harness-2026-09-28.md)
+- [Agent 生成动效：纸墨成章、真实进度与减少动效](research/agent-motion-2026-09-28.md)
+- [Agent 动效实现设计](plans/2026-09-28-agent-motion-design.md)
 - [产品与架构决策](plans/2026-09-28-wenbu-design.md)
 - [研究：产品、Skills、算法、经典与证据](research/landscape-2026-09-28.md)
 - [品牌、域名与增长计划](research/brand-and-growth.md)

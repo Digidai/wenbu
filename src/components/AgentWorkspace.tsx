@@ -24,6 +24,8 @@ import {
   Bookmark,
   Layers,
   Feather,
+  Pause,
+  Play,
 } from 'lucide-react';
 import type { Locale } from '../lib/schema';
 import { choose, href } from '../lib/i18n';
@@ -51,8 +53,10 @@ import {
   updateMessage,
 } from '../lib/agent-session';
 import AgentMarkdown from './AgentMarkdown';
+import AgentRitual, { useAgentMotion } from './AgentRitual';
 import ReadingView from './ReadingView';
 import '../styles/agent.css';
+import '../styles/agent-motion.css';
 
 class ChartBoundary extends Component<{ children: ReactNode; fallback: string }, { failed: boolean }> {
   state = { failed: false };
@@ -78,6 +82,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   const [loaded, setLoaded] = useState(false);
   const [draft, setDraft] = useState('');
   const [busy, setBusy] = useState(false);
+  const motion = useAgentMotion();
+  const [currentTurn, setCurrentTurn] = useState<string[]>([]);
+  const [arrivingArtifacts, setArrivingArtifacts] = useState<string[]>([]);
+  const reducedMotionRef = useRef(motion.reduced);
+  reducedMotionRef.current = motion.reduced;
   const [remaining, setRemaining] = useState<number>();
   const [sidebar, setSidebar] = useState(false);
   const [mobilePane, setMobilePane] = useState<'chat' | 'results'>('chat');
@@ -175,6 +184,15 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     if (stickToBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [active?.messages, busy]);
   useEffect(() => {
+    setArrivingArtifacts([]);
+  }, [motion.reduced]);
+  useEffect(() => {
+    if (!arrivingArtifacts.length) return;
+    // Presentation lifetime only. Result delivery never waits for CSS events.
+    const timer = setTimeout(() => setArrivingArtifacts([]), 1000);
+    return () => clearTimeout(timer);
+  }, [arrivingArtifacts]);
+  useEffect(() => {
     if (!textarea.current) return;
     textarea.current.style.height = 'auto';
     textarea.current.style.height = Math.min(170, Math.max(58, textarea.current.scrollHeight)) + 'px';
@@ -239,6 +257,8 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   }
   function selectSession(id: string) {
     stop();
+    setCurrentTurn([]);
+    setArrivingArtifacts([]);
     setActiveId(id);
     setSelectedArtifact('');
     setDraft('');
@@ -288,6 +308,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }));
   }
   function openArtifact(id: string) {
+    setArrivingArtifacts([]);
     setSelectedArtifact(id);
     setPanel('results');
     setMobilePane('results');
@@ -316,6 +337,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     stickToBottom.current = true;
     const user = newMessage('user', value.trim());
     const assistant = newMessage('assistant', '');
+    setCurrentTurn([user.id, assistant.id]);
     const controller = new AbortController();
     const generationId = crypto.randomUUID();
     pending.current = { controller, sessionId: session.id, messageId: assistant.id, generationId };
@@ -381,6 +403,8 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           if (event.type === 'artifact') {
             setSelectedArtifact(event.artifact.id);
             setPanel('results');
+            if (!reducedMotionRef.current)
+              setArrivingArtifacts((ids) => [...ids, event.artifact.id].slice(-12));
           }
           patchMessage(session.id, assistant.id, (m) => updateMessage(m, event));
         },
@@ -472,7 +496,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     },
   ];
   return (
-    <div className={`agent-workspace ${sidebar ? 'sidebar-open' : ''} mobile-${mobilePane}`}>
+    <div
+      className={`agent-workspace ${sidebar ? 'sidebar-open' : ''} mobile-${mobilePane}`}
+      data-motion={motion.reduced ? 'quiet' : 'on'}
+    >
       {sidebar && (
         <button
           className="agent-sidebar-backdrop"
@@ -584,6 +611,30 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           </div>
           <div className="agent-toolbar-actions">
             <button
+              className="agent-motion-toggle"
+              aria-label={
+                motion.systemReduced
+                  ? t('系统已开启减少动效', 'Reduced motion is enabled by your system')
+                  : motion.reduced
+                    ? t('开启动效', 'Enable motion')
+                    : t('暂停动效', 'Pause motion')
+              }
+              title={
+                motion.systemReduced
+                  ? t('遵循系统的减少动态效果设置', 'Following your system motion preference')
+                  : t('仅切换动效，不影响生成', 'Change motion without interrupting the response')
+              }
+              aria-pressed={!motion.reduced}
+              disabled={!motion.ready || motion.systemReduced}
+              onClick={() => {
+                setArrivingArtifacts([]);
+                motion.toggle();
+              }}
+            >
+              {motion.reduced ? <Play size={12} /> : <Pause size={12} />}
+              <span>{t('动效', 'Motion')}</span>
+            </button>
+            <button
               className="agent-icon-button"
               aria-label={t('导出完整会话（含已分享资料）', 'Export conversation including shared context')}
               title={t('导出完整会话（含已分享资料）', 'Export conversation including shared context')}
@@ -686,7 +737,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
             <div className="agent-message-list">
               <h1 className="sr-only">{t('命理 Agent', 'Wenbu Agent')}</h1>
               {active.messages.map((message, i) => (
-                <article key={message.id} className={`agent-message role-${message.role}`}>
+                <article
+                  key={message.id}
+                  className={`agent-message role-${message.role} ${currentTurn.includes(message.id) ? 'is-current-turn' : ''}`}
+                >
                   {message.role === 'assistant' && (
                     <div className="agent-author">
                       <span className="agent-small-seal">问</span>
@@ -698,6 +752,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                       </span>
                     </div>
                   )}
+                  {message.role === 'assistant' &&
+                    (message.status === 'running' || currentTurn.includes(message.id)) && (
+                      <AgentRitual message={message} locale={locale} />
+                    )}
                   {message.plan && (
                     <details className="agent-plan" open={message.status === 'running'}>
                       <summary>
@@ -714,7 +772,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                             {step.status === 'complete' ? (
                               <Check size={13} />
                             ) : step.status === 'active' ? (
-                              <LoaderCircle size={13} className="spin" />
+                              <LoaderCircle
+                                size={13}
+                                className={message.status === 'running' ? 'spin' : ''}
+                              />
                             ) : (
                               <Circle size={11} />
                             )}
@@ -778,22 +839,23 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     </div>
                   )}
                   {message.text && (
-                    <div className="agent-prose">
+                    <div
+                      className={`agent-prose agent-answer ${message.status === 'running' ? 'is-streaming' : ''}`}
+                    >
                       <AgentMarkdown text={message.text} allowedUrls={sources.map((s) => s.url)} />
-                    </div>
-                  )}
-                  {message.status === 'running' && !message.text && !message.tools.length && (
-                    <div className="agent-arriving" role="status">
-                      <i />
-                      <i />
-                      <i />
-                      <span>{t('正在理解你的问题', 'Considering your question')}</span>
+                      {message.status === 'running' && (
+                        <span className="agent-writing-cursor" aria-hidden="true" />
+                      )}
                     </div>
                   )}
                   {!!message.artifacts.length && (
                     <div className="agent-artifact-links">
                       {message.artifacts.map((a) => (
-                        <button key={a.id} onClick={() => openArtifact(a.id)}>
+                        <button
+                          key={a.id}
+                          className={arrivingArtifacts.includes(a.id) ? 'is-arriving' : ''}
+                          onClick={() => openArtifact(a.id)}
+                        >
                           {a.type === 'chart' ? <Compass size={16} /> : <FileText size={16} />}
                           <span>
                             <small>
@@ -812,6 +874,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     <button
                       className="agent-source-count"
                       onClick={() => {
+                        setArrivingArtifacts([]);
                         setPanel('sources');
                         setMobilePane('results');
                       }}
@@ -973,11 +1036,23 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
             <ChevronRight className="rotate-180" size={19} />
           </button>
           <div className="agent-panel-tabs">
-            <button className={panel === 'results' ? 'selected' : ''} onClick={() => setPanel('results')}>
+            <button
+              className={panel === 'results' ? 'selected' : ''}
+              onClick={() => {
+                setArrivingArtifacts([]);
+                setPanel('results');
+              }}
+            >
               {t('探索结果', 'Results')}
               <span>{artifacts.length || '—'}</span>
             </button>
-            <button className={panel === 'sources' ? 'selected' : ''} onClick={() => setPanel('sources')}>
+            <button
+              className={panel === 'sources' ? 'selected' : ''}
+              onClick={() => {
+                setArrivingArtifacts([]);
+                setPanel('sources');
+              }}
+            >
               {t('参考资料', 'Sources')}
               <span>{sources.length || '—'}</span>
             </button>
@@ -1029,7 +1104,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   <select
                     aria-label={t('选择结果或报告版本', 'Choose result or report version')}
                     value={artifact.id}
-                    onChange={(e) => setSelectedArtifact(e.target.value)}
+                    onChange={(e) => {
+                      setArrivingArtifacts([]);
+                      setSelectedArtifact(e.target.value);
+                    }}
                   >
                     {artifacts.map((a, i) => (
                       <option key={a.id} value={a.id}>
@@ -1040,88 +1118,100 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   <ChevronDown size={13} />
                 </label>
               )}
-              <div className="agent-artifact-heading">
-                <span className="eyebrow">
-                  {artifact.type === 'chart' ? 'CALCULATED, THEN CONSIDERED' : 'A WENBU FIELD NOTE'}
-                </span>
-                <h2>{artifact.title}</h2>
-                <p>
-                  {artifact.type === 'chart'
-                    ? t(
-                        '由排盘工具生成 · 可复核原始结构',
-                        'Generated by the calculation tools · inspect the structure',
-                      )
-                    : t('基于所读资料与本次对话整理', 'Prepared from the sources read and this conversation')}
-                </p>
-              </div>
-              {artifact.type === 'chart' ? (
-                <div className="agent-chart">
-                  <ChartBoundary
-                    key={artifact.id}
-                    fallback={t(
-                      '这份本地结果无法显示，请重新排盘。',
-                      'This saved result cannot be displayed. Calculate it again.',
-                    )}
-                  >
-                    <ReadingView key={artifact.id} result={artifact.reading} locale={locale} />
-                  </ChartBoundary>
+              <div
+                key={artifact.id}
+                className={`agent-artifact-content ${arrivingArtifacts.includes(artifact.id) ? 'is-arriving' : ''}`}
+                data-kind={artifact.type === 'chart' ? artifact.reading.kind : 'report'}
+              >
+                <div className="agent-artifact-heading">
+                  <span className="agent-result-seal" aria-hidden="true">
+                    {artifact.type === 'chart' ? '象' : '录'}
+                  </span>
+                  <span className="eyebrow">
+                    {artifact.type === 'chart' ? 'CALCULATED, THEN CONSIDERED' : 'A WENBU FIELD NOTE'}
+                  </span>
+                  <h2>{artifact.title}</h2>
+                  <p>
+                    {artifact.type === 'chart'
+                      ? t(
+                          '由排盘工具生成 · 可复核原始结构',
+                          'Generated by the calculation tools · inspect the structure',
+                        )
+                      : t(
+                          '基于所读资料与本次对话整理',
+                          'Prepared from the sources read and this conversation',
+                        )}
+                  </p>
                 </div>
-              ) : (
-                <div className="agent-report">
-                  <p className="agent-report-summary">{artifact.summary}</p>
-                  {artifact.sections.map((section, i) => (
-                    <section key={i}>
-                      <span className="agent-report-number">{String(i + 1).padStart(2, '0')}</span>
-                      <h3>{section.heading}</h3>
-                      <div className="agent-prose">
-                        <AgentMarkdown text={section.body} allowedUrls={sources.map((s) => s.url)} />
-                      </div>
-                      {section.sourceIds.length > 0 && (
-                        <div className="agent-report-citations">
-                          {section.sourceIds
-                            .map((id) => sourceMap.get(id))
-                            .filter(Boolean)
-                            .map((source) => (
-                              <a
-                                key={source!.id}
-                                href={source!.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <BookOpen size={11} />
-                                {source!.title}
-                                <ArrowUpRight size={11} />
-                              </a>
-                            ))}
-                        </div>
+                {artifact.type === 'chart' ? (
+                  <div className="agent-chart">
+                    <ChartBoundary
+                      key={artifact.id}
+                      fallback={t(
+                        '这份本地结果无法显示，请重新排盘。',
+                        'This saved result cannot be displayed. Calculate it again.',
                       )}
-                    </section>
-                  ))}
-                  {artifact.questions.length > 0 && (
-                    <div className="agent-report-questions">
-                      <span className="eyebrow">{t('把问题留给下一步', 'KEEP EXPLORING')}</span>
-                      {artifact.questions.map((q) => (
-                        <button key={q} disabled={busy} onClick={() => void send(q)}>
-                          {q}
-                          <ArrowUpRight size={14} />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              <div className="agent-artifact-actions">
-                <button onClick={() => downloadMarkdown(artifactMarkdown(artifact, sources))}>
-                  <Download size={14} />
-                  {t('导出', 'Export')}
-                </button>
-                {artifact.type === 'chart' && (
-                  <button onClick={() => saveChart(artifact)}>
-                    <Bookmark size={14} />
-                    {t('存入手记', 'Save to journal')}
-                  </button>
+                    >
+                      <ReadingView key={artifact.id} result={artifact.reading} locale={locale} />
+                    </ChartBoundary>
+                  </div>
+                ) : (
+                  <div className="agent-report">
+                    <p className="agent-report-summary">{artifact.summary}</p>
+                    {artifact.sections.map((section, i) => (
+                      <section key={i}>
+                        <span className="agent-report-number">{String(i + 1).padStart(2, '0')}</span>
+                        <h3>{section.heading}</h3>
+                        <div className="agent-prose">
+                          <AgentMarkdown text={section.body} allowedUrls={sources.map((s) => s.url)} />
+                        </div>
+                        {section.sourceIds.length > 0 && (
+                          <div className="agent-report-citations">
+                            {section.sourceIds
+                              .map((id) => sourceMap.get(id))
+                              .filter(Boolean)
+                              .map((source) => (
+                                <a
+                                  key={source!.id}
+                                  href={source!.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <BookOpen size={11} />
+                                  {source!.title}
+                                  <ArrowUpRight size={11} />
+                                </a>
+                              ))}
+                          </div>
+                        )}
+                      </section>
+                    ))}
+                    {artifact.questions.length > 0 && (
+                      <div className="agent-report-questions">
+                        <span className="eyebrow">{t('把问题留给下一步', 'KEEP EXPLORING')}</span>
+                        {artifact.questions.map((q) => (
+                          <button key={q} disabled={busy} onClick={() => void send(q)}>
+                            {q}
+                            <ArrowUpRight size={14} />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
-                <span>{t('文化探索 · 保留判断', 'Cultural reflection')}</span>
+                <div className="agent-artifact-actions">
+                  <button onClick={() => downloadMarkdown(artifactMarkdown(artifact, sources))}>
+                    <Download size={14} />
+                    {t('导出', 'Export')}
+                  </button>
+                  {artifact.type === 'chart' && (
+                    <button onClick={() => saveChart(artifact)}>
+                      <Bookmark size={14} />
+                      {t('存入手记', 'Save to journal')}
+                    </button>
+                  )}
+                  <span>{t('文化探索 · 保留判断', 'Cultural reflection')}</span>
+                </div>
               </div>
             </div>
           ) : (

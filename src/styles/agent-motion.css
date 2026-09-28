@@ -1,0 +1,478 @@
+/* Paper, ink and a measured cadence. Only live events start a ceremony. */
+.agent-workspace {
+  --ritual-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ritual-ink: #6c7761;
+  --ritual-red: #a35a45;
+}
+.agent-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 6px;
+  color: #777e6c;
+  font-size: 9px;
+  white-space: nowrap;
+  border-radius: 3px;
+}
+.agent-motion-toggle[aria-pressed='false'] {
+  color: #8a877c;
+}
+.agent-motion-toggle:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+.agent-ritual {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  align-items: center;
+  gap: 17px;
+  margin: 4px 0 23px;
+  padding: 18px 0 20px;
+  border-top: 1px solid #dedfd3;
+  border-bottom: 1px solid #dedfd3;
+  color: var(--ritual-ink);
+  isolation: isolate;
+}
+.agent-ritual::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 1px;
+  bottom: -1px;
+  left: 0;
+  background: var(--ritual-red);
+  transform-origin: left;
+  animation: ritual-rule-in 650ms var(--ritual-ease) both;
+}
+.agent-ritual-mark {
+  width: 80px;
+  height: 80px;
+  overflow: visible;
+}
+.ritual-orbit-line {
+  stroke: #cdd1c1;
+  stroke-width: 0.65;
+}
+.ritual-tick {
+  stroke: #b6bca8;
+  stroke-width: 0.8;
+}
+.ritual-traveller {
+  transform-origin: 48px 48px;
+  animation: ritual-orbit 24s linear infinite;
+}
+.ritual-traveller circle {
+  fill: var(--ritual-red);
+}
+.ritual-traveller path {
+  stroke: var(--ritual-red);
+  stroke-width: 0.85;
+  opacity: 0.6;
+}
+.ritual-symbol {
+  stroke: #77816d;
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+  animation: ritual-symbol-in 400ms var(--ritual-ease);
+}
+.ritual-impression {
+  stroke: var(--ritual-red);
+  transform-origin: 48px 48px;
+}
+.ritual-impression rect:first-child {
+  opacity: 0.65;
+}
+.ritual-impression rect:nth-child(2) {
+  opacity: 0.2;
+}
+.ritual-impression text {
+  fill: var(--ritual-red);
+  stroke: none;
+  font: 19px var(--serif);
+}
+.agent-ritual[data-phase='opening'] .ritual-impression {
+  animation: ritual-breathe 4s ease-in-out infinite;
+}
+.ritual-pages path,
+.ritual-cards rect {
+  fill: #f8f6ee;
+}
+.ritual-page-front {
+  transform-origin: 54px 48px;
+  animation: ritual-page-turn 4.8s ease-in-out infinite;
+}
+.ritual-pillar {
+  animation: ritual-measure 3.8s ease-in-out infinite;
+}
+.ritual-pillar-1 {
+  animation-delay: 0.25s;
+}
+.ritual-pillar-2 {
+  animation-delay: 0.5s;
+}
+.ritual-pillar-3 {
+  animation-delay: 0.75s;
+}
+.ritual-palaces rect {
+  animation: ritual-measure 4s ease-in-out infinite;
+}
+.ritual-palaces rect:nth-child(3n + 2) {
+  animation-delay: 0.4s;
+}
+.ritual-palaces rect:nth-child(3n) {
+  animation-delay: 0.8s;
+}
+.ritual-palaces text {
+  font: 13px var(--serif);
+  fill: var(--ritual-red);
+  stroke: none;
+}
+.ritual-cards,
+.ritual-coins {
+  transform-origin: 48px 48px;
+  animation: ritual-balance 4.8s ease-in-out infinite;
+}
+.ritual-pen {
+  fill: #f8f6ee;
+  stroke: var(--ritual-red);
+  animation: ritual-pen-drift 4s ease-in-out infinite;
+}
+.ritual-ink-line {
+  animation: ritual-measure 4s ease-in-out infinite;
+}
+.agent-ritual-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b8b79;
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  margin-bottom: 7px;
+}
+.agent-ritual-label > span {
+  width: 3px;
+  height: 3px;
+  background: #a56c52;
+  border-radius: 50%;
+}
+.agent-ritual-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.4;
+  color: #3c4e3a;
+  margin: 0 0 7px;
+}
+.agent-ritual-detail {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #7c826f;
+  margin: 0;
+}
+.agent-ritual-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 9px;
+  font-size: 9px;
+  color: #6e7c60;
+  font-variant-numeric: tabular-nums;
+}
+.agent-ritual-facts > span {
+  animation: ritual-detail-in 180ms ease-out;
+}
+.agent-ritual-facts > span + span::before {
+  content: '·';
+  margin-right: 12px;
+  color: #adab97;
+}
+.agent-ritual[data-active='false'] {
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+}
+.agent-ritual[data-active='false'] .agent-ritual-mark {
+  width: 42px;
+  height: 42px;
+}
+.agent-ritual[data-active='false'] .agent-ritual-label {
+  display: none;
+}
+.agent-ritual[data-active='false'] .agent-ritual-title {
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+.agent-ritual[data-active='false'] .ritual-orbit-line,
+.agent-ritual[data-active='false'] .ritual-tick {
+  opacity: 0;
+}
+.agent-ritual[data-phase='interrupted'] .agent-ritual-title {
+  color: #806a56;
+}
+.agent-ritual[data-phase='settled'] .ritual-impression {
+  animation: ritual-seal-arrive 550ms var(--ritual-ease);
+}
+.is-current-turn.role-user {
+  animation: ritual-question-in 300ms var(--ritual-ease);
+}
+.is-current-turn.role-assistant .agent-author > .agent-small-seal {
+  animation: ritual-seal-arrive 600ms var(--ritual-ease);
+}
+.is-current-turn .agent-tool-event {
+  animation: ritual-detail-in 180ms var(--ritual-ease);
+}
+.is-current-turn .agent-tool-event.complete summary > svg:first-child {
+  animation: ritual-check-in 260ms var(--ritual-ease);
+}
+.agent-writing-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 11px;
+  margin-left: 5px;
+  background: var(--ritual-red);
+  vertical-align: baseline;
+  animation: ritual-measure 1.8s ease-in-out infinite;
+}
+.agent-artifact-links > button.is-arriving {
+  animation: ritual-receipt-in 550ms var(--ritual-ease);
+}
+.agent-artifact-view {
+  animation: none;
+}
+.agent-artifact-heading {
+  position: relative;
+  padding-right: 31px;
+}
+.agent-result-seal {
+  position: absolute;
+  right: 1px;
+  top: 24px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 28px;
+  border: 1px solid #b47d66;
+  color: #a8634c;
+  font: 17px var(--serif);
+  transform: rotate(-5deg);
+}
+.agent-result-seal::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid #d3b6a2;
+  opacity: 0.6;
+}
+.agent-artifact-content.is-arriving {
+  animation: agent-paper-arrive 900ms var(--ritual-ease);
+}
+.agent-artifact-content.is-arriving .agent-result-seal {
+  animation: ritual-seal-arrive 600ms var(--ritual-ease);
+}
+.agent-artifact-content.is-arriving .agent-report > section {
+  animation: ritual-section-in 480ms var(--ritual-ease) backwards;
+}
+.agent-artifact-content.is-arriving .agent-report > section:nth-of-type(2) {
+  animation-delay: 70ms;
+}
+.agent-artifact-content.is-arriving .agent-report > section:nth-of-type(3) {
+  animation-delay: 140ms;
+}
+.agent-artifact-content.is-arriving .agent-report > section:nth-of-type(n + 4) {
+  animation-delay: 210ms;
+}
+.agent-chart .drawn-card-wrap {
+  animation: none;
+}
+.agent-artifact-content.is-arriving .pillar,
+.agent-artifact-content.is-arriving .drawn-card-wrap,
+.agent-artifact-content.is-arriving .hexagram-lines > div,
+.agent-artifact-content.is-arriving .palace-grid > button {
+  animation: ritual-section-in 500ms var(--ritual-ease) backwards;
+}
+.agent-artifact-content.is-arriving .pillar:nth-child(2),
+.agent-artifact-content.is-arriving .drawn-card-wrap:nth-child(2) {
+  animation-delay: 75ms;
+}
+.agent-artifact-content.is-arriving .pillar:nth-child(3),
+.agent-artifact-content.is-arriving .drawn-card-wrap:nth-child(3) {
+  animation-delay: 150ms;
+}
+.agent-artifact-content.is-arriving .pillar:nth-child(4) {
+  animation-delay: 225ms;
+}
+.agent-artifact-content.is-arriving .hexagram-lines > div {
+  animation-name: ritual-line-in;
+  transform-origin: left center;
+}
+/* Lines are rendered top first; draw them in the traditional bottom-to-top order. */
+.agent-artifact-content.is-arriving .hexagram-lines > div:nth-child(1) {
+  animation-delay: 250ms;
+}
+.agent-artifact-content.is-arriving .hexagram-lines > div:nth-child(2) {
+  animation-delay: 200ms;
+}
+.agent-artifact-content.is-arriving .hexagram-lines > div:nth-child(3) {
+  animation-delay: 150ms;
+}
+.agent-artifact-content.is-arriving .hexagram-lines > div:nth-child(4) {
+  animation-delay: 100ms;
+}
+.agent-artifact-content.is-arriving .hexagram-lines > div:nth-child(5) {
+  animation-delay: 50ms;
+}
+.agent-artifact-content.is-arriving .palace-grid > button:nth-child(3n + 2) {
+  animation-delay: 80ms;
+}
+.agent-artifact-content.is-arriving .palace-grid > button:nth-child(3n) {
+  animation-delay: 160ms;
+}
+@keyframes ritual-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ritual-breathe {
+  50% {
+    transform: scale(1.055);
+    opacity: 0.65;
+  }
+}
+@keyframes ritual-page-turn {
+  50% {
+    transform: translate(3px, -1px) rotate(4deg);
+  }
+}
+@keyframes ritual-measure {
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes ritual-balance {
+  50% {
+    transform: rotate(-5deg) translateY(-1px);
+  }
+}
+@keyframes ritual-pen-drift {
+  50% {
+    transform: translate(-3px, 3px);
+  }
+}
+@keyframes ritual-symbol-in {
+  from {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+}
+@keyframes ritual-rule-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes ritual-question-in {
+  from {
+    transform: translateY(7px);
+  }
+}
+@keyframes ritual-seal-arrive {
+  0% {
+    transform: scale(1.16) rotate(-9deg);
+    opacity: 0.4;
+  }
+  65% {
+    transform: scale(1) rotate(-3deg);
+    opacity: 1;
+  }
+}
+@keyframes ritual-detail-in {
+  from {
+    transform: translateY(3px);
+  }
+}
+@keyframes ritual-check-in {
+  from {
+    transform: scale(0.65);
+    opacity: 0.3;
+  }
+}
+@keyframes ritual-receipt-in {
+  from {
+    transform: translateY(5px);
+    border-color: #b18b70;
+  }
+}
+@keyframes agent-paper-arrive {
+  from {
+    transform: translateY(8px);
+  }
+  65%,
+  100% {
+    transform: none;
+  }
+}
+@keyframes ritual-section-in {
+  from {
+    transform: translateY(5px);
+  }
+}
+@keyframes ritual-line-in {
+  from {
+    transform: scaleX(0.86);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .agent-motion-toggle:hover {
+    background: #eaede2;
+    color: #44583f;
+  }
+  .agent-artifact-links > button {
+    transition:
+      border-color 180ms,
+      transform 180ms var(--ritual-ease);
+  }
+  .agent-artifact-links > button:hover {
+    transform: translateY(-2px);
+  }
+}
+@media (max-width: 600px) {
+  .agent-ritual {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 12px;
+    padding: 17px 0;
+  }
+  .agent-ritual-mark {
+    width: 66px;
+    height: 66px;
+  }
+  .agent-ritual-title {
+    font-size: 20px;
+  }
+  .agent-ritual-label {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+  }
+  .agent-ritual-detail {
+    font-size: 10px;
+  }
+  .agent-motion-toggle {
+    gap: 3px;
+    font-size: 8px;
+    padding: 8px 5px;
+  }
+}
+.agent-workspace[data-motion='quiet'] *,
+.agent-workspace[data-motion='quiet'] *::before,
+.agent-workspace[data-motion='quiet'] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-workspace *,
+  .agent-workspace *::before,
+  .agent-workspace *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

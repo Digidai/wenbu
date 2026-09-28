@@ -1,0 +1,578 @@
+{
+  "bazi": {
+    "type": "chart",
+    "title": "动效验收 · bazi",
+    "reading": {
+      "kind": "bazi",
+      "version": "wenbu-bazi-1.0",
+      "input": {
+        "date": "2005-12-23",
+        "time": "08:37",
+        "timezone": "Asia/Shanghai",
+        "dayBoundary": "midnight",
+        "solarTime": false,
+        "locale": "zh"
+      },
+      "calendar": {
+        "lunar": "二〇〇五年冬月廿三",
+        "zodiac": "鸡",
+        "solar": "2005-12-23T08:37:00",
+        "instant": "2005-12-23T00:37:00Z",
+        "offset": "+08:00",
+        "correctionMinutes": 0
+      },
+      "dayMaster": {
+        "stem": "辛",
+        "pinyin": "Xin",
+        "element": "金",
+        "polarity": "yin"
+      },
+      "pillars": [
+        {
+          "key": "year",
+          "value": "乙酉",
+          "stem": "乙",
+          "branch": "酉",
+          "stemElement": "木",
+          "branchElement": "金",
+          "hidden": [
+            "辛"
+          ],
+          "role": "偏财",
+          "roleEn": "Opportunity",
+          "pinyin": "Yi You",
+          "nayin": "泉中水"
+        },
+        {
+          "key": "month",
+          "value": "戊子",
+          "stem": "戊",
+          "branch": "子",
+          "stemElement": "土",
+          "branchElement": "水",
+          "hidden": [
+            "癸"
+          ],
+          "role": "正印",
+          "roleEn": "Learning",
+          "pinyin": "Wu Zi",
+          "nayin": "霹雳火"
+        },
+        {
+          "key": "day",
+          "value": "辛巳",
+          "stem": "辛",
+          "branch": "巳",
+          "stemElement": "金",
+          "branchElement": "火",
+          "hidden": [
+            "丙",
+            "庚",
+            "戊"
+          ],
+          "role": "日主",
+          "roleEn": "Day master",
+          "pinyin": "Xin Si",
+          "nayin": "白蜡金"
+        },
+        {
+          "key": "hour",
+          "value": "壬辰",
+          "stem": "壬",
+          "branch": "辰",
+          "stemElement": "水",
+          "branchElement": "土",
+          "hidden": [
+            "戊",
+            "乙",
+            "癸"
+          ],
+          "role": "伤官",
+          "roleEn": "Innovation",
+          "pinyin": "Ren Chen",
+          "nayin": "长流水"
+        }
+      ],
+      "elements": [
+        {
+          "zh": "木",
+          "en": "Wood",
+          "color": "#557363",
+          "image": "生长 / Growth",
+          "count": 1
+        },
+        {
+          "zh": "火",
+          "en": "Fire",
+          "color": "#b4533d",
+          "image": "表达 / Expression",
+          "count": 1
+        },
+        {
+          "zh": "土",
+          "en": "Earth",
+          "color": "#a7864a",
+          "image": "安定 / Grounding",
+          "count": 2
+        },
+        {
+          "zh": "金",
+          "en": "Metal",
+          "color": "#777b80",
+          "image": "秩序 / Structure",
+          "count": 2
+        },
+        {
+          "zh": "水",
+          "en": "Water",
+          "color": "#476b83",
+          "image": "流动 / Adaptation",
+          "count": 2
+        }
+      ],
+      "warnings": [],
+      "method": {
+        "engine": "lunar-typescript@1.8.6",
+        "yearMonth": "Absolute solar-term boundaries in Asia/Shanghai",
+        "dayHour": "Local civil clock",
+        "dayBoundary": "midnight",
+        "elements": "One count per visible stem and branch. Hidden stems, season and strength are not weighted. This is NOT a favorable-element diagnosis.",
+        "source": "https://github.com/6tail/lunar-typescript"
+      }
+    },
+    "input": {
+      "kind": "bazi",
+      "input": {
+        "date": "2005-12-23",
+        "time": "08:37",
+        "timezone": "Asia/Shanghai"
+      }
+    }
+  },
+  "iching": {
+    "type": "chart",
+    "title": "动效验收 · iching",
+    "reading": {
+      "kind": "iching",
+      "version": "wenbu-iching-1.0",
+      "lines": [
+        7,
+        8,
+        7,
+        8,
+        7,
+        8
+      ],
+      "moving": [],
+      "original": {
+        "number": 63,
+        "zh": "既济",
+        "en": "Completion",
+        "promptZh": "完成之后，仍需要维护。",
+        "promptEn": "A completed task may still need care.",
+        "symbol": "䷾",
+        "bits": "101010",
+        "lower": "离",
+        "upper": "坎"
+      },
+      "changed": {
+        "number": 63,
+        "zh": "既济",
+        "en": "Completion",
+        "promptZh": "完成之后，仍需要维护。",
+        "promptEn": "A completed task may still need care.",
+        "symbol": "䷾",
+        "bits": "101010",
+        "lower": "离",
+        "upper": "坎"
+      },
+      "method": {
+        "name": "manual-three-coins",
+        "order": "bottom-to-top",
+        "probabilities": {
+          "6": 0.125,
+          "7": 0.375,
+          "8": 0.375,
+          "9": 0.125
+        },
+        "source": "https://ctext.org/book-of-changes",
+        "note": "Themes are original reflection prompts, not quotations or predictions. Multiple moving lines are shown without claiming a single universal reading rule."
+      }
+    },
+    "input": {
+      "kind": "iching",
+      "input": {
+        "lines": [
+          7,
+          8,
+          7,
+          8,
+          7,
+          8
+        ]
+      }
+    }
+  },
+  "tarot": {
+    "type": "chart",
+    "title": "动效验收 · tarot",
+    "reading": {
+      "kind": "tarot",
+      "version": "wenbu-tarot-1.0",
+      "cards": [
+        {
+          "id": 53,
+          "zh": "宝剑四",
+          "en": "Four of Swords",
+          "keywordsZh": "休息",
+          "keywordsEn": "Rest",
+          "reversedZh": "耗竭",
+          "reversedEn": "Burnout",
+          "promptZh": "在思想与沟通中，「休息」让你想到哪件具体的事？记录一个你能尝试的小行动。",
+          "promptEn": "Where does rest show up in thinking and communication? Write down one small action you could try.",
+          "arcana": "minor",
+          "suit": "swords",
+          "symbol": "†",
+          "color": "#6c7280",
+          "number": 4,
+          "reversed": true,
+          "position": "situation"
+        },
+        {
+          "id": 3,
+          "zh": "皇后",
+          "en": "The Empress",
+          "keywordsZh": "滋养、创造",
+          "keywordsEn": "Care, creativity",
+          "promptZh": "给正在生长的事物一点实际照顾。",
+          "promptEn": "Offer practical care to something that is growing.",
+          "reversedZh": "过度付出、疲惫",
+          "reversedEn": "Overgiving, depletion",
+          "arcana": "major",
+          "suit": "major",
+          "symbol": "❋",
+          "color": "#a54d38",
+          "number": 3,
+          "reversed": false,
+          "position": "tension"
+        },
+        {
+          "id": 4,
+          "zh": "皇帝",
+          "en": "The Emperor",
+          "keywordsZh": "结构、责任",
+          "keywordsEn": "Structure, responsibility",
+          "promptZh": "建立一条能让日常更稳的规则。",
+          "promptEn": "Create a simple structure that makes daily life steadier.",
+          "reversedZh": "僵化、控制",
+          "reversedEn": "Rigidity, control",
+          "arcana": "major",
+          "suit": "major",
+          "symbol": "▱",
+          "color": "#a54d38",
+          "number": 4,
+          "reversed": true,
+          "position": "next-step"
+        }
+      ],
+      "method": {
+        "name": "cryptographic-without-replacement",
+        "deckSize": 78,
+        "reversals": true,
+        "spread": "situation-tension-next-step",
+        "source": "https://www.gutenberg.org/ebooks/43548",
+        "note": "Original interpretive prompts in the Rider–Waite–Smith tradition. No prediction, third-party deck artwork or copied translation."
+      }
+    },
+    "input": {
+      "kind": "tarot",
+      "input": {
+        "count": 3
+      }
+    }
+  },
+  "ziwei": {
+    "type": "chart",
+    "title": "动效验收 · ziwei",
+    "reading": {
+      "kind": "ziwei",
+      "version": "wenbu-ziwei-1.0",
+      "input": {
+        "date": "2000-08-16",
+        "time": "03:30",
+        "sex": "female",
+        "locale": "zh"
+      },
+      "lunarDate": "二〇〇〇年七月十七",
+      "time": "寅时",
+      "fiveElementsClass": "木三局",
+      "soul": "破军",
+      "body": "文昌",
+      "palaces": [
+        {
+          "name": "财帛",
+          "stem": "戊",
+          "branch": "寅",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "武曲",
+              "brightness": "得",
+              "mutagen": "权"
+            },
+            {
+              "name": "天相",
+              "brightness": "庙",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "天马"
+          ],
+          "ageRange": [
+            43,
+            52
+          ]
+        },
+        {
+          "name": "子女",
+          "stem": "己",
+          "branch": "卯",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "太阳",
+              "brightness": "庙",
+              "mutagen": "禄"
+            },
+            {
+              "name": "天梁",
+              "brightness": "庙",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [],
+          "ageRange": [
+            33,
+            42
+          ]
+        },
+        {
+          "name": "夫妻",
+          "stem": "庚",
+          "branch": "辰",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "七杀",
+              "brightness": "庙",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "右弼",
+            "火星"
+          ],
+          "ageRange": [
+            23,
+            32
+          ]
+        },
+        {
+          "name": "兄弟",
+          "stem": "辛",
+          "branch": "巳",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "天机",
+              "brightness": "平",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [],
+          "ageRange": [
+            13,
+            22
+          ]
+        },
+        {
+          "name": "命宫",
+          "stem": "壬",
+          "branch": "午",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "紫微",
+              "brightness": "庙",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "文曲"
+          ],
+          "ageRange": [
+            3,
+            12
+          ]
+        },
+        {
+          "name": "父母",
+          "stem": "癸",
+          "branch": "未",
+          "isBody": false,
+          "stars": [],
+          "supporting": [
+            "天钺",
+            "陀罗"
+          ],
+          "ageRange": [
+            113,
+            122
+          ]
+        },
+        {
+          "name": "福德",
+          "stem": "甲",
+          "branch": "申",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "破军",
+              "brightness": "得",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "文昌",
+            "禄存"
+          ],
+          "ageRange": [
+            103,
+            112
+          ]
+        },
+        {
+          "name": "田宅",
+          "stem": "乙",
+          "branch": "酉",
+          "isBody": false,
+          "stars": [],
+          "supporting": [
+            "地空",
+            "擎羊"
+          ],
+          "ageRange": [
+            93,
+            102
+          ]
+        },
+        {
+          "name": "官禄",
+          "stem": "丙",
+          "branch": "戌",
+          "isBody": true,
+          "stars": [
+            {
+              "name": "廉贞",
+              "brightness": "利",
+              "mutagen": ""
+            },
+            {
+              "name": "天府",
+              "brightness": "庙",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "左辅"
+          ],
+          "ageRange": [
+            83,
+            92
+          ]
+        },
+        {
+          "name": "仆役",
+          "stem": "丁",
+          "branch": "亥",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "太阴",
+              "brightness": "庙",
+              "mutagen": "科"
+            }
+          ],
+          "supporting": [],
+          "ageRange": [
+            73,
+            82
+          ]
+        },
+        {
+          "name": "迁移",
+          "stem": "戊",
+          "branch": "子",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "贪狼",
+              "brightness": "旺",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "铃星"
+          ],
+          "ageRange": [
+            63,
+            72
+          ]
+        },
+        {
+          "name": "疾厄",
+          "stem": "己",
+          "branch": "丑",
+          "isBody": false,
+          "stars": [
+            {
+              "name": "天同",
+              "brightness": "不",
+              "mutagen": "忌"
+            },
+            {
+              "name": "巨门",
+              "brightness": "不",
+              "mutagen": ""
+            }
+          ],
+          "supporting": [
+            "天魁",
+            "地劫"
+          ],
+          "ageRange": [
+            53,
+            62
+          ]
+        }
+      ],
+      "method": {
+        "engine": "iztro@2.6.1",
+        "clock": "Entered local civil clock; no solar-time correction",
+        "lateZi": "iztro time index 12 (23:00) is distinct from early Zi index 0",
+        "leapMonth": "fixLeap=true; iztro default leap-month convention",
+        "school": "iztro default configuration; school differences are not resolved into an accuracy claim",
+        "source": "https://iztro.com/quick-start"
+      }
+    },
+    "input": {
+      "kind": "ziwei",
+      "input": {
+        "date": "2000-08-16",
+        "time": "03:30",
+        "sex": "female"
+      }
+    }
+  }
+}

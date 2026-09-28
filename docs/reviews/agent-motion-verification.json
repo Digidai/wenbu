@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-09-28T11:54:07.642Z",
+  "base": "https://wenbu.genedai.me",
+  "deployedWorkerVersion": "2a088fc1-a1d8-4dfa-afbf-0e6465223ef4",
+  "liveAssets": [
+    {
+      "path": "/_astro/AgentWorkspace.JKi3dhu1.js",
+      "status": 200,
+      "sha256": "f9d993ee237197fb4d9b4489639990098f02afdd86f00ba48147e238ee55047f",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/_astro/_..zMBMxWqz.css",
+      "status": 200,
+      "sha256": "6d95f6aebf1c2d2514e79544a55935609a049bc90f0d9c6760deb2ffe2959a43",
+      "matchesLocalBuild": true
+    }
+  ],
+  "browserAfterFinalDeploy": {
+    "restoredReport": "八字换日约定：零点换日与子初换日",
+    "motionControl": true,
+    "historicalCeremonies": 0
+  },
+  "local": {
+    "tests": 110,
+    "testFiles": 8,
+    "typecheck": "passed",
+    "lint": "passed",
+    "buildHtmlPages": 65,
+    "indexablePages": 62,
+    "auditedInternalReferences": 2735
+  },
+  "controlledBrowser": {
+    "provenance": "local scripted SSE and synthetic calculator inputs; not model execution",
+    "methods": [
+      "bazi",
+      "ziwei",
+      "iching",
+      "tarot",
+      "report"
+    ],
+    "continuousMotionObserved": true,
+    "pauseResumeSameRequest": true,
+    "pausePersistedAfterReload": true,
+    "systemReducedMotionTestedAndReset": true,
+    "completedActiveOrnamentNodes": 0,
+    "completedArrivalMarkers": 0,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "consoleErrors": 0,
+    "interruptions": [
+      "error",
+      "user stop",
+      "waiting for clarification"
+    ]
+  },
+  "productionConversation": {
+    "workerVersion": "4a047ccb-4799-45d3-844a-62639f78232f",
+    "provenance": "real DeepSeek execution in a new empty session",
+    "prompt": "查阅问卜资料，比较八字零点换日和子初换日，用两节简短报告说明计算约定，并保留出处。",
+    "requestedModel": "deepseek-v4-flash",
+    "reportedModel": "deepseek-flash",
+    "readSources": 4,
+    "completedToolSteps": 7,
+    "reports": 1,
+    "finalPhase": "settled",
+    "activeOrnamentNodes": 0,
+    "arrivalMarkers": 0,
+    "consoleErrors": 0
+  },
+  "scope": "The real conversation and 72-path smoke were run on the first motion deployment. Final SVG-only instrument refinements were checked locally; final production JS/CSS match the tested local build. CSS rendering and browser checks are separate from Grok source review."
+}
