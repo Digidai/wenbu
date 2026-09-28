@@ -1,5 +1,6 @@
 # Wenbu 文档导航
 
+- [Agent 提问引导：意图、渐进选择与可编辑澄清](plans/2026-09-29-agent-guidance-design.md)
 - [2026-09-29 系统评估与优化：插画、准确度、GTM、可读性](research/product-audit-2026-09-29.md)
 - [78 张原创牌面与生成提示词](art/README.md)
 - [数据统计：事件、归因、后台与隐私口径](analytics.md)

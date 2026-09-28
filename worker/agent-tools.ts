@@ -28,7 +28,7 @@ const readSchema = z.object({ id: z.string().min(1).max(120) }).strict();
 const questionSchema = z
   .object({
     question: z.string().min(1).max(700),
-    options: z.array(z.string().max(160)).max(4).default([]),
+    options: z.array(z.string().trim().min(1).max(160)).max(4).default([]),
     form: z.literal('birth').optional(),
   })
   .strict();
@@ -62,7 +62,7 @@ const descriptions: Record<keyof typeof schemas, string> = {
   read_reference:
     'Fetch and read a PUBLIC WEB excerpt of an exact reference ID from the curated catalogue. No arbitrary URLs or general internet search. Can fail for blocked, large, PDF or private pages. Failed references are NOT read and cannot be cited as reviewed.',
   ask_user:
-    'Ask one focused question when necessary information is missing. Optional up to 4 answer options. Set form=birth to show the birth-information editor. This pauses the turn for the user; do not combine with other tools.',
+    'Help clarify a vague question or ask for necessary missing information. Ask ONE focused question with 2–4 short, distinct answer options when useful (never invent user facts). The interface adds custom-answer and unsure controls. Reuse details already shared. Set form=birth only when birth data is required. This pauses the turn for the user; do not combine with other tools.',
   write_report:
     'Create a concise structured report in the results panel: 2–4 short sections, under 800 Chinese characters or 1500 Latin characters total, including summary/questions/visual. For a meaningful comparison or ordered procedure, include one optional visual: type comparison for 2–4 parallel alternatives, or steps for 2–4 ordered stages. Keep each visual item label short and its detail under 60 Chinese characters or 130 Latin characters. Preserve qualifications; never invent percentages, scores, evidence or causal order. Each visual item has its own sourceIds. Cite only source IDs returned by successfully read_library/read_reference calls or the verified source snapshot. Separate calculation facts, tradition and interpretation. Put material uncertainty and unfinished work in the summary as well as the relevant section. Use after gathering evidence. New calls create new report versions.',
 };

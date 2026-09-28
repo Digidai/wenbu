@@ -238,7 +238,11 @@ export async function analyticsReport(url: URL, env: Env) {
     ],
     [
       'funnel',
-      `WITH steps AS (SELECT session_id, MIN(CASE WHEN event='page_view' THEN occurred_at END) visit, MIN(CASE WHEN event IN ('tool_started','agent_started') AND action!='example' THEN occurred_at END) start, MIN(CASE WHEN (event IN ('calculation_succeeded','interpret_succeeded') AND action!='example') OR (event='agent_finished' AND status='complete') THEN occurred_at END) success, MAX(CASE WHEN event='journal_saved' THEN occurred_at END) saved FROM events WHERE $WHERE AND session_id IS NOT NULL GROUP BY session_id) SELECT COUNT(visit) visited, SUM(visit IS NOT NULL AND start IS NOT NULL) started, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL) succeeded, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL AND saved IS NOT NULL) saved FROM steps`,
+      `WITH steps AS (SELECT session_id, MIN(CASE WHEN event='page_view' THEN occurred_at END) visit, MIN(CASE WHEN (event='agent_started' OR (event='tool_started' AND action!='example')) THEN occurred_at END) start, MIN(CASE WHEN (event IN ('calculation_succeeded','interpret_succeeded') AND action!='example') OR (event='agent_finished' AND status='complete') THEN occurred_at END) success, MAX(CASE WHEN event='journal_saved' THEN occurred_at END) saved FROM events WHERE $WHERE AND session_id IS NOT NULL GROUP BY session_id) SELECT COUNT(visit) visited, SUM(visit IS NOT NULL AND start IS NOT NULL) started, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL) succeeded, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL AND saved IS NOT NULL) saved FROM steps`,
+    ],
+    [
+      'guidance',
+      `SELECT CASE WHEN event='guide_step' THEN event || '_' || value WHEN event IN ('suggestion_selected','agent_started') THEN event || '_' || action ELSE event END label, COUNT(*) count, COUNT(DISTINCT session_id) sessions FROM events WHERE $WHERE AND (event IN ('guide_opened','guide_step','guide_skipped','guide_draft_created','suggestion_selected') OR (event='agent_started' AND action IN ('guided','clarification','followup','example'))) GROUP BY label ORDER BY label`,
     ],
   ];
   for (const key of [

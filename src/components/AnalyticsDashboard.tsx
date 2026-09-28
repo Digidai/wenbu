@@ -41,6 +41,20 @@ export default function AnalyticsDashboard() {
   }
   const summary = report?.data.summary[0] ?? {};
   const funnel = report?.data.funnel[0] ?? {};
+  const guidanceLabels: Record<string, string> = {
+    guide_opened: '开始使用引导',
+    guide_step_1: '返回选择主题',
+    guide_step_2: '进入目标选择',
+    guide_step_3: '进入补充与预览',
+    guide_skipped: '切换直接输入',
+    guide_draft_created: '引导内容放入草稿',
+    suggestion_selected_clarification: '选择澄清回答',
+    suggestion_selected_followup: '选择继续追问',
+    agent_started_guided: '发送引导草稿',
+    agent_started_clarification: '发送澄清草稿',
+    agent_started_followup: '发送追问草稿',
+    agent_started_example: '发送示例提问',
+  };
   const select = (key: keyof typeof filters, title: string, options: readonly string[]) => (
     <label>
       {title}
@@ -215,7 +229,10 @@ export default function AnalyticsDashboard() {
             </article>
             <article className="insights-card">
               <h2>会话覆盖漏斗</h2>
-              <p>同一会话内包含这些事件，非严格先后顺序。成功必须有服务端记录，示例不计入。</p>
+              <p>
+                同一会话内包含这些事件，非严格先后顺序。成功必须有服务端记录；静态工具示例不计入，发送 Agent
+                示例问题计入真实回合。
+              </p>
               {[
                 ['visited', '访问页面'],
                 ['started', '开始工具或对话'],
@@ -232,6 +249,38 @@ export default function AnalyticsDashboard() {
             </article>
           </div>
           <div className="insights-breakdowns">
+            <details className="insights-card" open>
+              <summary>Agent 提问引导</summary>
+              <p>
+                只统计步骤与操作类型，不记录选择内容。发送表示发起回合，不等同于服务端完成；不是严格漏斗。
+              </p>
+              <div className="insights-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>操作</th>
+                      <th>次数</th>
+                      <th>会话</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(report.data.guidance ?? []).map((row) => (
+                      <tr key={String(row.label)}>
+                        <th>{guidanceLabels[String(row.label)] ?? String(row.label)}</th>
+                        <td>{number(row.count)}</td>
+                        <td>{number(row.sessions)}</td>
+                      </tr>
+                    ))}
+                    {!report.data.guidance?.length && (
+                      <tr>
+                        <td colSpan={3}>所选范围内还没有引导事件。</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <small>自由修改后不再包含原建议的发送归为普通对话；不推断用户主题或个人特征。</small>
+            </details>
             {Object.entries(breakdownNames).map(([key, label]) => (
               <details
                 className="insights-card"

@@ -11,6 +11,11 @@ export const clientEvents = [
   'agent_started',
   'agent_received',
   'agent_stopped',
+  'guide_opened',
+  'guide_step',
+  'guide_skipped',
+  'guide_draft_created',
+  'suggestion_selected',
   'artifact_opened',
   'report_exported',
   'conversation_exported',
@@ -69,6 +74,9 @@ export const actions = [
   'inspect',
   'source',
   'context',
+  'guided',
+  'clarification',
+  'followup',
 ] as const;
 export const statuses = [
   'none',

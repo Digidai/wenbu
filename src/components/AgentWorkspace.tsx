@@ -16,7 +16,6 @@ import {
   PanelRight,
   Plus,
   Search,
-  SlidersHorizontal,
   Square,
   Trash2,
   X,
@@ -57,9 +56,13 @@ import InstrumentGlyph, { ReadingDeskIllustration, type InstrumentKind } from '.
 import AgentRitual, { useAgentMotion } from './AgentRitual';
 import ReadingView from './ReadingView';
 import { readReportVisual } from '../lib/agent-report';
+import { isSuggestionIntact, stageSuggestion } from '../lib/agent-guidance';
+import AgentOnboarding from './AgentOnboarding';
+import AgentConversationGuide from './AgentConversationGuide';
 import '../styles/agent.css';
 import '../styles/agent-motion.css';
 import '../styles/agent-visuals.css';
+import '../styles/agent-guidance.css';
 
 class ChartBoundary extends Component<{ children: ReactNode; fallback: string }, { failed: boolean }> {
   state = { failed: false };
@@ -84,6 +87,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   const [activeId, setActiveId] = useState('');
   const [loaded, setLoaded] = useState(false);
   const [draft, setDraft] = useState('');
+  const stagedSuggestion = useRef({
+    text: '',
+    start: 0,
+    action: 'none' as 'none' | 'guided' | 'clarification' | 'followup' | 'example',
+  });
   const [busy, setBusy] = useState(false);
   const motion = useAgentMotion();
   const [currentTurn, setCurrentTurn] = useState<string[]>([]);
@@ -267,6 +275,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     setActiveId(id);
     setSelectedArtifact('');
     setDraft('');
+    stagedSuggestion.current = { text: '', start: 0, action: 'none' };
     setSidebar(false);
     setMobilePane('chat');
     setNotice('');
@@ -321,6 +330,25 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     setMobilePane('results');
   }
 
+  function prepareDraft(text: string, action: 'guided' | 'clarification' | 'followup' | 'example') {
+    const { draft: next, suggestion } = stageSuggestion(draft, stagedSuggestion.current, text);
+    if (next.length > 3000) {
+      setNotice(
+        t(
+          '草稿已接近 3000 字上限，请先精简内容，再添加这个选项。',
+          'Your draft is near the 3,000-character limit. Shorten it before adding this suggestion.',
+        ),
+      );
+      textarea.current?.focus();
+      return false;
+    }
+    setDraft(next);
+    stagedSuggestion.current = { ...suggestion, action };
+    setMobilePane('chat');
+    setNotice('');
+    textarea.current?.focus();
+    return true;
+  }
   async function send(value = draft) {
     const session = sessionRef.current.find((s) => s.id === activeId);
     if (!session || pending.current || !value.trim()) return;
@@ -339,7 +367,15 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }
     setNotice('');
     setDraft('');
-    track('agent_started', { tool: 'agent', mode: session.mode });
+    track('agent_started', {
+      tool: 'agent',
+      mode: session.mode,
+      action:
+        value === draft && isSuggestionIntact(value, stagedSuggestion.current)
+          ? stagedSuggestion.current.action
+          : 'none',
+    });
+    stagedSuggestion.current = { text: '', start: 0, action: 'none' };
     setBusy(true);
     setMobilePane('chat');
     stickToBottom.current = true;
@@ -718,32 +754,24 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           }}
         >
           {!active?.messages.length ? (
-            <div className="agent-welcome">
-              <div className="agent-welcome-kicker">
-                <InstrumentGlyph kind="ziwei" size={32} />
-                <span className="eyebrow">A QUESTION. A WAY FORWARD.</span>
-              </div>
-              <h1>
-                {t('从一个问题，', 'Begin with a question.')}
-                <br />
-                <em>{t('慢慢看清。', 'Find a clearer view.')}</em>
-              </h1>
-              <p>
-                {t(
-                  '排一张命盘，读一段经典，或聊聊眼前的选择。',
-                  'Explore a chart, read a tradition, or untangle a choice.',
-                )}
-                <br />
-                {t('让依据与思考，一起留在你的探索里。', 'Keep the evidence and your reflections together.')}
-              </p>
+            <AgentOnboarding
+              key={activeId}
+              locale={locale}
+              disabled={!loaded}
+              onDirect={() => textarea.current?.focus()}
+              onCompose={(value) => {
+                if (!prepareDraft(value.text, 'guided')) return false;
+                if (active) mutateSession(active.id, (a) => ({ ...a, mode: value.mode }));
+                return true;
+              }}
+            >
               <div className="agent-starters">
                 {starters.map((s) => (
                   <button
                     key={s.label}
                     onClick={() => {
-                      setDraft(s.text);
-                      if (active) mutateSession(active.id, (a) => ({ ...a, mode: s.mode }));
-                      textarea.current?.focus();
+                      if (prepareDraft(s.text, 'example') && active)
+                        mutateSession(active.id, (a) => ({ ...a, mode: s.mode }));
                     }}
                   >
                     <InstrumentGlyph kind={s.kind} size={48} />
@@ -755,7 +783,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   </button>
                 ))}
               </div>
-            </div>
+            </AgentOnboarding>
           ) : (
             <div className="agent-message-list">
               <h1 className="sr-only">{t('命理 Agent', 'Wenbu Agent')}</h1>
@@ -907,21 +935,24 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                       <ArrowUpRight size={11} />
                     </button>
                   )}
-                  {message.question && i === active.messages.length - 1 && (
-                    <div className="agent-question-actions">
-                      {message.question.form === 'birth' && (
-                        <button onClick={() => openContext(true)}>
-                          <SlidersHorizontal size={14} />
-                          {t('补充出生资料', 'Add birth details')}
-                        </button>
-                      )}
-                      {message.question.options.map((option) => (
-                        <button key={option} disabled={busy} onClick={() => void send(option)}>
-                          {option}
-                          <ArrowUpRight size={12} />
-                        </button>
-                      ))}
-                    </div>
+                  {i === active.messages.length - 1 && (
+                    <AgentConversationGuide
+                      key={message.id}
+                      message={message}
+                      stagedText={
+                        isSuggestionIntact(draft, stagedSuggestion.current)
+                          ? stagedSuggestion.current.text
+                          : ''
+                      }
+                      locale={locale}
+                      disabled={busy}
+                      onStage={(text) => prepareDraft(text, message.question ? 'clarification' : 'followup')}
+                      onCustom={() => {
+                        setMobilePane('chat');
+                        textarea.current?.focus();
+                      }}
+                      onBirth={() => openContext(true)}
+                    />
                   )}
                   {message.status === 'error' && (
                     <div className="agent-turn-error" role="alert">
@@ -975,8 +1006,16 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
               rows={2}
               disabled={!loaded}
               aria-label={t('向命理 Agent 提问', 'Ask Wenbu Agent')}
-              placeholder={t('此刻，你想从哪里开始？', 'What would you like to explore?')}
-              onChange={(e) => setDraft(e.target.value)}
+              placeholder={
+                active?.messages.length
+                  ? t('补充你的情况，或继续追问……', 'Add context, or ask a follow-up…')
+                  : t('也可以直接写：我最近在犹豫……', 'Or start here: lately, I have been wondering…')
+              }
+              onChange={(e) => {
+                setDraft(e.target.value);
+                if (!isSuggestionIntact(e.target.value, stagedSuggestion.current))
+                  stagedSuggestion.current = { text: '', start: 0, action: 'none' };
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                   e.preventDefault();
@@ -1194,7 +1233,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                     sources={sources}
                     locale={locale}
                     busy={busy}
-                    onQuestion={(question) => void send(question)}
+                    onQuestion={(question) => prepareDraft(question, 'followup')}
                   />
                 )}
                 <div className="agent-artifact-actions">

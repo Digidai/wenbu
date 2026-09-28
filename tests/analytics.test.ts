@@ -55,6 +55,36 @@ function context() {
 const request = (headers: Record<string, string> = {}) =>
   new Request('https://wenbu.genedai.me/api/v1/tarot', { headers });
 describe('closed analytics contract', () => {
+  it('summarizes guidance steps without collecting topic or answer content and excludes test traffic', async () => {
+    const { sql, env } = database();
+    const session = context();
+    const events = [
+      { event: 'page_view' },
+      { event: 'guide_opened' },
+      { event: 'guide_step', value: 2 },
+      { event: 'guide_step', value: 3 },
+      { event: 'guide_draft_created' },
+      { event: 'agent_started', action: 'guided' },
+      { event: 'agent_started', action: 'example' },
+      { event: 'suggestion_selected', action: 'clarification' },
+    ].map((e) => ({ ...session, ...e, id: crypto.randomUUID(), tool: 'agent', page: '/agent/' }));
+    await collectEvents({ events }, request(), env);
+    await collectEvents({ events: [{ ...events[0], id: crypto.randomUUID(), test: true }] }, request(), env);
+    const report = await analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics'), env);
+    expect(report.data.guidance).toEqual(
+      expect.arrayContaining([
+        { label: 'guide_opened', count: 1, sessions: 1 },
+        { label: 'guide_step_3', count: 1, sessions: 1 },
+        { label: 'agent_started_guided', count: 1, sessions: 1 },
+        { label: 'agent_started_example', count: 1, sessions: 1 },
+      ]),
+    );
+    expect(report.data.funnel[0].started).toBe(1);
+    expect(() => eventBatch.parse({ events: [{ ...events[0], topic: 'private topic' }] })).toThrow();
+    expect(() => eventBatch.parse({ events: [{ ...events[0], answer: 'private answer' }] })).toThrow();
+    expect(() => eventBatch.parse({ events: [{ ...events[0], action: 'my personal choice' }] })).toThrow();
+    sql.close();
+  });
   it('records malformed, oversized and unsupported requests as input failures, not service errors', async () => {
     const { sql, env } = database();
     for (const [body, contentType, status] of [
