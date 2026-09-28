@@ -1,0 +1,55 @@
+src/components/Agents.astro 44ms
+src/components/ArticleCard.astro 6ms
+src/components/Home.astro 17ms
+src/components/Instrument.astro 6ms
+src/components/Journal.tsx 54ms
+src/components/ReadingView.tsx 41ms
+src/components/ToolDesk.tsx 46ms
+src/data/articles.ts 20ms
+src/data/comparisons.ts 3ms
+src/data/hexagrams.ts 7ms
+src/data/pages.ts 7ms
+src/data/sources.ts 4ms
+src/data/tarot.ts 8ms
+src/layouts/Layout.astro 21ms
+src/lib/bazi.ts 13ms
+src/lib/i18n.ts 3ms
+src/lib/iching.ts 5ms
+src/lib/journal.ts 4ms
+src/lib/schema.ts 5ms
+src/lib/tarot.ts 2ms
+src/lib/tools.ts 1ms
+src/lib/ziwei.ts 3ms
+src/pages/[...path].astro 21ms
+src/pages/404.astro 2ms
+src/styles/global.css 192ms
+worker/ai.ts 16ms
+worker/index.ts 10ms
+worker/mcp.ts 7ms
+worker/quota.ts 5ms
+worker/types.ts 1ms
+tests/api.test.ts 7ms
+tests/calculations.test.ts 10ms
+tests/cloudflare-stub.ts 1ms
+tests/mcp.test.ts 4ms
+tests/quota.test.ts 6ms
+scripts/audit-site.mjs 7ms
+scripts/generate-api.mjs 7ms
+scripts/postbuild.mjs 5ms
+public/context.schema.json 2ms
+public/openapi.json 5ms
+public/SKILL.md 44ms
+public/wenbu.mjs 5ms
+README.md 12ms
+docs/README.md 3ms (unchanged)
+docs/operations.md 6ms
+docs/research/brand-and-growth.md 15ms
+docs/research/landscape-2026-09-28.md 26ms
+.github/workflows/quality.yml 5ms (unchanged)
+package.json 1ms (unchanged)
+astro.config.mjs 1ms (unchanged)
+tsconfig.json 1ms (unchanged)
+tsconfig.worker.json 1ms
+vitest.config.ts 1ms
+eslint.config.mjs 1ms
+wrangler.jsonc 1ms

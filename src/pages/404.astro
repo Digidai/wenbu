@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page not found · 此处留白"
+  description="This page is not here. Return to Wenbu to explore BaZi, I Ching, tarot and Zi Wei."
+  locale="zh"
+  path="404"
+  noindex={true}
+>
+  <div class="not-found shell">
+    <span class="eyebrow">A DIFFERENT PATH</span>
+    <h1>404</h1>
+    <p>
+      此处留白。换一条路，继续探索。
+      <br />
+      This page is not here. Your next perspective is.
+    </p>
+    <a class="button primary" href="/">
+      回到首页
+    </a>
+    <a class="text-link" style="margin-left:25px" href="/en/">
+      Back to Wenbu →
+    </a>
+  </div>
+</Layout>

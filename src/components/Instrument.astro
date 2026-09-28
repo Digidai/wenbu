@@ -1,0 +1,66 @@
+---
+const { small = false } = Astro.props;
+const marks = Array.from({ length: 120 }, (_, i) => i);
+const chars = ['乾', '兑', '离', '震', '巽', '坎', '艮', '坤'];
+---
+
+<div class:list={['instrument', { small }]} aria-hidden="true">
+  <svg class="instrument-ring" viewBox="0 0 560 560" fill="none">
+    <circle cx="280" cy="280" r="250" stroke="currentColor" stroke-width=".8" />
+    <circle cx="280" cy="280" r="229" stroke="currentColor" stroke-width=".5" />
+    <circle cx="280" cy="280" r="181" stroke="currentColor" stroke-width=".6" />
+    <circle cx="280" cy="280" r="176" stroke="currentColor" stroke-width=".4" />
+    {marks.map((i) => (
+      <line
+        x1="280"
+        x2="280"
+        y1="31"
+        y2={i % 10 === 0 ? 51 : i % 5 === 0 ? 43 : 37}
+        stroke="currentColor"
+        stroke-width={i % 10 === 0 ? 1 : 0.5}
+        transform={`rotate(${i * 3} 280 280)`}
+      />
+    ))}
+    {chars.map((c, i) => (
+      <g transform={`rotate(${i * 45} 280 280)`}>
+        <text x="280" y="82" text-anchor="middle" fill="currentColor" font-size="14">
+          {c}
+        </text>
+        <line x1="280" x2="280" y1="104" y2="121" stroke="currentColor" stroke-width=".7" />
+      </g>
+    ))}
+  </svg>
+  <svg class="instrument-inner" viewBox="0 0 560 560" fill="none">
+    <path d="M280 104 432 368H128L280 104Z" stroke="currentColor" stroke-width=".7" />
+    <path d="M280 456 128 192H432L280 456Z" stroke="currentColor" stroke-width=".7" />
+    <ellipse
+      cx="280"
+      cy="280"
+      rx="177"
+      ry="65"
+      stroke="currentColor"
+      stroke-width=".65"
+      transform="rotate(-28 280 280)"
+    />
+    <ellipse
+      cx="280"
+      cy="280"
+      rx="177"
+      ry="65"
+      stroke="currentColor"
+      stroke-width=".65"
+      transform="rotate(62 280 280)"
+    />
+    <circle cx="280" cy="280" r="113" stroke="currentColor" stroke-width=".6" />
+    <circle cx="280" cy="104" r="4" fill="currentColor" />
+    <circle cx="432" cy="368" r="3" fill="currentColor" />
+    <circle cx="128" cy="368" r="3" fill="currentColor" />
+  </svg>
+  <div class="instrument-sun">
+    <span>问</span>
+    <i></i>
+  </div>
+  <span class="instrument-coordinate coord-a">31° N · 121° E</span>
+  <span class="instrument-coordinate coord-b">AS ABOVE, SO WITHIN</span>
+  <span class="orbit-point"></span>
+</div>

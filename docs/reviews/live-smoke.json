@@ -1,0 +1,320 @@
+{
+  "base": "https://wenbu.genedai.me",
+  "checkedAt": "2026-09-28T08:50:10.814Z",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/about/",
+      "status": 200
+    },
+    {
+      "path": "/agents/",
+      "status": 200
+    },
+    {
+      "path": "/bazi/",
+      "status": 200
+    },
+    {
+      "path": "/blog/",
+      "status": 200
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "status": 200
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "status": 200
+    },
+    {
+      "path": "/compare/chatbot/",
+      "status": 200
+    },
+    {
+      "path": "/compare/fatetell/",
+      "status": 200
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "status": 200
+    },
+    {
+      "path": "/en/",
+      "status": 200
+    },
+    {
+      "path": "/en/about/",
+      "status": 200
+    },
+    {
+      "path": "/en/agents/",
+      "status": 200
+    },
+    {
+      "path": "/en/bazi/",
+      "status": 200
+    },
+    {
+      "path": "/en/blog/",
+      "status": 200
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "status": 200
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "status": 200
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "status": 200
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "status": 200
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "status": 200
+    },
+    {
+      "path": "/en/feed.xml",
+      "status": 200
+    },
+    {
+      "path": "/en/free/",
+      "status": 200
+    },
+    {
+      "path": "/en/iching/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "status": 200
+    },
+    {
+      "path": "/en/methodology/",
+      "status": 200
+    },
+    {
+      "path": "/en/privacy/",
+      "status": 200
+    },
+    {
+      "path": "/en/sources/",
+      "status": 200
+    },
+    {
+      "path": "/en/tarot/",
+      "status": 200
+    },
+    {
+      "path": "/en/terms/",
+      "status": 200
+    },
+    {
+      "path": "/en/ziwei/",
+      "status": 200
+    },
+    {
+      "path": "/feed.xml",
+      "status": 200
+    },
+    {
+      "path": "/free/",
+      "status": 200
+    },
+    {
+      "path": "/iching/",
+      "status": 200
+    },
+    {
+      "path": "/learn/",
+      "status": 200
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "status": 200
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "status": 200
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "status": 200
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "status": 200
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "status": 200
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "status": 200
+    },
+    {
+      "path": "/learn/five-elements/",
+      "status": 200
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "status": 200
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "status": 200
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "status": 200
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "status": 200
+    },
+    {
+      "path": "/methodology/",
+      "status": 200
+    },
+    {
+      "path": "/missing-wenbu-verification-page/",
+      "status": 404
+    },
+    {
+      "path": "/og.png",
+      "status": 200
+    },
+    {
+      "path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "path": "/privacy/",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/SKILL.md",
+      "status": 200
+    },
+    {
+      "path": "/sources/",
+      "status": 200
+    },
+    {
+      "path": "/tarot/",
+      "status": 200
+    },
+    {
+      "path": "/terms/",
+      "status": 200
+    },
+    {
+      "path": "/wenbu.mjs",
+      "status": 200
+    },
+    {
+      "path": "/ziwei/",
+      "status": 200
+    }
+  ],
+  "api": [
+    {
+      "kind": "bazi",
+      "status": 200
+    },
+    {
+      "kind": "iching",
+      "status": 200
+    },
+    {
+      "kind": "tarot",
+      "status": 200
+    },
+    {
+      "kind": "ziwei",
+      "status": 200
+    }
+  ],
+  "mcp": [
+    "calculate_bazi",
+    "cast_iching",
+    "draw_tarot",
+    "calculate_ziwei"
+  ],
+  "ai": {
+    "status": 200,
+    "provenance": {
+      "provider": "DeepSeek",
+      "requestedModel": "deepseek-v4-flash",
+      "servedModel": "deepseek-flash",
+      "generatedAt": "2026-09-28T08:50:36.060Z",
+      "type": "AI-generated symbolic reflection"
+    },
+    "answerTitle": "Expressing Ideas Clearly: A Symbolic Reflection"
+  },
+  "health": {
+    "status": "ok",
+    "version": "1.0.0",
+    "aiConfigured": true,
+    "requestedModel": "deepseek-v4-flash"
+  },
+  "result": "passed"
+}

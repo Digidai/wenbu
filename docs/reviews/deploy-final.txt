@@ -1,0 +1,95 @@
+
+ ⛅️ wrangler 4.142.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 177 files from the assets directory /Users/dai/Developer/CursorProjects/wenbu/dist
+🌀 Starting asset upload...
+🌀 Found 67 new or modified static assets to upload. Proceeding with upload...
++ /404.html
++ /blog/index.html
++ /en/about/index.html
++ /en/terms/index.html
++ /compare/chatbot/index.html
++ /en/privacy/index.html
++ /methodology/index.html
++ /learn/unknown-birth-time/index.html
++ /en/learn/chinese-zodiac-vs-bazi/index.html
++ /learn/tarot-beginner/index.html
++ /learn/bazi-vs-western-astrology/index.html
++ /blog/why-calculation-comes-first/index.html
++ /en/learn/iching-three-coins/index.html
++ /en/learn/choose-a-tool/index.html
++ /learn/ai-divination/index.html
++ /en/learn/birth-time-timezone/index.html
++ /learn/index.html
++ /en/journal/index.html
++ /iching/index.html
++ /en/ziwei/index.html
++ /bazi/index.html
++ /_astro/ToolDesk.q1xr3toM.js
++ /_astro/Layout.FLEu6vxr.css
++ /_astro/Journal.CEDQm32f.js
++ /about/index.html
++ /en/free/index.html
++ /privacy/index.html
++ /en/compare/labyrinthos/index.html
++ /compare/fatetell/index.html
++ /learn/chinese-zodiac-vs-bazi/index.html
++ /agents/index.html
++ /blog/a-reading-you-can-return-to/index.html
++ /learn/ziwei-twelve-palaces/index.html
++ /learn/choose-a-tool/index.html
++ /en/learn/five-elements/index.html
++ /en/learn/ziwei-twelve-palaces/index.html
++ /learn/birth-time-timezone/index.html
++ /learn/bazi-basics/index.html
++ /en/learn/bazi-basics/index.html
++ /en/learn/index.html
++ /sources/index.html
++ /ziwei/index.html
++ /tarot/index.html
++ /en/bazi/index.html
++ /index.html
++ /en/blog/index.html
++ /free/index.html
++ /terms/index.html
++ /compare/labyrinthos/index.html
++ /en/compare/chatbot/index.html
++ /en/compare/fatetell/index.html
++ /en/methodology/index.html
++ /learn/iching-three-coins/index.html
++ /learn/five-elements/index.html
++ /en/agents/index.html
++ /en/learn/unknown-birth-time/index.html
++ /en/blog/a-reading-you-can-return-to/index.html
++ /en/learn/tarot-beginner/index.html
++ /en/blog/why-calculation-comes-first/index.html
++ /en/learn/bazi-vs-western-astrology/index.html
++ /en/learn/ai-divination/index.html
++ /journal/index.html
++ /en/sources/index.html
++ /en/iching/index.html
++ /en/tarot/index.html
++ /_astro/ReadingView.Bfwvnva7.js
++ /en/index.html
+Uploaded 22 of 67 assets
+Uploaded 44 of 67 assets
+Uploaded 67 of 67 assets
+✨ Success! Uploaded 67 files (45 already uploaded) (2.08 sec)
+
+Total Upload: 2940.53 KiB / gzip: 587.79 KiB
+Worker Startup Time: 51 ms
+Your Worker has access to the following bindings:
+Binding                                                       Resource                  
+env.QUOTA (UsageGate)                                         Durable Object            
+env.RATE_LIMITER (60 requests/60s)                            Rate Limit                
+env.ASSETS                                                    Assets                    
+env.SITE_URL ("https://wenbu.genedai.me")                     Environment Variable      
+env.DEEPSEEK_MODEL ("deepseek-v4-flash")                      Environment Variable      
+env.AI_DAILY_LIMIT ("1000")                                   Environment Variable      
+env.AI_PER_USER_DAILY_LIMIT ("5")                             Environment Variable      
+
+Uploaded wenbu (9.60 sec)
+Deployed wenbu triggers (5.40 sec)
+  wenbu.genedai.me (custom domain)
+Current Version ID: 0bbc26fc-481c-4446-9437-74ae5eb8168c

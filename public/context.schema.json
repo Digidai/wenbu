@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wenbu.genedai.me/context.schema.json",
+  "title": "Wenbu user-selected context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "kind",
+    "createdAt",
+    "calculation",
+    "question",
+    "selectedContext",
+    "birthDetailsIncluded",
+    "instructions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "https://wenbu.genedai.me/context.schema.json"
+    },
+    "version": {
+      "const": 1
+    },
+    "kind": {
+      "enum": ["bazi", "ziwei", "iching", "tarot"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "calculation": {
+      "type": "object",
+      "description": "Calculation output. Original birth fields only when deliberately included. Symbols themselves may still be identifying."
+    },
+    "question": {
+      "type": "string",
+      "maxLength": 600
+    },
+    "selectedContext": {
+      "type": "string",
+      "maxLength": 1600
+    },
+    "birthDetailsIncluded": {
+      "type": "boolean"
+    },
+    "instructions": {
+      "type": "string"
+    }
+  }
+}

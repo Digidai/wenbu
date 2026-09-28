@@ -1,0 +1,247 @@
+---
+import Instrument from './Instrument.astro';
+import ArticleCard from './ArticleCard.astro';
+import { articles } from '../data/articles';
+import { choose, href, toolInfo } from '../lib/i18n';
+import type { Locale, ToolKind } from '../lib/schema';
+const { locale } = Astro.props as { locale: Locale };
+const t = (zh: string, en: string) => choose(locale, zh, en);
+---
+
+<div class="shell">
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow accent">
+        <i class="small-dot"></i>AN OPEN DOOR TO ANCIENT WISDOM
+      </span>
+      <h1>
+        {locale === 'zh' ? (
+          <>
+            知其来处，
+            <br />
+            <em>从容向前。</em>
+          </>
+        ) : (
+          <>
+            A little wisdom.
+            <br />
+            <em>A wider view.</em>
+          </>
+        )}
+      </h1>
+      <p class="hero-description">
+        {t(
+          '从八字的五行，到易经的变化。借古老的智慧，看见此刻的自己，找到下一步的从容。',
+          'Meet yourself through BaZi, I Ching and tarot. Explore an old language of change, and find a little more room to move.',
+        )}
+      </p>
+      <div class="hero-buttons">
+        <a class="button vermillion" href={href(locale, 'bazi')}>
+          {t('免费探索我的命盘', 'Explore my birth chart')}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a class="text-link" href={href(locale, 'iching')}>
+          {t('为此刻，问一卦', 'Ask the I Ching')}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="hero-meta">
+        <span>{t('无需注册', 'NO ACCOUNT')}</span>
+        <span>{t('工具免费', 'FREE TO EXPLORE')}</span>
+        <span>{t('为自己留一点时间', 'A MOMENT FOR YOU')}</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <Instrument />
+      <div class="visual-caption">{t('天地有序 · 万物有时', 'EVERYTHING HAS ITS SEASON')}</div>
+    </div>
+  </section>
+  <div class="almanac-strip">
+    <div class="almanac-mark">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width=".8" aria-hidden="true">
+        <circle cx="20" cy="20" r="10" />
+        <path d="M20 0v6m0 28v6M0 20h6m28 0h6M6 6l5 5m18 18 5 5M6 34l5-5M29 11l5-5" />
+      </svg>
+      <span>{t('留白一刻', 'A QUIET THOUGHT')}</span>
+    </div>
+    <p>{t('不急着知道答案，先听清自己的问题。', 'Before finding an answer, listen to the question.')}</p>
+    <span class="small-label">{t('问卜 · 日常灵感', 'WENBU · A DAILY PRACTICE')}</span>
+  </div>
+  <section class="section reveal" id="explore">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">FOUR WAYS TO LOOK WITHIN</span>
+        <h2>{t('一问之间，换个角度。', 'One question. A different perspective.')}</h2>
+      </div>
+      <p>
+        {t(
+          '选择一种方式，给心里的事情一个新的入口。',
+          'Choose a tradition. Give what is on your mind a new place to begin.',
+        )}
+      </p>
+    </div>
+    <div class="tool-grid">
+      {(Object.keys(toolInfo) as ToolKind[]).map((kind, i) => {
+        const tool = toolInfo[kind];
+        return (
+          <a class={`tool-card ${tool.color}`} href={href(locale, kind)}>
+            <div class="tool-card-top">
+              <span>
+                0{i + 1} / {['BAZI', 'I CHING', 'TAROT', 'ZI WEI'][i]}
+              </span>
+              <span>↗</span>
+            </div>
+            <div class="tool-icon" aria-hidden="true">
+              {kind === 'bazi' ? (
+                <div class="mini-pillar">
+                  {['甲\n子', '丙\n寅', '辛\n酉', '壬\n辰'].map((p) => (
+                    <span>
+                      {p.split('\n')[0]}
+                      <br />
+                      {p.split('\n')[1]}
+                    </span>
+                  ))}
+                </div>
+              ) : kind === 'iching' ? (
+                <div class="mini-hex">
+                  {[1, 0, 1, 0, 1, 0].map((b) => (
+                    <div>
+                      {b ? (
+                        <i />
+                      ) : (
+                        <>
+                          <i />
+                          <i />
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : kind === 'tarot' ? (
+                <div class="mini-tarot">✦</div>
+              ) : (
+                <div class="mini-star">✳</div>
+              )}
+            </div>
+            <h3>{t(tool.zh, tool.en)}</h3>
+            <p>{t(tool.descriptionZh, tool.descriptionEn)}</p>
+            <div class="tool-card-bottom">
+              <span>
+                {t(
+                  ['出生的五行底色', '变化中的一束光', '一场直觉的相遇', '十二宫的人生地图'][i],
+                  [
+                    'YOUR ELEMENTAL PALETTE',
+                    'THE LANGUAGE OF CHANGE',
+                    'A MOMENT OF INTUITION',
+                    'A TWELVE-PALACE MAP',
+                  ][i],
+                )}
+              </span>
+              <span>↗</span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+  <section class="manifesto reveal">
+    <div>
+      <span class="eyebrow accent">A MIRROR, NOT A VERDICT</span>
+      <h2>
+        {locale === 'zh' ? (
+          <>
+            借古人的眼光，
+            <br />
+            看见<em>自己的可能。</em>
+          </>
+        ) : (
+          <>
+            An old language.
+            <br />
+            <em>Your own meaning.</em>
+          </>
+        )}
+      </h2>
+    </div>
+    <div class="manifesto-items">
+      {[
+        [
+          t('看得见的依据', 'A basis you can see'),
+          t(
+            '先呈现命盘和符号，再说它们意味着什么。计算规则与来源，始终可以查看。',
+            'See the chart and symbols before the story. Calculation conventions and sources are always within reach.',
+          ),
+        ],
+        [
+          t('留得住的思考', 'A thought you can return to'),
+          t(
+            '把有共鸣的瞬间记下来，过些时候再读。手记只在你自己的浏览器里。',
+            'Save a moment that resonates and revisit it later. Your journal lives in your own browser.',
+          ),
+        ],
+        [
+          t('由你决定的下一步', 'A next step that belongs to you'),
+          t(
+            '不替你给人生下定论。把解读当作一个问题，把选择留给真实生活里的你。',
+            'Take a reading as a question to consider. The choices and the life around them remain yours.',
+          ),
+        ],
+      ].map(([title, body], i) => (
+        <div class="manifesto-item">
+          <span>0{i + 1}</span>
+          <div>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="section reveal">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">THE WENBU LIBRARY</span>
+        <h2>{t('不止读懂结果，也读懂来由。', 'Understand the why behind the reading.')}</h2>
+      </div>
+      <a class="text-link" href={href(locale, 'learn')}>
+        {t('翻开知识手册', 'Explore the library')} ↗
+      </a>
+    </div>
+    <div class="article-grid">
+      {[articles[0], articles[3], articles[6]].map((article) => (
+        <ArticleCard article={article} locale={locale} />
+      ))}
+    </div>
+  </section>
+  <section class="agent-banner reveal">
+    <div>
+      <span class="eyebrow">FOR THE AGENTS IN YOUR LIFE</span>
+      <h2>{t('把理解带走，把对话继续。', 'Take the context. Continue the conversation.')}</h2>
+      <p>
+        {t(
+          '你的命盘，可以成为下一次对话的起点。通过 MCP、CLI 或 Skill，与你自己的 Agent 一起探索。',
+          'Your chart can become the starting point for another conversation. Bring it to your agent through MCP, CLI or a Skill.',
+        )}
+      </p>
+      <a class="text-link" href={href(locale, 'agents')}>
+        {t('连接我的 Agent', 'Connect your agent')} ↗
+      </a>
+    </div>
+    <div class="agent-terminal">
+      <div class="terminal-dots">
+        <i />
+        <i />
+        <i />
+      </div>
+      <div>
+        <span class="prompt">$</span> node wenbu.mjs bazi --file birth.json
+      </div>
+      <div class="output">{`{ "kind": "bazi",`}</div>
+      <div class="output">{`  "pillars": [ … ],`}</div>
+      <div class="output">{`  "method": { "engine": "lunar-typescript" } }`}</div>
+      <div>
+        <span class="prompt">✓</span> {t('依据清楚，上下文由你选择。', 'Clear methods. Context you choose.')}
+      </div>
+    </div>
+  </section>
+</div>

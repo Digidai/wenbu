@@ -1,0 +1,20 @@
+---
+import type { Article } from '../data/articles';
+import type { Locale } from '../lib/schema';
+import { href, choose } from '../lib/i18n';
+const { article, locale } = Astro.props as { article: Article; locale: Locale };
+const copy = article[locale];
+---
+
+<a class="article-card" href={href(locale, `${article.category}/${article.slug}`)}>
+  <div class="article-art" aria-hidden="true">
+    <span>{article.symbol}</span>
+  </div>
+  <span class="eyebrow">
+    {article.category === 'blog' ? 'WENBU JOURNAL' : 'FIELD NOTES'} · {article.minutes}{' '}
+    {choose(locale, '分钟', 'MIN READ')}
+  </span>
+  <h3>{copy.title}</h3>
+  <p>{copy.description}</p>
+  <span class="read-link">{choose(locale, '继续阅读', 'Read the story')} ↗</span>
+</a>

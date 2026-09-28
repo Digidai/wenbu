@@ -1,0 +1,8 @@
+dist
+node_modules
+.astro
+.wrangler
+.dev.vars*
+package-lock.json
+docs/reviews/*-raw.txt
+docs/reviews/*-prompt.md

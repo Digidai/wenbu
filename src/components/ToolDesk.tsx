@@ -1,0 +1,763 @@
+import { useEffect, useRef, useState } from 'react';
+import {
+  ArrowUpRight,
+  ArrowRight,
+  RefreshCw,
+  Bookmark,
+  Download,
+  Check,
+  LoaderCircle,
+  SlidersHorizontal,
+  Feather,
+} from 'lucide-react';
+import type { Locale, ToolKind } from '../lib/schema';
+import type { Reading } from '../lib/tools';
+import { choose, href } from '../lib/i18n';
+import { agentContext, downloadJson, readJournal, writeJournal, type Answer } from '../lib/journal';
+import ReadingView from './ReadingView';
+
+async function post<T>(path: string, input: unknown, signal?: AbortSignal): Promise<T> {
+  const response = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+    signal,
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error?.message || 'Request failed');
+  return data;
+}
+export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Locale }) {
+  const t = (zh: string, en: string) => choose(locale, zh, en);
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [unknown, setUnknown] = useState(false);
+  const [timezone, setTimezone] = useState('Asia/Shanghai');
+  const [sex, setSex] = useState<'male' | 'female'>('female');
+  const [boundary, setBoundary] = useState<'midnight' | 'zi'>('midnight');
+  const [solar, setSolar] = useState(false);
+  const [longitude, setLongitude] = useState('');
+  const [count, setCount] = useState<1 | 3>(3);
+  const [reversals, setReversals] = useState(true);
+  const [selected, setSelected] = useState<number[]>([]);
+  const [castMode, setCastMode] = useState<'random' | 'manual'>('random');
+  const [lines, setLines] = useState([7, 8, 7, 8, 7, 8]);
+  const [result, setResult] = useState<Reading | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [question, setQuestion] = useState('');
+  const [context, setContext] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [answer, setAnswer] = useState<Answer | undefined>();
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiError, setAiError] = useState('');
+  const [provenance, setProvenance] = useState('');
+  const [remaining, setRemaining] = useState<number>();
+  const [saved, setSaved] = useState(false);
+  const [note, setNote] = useState('');
+  const [exportOpen, setExportOpen] = useState(false);
+  const [includeBirth, setIncludeBirth] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const aiAbort = useRef<AbortController | null>(null);
+  const lock = useRef(false);
+  const entryId = useRef<string | null>(null);
+  useEffect(() => () => aiAbort.current?.abort(), []);
+  function invalidateAnswer() {
+    aiAbort.current?.abort();
+    setAiBusy(false);
+    setAnswer(undefined);
+    setSaved(false);
+  }
+  function changeQuestion(value: string) {
+    setQuestion(value);
+    invalidateAnswer();
+  }
+  function changeContext(value: string) {
+    setContext(value);
+    invalidateAnswer();
+  }
+  const input = () =>
+    kind === 'bazi'
+      ? {
+          date,
+          time: unknown ? null : time,
+          timezone,
+          dayBoundary: boundary,
+          solarTime: solar && !unknown,
+          ...(solar && !unknown ? { longitude: Number(longitude) } : {}),
+          locale,
+        }
+      : kind === 'ziwei'
+        ? { date, time, sex, locale }
+        : kind === 'tarot'
+          ? { count, reversals, locale }
+          : { ...(castMode === 'manual' ? { lines } : {}), locale };
+  async function run(demo = false) {
+    if (lock.current) return;
+    lock.current = true;
+    setBusy(true);
+    setError('');
+    setAiError('');
+    setAnswer(undefined);
+    setProvenance('');
+    setSaved(false);
+    setExportOpen(false);
+    setIncludeBirth(false);
+    setNote('');
+    setRemaining(undefined);
+    setConsent(false);
+    setResult(null);
+    entryId.current = null;
+    aiAbort.current?.abort();
+    setAiBusy(false);
+    let payload = input();
+    if (demo && (kind === 'bazi' || kind === 'ziwei')) {
+      setDate('2000-08-16');
+      setTime('03:30');
+      setTimezone('Asia/Shanghai');
+      setUnknown(false);
+      setSolar(false);
+      setBoundary('midnight');
+      payload =
+        kind === 'bazi'
+          ? {
+              date: '2000-08-16',
+              time: '03:30',
+              timezone: 'Asia/Shanghai',
+              dayBoundary: 'midnight',
+              solarTime: false,
+              locale,
+            }
+          : { date: '2000-08-16', time: '03:30', sex, locale };
+    }
+    try {
+      const data = await post<Reading>(`/api/v1/${kind}`, payload);
+      setResult(data);
+      entryId.current = crypto.randomUUID();
+      setSelected([]);
+      requestAnimationFrame(() =>
+        resultRef.current?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+          block: 'start',
+        }),
+      );
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : t('连接失败，请重试。', 'Connection failed. Please try again.'),
+      );
+      setSelected([]);
+    } finally {
+      setBusy(false);
+      lock.current = false;
+    }
+  }
+  function selectCard(i: number) {
+    if (busy || selected.includes(i)) return;
+    const next = [...selected, i];
+    setSelected(next);
+    if (next.length === count) void run();
+  }
+  async function ask() {
+    if (!result || aiBusy || !consent || question.trim().length < 2) return;
+    setAiBusy(true);
+    setAiError('');
+    const controller = new AbortController();
+    aiAbort.current = controller;
+    const readingInput =
+      result.kind === 'tarot'
+        ? { cards: result.cards.map((c) => ({ id: c.id, reversed: c.reversed })) }
+        : result.kind === 'iching'
+          ? { lines: result.lines, locale }
+          : result.input;
+    try {
+      const data = await post<{ answer: Answer; remaining: number; provenance: { servedModel: string } }>(
+        '/api/v1/interpret',
+        { kind, input: readingInput, question, context, locale, consent: true },
+        controller.signal,
+      );
+      if (controller.signal.aborted) return;
+      setAnswer(data.answer);
+      setRemaining(data.remaining);
+      setProvenance(data.provenance.servedModel);
+      setSaved(false);
+    } catch (e) {
+      if (!controller.signal.aborted && e instanceof Error && e.name !== 'AbortError') setAiError(e.message);
+    } finally {
+      if (aiAbort.current === controller) setAiBusy(false);
+    }
+  }
+  function save() {
+    if (!result || saved) return;
+    try {
+      const entries = readJournal();
+      const id = entryId.current ?? crypto.randomUUID();
+      entryId.current = id;
+      const previous = entries.find((e) => e.id === id);
+      writeJournal([
+        {
+          id,
+          createdAt: previous?.createdAt ?? new Date().toISOString(),
+          context,
+          provenance: answer ? provenance : undefined,
+          kind,
+          result,
+          question,
+          note,
+          answer,
+        },
+        ...entries.filter((e) => e.id !== id),
+      ]);
+      setSaved(true);
+    } catch {
+      setAiError(
+        t('浏览器无法保存，请使用导出备份。', 'Browser storage is unavailable. Please export a backup.'),
+      );
+    }
+  }
+  return (
+    <div className={`tool-desk tool-${kind}`}>
+      <div className="tool-form-panel">
+        <div className="step-label">
+          <span>01</span>
+          {t(
+            kind === 'bazi' || kind === 'ziwei' ? '从你的出生时刻开始' : '给自己片刻安静',
+            kind === 'bazi' || kind === 'ziwei' ? 'Begin with your birth details' : 'Take a quiet moment',
+          )}
+        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void run();
+          }}
+        >
+          {kind === 'bazi' || kind === 'ziwei' ? (
+            <>
+              <div className="field-pair">
+                <label className="field">
+                  {t('公历出生日期', 'Birth date · Gregorian')}
+                  <input
+                    aria-label={t('公历出生日期', 'Birth date')}
+                    type="date"
+                    min="1901-01-01"
+                    max="2099-12-31"
+                    required
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </label>
+                <label className="field">
+                  {t('出生时间', 'Birth time')}
+                  <input
+                    aria-label={t('出生时间', 'Birth time')}
+                    type="time"
+                    required={!unknown}
+                    disabled={unknown}
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                  />
+                </label>
+              </div>
+              {kind === 'bazi' ? (
+                <>
+                  <label className="check-field">
+                    <input type="checkbox" checked={unknown} onChange={(e) => setUnknown(e.target.checked)} />
+                    {t('不确定出生时间（不生成时柱）', 'I do not know the time (omit hour pillar)')}
+                  </label>
+                  <label className="field">
+                    {t('出生地时区', 'Time zone at birth')}
+                    <select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
+                      {[
+                        ['Asia/Shanghai', '中国大陆 / China'],
+                        ['Asia/Hong_Kong', '香港 / Hong Kong'],
+                        ['Asia/Taipei', '台北 / Taipei'],
+                        ['Asia/Singapore', '新加坡 / Singapore'],
+                        ['Asia/Tokyo', '东京 / Tokyo'],
+                        ['Asia/Seoul', '首尔 / Seoul'],
+                        ['Asia/Kolkata', '印度 / India'],
+                        ['Europe/London', '伦敦 / London'],
+                        ['Europe/Paris', '巴黎 / Paris'],
+                        ['America/New_York', '纽约 / New York'],
+                        ['America/Los_Angeles', '洛杉矶 / Los Angeles'],
+                        ['Australia/Sydney', '悉尼 / Sydney'],
+                        ['UTC', 'UTC'],
+                        ['+08:00', 'UTC+08:00 · 固定偏移 / fixed offset'],
+                      ].map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <details className="advanced">
+                    <summary>
+                      <SlidersHorizontal size={14} />
+                      {t('历法选项', 'Calendar options')}
+                    </summary>
+                    <label className="field">
+                      {t('其他 IANA 时区或 UTC 偏移', 'Other IANA time zone or UTC offset')}
+                      <input
+                        value={timezone}
+                        maxLength={80}
+                        onChange={(e) => setTimezone(e.target.value)}
+                        placeholder="Asia/Shanghai"
+                      />
+                    </label>
+                    <label className="field">
+                      {t('换日规则', 'Day boundary')}
+                      <select
+                        value={boundary}
+                        onChange={(e) => setBoundary(e.target.value as 'midnight' | 'zi')}
+                      >
+                        <option value="midnight">{t('零点换日（默认）', 'Midnight (default)')}</option>
+                        <option value="zi">{t('子初 23:00 换日', 'Zi hour · 23:00')}</option>
+                      </select>
+                    </label>
+                    <label className="check-field">
+                      <input
+                        type="checkbox"
+                        checked={solar}
+                        disabled={unknown}
+                        onChange={(e) => setSolar(e.target.checked)}
+                      />
+                      {t('使用近似真太阳时', 'Approximate apparent solar time')}
+                    </label>
+                    {solar && !unknown && (
+                      <label className="field">
+                        {t('出生地经度（东正西负）', 'Longitude (east + / west −)')}
+                        <input
+                          type="number"
+                          min="-180"
+                          max="180"
+                          step="any"
+                          required
+                          value={longitude}
+                          onChange={(e) => setLongitude(e.target.value)}
+                          placeholder="121.47"
+                        />
+                      </label>
+                    )}
+                    <p>
+                      {t(
+                        '节气按绝对时刻判断。夏令时模糊时间需输入明确偏移。真太阳时是近似值，边界时刻建议对照。',
+                        'Solar terms use absolute instants. Ambiguous DST times require an explicit offset. Solar correction is approximate; compare charts near boundaries.',
+                      )}
+                    </p>
+                  </details>
+                </>
+              ) : (
+                <>
+                  <label className="field">
+                    {t('传统排盘参数', 'Traditional chart parameter')}
+                    <select value={sex} onChange={(e) => setSex(e.target.value as 'male' | 'female')}>
+                      <option value="female">{t('女', 'Female')}</option>
+                      <option value="male">{t('男', 'Male')}</option>
+                    </select>
+                  </label>
+                  <p className="form-note">
+                    {t(
+                      '用于传统顺逆行计算。输入当地钟表时间，本工具不做太阳时校正。',
+                      'Used for the traditional direction rule. Enter local civil time; this tool does not apply solar correction.',
+                    )}
+                  </p>
+                </>
+              )}
+              <button className="button primary full" type="submit" disabled={busy}>
+                {busy ? (
+                  <LoaderCircle className="spin" size={18} />
+                ) : (
+                  <>
+                    {t('展开我的命盘', 'Reveal my chart')}
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
+              <button
+                className="text-button demo-button"
+                type="button"
+                onClick={() => void run(true)}
+                disabled={busy}
+              >
+                {t('先看一份示例命盘', 'Explore an example first')} <ArrowUpRight size={14} />
+              </button>
+            </>
+          ) : (
+            <>
+              <label className="field">
+                {t('此刻，你想问什么？（可选）', 'What is on your mind? (optional)')}
+                <textarea
+                  value={question}
+                  onChange={(e) => changeQuestion(e.target.value)}
+                  maxLength={600}
+                  rows={3}
+                  placeholder={t(
+                    '例如：面对新的机会，我可以注意什么？',
+                    'For example: what could I pay attention to as I consider a new opportunity?',
+                  )}
+                />
+              </label>
+              <p className="form-note">
+                {t(
+                  '起卦或抽牌时，问题留在本页。只有主动请求解读才会发送。',
+                  'Your question stays on this page until you request an AI reading.',
+                )}
+              </p>
+              {kind === 'tarot' ? (
+                <>
+                  <div className="segmented" aria-label={t('牌阵', 'Spread')}>
+                    <button
+                      type="button"
+                      aria-pressed={count === 1}
+                      onClick={() => {
+                        setCount(1);
+                        setSelected([]);
+                      }}
+                    >
+                      {t('一张 · 当下', 'One · Reflection')}
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={count === 3}
+                      onClick={() => {
+                        setCount(3);
+                        setSelected([]);
+                      }}
+                    >
+                      {t('三张 · 探索', 'Three · Perspective')}
+                    </button>
+                  </div>
+                  <label className="check-field">
+                    <input
+                      type="checkbox"
+                      checked={reversals}
+                      onChange={(e) => setReversals(e.target.checked)}
+                    />
+                    {t('包含逆位', 'Include reversed cards')}
+                  </label>
+                  <div className="tarot-deck" aria-label={t('选牌区', 'Card selection')}>
+                    {Array.from({ length: 7 }, (_, i) => (
+                      <button
+                        type="button"
+                        key={i}
+                        className={`card-back ${selected.includes(i) ? 'selected' : ''}`}
+                        style={{ '--card-i': i - 3 } as React.CSSProperties}
+                        aria-label={t(`选择第 ${i + 1} 张牌`, `Choose card ${i + 1}`)}
+                        disabled={busy || selected.includes(i)}
+                        onClick={() => selectCard(i)}
+                      >
+                        <span>✦</span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="deck-instruction" aria-live="polite">
+                    {busy
+                      ? t('正在展开牌面…', 'Revealing your cards…')
+                      : t(
+                          `选 ${count} 张牌 · 已选 ${selected.length} 张`,
+                          `Choose ${count} · ${selected.length} selected`,
+                        )}
+                  </p>
+                  <button type="submit" className="button primary full" disabled={busy}>
+                    {t('为我抽牌', 'Draw for me')}
+                    <ArrowRight size={18} />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="segmented">
+                    <button
+                      type="button"
+                      aria-pressed={castMode === 'random'}
+                      onClick={() => setCastMode('random')}
+                    >
+                      {t('在线起卦', 'Cast online')}
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={castMode === 'manual'}
+                      onClick={() => setCastMode('manual')}
+                    >
+                      {t('录入铜钱结果', 'Enter coin results')}
+                    </button>
+                  </div>
+                  {castMode === 'manual' ? (
+                    <div className="manual-lines">
+                      {lines.map((v, i) => (
+                        <label className="field" key={i}>
+                          {t(
+                            `第 ${i + 1} 爻${i === 0 ? '（最下方）' : ''}`,
+                            `Line ${i + 1}${i === 0 ? ' (bottom)' : ''}`,
+                          )}
+                          <select
+                            value={v}
+                            onChange={(e) =>
+                              setLines(lines.map((x, j) => (i === j ? Number(e.target.value) : x)))
+                            }
+                          >
+                            {[6, 7, 8, 9].map((n) => (
+                              <option value={n} key={n}>
+                                {n} ·{' '}
+                                {t(
+                                  ['老阴', '少阳', '少阴', '老阳'][n - 6],
+                                  ['Old yin', 'Young yang', 'Young yin', 'Old yang'][n - 6],
+                                )}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={`coin-ritual ${busy ? 'casting' : ''}`} aria-hidden="true">
+                      {[0, 1, 2].map((i) => (
+                        <span key={i} style={{ '--i': i } as React.CSSProperties}>
+                          <i />
+                          通宝
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <button className="button primary full" type="submit" disabled={busy}>
+                    {busy ? (
+                      <LoaderCircle className="spin" size={18} />
+                    ) : (
+                      <>
+                        {t('静心，起一卦', 'Pause. Cast a hexagram.')}
+                        <ArrowRight size={18} />
+                      </>
+                    )}
+                  </button>
+                  <p className="form-note centered">
+                    {t('六爻自下而上，记录每一处变化。', 'Six lines, bottom to top. Each change recorded.')}
+                  </p>
+                </>
+              )}
+            </>
+          )}
+          {error && (
+            <p role="alert" className="error-message">
+              {error}
+            </p>
+          )}
+        </form>
+        <div className="privacy-note">
+          <span>◌</span>
+          <p>
+            {t(
+              '不需要姓名，也不需要注册。记录仅在你主动保存时留在这台设备。',
+              'No name or account needed. Readings stay on this device only when you save them.',
+            )}
+          </p>
+        </div>
+      </div>
+      <div className="tool-result-panel" ref={resultRef} aria-busy={busy}>
+        {!result ? (
+          <div className="empty-reading">
+            <div className="empty-orbit">
+              <i />
+              <span>
+                {kind === 'bazi' ? '命' : kind === 'iching' ? '易' : kind === 'tarot' ? '象' : '星'}
+              </span>
+              <i />
+            </div>
+            <span className="eyebrow">A MOMENT FOR YOURSELF</span>
+            <h2>{t('答案之前，先看见自己。', 'Before an answer, a new perspective.')}</h2>
+            <p>
+              {t(
+                '填入信息，或让一次随机的相遇，成为思考的起点。',
+                'Enter your details, or let a chance encounter become a starting point for reflection.',
+              )}
+            </p>
+            <a className="text-link" href={href(locale, 'methodology')}>
+              {t('了解计算方法', 'How the tools work')}
+              <ArrowUpRight size={14} />
+            </a>
+          </div>
+        ) : (
+          <>
+            <div className="step-label">
+              <span>02</span>
+              {t('看见你的图景', 'Your perspective, made visible')}
+              <button
+                className="icon-button"
+                type="button"
+                onClick={() => {
+                  setResult(null);
+                  invalidateAnswer();
+                  setNote('');
+                  entryId.current = null;
+                }}
+                aria-label={t('重新开始', 'Start again')}
+              >
+                <RefreshCw size={16} />
+              </button>
+            </div>
+            <ReadingView result={result} locale={locale} />
+            <div className="reading-actions">
+              <button className="button secondary" type="button" onClick={save} disabled={saved}>
+                {saved ? <Check size={15} /> : <Bookmark size={15} />}{' '}
+                {t(saved ? '已保存到手记' : '保存到手记', saved ? 'Saved to journal' : 'Save reading')}
+              </button>
+              <button className="text-button" type="button" onClick={() => setExportOpen(!exportOpen)}>
+                <Download size={15} />
+                {t('导出给 Agent', 'Export for an agent')}
+              </button>
+            </div>
+            {exportOpen && (
+              <div className="export-panel">
+                <h3>{t('选择要交给 Agent 的上下文', 'Choose what your agent receives')}</h3>
+                <p>
+                  {t(
+                    '导出包含命盘或牌面、当前问题和你填写的背景。只有你发送文件后，外部 Agent 才能读取。',
+                    'The export includes the chart or cards, your current question and selected context. An external agent receives it only when you send the file.',
+                  )}
+                </p>
+                {(kind === 'bazi' || kind === 'ziwei') && (
+                  <label className="check-field">
+                    <input
+                      type="checkbox"
+                      checked={includeBirth}
+                      onChange={(e) => setIncludeBirth(e.target.checked)}
+                    />
+                    {t('同时包含原始出生资料', 'Also include original birth details')}
+                  </label>
+                )}
+                <pre>{JSON.stringify(agentContext(result, question, context, includeBirth), null, 2)}</pre>
+                <button
+                  type="button"
+                  className="button secondary"
+                  onClick={() =>
+                    downloadJson(agentContext(result, question, context, includeBirth), 'wenbu-context.json')
+                  }
+                >
+                  {t('下载 JSON 上下文', 'Download context JSON')}
+                  <Download size={15} />
+                </button>
+              </div>
+            )}
+            <section className="interpretation">
+              <div className="step-label">
+                <span>03</span>
+                {t('带着你的问题，继续探索', 'Bring your question into the picture')}
+              </div>
+              <h2>{t('让图景，贴近你的当下。', 'Make it personal. Make it useful.')}</h2>
+              <label className="field">
+                {t('你想探索的问题', 'Your question')}
+                <textarea
+                  rows={2}
+                  value={question}
+                  onChange={(e) => changeQuestion(e.target.value)}
+                  maxLength={600}
+                  placeholder={t('我该如何看待最近的变化？', 'How might I reflect on the changes around me?')}
+                />
+              </label>
+              <details className="context-details">
+                <summary>
+                  {t('补充你希望使用的背景（可选）', 'Add context you choose to share (optional)')}
+                </summary>
+                <label className="field">
+                  <span>
+                    {t(
+                      '只有你主动填写的内容才会被使用。',
+                      'Only the information you enter here will be used.',
+                    )}
+                  </span>
+                  <textarea
+                    rows={3}
+                    value={context}
+                    onChange={(e) => changeContext(e.target.value)}
+                    maxLength={1600}
+                    placeholder={t(
+                      '例如：正在适应新的团队，希望更好地表达自己的想法。',
+                      'For example: I am settling into a new team and want to express my ideas more clearly.',
+                    )}
+                  />
+                </label>
+              </details>
+              <label className="check-field consent">
+                <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+                <span>
+                  {t(
+                    '将本次排盘、问题和选填背景发送给 DeepSeek，生成解读。',
+                    'Send this chart, question and selected context to DeepSeek for a reading.',
+                  )}
+                </span>
+              </label>
+              <button
+                className="button primary"
+                type="button"
+                onClick={() => void ask()}
+                disabled={aiBusy || !consent || question.trim().length < 2}
+              >
+                {aiBusy ? (
+                  <>
+                    <LoaderCircle className="spin" size={17} />
+                    {t('正在整理你的解读…', 'Considering your reading…')}
+                  </>
+                ) : (
+                  <>
+                    <Feather size={17} />
+                    {t('获取免费解读', 'Get a free reading')}
+                  </>
+                )}
+              </button>
+              <p className="form-note">
+                {t(
+                  '每个网络每日 5 次；全站有免费总额度。额度用完仍可排盘、抽牌与保存。',
+                  'Five free AI requests per network daily, subject to a site-wide budget. Charts, draws and your journal remain available.',
+                )}
+              </p>
+              {aiError && (
+                <p role="alert" className="error-message">
+                  {aiError}
+                </p>
+              )}
+              {answer && (
+                <article className="ai-reading" aria-live="polite">
+                  <span className="eyebrow">{t('AI 生成的象征性解读', 'AI-GENERATED REFLECTION')}</span>
+                  <h2>{answer.title}</h2>
+                  <p className="reading-summary">{answer.summary}</p>
+                  {answer.observations.map((o, i) => (
+                    <div className="observation" key={i}>
+                      <span>0{i + 1}</span>
+                      <div>
+                        <h3>{o.basis}</h3>
+                        <p>{o.reflection}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <h3>{t('可以试着做的事', 'Small actions to try')}</h3>
+                  <ul>
+                    {answer.nextSteps.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
+                  <blockquote>{answer.question}</blockquote>
+                  <p className="form-note">
+                    DeepSeek · {provenance} ·{' '}
+                    {t(`今日剩余 ${remaining} 次`, `Today: ${remaining} requests left`)}
+                  </p>
+                  <label className="field">
+                    {t('留一句话给以后的自己', 'A note for your future self')}
+                    <textarea
+                      rows={2}
+                      maxLength={1200}
+                      value={note}
+                      onChange={(e) => {
+                        setNote(e.target.value);
+                        setSaved(false);
+                      }}
+                    />
+                  </label>
+                  <button type="button" className="button secondary" disabled={saved} onClick={save}>
+                    {saved ? <Check size={16} /> : <Bookmark size={16} />}{' '}
+                    {t(saved ? '解读已保存' : '保存这份解读', saved ? 'Reading saved' : 'Save this reading')}
+                  </button>
+                </article>
+              )}
+            </section>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

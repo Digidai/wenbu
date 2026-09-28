@@ -1,0 +1,462 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Home from '../components/Home.astro';
+import ToolDesk from '../components/ToolDesk';
+import Journal from '../components/Journal';
+import ArticleCard from '../components/ArticleCard.astro';
+import Agents from '../components/Agents.astro';
+import { articles } from '../data/articles';
+import { pages } from '../data/pages';
+import { comparisons } from '../data/comparisons';
+import { sources } from '../data/sources';
+import { choose, href, toolInfo } from '../lib/i18n';
+import type { Locale, ToolKind } from '../lib/schema';
+export function getStaticPaths() {
+  const paths = [
+    '',
+    'bazi',
+    'iching',
+    'tarot',
+    'ziwei',
+    'journal',
+    'learn',
+    'blog',
+    'agents',
+    'sources',
+    ...Object.keys(pages),
+    ...articles.map((a) => `${a.category}/${a.slug}`),
+    ...comparisons.map((c) => `compare/${c.slug}`),
+  ];
+  return (['zh', 'en'] as const).flatMap((locale) =>
+    paths.map((path) => ({
+      params: { path: (locale === 'en' ? `en/${path}` : path).replace(/\/$/, '') || undefined },
+      props: { locale, path },
+    })),
+  );
+}
+const { locale, path } = Astro.props as { locale: Locale; path: string };
+const t = (zh: string, en: string) => choose(locale, zh, en);
+const article = articles.find((a) => `${a.category}/${a.slug}` === path);
+const comparison = comparisons.find((c) => `compare/${c.slug}` === path);
+const content = pages[path]?.[locale];
+const kind = path in toolInfo ? (path as ToolKind) : null;
+const tool = kind ? toolInfo[kind] : null;
+const titles: Record<string, [string, string]> = {
+  '': ['免费八字、易经、塔罗与紫微工具', 'Free BaZi, I Ching, tarot & Zi Wei tools'],
+  bazi: ['免费八字排盘，读懂你的五行底色', 'Free BaZi calculator & Four Pillars chart'],
+  iching: ['免费易经占卜，从一卦看见变化', 'Free I Ching reading & hexagram oracle'],
+  tarot: ['免费塔罗占卜，遇见新的视角', 'Free tarot reading · one & three cards'],
+  ziwei: ['免费紫微斗数排盘，十二宫可视化', 'Free Zi Wei Dou Shu chart calculator'],
+  journal: ['我的手记', 'Your reading journal'],
+  learn: ['知识手册', 'The Wenbu library'],
+  blog: ['问卜札记', 'The Wenbu journal'],
+  agents: ['与你的 Agent 一起探索', 'Wenbu for agents · MCP, CLI & Skills'],
+  sources: ['参考资料与研究来源', 'Sources & further reading'],
+};
+const descriptions: Record<string, [string, string]> = {
+  '': [
+    '免费探索八字命盘、易经问卦、78 张塔罗和紫微星盘。无需注册，计算依据透明，可选 AI 解读、本地手记和 MCP Agent 接口。',
+    'Explore free BaZi charts, I Ching casts, a full 78-card tarot deck and Zi Wei. No account needed. Transparent methods, optional AI and a local journal.',
+  ],
+  journal: [
+    '留住当时的问题，也留住后来的理解。记录只在当前浏览器里，由你保存、回看和导出。',
+    'Keep the question you had and the understanding that followed. Your entries stay in this browser, ready to revisit and export.',
+  ],
+  learn: [
+    '从符号的来由，到计算的边界。用清楚的语言，读懂每一次探索。',
+    'From the meaning of a symbol to the limits of a calculation. Clear guides for a more thoughtful reading.',
+  ],
+  blog: [
+    '记录我们如何提问、如何理解，又如何回到真实生活。阅读关于手记习惯、计算依据和日常自我觉察的原创文章。',
+    'Notes on asking, interpreting, and returning to everyday life.',
+  ],
+  agents: [
+    '开放的计算工具，由你选择的上下文。把命盘与问题带给你熟悉的 Agent。',
+    'Open calculation tools and context you choose. Bring the chart and question to an agent you already know.',
+  ],
+  sources: [
+    '把经典、计算依据、研究和产品自述分开，知道每一种说法从哪里来。',
+    'Classical texts, calculation references, research and product statements, with their different roles kept clear.',
+  ],
+};
+const title =
+  article?.[locale].title ||
+  comparison?.[locale].title ||
+  content?.title ||
+  t(...(titles[path] || titles['']));
+const description =
+  article?.[locale].description ||
+  comparison?.[locale].description ||
+  content?.description ||
+  (tool
+    ? t(
+        tool.descriptionZh +
+          '免费使用，无需注册，计算规则与来源公开，支持可选 AI 解读、本地保存和 Agent 导出。',
+        tool.descriptionEn +
+          ' Free, without an account. View calculation conventions, save locally and export for your agent.',
+      )
+    : t(...(descriptions[path] || descriptions[''])));
+const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
+---
+
+<Layout
+  title={title}
+  description={description}
+  locale={locale}
+  path={path}
+  noindex={path === 'journal'}
+  article={Boolean(article)}
+>
+  {path === '' ? (
+    <Home locale={locale} />
+  ) : (
+    <div class="shell">
+      <header class="page-intro">
+        <div class="breadcrumbs">
+          <a href={href(locale)}>{t('首页', 'Home')}</a>
+          <span>/</span>
+          {article ? (
+            <>
+              <a href={href(locale, article.category)}>
+                {t(
+                  article.category === 'blog' ? '札记' : '手册',
+                  article.category === 'blog' ? 'Journal' : 'Library',
+                )}
+              </a>
+              <span>/</span>
+            </>
+          ) : null}
+          <span>{kind ? t(tool!.zh, tool!.en) : article ? t('阅读', 'Reading') : t('探索', 'Explore')}</span>
+        </div>
+        <span class="eyebrow">
+          {tool?.eyebrow ||
+            (article
+              ? article.category === 'blog'
+                ? 'WENBU JOURNAL'
+                : 'FIELD NOTES'
+              : comparison
+                ? 'AN HONEST COMPARISON'
+                : 'THE WENBU WAY')}
+        </span>
+        <h1>{displayHeading}</h1>
+        <p>{tool ? t(tool.descriptionZh, tool.descriptionEn) : description}</p>
+        {article && (
+          <div class="article-meta">
+            <span>Wenbu · {t('AI 辅助编辑', 'AI-assisted editorial')}</span>
+            <span>2026.09.28</span>
+            <span>
+              {article.minutes} {t('分钟阅读', 'min read')}
+            </span>
+          </div>
+        )}
+      </header>
+      {kind && (
+        <>
+          <ToolDesk kind={kind} locale={locale} client:load />
+          <noscript>
+            <p>
+              {t(
+                '交互工具需要 JavaScript。你仍然可以阅读完整说明，或使用公开 REST API 与 CLI。',
+                'Interactive tools require JavaScript. You can still read the guides or use the public REST API and CLI.',
+              )}
+            </p>
+            <a href={href(locale, 'agents')}>API / CLI</a>
+          </noscript>
+          <div class="tool-support">
+            <div>
+              <h2>{t('先看见，再理解。', 'See the structure. Then explore.')}</h2>
+              <p>
+                {t(
+                  '工具会先给出原始结果，你可以查看计算方法，再决定是否请求解读。解读是一个思考的起点，而不是必须照做的结论。',
+                  'Your original result comes first. Inspect the method before deciding whether to request a reading. An interpretation is a starting point for thought, not an instruction to obey.',
+                )}
+              </p>
+              <a class="text-link" href={href(locale, 'methodology')}>
+                {t('了解计算与依据', 'Explore our methods')} ↗
+              </a>
+              <div class="related-reading">
+                <h3>{t('从这里读起', 'Start reading')}</h3>
+                {articles
+                  .filter((a) => a.tool === kind)
+                  .slice(0, 3)
+                  .map((a) => (
+                    <a href={href(locale, `${a.category}/${a.slug}`)}>{a[locale].title} ↗</a>
+                  ))}
+              </div>
+            </div>
+            <div class="faq">
+              <h2>{t('你可能想知道', 'A few good questions')}</h2>
+              <details>
+                <summary>{t('真的免费吗？', 'Is it really free?')}</summary>
+                <p>
+                  {t(
+                    '排盘、抽牌、起卦和本地手记免费。AI 每网络每日 5 次，有全站总额度，上海时间零点重置。',
+                    'Charts, draws, casts and the local journal are free. AI allows five daily requests per network, within a site-wide budget, resetting at midnight in Shanghai.',
+                  )}
+                </p>
+              </details>
+              <details>
+                <summary>{t('资料会被公开吗？', 'Will my information be public?')}</summary>
+                <p>
+                  {t(
+                    '不会自动公开。排盘输入通过 POST 发送；保存的手记只在当前浏览器。AI 解读需你主动确认将当前信息发送给 DeepSeek。',
+                    'Nothing is published automatically. Inputs use POST, saved entries stay in this browser, and an AI request requires your explicit choice to send the current information to DeepSeek.',
+                  )}
+                </p>
+              </details>
+              <details>
+                <summary>
+                  {t('可以把结果交给自己的 Agent 吗？', 'Can I use the result with my agent?')}
+                </summary>
+                <p>
+                  {t(
+                    '可以。结果下方可预览并导出 JSON 上下文，也可以通过 MCP、CLI 或 REST 直接计算。',
+                    'Yes. Preview and download a JSON context export below the result, or calculate through MCP, CLI or REST.',
+                  )}
+                </p>
+              </details>
+              <details>
+                <summary>{t('结果能预测我的未来吗？', 'Does it predict my future?')}</summary>
+                <p>
+                  {t(
+                    '它提供传统符号与反思视角，不保证未来事件。重大决定仍需现实信息、直接沟通与适当的专业意见。',
+                    'It offers traditional symbols and a perspective for reflection, not a guarantee of future events. Major decisions still need evidence, communication and appropriate professional advice.',
+                  )}
+                </p>
+              </details>
+            </div>
+          </div>
+        </>
+      )}
+      {path === 'journal' && <Journal locale={locale} client:load />}
+      {(path === 'learn' || path === 'blog') && (
+        <>
+          <div class="article-grid library-grid">
+            {articles
+              .filter((a) => a.category === path)
+              .map((a) => (
+                <ArticleCard article={a} locale={locale} />
+              ))}
+          </div>
+          <div class="related-reading" style="margin-bottom:60px">
+            <h3>{t('选择工具之前，也可以看看', 'Before choosing a tool')}</h3>
+            {comparisons.map((c) => (
+              <a href={href(locale, `compare/${c.slug}`)}>{c[locale].title} ↗</a>
+            ))}
+            <a href={href(locale, path === 'learn' ? 'blog' : 'learn')}>
+              {t(
+                path === 'learn' ? '阅读问卜札记' : '翻开知识手册',
+                path === 'learn' ? 'Read the journal' : 'Browse the library',
+              )}{' '}
+              ↗
+            </a>
+          </div>
+        </>
+      )}
+      {article && (
+        <div class="prose-grid">
+          <article class="prose">
+            {article[locale].sections.map((section, i) => (
+              <section id={`section-${i}`}>
+                <h2>{section.heading}</h2>
+                {section.paragraphs.map((p) => (
+                  <p>{p}</p>
+                ))}
+                {section.bullets && (
+                  <ul>
+                    {section.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+            <div class="source-list">
+              <h2>{t('来源与进一步阅读', 'Sources & further reading')}</h2>
+              {article.sources.map((s) => (
+                <a href={s.url} target="_blank" rel="noreferrer">
+                  {s.title} ↗
+                </a>
+              ))}
+              <p>
+                {t(
+                  '文中传统解释不等于经过验证的现实预测；来源角色详见研究说明。',
+                  'Traditional interpretations are not established predictions. See the source notes for context.',
+                )}
+              </p>
+            </div>
+            <a class="button primary" href={href(locale, article.tool)}>
+              {t('带着理解，开始探索', 'Try it with a clearer perspective')} ↗
+            </a>
+          </article>
+          <aside class="article-aside">
+            <span>{t('这一页', 'ON THIS PAGE')}</span>
+            {article[locale].sections.map((s, i) => (
+              <a href={`#section-${i}`}>{s.heading}</a>
+            ))}
+            <p>
+              {t(
+                '从计算到解读，保留每一步的依据。',
+                'Keep the basis visible, from calculation to interpretation.',
+              )}
+            </p>
+            <a href={href(locale, 'sources')}>{t('全部参考资料', 'All sources')} ↗</a>
+            <a href={href(locale, 'learn')}>{t('回到知识手册', 'Back to the library')} ↗</a>
+          </aside>
+        </div>
+      )}
+      {content && (
+        <div class="prose-grid">
+          <article class="prose">
+            {content.sections.map((s, i) => (
+              <section id={`section-${i}`}>
+                <h2>{s.heading}</h2>
+                {s.paragraphs.map((p) => (
+                  <p>{p}</p>
+                ))}
+                {s.bullets && (
+                  <ul>
+                    {s.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+            {path === 'privacy' && (
+              <div class="source-list">
+                <a href="https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html">
+                  DeepSeek Privacy Policy ↗
+                </a>
+                <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy ↗</a>
+              </div>
+            )}
+            {path === 'about' && (
+              <a class="button primary" href="https://github.com/Digidai/wenbu">
+                GitHub ↗
+              </a>
+            )}
+          </article>
+          <aside class="article-aside">
+            <span>WENBU · {t('公开说明', 'OPEN NOTES')}</span>
+            {['about', 'methodology', 'sources', 'free', 'privacy', 'terms']
+              .filter((p) => p !== path)
+              .map((p) => (
+                <a href={href(locale, p)}>{pages[p]?.[locale].title || t('参考资料', 'Sources')}</a>
+              ))}
+          </aside>
+        </div>
+      )}
+      {path === 'sources' && (
+        <div class="prose-grid">
+          <article class="prose">
+            <h2>{t('我们怎样对待来源', 'How we read a source')}</h2>
+            <p>
+              {t(
+                '以下目录记录本次公开资料研究的范围，核验日期为 2026-09-28。原典用于理解历史符号；算法文档用于检查实现；产品官网用于确认其公开自述；研究用于讨论证据边界。它们不能互相替代。',
+                'This directory records the public-source research scope, checked September 28, 2026. Classics inform historical symbolism; technical documents inform implementation; product sites establish public claims; research informs evidence boundaries. Those roles are not interchangeable.',
+              )}
+            </p>
+            <p>
+              {t(
+                '这不是对全世界所有流派的穷尽研究，也不表示已运行全部第三方项目或购买竞品。未核验的账户内体验、版权范围和预测效果不会被写成已证实事实。',
+                'This is not an exhaustive survey of every tradition, nor a claim to have run every project or purchased every competitor. Unverified account features, licensing scope and predictive outcomes are not presented as established facts.',
+              )}
+            </p>
+            {['calculation', 'classics', 'research', 'products', 'agents', 'infrastructure'].map(
+              (group, i) => (
+                <section>
+                  <h2>
+                    {t(
+                      ['计算与历法', '经典与著作', '研究与证据', '产品参照', 'Skills 与 MCP', '平台与协议'][
+                        i
+                      ],
+                      [
+                        'Calculation & calendars',
+                        'Classical texts & books',
+                        'Research & evidence',
+                        'Product references',
+                        'Skills & MCP',
+                        'Platforms & protocols',
+                      ][i],
+                    )}
+                  </h2>
+                  {sources
+                    .filter((s) => s.group === group)
+                    .map((s) => (
+                      <div class="source-list">
+                        <a href={s.url} target="_blank" rel="noreferrer">
+                          {s.title} ↗
+                        </a>
+                        <p>{s[locale]}</p>
+                      </div>
+                    ))}
+                </section>
+              ),
+            )}
+          </article>
+          <aside class="article-aside">
+            <span>{t('可复核的探索', 'TRACEABLE EXPLORATION')}</span>
+            <a href={href(locale, 'methodology')}>{t('计算与依据', 'Our methods')}</a>
+            <a href={href(locale, 'learn/ai-divination')}>{t('理解 AI 解读', 'Understanding AI readings')}</a>
+            <a href="https://github.com/Digidai/wenbu/tree/main/docs/research">
+              {t('研究记录', 'Research notes')} ↗
+            </a>
+          </aside>
+        </div>
+      )}
+      {comparison && (
+        <div class="prose-grid">
+          <article class="prose">
+            <h2>{t('先比较使用方式', 'Compare the workflow first')}</h2>
+            <p>{comparison[locale].intro}</p>
+            <p class="form-note">
+              {t(
+                '公开资料核验：2026-09-28。未登录、未购买，不以功能宣传代替实际验证。',
+                'Public sources checked September 28, 2026. No paid or logged-in competitor testing.',
+              )}
+            </p>
+            <div class="table-scroll">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>{t('维度', 'Dimension')}</th>
+                    <th>Wenbu</th>
+                    <th>{comparison.name}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparison[locale].rows.map((row) => (
+                    <tr>{row.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}</tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <h2>{t('怎样选', 'Making a choice')}</h2>
+            <p>{comparison[locale].conclusion}</p>
+            <div class="source-list">
+              <a href={comparison.url} target="_blank" rel="noreferrer">
+                {comparison.name} · {t('官方资料', 'Official source')} ↗
+              </a>
+              <a href={href(locale, 'methodology')}>Wenbu · {t('计算方法', 'Methodology')}</a>
+              <a href={href(locale, 'free')}>Wenbu · {t('免费使用说明', 'Free-use policy')}</a>
+            </div>
+            <a class="button primary" href={href(locale, 'bazi')}>
+              {t('免费试用问卜', 'Try Wenbu for free')} ↗
+            </a>
+          </article>
+          <aside class="article-aside">
+            <span>{t('继续比较', 'KEEP EXPLORING')}</span>
+            {comparisons
+              .filter((c) => c !== comparison)
+              .map((c) => (
+                <a href={href(locale, `compare/${c.slug}`)}>{c[locale].title}</a>
+              ))}
+            <a href={href(locale, 'learn/choose-a-tool')}>{t('怎样选择工具', 'Choose a tool')}</a>
+          </aside>
+        </div>
+      )}
+      {path === 'agents' && <Agents locale={locale} />}
+    </div>
+  )}
+</Layout>

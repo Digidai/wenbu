@@ -1,0 +1,247 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/dm-sans';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
+import { href, choose } from '../lib/i18n';
+import type { Locale } from '../lib/schema';
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  path?: string;
+  noindex?: boolean;
+  article?: boolean;
+}
+const { title, description, locale, path = '', noindex = false, article = false } = Astro.props;
+const t = (zh: string, en: string) => choose(locale, zh, en);
+const site = Astro.site?.origin || 'https://wenbu.genedai.me';
+const canonical = site + href(locale, path);
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site}/#website`,
+      name: 'Wenbu · 问卜',
+      url: site,
+      inLanguage: ['zh-Hans', 'en'],
+      description: 'Free BaZi, I Ching, tarot and Zi Wei tools for cultural reflection.',
+    },
+    {
+      '@type': article ? 'Article' : 'WebPage',
+      '@id': canonical,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
+      isPartOf: { '@id': `${site}/#website` },
+      ...(article
+        ? {
+            headline: title,
+            datePublished: '2026-09-28',
+            dateModified: '2026-09-28',
+            author: { '@type': 'Organization', name: 'Wenbu', url: `${site}/about/` },
+            image: `${site}/og.png`,
+          }
+        : {}),
+    },
+    ...(path
+      ? [
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: t('首页', 'Home'), item: site + href(locale) },
+              { '@type': 'ListItem', position: 2, name: title, item: canonical },
+            ],
+          },
+        ]
+      : []),
+  ],
+};
+---
+
+<!doctype html>
+<html lang={locale === 'zh' ? 'zh-Hans' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f3ec" />
+    <title>{title} · Wenbu 问卜</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <link rel="canonical" href={canonical} />
+    {path !== '404' && (
+      <>
+        <link rel="alternate" hreflang="zh-Hans" href={site + href('zh', path)} />
+        <link rel="alternate" hreflang="en" href={site + href('en', path)} />
+        <link rel="alternate" hreflang="x-default" href={site + href('en', path)} />
+      </>
+    )}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href={locale === 'zh' ? '/feed.xml' : '/en/feed.xml'}
+      title="Wenbu Journal"
+    />
+    <meta property="og:title" content={`${title} · Wenbu`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:site_name" content="Wenbu · 问卜" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t('跳至内容', 'Skip to content')}
+    </a>
+    <header class="site-header shell">
+      <a class="brand" href={href(locale)} aria-label="Wenbu 问卜">
+        <span class="brand-seal">问</span>
+        <span>
+          wenbu<span class="brand-dot">.</span>
+        </span>
+        <span class="brand-zh">问卜</span>
+      </a>
+      <nav aria-label={t('主导航', 'Main navigation')} class="desktop-nav">
+        <a href={href(locale, 'bazi')} aria-current={path === 'bazi' ? 'page' : undefined}>
+          {t('八字', 'BaZi')}
+        </a>
+        <a href={href(locale, 'iching')} aria-current={path === 'iching' ? 'page' : undefined}>
+          {t('易经', 'I Ching')}
+        </a>
+        <a href={href(locale, 'tarot')} aria-current={path === 'tarot' ? 'page' : undefined}>
+          {t('塔罗', 'Tarot')}
+        </a>
+        <a href={href(locale, 'learn')} aria-current={path.startsWith('learn') ? 'page' : undefined}>
+          {t('知识手册', 'The library')}
+        </a>
+      </nav>
+      <div class="header-actions">
+        <a
+          class="language-switch"
+          href={href(locale === 'zh' ? 'en' : 'zh', path === '404' ? '' : path)}
+          lang={locale === 'zh' ? 'en' : 'zh-Hans'}
+        >
+          {locale === 'zh' ? 'EN' : '中文'}
+          <span aria-hidden="true"> ↗</span>
+        </a>
+        <a class="journal-link" aria-label={t('我的手记', 'My journal')} href={href(locale, 'journal')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M5 3h14v18H5zM8 3v18M11 8h5M11 12h5" />
+          </svg>
+          <span>{t('我的手记', 'My journal')}</span>
+        </a>
+        <button
+          class="menu-toggle"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          aria-label={t('打开导航', 'Open menu')}
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+    <nav id="mobile-nav" class="mobile-nav" aria-label={t('移动导航', 'Mobile navigation')} hidden>
+      {['bazi', 'iching', 'tarot', 'ziwei', 'learn', 'journal', 'agents'].map((p, i) => (
+        <a href={href(locale, p)}>
+          {t(
+            ['八字命盘', '易经问卦', '塔罗映照', '紫微星盘', '知识手册', '我的手记', '开发者'][i],
+            [
+              'BaZi chart',
+              'I Ching',
+              'Tarot reading',
+              'Zi Wei chart',
+              'The library',
+              'My journal',
+              'For agents',
+            ][i],
+          )}
+          <span>↗</span>
+        </a>
+      ))}
+    </nav>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer shell">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href={href(locale)}>
+            <span class="brand-seal">问</span>
+            <span>
+              wenbu<span class="brand-dot">.</span>
+            </span>
+          </a>
+          <p>{t('古老的智慧，当下的自己。', 'Old wisdom. A present perspective.')}</p>
+        </div>
+        <div class="footer-links">
+          <div>
+            <span>{t('探索', 'EXPLORE')}</span>
+            <a href={href(locale, 'bazi')}>{t('八字命盘', 'BaZi calculator')}</a>
+            <a href={href(locale, 'iching')}>{t('易经问卦', 'I Ching oracle')}</a>
+            <a href={href(locale, 'tarot')}>{t('塔罗映照', 'Free tarot')}</a>
+            <a href={href(locale, 'ziwei')}>{t('紫微星盘', 'Zi Wei chart')}</a>
+          </div>
+          <div>
+            <span>{t('了解', 'UNDERSTAND')}</span>
+            <a href={href(locale, 'learn')}>{t('知识手册', 'The library')}</a>
+            <a href={href(locale, 'methodology')}>{t('计算与依据', 'Our methodology')}</a>
+            <a href={href(locale, 'sources')}>{t('参考文献', 'Sources & reading')}</a>
+            <a href={href(locale, 'compare/fatetell')}>Wenbu & FateTell</a>
+          </div>
+          <div>
+            <span>{t('关于', 'WENBU')}</span>
+            <a href={href(locale, 'about')}>{t('关于问卜', 'About Wenbu')}</a>
+            <a href={href(locale, 'free')}>{t('免费使用说明', 'Free-use policy')}</a>
+            <a href={href(locale, 'agents')}>MCP / CLI / Skills</a>
+            <a href="https://github.com/Digidai/wenbu">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wenbu · {t('问而有思，行而有度', 'Ask thoughtfully. Act with care.')}</span>
+        <div>
+          <a href={href(locale, 'privacy')}>{t('隐私', 'Privacy')}</a>
+          <a href={href(locale, 'terms')}>{t('使用条款', 'Terms')}</a>
+          <span>{t('文化探索与自我觉察，不作命运保证。', 'For cultural exploration and reflection.')}</span>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const nav = document.getElementById('mobile-nav');
+      menu?.addEventListener('click', () => {
+        const open = menu.getAttribute('aria-expanded') === 'true';
+        menu.setAttribute('aria-expanded', String(!open));
+        if (nav) nav.hidden = open;
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && nav) {
+          nav.hidden = true;
+          menu?.setAttribute('aria-expanded', 'false');
+        }
+      });
+      const observer = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in-view');
+              observer.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+# Wenbu · 问卜
+
+> Free tools for BaZi, I Ching, tarot and Zi Wei. Deterministic calculations and random draws are separate from optional AI interpretation. Symbolic reflection is not factual prediction.
+
+## Tools
+- [BaZi calculator](https://wenbu.genedai.me/en/bazi/): date, time, timezone and explicit calendar conventions
+- [I Ching](https://wenbu.genedai.me/en/iching/): three-coin method with all changing lines
+- [Tarot](https://wenbu.genedai.me/en/tarot/): full 78-card deck, one or three cards
+- [Zi Wei](https://wenbu.genedai.me/en/ziwei/): twelve palaces and named calculation conventions
+
+## Agent integration
+- [MCP endpoint](https://wenbu.genedai.me/mcp): stateless Streamable HTTP
+- [Agent guide](https://wenbu.genedai.me/en/agents/)
+- [OpenAPI schema](https://wenbu.genedai.me/openapi.json)
+- [Skill](https://wenbu.genedai.me/SKILL.md)
+- [CLI](https://wenbu.genedai.me/wenbu.mjs)
+- [Context schema](https://wenbu.genedai.me/context.schema.json)
+
+## Sources and policies
+- [Methodology](https://wenbu.genedai.me/en/methodology/)
+- [Reference sources](https://wenbu.genedai.me/en/sources/)
+- [Learning library](https://wenbu.genedai.me/en/learn/)
+- [Privacy](https://wenbu.genedai.me/en/privacy/)
+- [Free-use policy](https://wenbu.genedai.me/en/free/)
+- [Source code](https://github.com/Digidai/wenbu)

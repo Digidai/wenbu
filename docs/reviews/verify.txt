@@ -1,0 +1,123 @@
+
+> wenbu@1.0.0 verify
+> npm run check && npm test && npm run build && npm run audit:site
+
+
+> wenbu@1.0.0 check
+> astro check && tsc -p tsconfig.worker.json --noEmit
+
+16:55:44 [types] Generated 142ms
+16:55:44 [check] Getting diagnostics for Astro files in /Users/dai/Developer/CursorProjects/wenbu...
+Result (25 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> wenbu@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.2 /Users/dai/Developer/CursorProjects/wenbu
+
+
+ Test Files  4 passed (4)
+      Tests  54 passed (54)
+   Start at  16:55:50
+   Duration  846ms (import 66%, tests 19%, transform 15%, worker 1%)
+
+
+> wenbu@1.0.0 build
+> astro build && node scripts/postbuild.mjs
+
+16:55:52 [types] Generated 26ms
+16:55:52 [build] output: "static"
+16:55:52 [build] mode: "static"
+16:55:52 [build] directory: /Users/dai/Developer/CursorProjects/wenbu/dist/
+16:55:52 [build] Collecting build info...
+16:55:52 [build] ✓ Completed in 54ms.
+16:55:52 [build] Building static entrypoints...
+16:55:52 [vite] ✓ built in 247ms
+16:55:52 [vite] ✓ built in 273ms
+16:55:52 [build] Rearranging server assets...
+
+ generating static routes 
+16:55:53   ├─ /404.html (+13ms) 
+16:55:53   ├─ /index.html (+4ms) 
+16:55:53   ├─ /bazi/index.html (+17ms) 
+16:55:53   ├─ /iching/index.html (+20ms) 
+16:55:53   ├─ /tarot/index.html (+9ms) 
+16:55:53   ├─ /ziwei/index.html (+3ms) 
+16:55:53   ├─ /journal/index.html (+4ms) 
+16:55:53   ├─ /learn/index.html (+3ms) 
+16:55:53   ├─ /blog/index.html (+3ms) 
+16:55:53   ├─ /agents/index.html (+2ms) 
+16:55:53   ├─ /sources/index.html (+1ms) 
+16:55:53   ├─ /about/index.html (+1ms) 
+16:55:53   ├─ /methodology/index.html (+1ms) 
+16:55:53   ├─ /privacy/index.html (+1ms) 
+16:55:53   ├─ /terms/index.html (+1ms) 
+16:55:53   ├─ /free/index.html (+1ms) 
+16:55:53   ├─ /learn/bazi-basics/index.html (+2ms) 
+16:55:53   ├─ /learn/five-elements/index.html (+1ms) 
+16:55:53   ├─ /learn/birth-time-timezone/index.html (+1ms) 
+16:55:53   ├─ /learn/iching-three-coins/index.html (+2ms) 
+16:55:53   ├─ /learn/tarot-beginner/index.html (+4ms) 
+16:55:53   ├─ /learn/ziwei-twelve-palaces/index.html (+2ms) 
+16:55:53   ├─ /learn/unknown-birth-time/index.html (+1ms) 
+16:55:53   ├─ /learn/ai-divination/index.html (+1ms) 
+16:55:53   ├─ /learn/chinese-zodiac-vs-bazi/index.html (+1ms) 
+16:55:53   ├─ /learn/bazi-vs-western-astrology/index.html (+1ms) 
+16:55:53   ├─ /learn/choose-a-tool/index.html (+1ms) 
+16:55:53   ├─ /blog/a-reading-you-can-return-to/index.html (+5ms) 
+16:55:53   ├─ /blog/why-calculation-comes-first/index.html (+1ms) 
+16:55:53   ├─ /compare/fatetell/index.html (+1ms) 
+16:55:53   ├─ /compare/labyrinthos/index.html (+2ms) 
+16:55:53   ├─ /compare/chatbot/index.html (+2ms) 
+16:55:53   ├─ /en/index.html (+2ms) 
+16:55:53   ├─ /en/bazi/index.html (+4ms) 
+16:55:53   ├─ /en/iching/index.html (+2ms) 
+16:55:53   ├─ /en/tarot/index.html (+2ms) 
+16:55:53   ├─ /en/ziwei/index.html (+2ms) 
+16:55:53   ├─ /en/journal/index.html (+3ms) 
+16:55:53   ├─ /en/learn/index.html (+5ms) 
+16:55:53   ├─ /en/blog/index.html (+1ms) 
+16:55:53   ├─ /en/agents/index.html (+36ms) 
+16:55:53   ├─ /en/sources/index.html (+2ms) 
+16:55:53   ├─ /en/about/index.html (+3ms) 
+16:55:53   ├─ /en/methodology/index.html (+3ms) 
+16:55:53   ├─ /en/privacy/index.html (+2ms) 
+16:55:53   ├─ /en/terms/index.html (+2ms) 
+16:55:53   ├─ /en/free/index.html (+3ms) 
+16:55:53   ├─ /en/learn/bazi-basics/index.html (+1ms) 
+16:55:53   ├─ /en/learn/five-elements/index.html (+1ms) 
+16:55:53   ├─ /en/learn/birth-time-timezone/index.html (+6ms) 
+16:55:53   ├─ /en/learn/iching-three-coins/index.html (+4ms) 
+16:55:53   ├─ /en/learn/tarot-beginner/index.html (+8ms) 
+16:55:53   ├─ /en/learn/ziwei-twelve-palaces/index.html (+6ms) 
+16:55:53   ├─ /en/learn/unknown-birth-time/index.html (+4ms) 
+16:55:53   ├─ /en/learn/ai-divination/index.html (+2ms) 
+16:55:53   ├─ /en/learn/chinese-zodiac-vs-bazi/index.html (+3ms) 
+16:55:53   ├─ /en/learn/bazi-vs-western-astrology/index.html (+1ms) 
+16:55:53   ├─ /en/learn/choose-a-tool/index.html (+1ms) 
+16:55:53   ├─ /en/blog/a-reading-you-can-return-to/index.html (+1ms) 
+16:55:53   ├─ /en/blog/why-calculation-comes-first/index.html (+1ms) 
+16:55:53   ├─ /en/compare/fatetell/index.html (+1ms) 
+16:55:53   ├─ /en/compare/labyrinthos/index.html (+1ms) 
+16:55:53   ├─ /en/compare/chatbot/index.html (+1ms) 
+16:55:53 ✓ Completed in 343ms.
+
+16:55:53 [build] ✓ Completed in 903ms.
+16:55:53 [build] 63 page(s) built in 976ms
+16:55:53 [build] Complete!
+Generated sitemap for 60 indexable pages, RSS, CSP and social image.
+
+> wenbu@1.0.0 audit:site
+> node scripts/audit-site.mjs
+
+{
+  "pages": 63,
+  "internalReferencesChecked": 2390,
+  "indexablePages": 60,
+  "result": "passed"
+}

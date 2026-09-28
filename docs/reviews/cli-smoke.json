@@ -1,0 +1,47 @@
+{
+  "kind": "iching",
+  "version": "wenbu-iching-1.0",
+  "lines": [
+    7,
+    7,
+    7,
+    7,
+    7,
+    7
+  ],
+  "moving": [],
+  "original": {
+    "number": 1,
+    "zh": "乾",
+    "en": "The Creative",
+    "promptZh": "让想法找到第一步。",
+    "promptEn": "Give an idea its first concrete step.",
+    "symbol": "䷀",
+    "bits": "111111",
+    "lower": "乾",
+    "upper": "乾"
+  },
+  "changed": {
+    "number": 1,
+    "zh": "乾",
+    "en": "The Creative",
+    "promptZh": "让想法找到第一步。",
+    "promptEn": "Give an idea its first concrete step.",
+    "symbol": "䷀",
+    "bits": "111111",
+    "lower": "乾",
+    "upper": "乾"
+  },
+  "method": {
+    "name": "manual-three-coins",
+    "order": "bottom-to-top",
+    "probabilities": {
+      "6": 0.125,
+      "7": 0.375,
+      "8": 0.375,
+      "9": 0.125
+    },
+    "source": "https://ctext.org/book-of-changes",
+    "note": "Themes are original reflection prompts, not quotations or predictions. Multiple moving lines are shown without claiming a single universal reading rule."
+  }
+}
