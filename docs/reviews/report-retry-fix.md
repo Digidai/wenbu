@@ -13,6 +13,7 @@ For the narrow historical sequence observed here—citation rejection, successfu
 ## Verification
 
 - Local: 106 tests, Astro/Worker typecheck and lint passed. Regression cases cover fresh evidence before the first model request, failed reads, invented IDs, the three-reference cap, cancellation during preparation, honest historical status and unrelated errors. Build: 65 HTML pages, 62 indexable pages, 2,735 internal references audited.
+- GitHub CI: implementation commit `25eefcc6a129b6f5479da91e277d9e1b542af5cc` passed the clean-install, verification and lint workflow: https://github.com/Digidai/wenbu/actions/runs/36414399271.
 - Cloudflare: deployed Worker `b54b3f90-64d9-46df-aca1-e06eeb236731` with existing domain and secrets.
 - Original production browser session: the exact old failed attempt now shows the later outcome and retains its raw error. Its exported JSON confirms the raw status was not changed.
 - Real DeepSeek production follow-up: `read_reference` completed before a single successful `write_report`; final status was `complete`. The report “真太阳时：简明说明” is the third retained version. Provider reported `deepseek-flash`. This is actual browser and downloaded-JSON evidence, not a mocked model run.
@@ -23,4 +24,6 @@ Evidence: [machine-readable verification](report-retry-live.json), [original his
 
 ## Grok review
 
-The focused read-only Grok CLI review is in progress. Its input is [the patch snapshot](report-retry-fix-prompt.md); a pending review is not a pass. The later small catalogue-ID set optimization, newest-draft prioritization and cancellation regression are outside that snapshot.
+The focused read-only Grok CLI invocation returned no verdict after approximately 15 minutes. A smaller, verbatim source-only retry also returned no verdict during its approximately two-minute overlapping run. Both were interrupted on 2026-09-28 at 11:17 UTC rather than left running. Logs contained startup warnings but establish no cause for the missing response.
+
+Inputs are retained as the [initial patch snapshot](report-retry-fix-prompt.md) and [final implementation snapshot](report-retry-verbatim-prompt.md). The second includes the small catalogue-ID set optimization and newest-draft prioritization. Raw CLI logs remain local and ignored. **Grok review of this fix is unverified, not passed.** The completed deterministic, CI and real production checks above are separate evidence.
