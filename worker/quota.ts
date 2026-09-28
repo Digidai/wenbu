@@ -13,8 +13,25 @@ export class UsageGate extends DurableObject<Env> {
     );
   }
   async reserve(identity: string): Promise<{ allowed: boolean; remaining: number; reason?: string }> {
+    return this.reserveAllowance(identity, 1, positiveLimit(this.env.AI_PER_USER_DAILY_LIMIT));
+  }
+  async reserveAgent(identity: string): Promise<{ allowed: boolean; remaining: number; reason?: string }> {
+    return this.reserveAllowance(
+      'agent:' + identity,
+      1,
+      positiveLimit(this.env.AGENT_PER_USER_DAILY_LIMIT ?? '12'),
+      true,
+    );
+  }
+  async reserveAgentStep() {
+    return this.reserveAllowance(
+      'agent-global',
+      1,
+      positiveLimit(this.env.AGENT_GLOBAL_DAILY_LIMIT ?? '600'),
+    );
+  }
+  private async reserveAllowance(identity: string, units: number, userLimit: number, agentStart = false) {
     const globalLimit = positiveLimit(this.env.AI_DAILY_LIMIT);
-    const userLimit = positiveLimit(this.env.AI_PER_USER_DAILY_LIMIT);
     const day = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'Asia/Shanghai',
       year: 'numeric',
@@ -32,13 +49,25 @@ export class UsageGate extends DurableObject<Env> {
         );
       const global = count('global');
       const user = count(identity);
-      if (global >= globalLimit) return { allowed: false, remaining: 0, reason: 'daily_budget' };
+      if (agentStart && count('agent-global') >= positiveLimit(this.env.AGENT_GLOBAL_DAILY_LIMIT ?? '600'))
+        return { allowed: false, remaining: 0, reason: 'agent_budget' };
+      if (global + units > globalLimit) return { allowed: false, remaining: 0, reason: 'daily_budget' };
       if (user >= userLimit) return { allowed: false, remaining: 0, reason: 'daily_allowance' };
-      for (const key of ['global', identity])
+      for (const [key, amount] of [
+        ['global', units],
+        [identity, 1],
+      ] as const)
+        sql.exec(
+          'INSERT INTO quota(day,identity,count) VALUES(?,?,?) ON CONFLICT(day,identity) DO UPDATE SET count=count+excluded.count',
+          day,
+          key,
+          amount,
+        );
+      if (agentStart)
         sql.exec(
           'INSERT INTO quota(day,identity,count) VALUES(?,?,1) ON CONFLICT(day,identity) DO UPDATE SET count=count+1',
           day,
-          key,
+          'agent-global',
         );
       return { allowed: true, remaining: userLimit - user - 1 };
     });

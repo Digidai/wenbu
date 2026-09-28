@@ -5,6 +5,7 @@ import { calculateBazi } from '../src/lib/bazi';
 import { castIching } from '../src/lib/iching';
 import { drawTarot } from '../src/lib/tarot';
 import { calculateZiwei } from '../src/lib/ziwei';
+import { searchLibrary, readLibrary } from './agent-library';
 
 const language = z.enum(['zh', 'en']).default('en');
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -16,7 +17,7 @@ const pack = (data: Record<string, unknown>) => ({
 
 export function createMcpServer() {
   const server = new McpServer(
-    { name: 'wenbu', version: '1.0.0' },
+    { name: 'wenbu', version: '1.1.0' },
     {
       instructions:
         'Wenbu provides cultural reflection tools, not factual predictions. Only send birth details the user explicitly chooses to share. Preserve all calculation conventions and warnings. Use your host model to interpret the returned data; Wenbu MCP does not need an AI key.',
@@ -102,12 +103,30 @@ export function createMcpServer() {
     { date, time, sex: z.enum(['male', 'female']), locale: language },
     calculateZiwei,
   );
+  register(
+    'search_library',
+    'Search Wenbu original guides, symbols and curated reference metadata. This is a bounded catalogue, not a web search. Search snippets do not mean the source was read.',
+    { query: z.string().min(1).max(160), locale: language, limit: z.number().int().min(1).max(8).default(6) },
+    (a) => {
+      const { query, locale, limit } = a as { query: string; locale: 'zh' | 'en'; limit: number };
+      return { results: searchLibrary(query, locale, limit) };
+    },
+  );
+  register(
+    'read_library',
+    'Read original Wenbu guide or symbol content by an ID returned by search_library. External reference entries are metadata only; use your host browsing capability to verify them.',
+    { id: z.string().min(1).max(100), locale: language },
+    (a) => {
+      const { id, locale } = a as { id: string; locale: 'zh' | 'en' };
+      return readLibrary(id, locale);
+    },
+  );
   server.registerResource('methodology', 'wenbu://methodology', { mimeType: 'text/plain' }, async () => ({
     contents: [
       {
         uri: 'wenbu://methodology',
         mimeType: 'text/plain',
-        text: 'Wenbu v1.0. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in Asia/Shanghai; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.genedai.me/en/methodology/',
+        text: 'Wenbu v1.1. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in Asia/Shanghai; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.genedai.me/en/methodology/',
       },
     ],
   }));

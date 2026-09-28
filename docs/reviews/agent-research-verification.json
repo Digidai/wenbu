@@ -1,0 +1,92 @@
+{
+  "verifiedAt": "2026-09-28T10:13:11.954Z",
+  "environment": "local Wrangler, real official DeepSeek API",
+  "prompt": "Research apparent solar time in BaZi without personal data.",
+  "type": "done",
+  "status": "complete",
+  "servedModel": "deepseek-flash",
+  "requestedModel": "deepseek-v4-flash",
+  "modelCalls": 4,
+  "toolCalls": 6,
+  "tools": [
+    "search_library",
+    "search_library",
+    "read_library",
+    "read_library",
+    "read_reference",
+    "write_report"
+  ],
+  "sources": [
+    {
+      "id": "guide-birth-time-timezone",
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？",
+      "url": "https://wenbu.genedai.me/learn/birth-time-timezone/",
+      "kind": "guide",
+      "readAt": "2026-09-28T10:11:33.793Z"
+    },
+    {
+      "id": "guide-methodology",
+      "title": "计算与依据",
+      "url": "https://wenbu.genedai.me/methodology/",
+      "kind": "guide",
+      "readAt": "2026-09-28T10:11:33.794Z"
+    },
+    {
+      "id": "reference-dcthzo",
+      "title": "US Naval Observatory · Equation of Time",
+      "url": "https://aa.usno.navy.mil/faq/eqtime",
+      "kind": "reference",
+      "readAt": "2026-09-28T10:11:39.973Z"
+    }
+  ],
+  "reports": [
+    {
+      "title": "真太阳时怎样影响八字：规则、误差与出处",
+      "summary": "真太阳时（视太阳时）与钟表时间（民用时）在一年中可相差十几分钟到半小时以上，主要来自经度差与均时差。它通常只改变时柱，也可能在时辰或换日边界附近改变日柱。问卜提供的是「经度 + 低阶均时差」的近似校正，需用户输入经度，并在结果中保留分钟修正量，不承诺天文历表级精度。以下区分计算事实、传统约定与解释。",
+      "sections": [
+        {
+          "heading": "计算事实：两种时间差在哪",
+          "body": "民用钟表时间以时区经线为准，同一时区内所有地点共用同一读数。视太阳时（真太阳时）以太阳实际过中天为准，因此随经度变化：每差 1 经度约差 4 分钟。此外还有均时差——视太阳时减去平太阳时，反映太阳视运动速率的不均匀。据美国海军天文台说明，太阳一年中有时「快」有时「慢」，累积差值最大可达约 16 分钟（来源：reference-dcthzo）。\n\n所以「钟表时间 → 真太阳时」的修正由两部分构成：经度修正（可正可负，取决于出生地经度与时区中央经线的差）＋均时差（全年在约 ±16 分钟内摆动）。两者不能与时区、夏令时混为一谈。",
+          "sourceIds": [
+            "reference-dcthzo"
+          ]
+        },
+        {
+          "heading": "对四柱的影响：主要落在时柱",
+          "body": "八字把出生时刻映射为年、月、日、时四柱。时辰由两小时一段划分，因此修正量只要跨过时辰边界，时柱（时干与时支）就会改变；若修正后跨过换日点，日柱也可能改变，进而牵动日主。\n\n年柱与月柱按节气交节的绝对时刻判定，不随时钟读数平移；因此真太阳时校正通常不改变年、月柱，除非出生时刻本身就紧贴交节时刻（来源：guide-methodology、guide-birth-time-timezone）。\n\n传统上不同流派对是否采用真太阳时、以及采用哪种换日约定（零点换日或子初换日）并不统一，这属于约定选择，不是可被天文数据判定对错的问题。",
+          "sourceIds": [
+            "guide-methodology",
+            "guide-birth-time-timezone"
+          ]
+        },
+        {
+          "heading": "本工具的具体规则与误差边界",
+          "body": "· 输入：需要用户提供经度；时区使用 IANA 名称（如 Asia/Shanghai），由时间库处理历史偏移与夏令时。\n· 算法：采用经度与低阶均时差近似，不承诺天文历表级精度（来源：guide-methodology）。\n· 输出：结果中保留分钟修正量，便于核对（来源：guide-birth-time-timezone）。\n· 换日：默认零点换日（sect=2），可选子初换日（sect=1）；默认规则下晚子时的日柱保留当日、时干按次日计算，此约定会在命盘注明。\n· 未知时间：不生成时柱，年、月柱以中午暂定并提示交节不确定性。\n· 紫微斗数不自动校正太阳时，与八字规则不同。\n· 已知限制：近似公式在高纬度、极值日期或接近时辰／换日边界时误差影响最大。官方明确建议：接近边界时比较校正前后结果，不把近似数字当作绝对答案（来源：guide-birth-time-timezone）。",
+          "sourceIds": [
+            "guide-methodology",
+            "guide-birth-time-timezone"
+          ]
+        },
+        {
+          "heading": "怎样使用才稳妥",
+          "body": "1) 先确认出生地经度与时区是否为出生地时区，而非当前居住地时区——移居后按现居地排盘是常见错误。\n2) 若出生时刻离时辰边界或换日点较远（例如距离边界 20 分钟以上），真太阳时校正通常不改变四柱；若在边界附近，应同时查看校正前后两版结果。\n3) 保存时连同经度、时区、换日约定与修正量一起记录，便于他人逐项复核。\n\n解释层面：以上都是历法与计算约定问题，可以用日期、经度、时区和规则复核；而「时柱改变意味着什么」属于传统符号解释与个人反思，不能因为排盘更精确就当作对性格或未来的事实判断（来源：guide-birth-time-timezone、guide-methodology）。",
+          "sourceIds": [
+            "guide-birth-time-timezone",
+            "guide-methodology"
+          ]
+        }
+      ]
+    }
+  ],
+  "toolErrors": [],
+  "contentReview": {
+    "status": "failed-and-superseded",
+    "protocolStatus": "passed",
+    "issues": [
+      "Incorrect exception suggested solar correction can change year/month at a fixed instant.",
+      "Unsupported latitude-dependent approximation claim.",
+      "Unsupported universal 20-minute boundary heuristic."
+    ],
+    "resolution": "Explicit calculation invariants were added before production deployment. A later browser report and revision were checked against those invariants. This earlier sample is retained as failure evidence, not a factual pass."
+  }
+}

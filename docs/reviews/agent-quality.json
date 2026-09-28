@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-09-28T10:50:25Z",
+  "typecheck": {
+    "astroFiles": 29,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0,
+    "workerTypescript": "passed"
+  },
+  "tests": {
+    "files": 7,
+    "tests": 101,
+    "result": "passed"
+  },
+  "lint": "passed",
+  "build": {
+    "htmlPages": 65,
+    "indexablePages": 62
+  },
+  "siteAudit": {
+    "internalReferences": 2735,
+    "result": "passed"
+  },
+  "productionDependencyAudit": {
+    "reportedVulnerabilities": 0
+  },
+  "sourceSecretPatternScan": {
+    "files": 120,
+    "matches": 0
+  },
+  "notes": "Local checks and deployed checks are independent. No Lighthouse, real-user Core Web Vitals, general web search or traffic outcome is asserted. Final text-only calls stream tokens; tool rounds display actual execution events rather than speculative model preambles. Research artifact entry motion retains full text opacity."
+}

@@ -4,6 +4,8 @@ import { InputError, type ToolKind } from '../src/lib/schema';
 import { ApiError, interpret } from './ai';
 import { handleMcp } from './mcp';
 import type { Env } from './types';
+import { agentResponse } from './agent';
+import { AGENT_BODY_LIMIT } from '../src/lib/agent-protocol';
 export { UsageGate } from './quota';
 
 const apiHeaders = {
@@ -77,7 +79,7 @@ export default {
       if (path === '/api/health' && request.method === 'GET')
         return json({
           status: 'ok',
-          version: '1.0.0',
+          version: '1.1.0',
           aiConfigured: Boolean(env.DEEPSEEK_API_KEY && env.QUOTA_SALT),
           requestedModel: env.DEEPSEEK_MODEL,
         });
@@ -115,7 +117,8 @@ export default {
       }
       if (request.method !== 'POST')
         return json({ error: { code: 'method_not_allowed', message: 'Use POST with a JSON body.' } }, 405);
-      const raw = await boundedBody(request);
+      const raw = await boundedBody(request, path === '/api/v1/agent' ? AGENT_BODY_LIMIT : 8192);
+      if (path === '/api/v1/agent') return await agentResponse(raw, request, env);
       if (path === '/api/v1/interpret') return json(await interpret(raw, request, env));
       const kind = path.match(/^\/api\/v1\/(bazi|iching|tarot|ziwei)$/)?.[1] as ToolKind | undefined;
       if (!kind) return json({ error: { code: 'not_found', message: 'Unknown endpoint.' } }, 404);

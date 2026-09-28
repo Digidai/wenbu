@@ -38,7 +38,7 @@ AI is optional. Use an ignored .dev.vars with server-only DEEPSEEK_API_KEY and Q
 ## Agent integration
 
 Connect a Streamable HTTP client to `https://wenbu.genedai.me/mcp`.
-Tools: calculate_bazi, cast_iching, draw_tarot, calculate_ziwei. No account or model key required; your agent interprets the structured results with its own model.
+Tools: calculate_bazi, cast_iching, draw_tarot, calculate_ziwei, search_library, read_library. No account or model key required; your agent interprets the structured results with its own model.
 
 ```sh
 node public/wenbu.mjs iching '{"lines":[7,7,7,7,7,7]}'
@@ -54,10 +54,16 @@ Cloudflare Static Assets + Workers + SQLite Durable Object + rate limit binding.
 
 ## Free use
 
-All calculators, draws and the local journal are free without signup. Optional AI allows five attempts per network per Shanghai day, subject to a1000attempt global daily budget. Operator infrastructure and upstream costs still apply. Failed upstream attempts count. No paid upsell, tracking SDK, commercial deck artwork or fabricated reviews.
+All calculators, draws and the local journal are free without signup. Optional single AI readings allow five attempts per network per Shanghai day. The independent `/agent/` workspace allows 12 turns, each with up to five DeepSeek model calls and 12 real tools. Both share a 1,000 model-attempt daily budget; Agent calls are capped at 600. Operator infrastructure and upstream costs still apply. Failed upstream attempts count. No paid upsell, tracking SDK, commercial deck artwork or fabricated reviews.
 
 ## Quality and scope
 
 See [review and verification evidence](docs/reviews/README.md). Automated checks cover calendar edge cases, all64hexagram identities, random-draw invariants, API boundaries, quota SQL and MCP protocol. Real browser and deployed smoke tests are recorded separately. Search indexing and traffic are downstream outcomes, not assumed from successful deployment.
 
 MIT license. Third-party packages retain their licenses. Research distinguishes verified facts, vendor statements, analysis and pending validation.
+
+## Agent workspace
+
+[Open the workspace](https://wenbu.genedai.me/agent/) or [English](https://wenbu.genedai.me/en/agent/). DeepSeek chooses actual calculation, source-reading, planning and report tools. Conversations, chart artifacts and report versions stay in the browser; stopping a request preserves completed work. Research covers the curated library and allowlisted public reference pages, not unrestricted web search. The four original tools remain independent.
+
+See [harness research](docs/research/agent-harness-2026-09-28.md), [design](docs/plans/2026-09-28-agent-workspace-design.md) and [Agent protocol](docs/agent-protocol.md).

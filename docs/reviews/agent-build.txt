@@ -1,0 +1,87 @@
+
+> wenbu@1.1.0 build
+> astro build && node scripts/postbuild.mjs
+
+18:31:33 [types] Generated 32ms
+18:31:33 [build] output: "static"
+18:31:33 [build] mode: "static"
+18:31:33 [build] directory: /Users/dai/Developer/CursorProjects/wenbu/dist/
+18:31:33 [build] Collecting build info...
+18:31:33 [build] ✓ Completed in 63ms.
+18:31:33 [build] Building static entrypoints...
+18:31:33 [vite] ✓ built in 215ms
+18:31:33 [vite] ✓ built in 241ms
+18:31:33 [build] Rearranging server assets...
+
+ generating static routes
+18:31:34   ├─ /404.html (+7ms)
+18:31:34   ├─ /index.html (+3ms)
+18:31:34   ├─ /bazi/index.html (+10ms)
+18:31:34   ├─ /iching/index.html (+6ms)
+18:31:34   ├─ /tarot/index.html (+3ms)
+18:31:34   ├─ /ziwei/index.html (+2ms)
+18:31:34   ├─ /journal/index.html (+3ms)
+18:31:34   ├─ /learn/index.html (+2ms)
+18:31:34   ├─ /blog/index.html (+3ms)
+18:31:34   ├─ /agents/index.html (+2ms)
+18:31:34   ├─ /agent/index.html (+4ms)
+18:31:34   ├─ /sources/index.html (+1ms)
+18:31:34   ├─ /about/index.html (+1ms)
+18:31:34   ├─ /methodology/index.html (+1ms)
+18:31:34   ├─ /privacy/index.html (+1ms)
+18:31:34   ├─ /terms/index.html (+1ms)
+18:31:34   ├─ /free/index.html (+1ms)
+18:31:34   ├─ /learn/bazi-basics/index.html (+1ms)
+18:31:34   ├─ /learn/five-elements/index.html (+1ms)
+18:31:34   ├─ /learn/birth-time-timezone/index.html (+1ms)
+18:31:34   ├─ /learn/iching-three-coins/index.html (+1ms)
+18:31:34   ├─ /learn/tarot-beginner/index.html (+1ms)
+18:31:34   ├─ /learn/ziwei-twelve-palaces/index.html (+1ms)
+18:31:34   ├─ /learn/unknown-birth-time/index.html (+1ms)
+18:31:34   ├─ /learn/ai-divination/index.html (+1ms)
+18:31:34   ├─ /learn/chinese-zodiac-vs-bazi/index.html (+1ms)
+18:31:34   ├─ /learn/bazi-vs-western-astrology/index.html (+1ms)
+18:31:34   ├─ /learn/choose-a-tool/index.html (+1ms)
+18:31:34   ├─ /blog/a-reading-you-can-return-to/index.html (+1ms)
+18:31:34   ├─ /blog/why-calculation-comes-first/index.html (+1ms)
+18:31:34   ├─ /compare/fatetell/index.html (+1ms)
+18:31:34   ├─ /compare/labyrinthos/index.html (+1ms)
+18:31:34   ├─ /compare/chatbot/index.html (+1ms)
+18:31:34   ├─ /en/index.html (+1ms)
+18:31:34   ├─ /en/bazi/index.html (+3ms)
+18:31:34   ├─ /en/iching/index.html (+2ms)
+18:31:34   ├─ /en/tarot/index.html (+2ms)
+18:31:34   ├─ /en/ziwei/index.html (+2ms)
+18:31:34   ├─ /en/journal/index.html (+2ms)
+18:31:34   ├─ /en/learn/index.html (+1ms)
+18:31:34   ├─ /en/blog/index.html (+1ms)
+18:31:34   ├─ /en/agents/index.html (+1ms)
+18:31:34   ├─ /en/agent/index.html (+6ms)
+18:31:34   ├─ /en/sources/index.html (+2ms)
+18:31:34   ├─ /en/about/index.html (+1ms)
+18:31:34   ├─ /en/methodology/index.html (+1ms)
+18:31:34   ├─ /en/privacy/index.html (+1ms)
+18:31:34   ├─ /en/terms/index.html (+1ms)
+18:31:34   ├─ /en/free/index.html (+1ms)
+18:31:34   ├─ /en/learn/bazi-basics/index.html (+1ms)
+18:31:34   ├─ /en/learn/five-elements/index.html (+1ms)
+18:31:34   ├─ /en/learn/birth-time-timezone/index.html (+1ms)
+18:31:34   ├─ /en/learn/iching-three-coins/index.html (+1ms)
+18:31:34   ├─ /en/learn/tarot-beginner/index.html (+1ms)
+18:31:34   ├─ /en/learn/ziwei-twelve-palaces/index.html (+1ms)
+18:31:34   ├─ /en/learn/unknown-birth-time/index.html (+1ms)
+18:31:34   ├─ /en/learn/ai-divination/index.html (+1ms)
+18:31:34   ├─ /en/learn/chinese-zodiac-vs-bazi/index.html (+2ms)
+18:31:34   ├─ /en/learn/bazi-vs-western-astrology/index.html (+1ms)
+18:31:34   ├─ /en/learn/choose-a-tool/index.html (+1ms)
+18:31:34   ├─ /en/blog/a-reading-you-can-return-to/index.html (+1ms)
+18:31:34   ├─ /en/blog/why-calculation-comes-first/index.html (+1ms)
+18:31:34   ├─ /en/compare/fatetell/index.html (+1ms)
+18:31:34   ├─ /en/compare/labyrinthos/index.html (+1ms)
+18:31:34   ├─ /en/compare/chatbot/index.html (+1ms)
+18:31:34 ✓ Completed in 265ms.
+
+18:31:34 [build] ✓ Completed in 747ms.
+18:31:34 [build] 65 page(s) built in 830ms
+18:31:34 [build] Complete!
+Generated sitemap for 62 indexable pages, RSS, CSP and social image.

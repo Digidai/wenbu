@@ -18,6 +18,8 @@
     "DEEPSEEK_MODEL": "deepseek-v4-flash",
     "AI_DAILY_LIMIT": "1000",
     "AI_PER_USER_DAILY_LIMIT": "5",
+    "AGENT_PER_USER_DAILY_LIMIT": "12",
+    "AGENT_GLOBAL_DAILY_LIMIT": "600",
   },
   "durable_objects": {
     "bindings": [

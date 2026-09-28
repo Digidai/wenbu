@@ -72,3 +72,34 @@ describe('atomic daily budget using real SQLite', () => {
     expect((await instance.reserve('user')).allowed).toBe(false);
   });
 });
+
+describe('Agent and original reading budgets', () => {
+  it('charges actual model calls while separating network turn counts', async () => {
+    const { instance, db } = gate(20, 2);
+    expect((await instance.reserveAgent('same')).remaining).toBe(11);
+    await instance.reserveAgentStep();
+    await instance.reserveAgentStep();
+    expect((await instance.reserve('same')).remaining).toBe(1);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='global'").get()?.count).toBe(4);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='agent-global'").get()?.count).toBe(3);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='agent:same'").get()?.count).toBe(1);
+  });
+  it('enforces the shared global limit across concurrent Agent steps and readings', async () => {
+    const { instance, db } = gate(7, 3);
+    await instance.reserveAgent('a');
+    const results = await Promise.all(
+      Array.from({ length: 30 }, (_, i) => (i % 2 ? instance.reserveAgentStep() : instance.reserve('u' + i))),
+    );
+    expect(results.filter((r) => r.allowed)).toHaveLength(6);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='global'").get()?.count).toBe(7);
+  });
+  it('reserves capacity for original readings when the Agent sub-budget ends', async () => {
+    const { instance, db } = gate(1000, 5);
+    const results = await Promise.all(Array.from({ length: 610 }, () => instance.reserveAgentStep()));
+    expect(results.filter((r) => r.allowed)).toHaveLength(600);
+    expect((await instance.reserveAgent('fresh')).allowed).toBe(false);
+    expect((await instance.reserve('fresh')).allowed).toBe(true);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='agent-global'").get()?.count).toBe(600);
+    expect(db.prepare("SELECT count FROM quota WHERE identity='global'").get()?.count).toBe(601);
+  });
+});

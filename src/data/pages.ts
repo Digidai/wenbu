@@ -161,13 +161,15 @@ export const pages: Record<string, Page> = {
           heading: '你输入的资料怎样使用',
           paragraphs: [
             '出生信息通过加密连接发送到 Cloudflare Worker，用于生成命盘。抽牌和起卦接口不需要发送你的问题。问卜不把出生资料、问题或解读写入服务器数据库，也不把它们放进页面地址。',
-            '只有点击免费解读并勾选发送说明时，当前命盘、问题和主动补充的背景才会发送给 DeepSeek 官网 API。DeepSeek 按其自己的隐私政策处理这些数据；问卜不能代表上游承诺零保留。',
+            '单次解读在勾选发送说明后，将当前命盘、问题和主动补充的背景发送给 DeepSeek 官网 API。命理 Agent 在发送消息时，会发送最近 16 条消息、6 份命盘、2 版报告和你主动选择的出生资料、背景与手记。DeepSeek 按其自己的隐私政策处理这些数据；问卜不能代表上游承诺零保留。',
           ],
         },
         {
-          heading: '手记与导出文件',
+          heading: '会话、手记与导出文件',
           paragraphs: [
             '保存按钮将结果写入当前浏览器的 localStorage，最多保留最近 100 条。没有默认的云端同步。共享设备上的其他使用者可能访问这些记录，清理浏览器数据会将其删除。',
+            'Agent 会话自动保存在当前浏览器，可逐段删除、导出 JSON，报告可导出 Markdown。关闭资料选项不会抹去已分享的历史；新建对话会从空白上下文开始。页面关闭后不继续执行任务，刷新后保留已收到的结果。存储不足会提示导出备份。',
+            '研习搜索问卜资料库与精选来源目录；外部阅读仅请求目录中的公开页面地址，不把出生资料或问题附加到这些网址。来源网站仍可能处理服务器请求信息。',
             '你可以逐条移除手记、在当前页面撤销，或导出 JSON 备份。Agent 上下文导出可预览，原始出生信息需额外勾选；即使不包含出生日期，命盘和问题仍可能属于个人信息。',
           ],
         },
@@ -195,13 +197,15 @@ export const pages: Record<string, Page> = {
           heading: 'How your inputs are used',
           paragraphs: [
             'Birth details are sent over an encrypted connection to a Cloudflare Worker to calculate the chart. Casting and card-draw endpoints do not need your question. Wenbu does not write birth details, questions or readings to its server database or put them in page URLs.',
-            'Only when you request an AI reading and check the disclosure are the chart, question and selected context sent to the official DeepSeek API. DeepSeek processes them under its own privacy policy; Wenbu cannot promise zero retention on the provider’s behalf.',
+            'Single readings send the chart, question and selected context to the official DeepSeek API after you check the disclosure. Sending an Agent message shares up to 16 recent messages, 6 recent charts, 2 report versions and the birth details, notes and journal entries you explicitly select. DeepSeek processes them under its own privacy policy; Wenbu cannot promise zero retention on the provider’s behalf.',
           ],
         },
         {
-          heading: 'Local journal and exports',
+          heading: 'Conversations, local journal and exports',
           paragraphs: [
             'Saving writes a record to this browser’s localStorage, retaining the most recent 100 entries. There is no automatic cloud sync. Other users of a shared browser may access the records, and clearing browser storage removes them.',
+            'Agent conversations save automatically in this browser. Delete individual conversations, export JSON or download reports as Markdown. Deselecting context does not erase already shared history; a new conversation starts fresh. Tasks stop when the page closes, and received results survive reloads. Storage failures show a backup warning.',
+            'Research searches Wenbu’s library and curated catalogue. External reading requests only listed public page URLs, without adding your question or birth details. Source websites may still process server request metadata.',
             'You can remove individual entries, undo a removal on the current page and export JSON backups. Agent exports can be previewed and omit original birth details unless selected. A chart or personal question may still be sensitive even without a birth date.',
           ],
         },
@@ -243,7 +247,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '费用与可用性',
           paragraphs: [
-            '当前排盘、起卦、抽牌和本地手记免费；AI 解读有公开额度。当前没有订阅收费或付费解锁结果。我们不承诺永久可用、无限调用或任何流量与预测结果。',
+            '当前排盘、起卦、抽牌和本地手记免费；AI 解读与 Agent 对话有公开额度。当前没有订阅收费或付费解锁结果。我们不承诺永久可用、无限调用或任何流量与预测结果。',
             '模型或网络失败时，计算工具与已保存记录尽可能保持独立可用。请自行导出本地记录的备份。',
           ],
         },
@@ -296,7 +300,7 @@ export const pages: Record<string, Page> = {
     zh: {
       title: '免费使用，说明白',
       description:
-        '八字、易经、塔罗、紫微和本地手记免费。AI 每个网络每天 5 次，另有全站总额度，额度结束不会锁住工具。',
+        '八字、易经、塔罗、紫微和本地手记免费。单次 AI 解读每天 5 次，Agent 每天 12 回合，均按网络计数并受全站额度限制。',
       sections: [
         {
           heading: '哪些功能免费？',
@@ -308,7 +312,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'AI 解读怎样计算额度？',
           paragraphs: [
-            '每个网络每天最多 5 次 AI 请求，全站每天最多 1,000 次，按上海时间零点换日。共享 Wi-Fi、公司网络或同一 IPv6 网段可能共用额度；这不是精确的个人账户计数。',
+            '每个网络每天最多 5 次单次 AI 解读，另有 12 回合 Agent 对话。两者共享每天 1,000 次模型请求的全站预算，其中 Agent 最多使用 600 次。每回合最多 5 次模型请求、12 次工具执行，按实际发起的模型请求计入全站额度；按上海时间零点换日。共享 Wi-Fi、公司网络或同一 IPv6 网段可能共用额度；这不是精确的个人账户计数。',
             '每次 AI 请求在调用上游前占用一次额度。超时或上游失败也可能消耗额度，因为远端调用可能已经发生。单次输入、上下文和输出都有长度限制。',
           ],
         },
@@ -336,7 +340,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'How the AI allowance works',
           paragraphs: [
-            'Each network receives up to five AI requests per day, within a site-wide budget of 1,000 requests. The day resets at midnight in Shanghai. Shared Wi-Fi, office networks or an IPv6 network prefix may share the allowance; it is not an individual-account counter.',
+            'Each network receives up to five single AI readings and a separate 12 Agent turns per day. Both share a site-wide budget of 1,000 model attempts, with Agent use capped at 600. An Agent turn allows up to five model calls and 12 tool executions; each model attempt counts toward the shared budget. The day resets at midnight in Shanghai. Shared Wi-Fi, office networks or an IPv6 network prefix may share the allowance; it is not an individual-account counter.',
             'A request reserves an allowance before contacting the provider. Timeouts and provider failures may consume a request because an upstream call may already have occurred. Input, context and output lengths are bounded.',
           ],
         },

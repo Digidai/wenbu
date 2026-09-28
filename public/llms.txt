@@ -3,12 +3,14 @@
 > Free tools for BaZi, I Ching, tarot and Zi Wei. Deterministic calculations and random draws are separate from optional AI interpretation. Symbolic reflection is not factual prediction.
 
 ## Tools
+- [Agent workspace](https://wenbu.genedai.me/en/agent/): DeepSeek conversation, real tool execution, curated-source research and report artifacts; browser-local history
 - [BaZi calculator](https://wenbu.genedai.me/en/bazi/): date, time, timezone and explicit calendar conventions
 - [I Ching](https://wenbu.genedai.me/en/iching/): three-coin method with all changing lines
 - [Tarot](https://wenbu.genedai.me/en/tarot/): full 78-card deck, one or three cards
 - [Zi Wei](https://wenbu.genedai.me/en/ziwei/): twelve palaces and named calculation conventions
 
 ## Agent integration
+- [Agent event protocol](https://wenbu.genedai.me/agent-protocol.md): explicit consent, selected context, SSE events and bounded execution
 - [MCP endpoint](https://wenbu.genedai.me/mcp): stateless Streamable HTTP
 - [Agent guide](https://wenbu.genedai.me/en/agents/)
 - [OpenAPI schema](https://wenbu.genedai.me/openapi.json)

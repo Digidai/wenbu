@@ -56,6 +56,14 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
       <div class="visual-caption">{t('天地有序 · 万物有时', 'EVERYTHING HAS ITS SEASON')}</div>
     </div>
   </section>
+  <a class="home-agent-entry" href={href(locale, 'agent')}>
+    <span class="home-agent-mark">问</span>
+    <span>
+      <small>WENBU AGENT · {t('独立研习室', 'THE RESEARCH STUDIO')}</small>
+      <strong>{t('一个问题，一段可以继续的探索。', 'One question. An exploration you can continue.')}</strong>
+    </span>
+    <span class="home-agent-cta">{t('与命理 Agent 对话', 'Meet Wenbu Agent')} ↗</span>
+  </a>
   <div class="almanac-strip">
     <div class="almanac-mark">
       <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width=".8" aria-hidden="true">

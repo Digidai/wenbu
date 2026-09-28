@@ -121,6 +121,126 @@ paths['/api/v1/interpret'] = {
     },
   },
 };
+const agentSchema = body(
+  {
+    message: { type: 'string', minLength: 1, maxLength: 3000 },
+    consent: { const: true },
+    locale,
+    mode: { type: 'string', enum: ['explore', 'research'], default: 'explore' },
+    newDraw: {
+      type: 'boolean',
+      default: false,
+      description: 'True only after the user explicitly requests a new random result.',
+    },
+    history: {
+      type: 'array',
+      maxItems: 16,
+      description: 'At most 28000 characters combined; never system or tool roles.',
+      items: body({ role: { enum: ['user', 'assistant'] }, content: { type: 'string', maxLength: 7000 } }, [
+        'role',
+        'content',
+      ]),
+    },
+    context: body({
+      note: { type: 'string', maxLength: 5000, default: '' },
+      reports: {
+        type: 'array',
+        maxItems: 2,
+        description:
+          'Prior drafts for revision, never verified evidence. Combined summary/section headings/bodies/questions <=1800 characters per report.',
+        items: body(
+          {
+            title: { type: 'string', minLength: 1, maxLength: 100 },
+            summary: { type: 'string', minLength: 1, maxLength: 450 },
+            sections: {
+              type: 'array',
+              minItems: 1,
+              maxItems: 4,
+              items: body(
+                {
+                  heading: { type: 'string', minLength: 1, maxLength: 100 },
+                  body: { type: 'string', minLength: 1, maxLength: 700 },
+                  sourceIds: { type: 'array', maxItems: 6, items: { type: 'string', maxLength: 120 } },
+                },
+                ['heading', 'body'],
+              ),
+            },
+            questions: { type: 'array', maxItems: 3, items: { type: 'string', maxLength: 100 } },
+          },
+          ['title', 'summary', 'sections'],
+        ),
+      },
+      birth: body(
+        {
+          date,
+          time: { anyOf: [time, { type: 'null' }] },
+          timezone: { type: 'string', minLength: 1, maxLength: 80 },
+          dayBoundary: { enum: ['midnight', 'zi'] },
+          solarTime: { type: 'boolean' },
+          longitude: { type: 'number', minimum: -180, maximum: 180 },
+          sex: { enum: ['male', 'female'] },
+        },
+        ['date', 'time', 'timezone', 'dayBoundary', 'solarTime'],
+      ),
+      readings: {
+        type: 'array',
+        maxItems: 6,
+        items: body(
+          {
+            kind: { enum: Object.keys(schemas) },
+            input: {
+              description:
+                'Original calculation input. For I Ching, original six lines required; for tarot, original cards [{id:0..77,reversed:boolean}], 1 or 3 unique cards.',
+            },
+          },
+          ['kind', 'input'],
+        ),
+      },
+      sourceIds: {
+        type: 'array',
+        maxItems: 12,
+        items: { type: 'string', maxLength: 120 },
+        description:
+          'Known source IDs are verified again. A client-provided ID never establishes that an external source was read.',
+      },
+    }),
+  },
+  ['message', 'consent'],
+);
+paths['/api/v1/agent'] = {
+  post: {
+    operationId: 'run_agent_turn',
+    summary: 'Run one bounded DeepSeek Agent turn with real tools and streamed artifacts',
+    description:
+      'Explicit consent to send selected context to DeepSeek. No server-side conversation history. Body <=98304 bytes. Twelve turns/network/Shanghai day; at most five model calls and 12 tool executions per turn, 120-second deadline. Shared site model budget 1000, Agent sub-budget 600. Each attempted model call counts, including failures. Research covers a curated catalogue, not unrestricted web search. Stream errors can occur after HTTP 200: only a done event confirms terminal status; waiting and limited are not complete.',
+    requestBody: { required: true, content: { 'application/json': { schema: agentSchema } } },
+    responses: {
+      200: {
+        description:
+          'SSE JSON events: start, delta, tool_start, tool_end, plan, source, artifact, question, context, error, done. See /agent-protocol.md. Hidden model reasoning is never emitted.',
+        content: { 'text/event-stream': { schema: { type: 'string' } } },
+      },
+      403: { description: 'Browser origin rejected' },
+      413: { description: 'Body exceeds 96 KiB' },
+      422: { description: 'Invalid request, missing consent or invalid original chart context' },
+      429: { description: 'Network or shared daily limit reached' },
+      503: { description: 'Model or quota configuration unavailable' },
+    },
+  },
+};
+await writeFile(
+  'public/agent-request.schema.json',
+  JSON.stringify(
+    {
+      $schema: 'https://json-schema.org/draft/2020-12/schema',
+      $id: 'https://wenbu.genedai.me/agent-request.schema.json',
+      title: 'Wenbu Agent turn',
+      ...agentSchema,
+    },
+    null,
+    2,
+  ) + '\n',
+);
 await writeFile(
   'public/openapi.json',
   JSON.stringify(
@@ -128,7 +248,7 @@ await writeFile(
       openapi: '3.1.0',
       info: {
         title: 'Wenbu · 问卜',
-        version: '1.0.0',
+        version: '1.1.0',
         description: 'Free, transparent cultural calculation tools. No predictive validity claims.',
         license: { name: 'MIT', identifier: 'MIT' },
       },

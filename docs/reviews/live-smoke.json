@@ -1,6 +1,6 @@
 {
   "base": "https://wenbu.genedai.me",
-  "checkedAt": "2026-09-28T08:50:10.814Z",
+  "checkedAt": "2026-09-28T10:52:07.220Z",
   "pages": [
     {
       "path": "/",
@@ -8,6 +8,18 @@
     },
     {
       "path": "/about/",
+      "status": 200
+    },
+    {
+      "path": "/agent-protocol.md",
+      "status": 200
+    },
+    {
+      "path": "/agent-request.schema.json",
+      "status": 200
+    },
+    {
+      "path": "/agent/",
       "status": 200
     },
     {
@@ -48,6 +60,10 @@
     },
     {
       "path": "/en/about/",
+      "status": 200
+    },
+    {
+      "path": "/en/agent/",
       "status": 200
     },
     {
@@ -297,22 +313,14 @@
     "calculate_bazi",
     "cast_iching",
     "draw_tarot",
-    "calculate_ziwei"
+    "calculate_ziwei",
+    "search_library",
+    "read_library"
   ],
-  "ai": {
-    "status": 200,
-    "provenance": {
-      "provider": "DeepSeek",
-      "requestedModel": "deepseek-v4-flash",
-      "servedModel": "deepseek-flash",
-      "generatedAt": "2026-09-28T08:50:36.060Z",
-      "type": "AI-generated symbolic reflection"
-    },
-    "answerTitle": "Expressing Ideas Clearly: A Symbolic Reflection"
-  },
+  "ai": null,
   "health": {
     "status": "ok",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "aiConfigured": true,
     "requestedModel": "deepseek-v4-flash"
   },

@@ -17,7 +17,7 @@ assert.equal(health.status, 200);
 evidence.health = await health.json();
 const sitemap = await (await fetchSafe(base + '/sitemap.xml')).text();
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => new URL(x[1]).pathname);
-assert.equal(urls.length, 60);
+assert.equal(urls.length, 62);
 for (let i = 0; i < urls.length; i += 4) {
   await Promise.all(
     urls.slice(i, i + 4).map(async (path) => {
@@ -36,6 +36,8 @@ for (const [path, expected] of [
   ['/og.png', 200],
   ['/openapi.json', 200],
   ['/SKILL.md', 200],
+  ['/agent-protocol.md', 200],
+  ['/agent-request.schema.json', 200],
   ['/wenbu.mjs', 200],
   ['/feed.xml', 200],
   ['/en/feed.xml', 200],
@@ -68,11 +70,18 @@ assert.equal(
   403,
 );
 assert.equal((await post('/api/v1/bazi', { oversize: 'x'.repeat(9000) })).status, 413);
+assert.equal((await post('/api/v1/agent', { message: 'hello' })).status, 422);
+assert.equal(
+  (await post('/api/v1/agent', { message: 'hello', consent: true }, { Origin: 'https://untrusted.example' }))
+    .status,
+  403,
+);
+assert.equal((await post('/api/v1/agent', { message: 'x'.repeat(100000), consent: true })).status, 413);
 const client = new Client({ name: 'wenbu-release-verification', version: '1.0' });
 try {
   await client.connect(new StreamableHTTPClientTransport(new URL(base + '/mcp')));
   const listed = await client.listTools();
-  assert.equal(listed.tools.length, 4);
+  assert.equal(listed.tools.length, 6);
   for (const tool of listed.tools) evidence.mcp.push(tool.name);
   const result = await client.callTool({ name: 'cast_iching', arguments: { lines: [7, 7, 7, 7, 7, 7] } });
   assert.equal(result.structuredContent.original.number, 1);

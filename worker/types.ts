@@ -9,4 +9,6 @@ export interface Env {
   DEEPSEEK_MODEL: string;
   AI_DAILY_LIMIT: string;
   AI_PER_USER_DAILY_LIMIT: string;
+  AGENT_PER_USER_DAILY_LIMIT?: string;
+  AGENT_GLOBAL_DAILY_LIMIT?: string;
 }

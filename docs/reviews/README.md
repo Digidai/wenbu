@@ -4,6 +4,12 @@ Verification date: 2026-09-28. Records distinguish local checks, deployed respon
 
 Public repository: https://github.com/Digidai/wenbu. Initial application commit acb9ee01288ab6afba75ffc764d52c260fade633 passed the GitHub Linux clean-install, typecheck, 54 tests, build, site audit and lint workflow: https://github.com/Digidai/wenbu/actions/runs/36400663693. The repository's Quality workflow runs the same checks on subsequent pushes. The deployed application recheck is recorded separately in live-final.json; the final CSS-only polish is checked against the served asset in asset-final.json.
 
+## Agent workspace release (1.1.0)
+
+The independent Agent entry is a later release. Its current evidence is in [Agent release verification](agent-release.md), with [harness research](../research/agent-harness-2026-09-28.md), [design review](agent-design-review.md), [code review](agent-code-review.md), and [focused verification](agent-fixes-review.md). These reviews returned actual Grok CLI verdicts; fixes and limits are recorded separately. The earlier 54-test release below remains historical evidence, not the current test count. `live-smoke.json` is the most recent public regression check; initial AI evidence is preserved in `local-ai-smoke.json` and the original release records.
+
+## Original four-tool release (1.0)
+
 ## Completed checks
 
 - Production build: 63 HTML pages; 60 indexable pages. Journal pages and 404 are noindex.

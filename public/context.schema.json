@@ -23,7 +23,12 @@
       "const": 1
     },
     "kind": {
-      "enum": ["bazi", "ziwei", "iching", "tarot"]
+      "enum": [
+        "bazi",
+        "ziwei",
+        "iching",
+        "tarot"
+      ]
     },
     "createdAt": {
       "type": "string",

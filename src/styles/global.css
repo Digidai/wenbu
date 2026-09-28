@@ -166,7 +166,7 @@ svg {
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 33px;
+  gap: 24px;
   font-size: 13px;
 }
 .desktop-nav a {

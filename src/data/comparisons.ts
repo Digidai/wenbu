@@ -8,12 +8,16 @@ export const comparisons = [
       description:
         '基于 FateTell 公开官网与问卜实际功能，比较免费排盘、解读方式、记录与 Agent 接口，不替任何产品宣称预测准确率。',
       intro:
-        'FateTell 的公开网站围绕八字、对话、FateBook 和 AnnualBook 展开。Wenbu 则把四种免费工具、可查看的计算约定和本地手记放在网页里。选哪一个，取决于你需要的是哪种使用方式。',
+        'FateTell 的公开网站围绕八字、对话、FateBook 和 AnnualBook 展开。Wenbu 则把独立命理 Agent、四种免费工具、可查看的计算约定和本地手记放在网页里。选哪一个，取决于你需要的是哪种使用方式。',
       rows: [
-        ['核心入口', '八字、易经、塔罗、紫微的网页工具', '公开官网强调八字与 AI 对话、FateBook、AnnualBook'],
+        [
+          '核心入口',
+          '对话与研习工作台，以及八字、易经、塔罗、紫微工具',
+          '公开官网强调八字与 AI 对话、FateBook、AnnualBook',
+        ],
         [
           '免费范围',
-          '排盘与记录免费；AI 每网络每日 5 次，有全站额度',
+          '排盘与记录免费；单次解读每日 5 次、Agent 12 回合，按网络计数并受全站额度限制',
           '官网提供免费八字计算器；报告与其他权益以其当前页面为准',
         ],
         [
@@ -36,16 +40,16 @@ export const comparisons = [
       description:
         'Compare the public FateTell offering with Wenbu’s free tools, visible calculation conventions, local journal and agent interfaces.',
       intro:
-        'FateTell’s public site centers on BaZi, dialogue, FateBook and AnnualBook. Wenbu brings four free tools, visible calculation conventions and a local journal to the web. The useful comparison is between workflows, not unverified claims of predictive accuracy.',
+        'FateTell’s public site centers on BaZi, dialogue, FateBook and AnnualBook. Wenbu brings a dedicated conversational Agent, four free tools, visible calculation conventions and a local journal to the web. The useful comparison is between workflows, not unverified claims of predictive accuracy.',
       rows: [
         [
           'Main experience',
-          'BaZi, I Ching, tarot and Zi Wei web tools',
+          'Agent conversation and research alongside four web tools',
           'Public site emphasizes BaZi dialogue, FateBook and AnnualBook',
         ],
         [
           'Free access',
-          'Free calculations and journal; five AI requests per network daily within a shared budget',
+          'Free calculations and journal; five single readings and 12 Agent turns per network daily within a shared budget',
           'Free BaZi calculator advertised; reports and benefits follow current product terms',
         ],
         [
@@ -134,9 +138,17 @@ export const comparisons = [
       rows: [
         ['历法', '程序计算并返回约定', '若没有真实工具调用，可能仅凭语言生成'],
         ['随机过程', '密码学抽取，保留原始牌或爻值', '模型写出一个牌名不等于指定随机分布'],
-        ['上下文', '用户显式补充或导出选定内容', '可能已有长对话背景，应留意具体产品的数据范围'],
+        [
+          '上下文',
+          'Agent 会话历史、用户选定的出生资料与手记',
+          '可能已有长对话背景，应留意具体产品的数据范围',
+        ],
         ['解释', '调用 DeepSeek，明确标注为 AI 生成', '由当前对话模型生成，同样可能出错'],
-        ['组合方式', '通过 MCP 把确定性结果交给 Agent', '具备工具能力的 Agent 可以调用 Wenbu 后继续讨论'],
+        [
+          '组合方式',
+          '内置 DeepSeek Agent；也可通过 MCP 接入其他 Agent',
+          '具备工具能力的 Agent 可以调用 Wenbu 后继续讨论',
+        ],
       ],
       conclusion:
         '如果已有熟悉你的 Agent，直接连接 Wenbu MCP 通常很方便：由工具提供可复核的结构，让 Agent 在你授权的上下文内解释。专用网页则适合想先看清图表、保留一份安静记录的人。',
@@ -160,7 +172,7 @@ export const comparisons = [
         ],
         [
           'Context',
-          'User-selected background and explicit exports',
+          'Agent history and explicitly selected birth details and journal entries',
           'A conversation may already hold context; data scope depends on the host',
         ],
         [
@@ -170,7 +182,7 @@ export const comparisons = [
         ],
         [
           'Working together',
-          'MCP supplies structured results to an agent',
+          'Built-in DeepSeek Agent or MCP for your own agent',
           'A tool-capable agent can call Wenbu, then continue the discussion',
         ],
       ],

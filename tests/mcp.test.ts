@@ -20,7 +20,7 @@ it('supports stateless MCP initialization at both slash variants', async () => {
     expect(b.result.serverInfo.name).toBe('wenbu');
   }
 });
-it('lists four documented tools without isolate session state', async () => {
+it('lists six documented tools without isolate session state', async () => {
   const r = await call('tools/list');
   const b = (await r.json()) as { result: { tools: { name: string }[] } };
   expect(b.result.tools.map((x) => x.name).sort()).toEqual([
@@ -28,6 +28,8 @@ it('lists four documented tools without isolate session state', async () => {
     'calculate_ziwei',
     'cast_iching',
     'draw_tarot',
+    'read_library',
+    'search_library',
   ]);
 });
 it('executes a tool with structured content', async () => {
@@ -39,4 +41,17 @@ it('returns tool error for invalid data', async () => {
   const r = await call('tools/call', { name: 'calculate_bazi', arguments: { date: '2023-02-29' } });
   const b = (await r.json()) as { result: { isError: boolean } };
   expect(b.result.isError).toBe(true);
+});
+
+it('searches and reads original library content with stable source IDs', async () => {
+  const result = (await (
+    await call('tools/call', { name: 'search_library', arguments: { query: '真太阳时', locale: 'zh' } })
+  ).json()) as { result: { structuredContent: { results: { id: string; kind: string }[] } } };
+  const doc = result.result.structuredContent.results.find((d) => d.kind === 'guide');
+  expect(doc).toBeDefined();
+  const read = (await (
+    await call('tools/call', { name: 'read_library', arguments: { id: doc!.id, locale: 'zh' } })
+  ).json()) as { result: { structuredContent: { source: { id: string }; content: string } } };
+  expect(read.result.structuredContent.source.id).toBe(doc!.id);
+  expect(read.result.structuredContent.content.length).toBeGreaterThan(100);
 });

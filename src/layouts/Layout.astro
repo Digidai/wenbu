@@ -13,8 +13,17 @@ interface Props {
   path?: string;
   noindex?: boolean;
   article?: boolean;
+  workspace?: boolean;
 }
-const { title, description, locale, path = '', noindex = false, article = false } = Astro.props;
+const {
+  title,
+  description,
+  locale,
+  path = '',
+  noindex = false,
+  article = false,
+  workspace = false,
+} = Astro.props;
 const t = (zh: string, en: string) => choose(locale, zh, en);
 const site = Astro.site?.origin || 'https://wenbu.genedai.me';
 const canonical = site + href(locale, path);
@@ -99,7 +108,7 @@ const schema = {
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
   </head>
-  <body>
+  <body class={workspace ? 'agent-page' : undefined}>
     <a class="skip-link" href="#main">
       {t('跳至内容', 'Skip to content')}
     </a>
@@ -112,6 +121,14 @@ const schema = {
         <span class="brand-zh">问卜</span>
       </a>
       <nav aria-label={t('主导航', 'Main navigation')} class="desktop-nav">
+        <a
+          class="agent-nav-link"
+          href={href(locale, 'agent')}
+          aria-current={path === 'agent' ? 'page' : undefined}
+        >
+          {t('命理 Agent', 'Wenbu Agent')}
+          <span class="nav-new-dot" aria-hidden="true"></span>
+        </a>
         <a href={href(locale, 'bazi')} aria-current={path === 'bazi' ? 'page' : undefined}>
           {t('八字', 'BaZi')}
         </a>
@@ -152,11 +169,14 @@ const schema = {
       </div>
     </header>
     <nav id="mobile-nav" class="mobile-nav" aria-label={t('移动导航', 'Mobile navigation')} hidden>
-      {['bazi', 'iching', 'tarot', 'ziwei', 'learn', 'journal', 'agents'].map((p, i) => (
+      {['agent', 'bazi', 'iching', 'tarot', 'ziwei', 'learn', 'journal', 'agents'].map((p, i) => (
         <a href={href(locale, p)}>
           {t(
-            ['八字命盘', '易经问卦', '塔罗映照', '紫微星盘', '知识手册', '我的手记', '开发者'][i],
+            ['命理 Agent', '八字命盘', '易经问卦', '塔罗映照', '紫微星盘', '知识手册', '我的手记', '开发者'][
+              i
+            ],
             [
+              'Wenbu Agent',
               'BaZi chart',
               'I Ching',
               'Tarot reading',
@@ -187,6 +207,7 @@ const schema = {
         <div class="footer-links">
           <div>
             <span>{t('探索', 'EXPLORE')}</span>
+            <a href={href(locale, 'agent')}>{t('命理 Agent 研习室', 'Wenbu Agent studio')}</a>
             <a href={href(locale, 'bazi')}>{t('八字命盘', 'BaZi calculator')}</a>
             <a href={href(locale, 'iching')}>{t('易经问卦', 'I Ching oracle')}</a>
             <a href={href(locale, 'tarot')}>{t('塔罗映照', 'Free tarot')}</a>

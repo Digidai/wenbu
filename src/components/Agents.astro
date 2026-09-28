@@ -8,14 +8,15 @@ const config = JSON.stringify({ mcpServers: { wenbu: { url: origin + '/mcp' } } 
 const cli = [
   'curl -fsS ' + origin + '/wenbu.mjs -o wenbu.mjs',
   'node wenbu.mjs --help',
-  'node wenbu.mjs tarot --count 3',
-  'node wenbu.mjs bazi --input birth.json',
+  'node wenbu.mjs tarot \'{"count":3}\'',
+  'node wenbu.mjs bazi --file birth.json',
+  'node wenbu.mjs agent --file selected-context.json',
 ].join('\n');
 ---
 
 <div class="prose-grid">
   <article class="prose">
-    <h2>{t('一个地址，四种工具', 'One endpoint. Four tools.')}</h2>
+    <h2>{t('一个地址，六种工具', 'One endpoint. Six tools.')}</h2>
     <p>
       {t(
         'MCP 使用无会话的 Streamable HTTP。排盘和抽取不需要 API key；Agent 使用自己的模型解释，Wenbu 返回结构化数据、版本与计算约定。',
@@ -83,6 +84,28 @@ const cli = [
               )}
             </td>
           </tr>
+          <tr>
+            <td>
+              <code>search_library</code>
+            </td>
+            <td>
+              {t(
+                '搜索问卜原创资料与精选来源目录；不是全网搜索。',
+                'Search Wenbu guides and the curated reference catalogue; not unrestricted web search.',
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>read_library</code>
+            </td>
+            <td>
+              {t(
+                '读取原创资料正文、来源编号与链接。外部来源由宿主自行核验。',
+                'Read original content with a source ID and URL. External references need verification by the host.',
+              )}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -98,6 +121,18 @@ const cli = [
       <code>birth.json</code> · {t('示例资料，非真实用户', 'Synthetic example')}
     </p>
     <pre><code>{JSON.stringify({date:'2000-08-16',time:'03:30',timezone:'Asia/Shanghai',dayBoundary:'midnight',locale},null,2)}</code></pre>
+    <h2>{t('让 DeepSeek Agent 执行一回合', 'Run a DeepSeek Agent turn')}</h2>
+    <p>
+      {t(
+        'agent 命令接收消息、用户选定资料和明确的 consent:true，输出逐行 JSON 事件，包括文字、真实工具执行、来源、命盘、报告与完成状态。它不会读取其他文件或自动附带会话历史。',
+        'The agent command accepts a message, selected context and explicit consent:true. It returns newline-delimited JSON events for text, real tool activity, sources, charts, reports and completion. It does not read other files or attach history automatically.',
+      )}
+    </p>
+    <pre><code>{JSON.stringify({message:locale==='zh'?'查阅资料，解释八字换日的两种约定。':'Research the two BaZi day-boundary conventions.',mode:'research',locale,consent:true},null,2)}</code></pre>
+    <p>
+      <a href="/agent-protocol.md">{t('流式协议与上下文说明', 'Streaming protocol and context guide')} ↗</a> ·{' '}
+      <a href={href(locale, 'agent')}>{t('打开网页工作台', 'Open the web workspace')} ↗</a>
+    </p>
     <h2>Agent Skill</h2>
     <p>
       {t(
@@ -149,8 +184,8 @@ const cli = [
     <a href={href(locale, 'free')}>{t('免费额度', 'Free allowance')}</a>
     <p>
       {t(
-        '不需要用户把模型密钥交给 Agent 插件。MCP 只提供计算工具。',
-        'No model key is needed by an agent plugin. MCP supplies calculation tools only.',
+        '不需要用户把模型密钥交给 Agent 插件。MCP 提供四种计算工具和资料搜索、阅读。内置 Agent 则由 DeepSeek 执行。',
+        'No model key is needed by an agent plugin. MCP supplies four calculation tools plus library search and reading. The built-in Agent runs on DeepSeek.',
       )}
     </p>
   </aside>

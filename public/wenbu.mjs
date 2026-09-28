@@ -4,12 +4,14 @@ import { readFile } from 'node:fs/promises';
 const [command, arg, ...extra] = process.argv.slice(2);
 if (!command || ['help', '--help', '-h'].includes(command)) {
   console.log(
-    'Wenbu CLI\n\n  node wenbu.mjs bazi \'{"date":"2000-08-16","time":"03:30","timezone":"Asia/Shanghai"}\'\n  node wenbu.mjs iching \'{}\'\n  node wenbu.mjs tarot \'{"count":3}\'\n  node wenbu.mjs ziwei --file private-input.json\n  cat private-input.json | node wenbu.mjs bazi -\n\nUse a file or stdin to keep personal information out of shell history.\nWENBU_URL may select another HTTPS deployment or a local development server.\nThese tools calculate cultural symbols, not factual predictions.',
+    'Wenbu CLI\n\n  node wenbu.mjs bazi \'{"date":"2000-08-16","time":"03:30","timezone":"Asia/Shanghai"}\'\n  node wenbu.mjs iching \'{}\'\n  node wenbu.mjs tarot \'{"count":3}\'\n  node wenbu.mjs ziwei --file private-input.json\n  cat private-input.json | node wenbu.mjs bazi -\n  node wenbu.mjs agent --file selected-context.json\n\nAgent input requires {"message":"...","consent":true}; sends selected context to DeepSeek.\nAgent stdout is newline-delimited JSON events, including text, artifacts and completion.\nNo history is read or saved automatically. See /agent-protocol.md and /openapi.json.\nUse a file or stdin to keep personal information out of shell history.\nWENBU_URL may select another HTTPS deployment or a local development server.\nThese tools calculate cultural symbols, not factual predictions.',
   );
   process.exit(0);
 }
-if (!['bazi', 'iching', 'tarot', 'ziwei'].includes(command)) throw new Error('Unknown tool. Run --help.');
+if (!['bazi', 'iching', 'tarot', 'ziwei', 'agent'].includes(command))
+  throw new Error('Unknown tool. Run --help.');
 try {
+  const maxBytes = command === 'agent' ? 98304 : 8192;
   const base = new URL(process.env.WENBU_URL || 'https://wenbu.genedai.me');
   if (
     base.protocol !== 'https:' &&
@@ -27,20 +29,51 @@ try {
     raw = '';
     for await (const chunk of process.stdin) {
       raw += chunk;
-      if (Buffer.byteLength(raw) > 8192) throw new Error('Input exceeds 8192 bytes.');
+      if (Buffer.byteLength(raw) > maxBytes) throw new Error(`Input exceeds ${maxBytes} bytes.`);
     }
   } else if (extra.length) throw new Error('Unexpected argument.');
-  if (Buffer.byteLength(raw) > 8192) throw new Error('Input exceeds 8192 bytes.');
+  if (Buffer.byteLength(raw) > maxBytes) throw new Error(`Input exceeds ${maxBytes} bytes.`);
   const input = JSON.parse(raw);
+  if (command === 'agent' && input.consent !== true)
+    throw new Error('Agent requires explicit consent:true to send this context to DeepSeek.');
   const res = await fetch(new URL('/api/v1/' + command, base), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(command === 'agent' ? 130000 : 15000),
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error?.message || 'HTTP ' + res.status);
-  process.stdout.write(JSON.stringify(data, null, 2) + '\n');
+  if (command === 'agent' && res.ok) {
+    if (!res.body || !res.headers.get('content-type')?.includes('text/event-stream'))
+      throw new Error('Expected an Agent event stream.');
+    const decoder = new TextDecoder();
+    let buffer = '',
+      terminal = false;
+    for await (const chunk of res.body) {
+      buffer += decoder.decode(chunk, { stream: true });
+      buffer = buffer.replace(/\r\n/g, '\n');
+      let end;
+      while ((end = buffer.indexOf('\n\n')) !== -1) {
+        if (end > 262144) throw new Error('Agent event exceeds limit.');
+        const block = buffer.slice(0, end);
+        buffer = buffer.slice(end + 2);
+        const lines = block.split('\n').filter((line) => line.startsWith('data:'));
+        if (!lines.length) continue;
+        const event = JSON.parse(lines.map((line) => line.slice(5).trimStart()).join('\n'));
+        if (terminal) throw new Error('Unexpected event after completion.');
+        process.stdout.write(JSON.stringify(event) + '\n');
+        if (event.type === 'done' || event.type === 'error') terminal = true;
+        if (event.type === 'error') process.exitCode = 1;
+      }
+      if (buffer.length > 262144) throw new Error('Agent event exceeds limit.');
+    }
+    buffer += decoder.decode();
+    if (buffer.trim() || !terminal)
+      throw new Error('Agent stream ended before completion. Keep received artifacts and retry explicitly.');
+  } else {
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'HTTP ' + res.status);
+    process.stdout.write(JSON.stringify(data, null, 2) + '\n');
+  }
 } catch (e) {
   console.error('Wenbu: ' + e.message);
   process.exitCode = 1;
