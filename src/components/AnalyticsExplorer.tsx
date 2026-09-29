@@ -255,7 +255,7 @@ export default function AnalyticsExplorer({
           <label>
             时间范围
             <select value={filters.days} onChange={(e) => setFilters({ ...filters, days: e.target.value })}>
-              {[1, 7, 30, 90, ...(kind === 'feedback' ? [365, 3650] : [])].map((n) => (
+              {[1, 3, 7, 14, 30, 90, ...(kind === 'feedback' ? [365, 3650] : [])].map((n) => (
                 <option key={n} value={n}>
                   {n === 3650 ? '最近 10 年' : `最近 ${n} 天`}
                 </option>

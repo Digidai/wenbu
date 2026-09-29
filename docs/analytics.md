@@ -8,9 +8,11 @@
 2. 先选最近 7 天，保持“包含测试流量”关闭。看流量来源和进入页，再按语言、设备或活动筛选，避免只看总浏览量。
 3. 找到开始操作多、服务端成功少的入口，再检查对应错误与耗时。区分输入错误、限流、用户中断和服务故障。
 4. 看“Agent 提问引导”是否有人生成草稿、实际发送并完成回合。选项点击多不等于用户完成了探索。
-5. 导出汇总 JSON，记录当时的时间范围和筛选条件。没有记录时先检查时间范围、筛选项和统计开关，不用演示数字补齐。
+5. 点击来源、页面、设备榜单中的名称继续筛选；点击顶部指标或曲线图例切换显示指标。用“查看数据”逐时段核对，或导出 CSV / 汇总 JSON。没有记录时先检查范围、筛选项和统计开关，不用演示数字补齐。
 
-时间范围是截至查询时刻的最近 1 / 7 / 30 / 90 个 24 小时；每日趋势按 **UTC** 日期分组。AI 额度按上海时间零点重置，两者不要混用。当天数据仍在变化，不能与完整的一天直接比较。
+使用概览可选 **1 / 3 / 7 / 14 / 30 / 90 天**，按所选时区的日历日期计算并包含今天。默认北京时间（Asia/Shanghai），也可切换 UTC。1 天显示今天 00:00–23:00 的 24 个小时槽；3 天默认 72 个小时槽；7 天及以上默认按天。7 天以内也可手动切换小时/天粒度。自定义日期包含起止两天，限最近 90 个日历日。
+
+尚未到来的小时留空，不伪装成零流量；过去没有事件的时段补零；当前小时/日期标记“尚未结束”。页面明确显示数据截至时刻。当天数据仍在变化，不能与完整一天直接比较。**使用历史和反馈列表仍按截至查询时刻的 N × 24 小时窗口筛选**，不要直接与概览的日历范围对账。AI 额度始终按上海时间零点重置，不随报表时区改变。
 
 ## 看什么
 
@@ -22,7 +24,19 @@
 | 工具 / Agent 模式 / 入口动作                   | 功能偏好与开始位置                   |
 | 服务状态 / 耗时 / 模型调用 / 工具调用 / 产物数 | 完成率、限制、耗时和运行成本代理指标 |
 
-后台可选最近 1 / 7 / 30 / 90 天，按来源、活动、语言、设备、使用方式组合筛选；提供每日趋势、会话覆盖、维度明细、错误与耗时，以及汇总 JSON 导出。测试流量默认排除。
+概览支持来源、渠道类型、活动、浏览页面、进入页面、语言、设备、使用方式、功能事件、Agent 模式、浏览器、系统与两位国家/地区代码的组合筛选。测试流量默认排除。修改表单后点击“应用筛选”；时间快捷按钮和图表中的名称会直接应用。已生效条件显示为可移除标签；尚未应用的草稿不会改写旧图表的日期说明。
+
+“功能事件”只保留该工具名的事件，不能代替页面筛选：网页浏览通常没有工具名，要看八字页面的流量，应选“浏览页面 /bazi/”。会话覆盖也只统计筛选后保留的事件，不是把符合某一步的整个会话自动扩展进来。
+
+## 曲线与可视化
+
+- 六个可切换趋势：页面浏览、匿名访客、访问会话、成功计算、Agent 完成、服务错误。线型与颜色共同区分指标；键盘可逐点读取，也可切换完整数据表。
+- 来源、页面和设备使用横向条形图，显示实际数量和占比；默认前五项，可展开全部。分母包含当前筛选的全部类别，不只前五项。
+- 24 小时活跃分布把所选日期中的浏览量按钟点累加，用于看活跃时段；多天范围下不是某一天的实际曲线。
+- 功能完成、服务结果和会话覆盖分别展示使用、运行结果与行为覆盖。“完成调用”包含示例调用；顶部成功计算指标排除示例，两者口径不同。
+- 浏览量、成功计算、完成回合和错误可跨时间槽相加；匿名访客和会话在每个槽内去重，顶部总数在整个范围去重，**不能把逐小时访客/会话直接相加当总数**。
+
+CSV 导出完整时间序列，时间边界为带 Z 的 UTC ISO 时间，未来槽的数值留空。汇总 JSON 另外包含所有生效筛选、时区、粒度和查询截至时刻。所有图表、总数与导出来自同一份报表响应；导出使用当前显示的结果，不使用尚未应用的草稿。
 
 ## 事件与口径
 
@@ -70,7 +84,7 @@ API / MCP 可传 `X-Wenbu-Analytics: off`；CLI 用 `WENBU_ANALYTICS=off node we
 
 公开客户端事件与归因可被模拟，不能用于计费或反作弊；服务端成功事件禁止由收集接口写入。广告拦截、关闭统计、网络故障、机器人会影响覆盖。来源归因是可观察的引荐或 UTM，不是广告平台归因系统。
 
-D1 记录是实际写入而非采样估算；仍有读取 / 写入 / 数据库容量成本和账户限制。后台 20 组查询当前按 90 天内索引时间窗口汇总，流量增长后应增加按天预聚合、监控 D1 rows_read / rows_written、再决定迁移，不预先承诺无限容量或零成本。当天无记录时显示空状态，不生成演示数字。
+D1 记录是实际写入而非采样估算；仍有读取 / 写入 / 数据库容量成本和账户限制。后台 22 组查询当前按 90 天内索引时间窗口汇总，流量增长后应增加按天预聚合、监控 D1 rows_read / rows_written、再决定迁移，不预先承诺无限容量或零成本。查询同时限制事件发生时间和接收时间，避免未来时间戳或查询后才接收的事件混入本次快照。当天无记录时显示空状态，不生成演示数字。
 
 运维与迁移见 [operations.md](operations.md)，上线验证见 [反馈与历史存储质量记录](reviews/feedback-history-release.md)。
 
@@ -80,7 +94,15 @@ Open `/insights/` and enter the administrator token in the password field. The t
 
 Start with the last seven days and test traffic excluded. Filter by source, registered campaign, language, device or channel, then compare starts with server-recorded outcomes. Review input errors, throttling, cancellations and service failures separately. Export the aggregate JSON with the selected period and filters when recording a finding.
 
-Periods are rolling 24-hour windows; daily rows use UTC dates. AI allowances reset at midnight in Shanghai. A partial current day is not directly comparable with a complete day.
+The Overview offers 1, 3, 7, 14, 30 and 90 **calendar days, including today**, in Shanghai time (default) or UTC. One day shows today's 24 hourly slots; three days defaults to 72 hourly slots; longer periods default to daily points. Hourly detail is available for ranges up to seven days. Custom start and end dates are inclusive and must fall within the last 90 calendar days. History and Feedback retain rolling N × 24-hour windows. AI allowances always reset at midnight in Shanghai.
+
+Past empty slots are zero; future slots are blank; the current slot is marked as incomplete. A partial current day is not directly comparable with a complete day. Visitors and sessions are deduplicated within each time bucket and across the full report separately: adding hourly uniques will overcount the period total.
+
+Combine source, medium, campaign, page, entry page, language, device, channel, tool, Agent mode, browser, OS and country filters. Apply pending changes before comparing results; the report's visible labels and exports continue to describe the last applied snapshot. Clicking a ranked source, page, device or tool applies that filter. Tool filters retain tool-labelled events; use the Page filter to measure a tool page's visits.
+
+The trend has six metric toggles, keyboard point navigation and a full table alternative. Ranked bars show counts and shares across all filtered categories, even when only the top five are expanded. The hour-of-day histogram adds views at each clock hour across the selected dates. Service outcomes and completed calls include examples where applicable; successful calculations in the headline metric exclude examples. Session coverage is calculated from the filtered events, not from all events belonging to a matching session.
+
+CSV contains every time bucket with UTC ISO boundaries and blank future values. Aggregate JSON also includes the applied filters, timezone, granularity and query timestamp. Charts, totals and exports use the same response snapshot; draft changes do not relabel an old report.
 
 | Metric                  | What it means                                                             | What it does not establish                         |
 | ----------------------- | ------------------------------------------------------------------------- | -------------------------------------------------- |

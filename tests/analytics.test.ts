@@ -185,11 +185,12 @@ describe('closed analytics contract', () => {
       env,
     );
     expect(report.data.summary[0].events).toBe(0);
-    const injection = await analyticsReport(
-      new URL("https://wenbu.genedai.me/api/admin/analytics?source=';DROP%20TABLE%20events;--"),
-      env,
-    );
-    expect(injection.data.summary[0].events).toBe(1);
+    await expect(
+      analyticsReport(
+        new URL("https://wenbu.genedai.me/api/admin/analytics?source=';DROP%20TABLE%20events;--"),
+        env,
+      ),
+    ).rejects.toMatchObject({ status: 400 });
     sql
       .prepare("UPDATE events SET occurred_at = ?,received_at = ?, archive_key='verified-fixture'")
       .run(Date.now() - 91 * 86400000, Date.now() - 91 * 86400000);

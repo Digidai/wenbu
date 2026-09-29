@@ -1,49 +1,133 @@
 import AnalyticsExplorer from './AnalyticsExplorer';
-import { useState } from 'react';
-import { BarChart3, Download, LockKeyhole, RefreshCw, LogOut } from 'lucide-react';
-import { campaigns, sources } from '../lib/analytics-contract';
-type Row = Record<string, string | number | null>;
-type Report = { generatedAt: string; days: number; includeTest: boolean; data: Record<string, Row[]> };
-const number = (value: unknown) => (typeof value === 'number' ? value.toLocaleString() : '0');
+import { AnalyticsTrend, AnalyticsBreakdownCharts } from './AnalyticsCharts';
+import { useEffect, useRef, useState } from 'react';
+import { BarChart3, Download, LockKeyhole, RefreshCw, SlidersHorizontal, X } from 'lucide-react';
+import {
+  defaultReportFilters,
+  reportDimensions,
+  reportLabel,
+  reportLabels,
+  reportMetrics,
+  reportPresets,
+  dateInTimezone,
+  formatReportTime,
+  type AnalyticsReport,
+  type ReportFilters,
+  type ReportMetric,
+} from '../lib/analytics-report';
+import '../styles/analytics-dashboard.css';
+const number = (value: unknown) => Number(value ?? 0).toLocaleString('zh-CN');
 export default function AnalyticsDashboard() {
   const [tab, setTab] = useState<'overview' | 'events' | 'feedback' | 'archives'>('overview');
   const [linked, setLinked] = useState({ operation: '', test: false });
   const [token, setToken] = useState('');
-  const [report, setReport] = useState<Report>();
+  const [report, setReport] = useState<AnalyticsReport>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [filters, setFilters] = useState({
-    days: '7',
-    source: '',
-    campaign: '',
-    locale: '',
-    device: '',
-    channel: '',
-    test: 'false',
-  });
-  async function load() {
+  const [filters, setFilters] = useState<ReportFilters>({ ...defaultReportFilters });
+  const [customRange, setCustomRange] = useState(false);
+  const [selected, setSelected] = useState<ReportMetric[]>(['pageviews', 'sessions']);
+  const requestId = useRef(0),
+    controller = useRef<AbortController | null>(null);
+  useEffect(
+    () => () => {
+      requestId.current++;
+      controller.current?.abort();
+    },
+    [],
+  );
+  function logout() {
+    requestId.current++;
+    controller.current?.abort();
+    setBusy(false);
+    setToken('');
+    setReport(undefined);
+    setError('');
+    setTab('overview');
+  }
+  async function load(next: ReportFilters = filters) {
     if (!token.trim() || busy) return;
+    const id = ++requestId.current;
+    controller.current?.abort();
+    const abort = new AbortController();
+    controller.current = abort;
     setBusy(true);
     setError('');
     try {
-      const response = await fetch('/api/admin/analytics?' + new URLSearchParams(filters), {
+      const response = await fetch('/api/admin/analytics?' + new URLSearchParams(next), {
         headers: { Authorization: `Bearer ${token.trim()}` },
         cache: 'no-store',
+        signal: AbortSignal.any([abort.signal, AbortSignal.timeout(30000)]),
       });
-      if (!response.ok)
+      if (!response.ok) {
+        if (response.status === 401) {
+          setReport(undefined);
+          throw new Error('管理密钥无效，请检查后再试。');
+        }
+        if (response.status === 400)
+          throw new Error('请检查日期与筛选条件：日期限最近 90 天，小时明细最多查看 7 天。');
         throw new Error(
-          response.status === 401 ? '管理密钥无效，请检查后再试。' : '统计暂时不可用，请稍后刷新。',
+          response.status === 429 ? '查询较频繁，请稍后再试。' : '统计暂时不可用，已保留上次结果。',
         );
-      setReport(await response.json());
+      }
+      const data = (await response.json()) as AnalyticsReport;
+      if (requestId.current === id) {
+        setReport(data);
+        setFilters(data.filters);
+        setCustomRange(Boolean(data.filters.start || data.filters.end));
+      }
     } catch (e) {
-      setReport(undefined);
-      setError(e instanceof Error ? e.message : '加载失败');
+      if (requestId.current === id && !(e instanceof DOMException && e.name === 'AbortError'))
+        setError(
+          e instanceof DOMException && e.name === 'TimeoutError'
+            ? '查询超时，已保留上次结果，请稍后重试。'
+            : e instanceof Error
+              ? e.message
+              : '加载失败',
+        );
     } finally {
-      setBusy(false);
+      if (requestId.current === id) setBusy(false);
     }
   }
   const summary = report?.data.summary[0] ?? {};
-  const funnel = report?.data.funnel[0] ?? {};
+  const changed = Boolean(report && JSON.stringify(filters) !== JSON.stringify(report.filters));
+  const days =
+    filters.start && filters.end
+      ? (Date.parse(filters.end) - Date.parse(filters.start)) / 86400000 + 1
+      : Number(filters.days);
+  const today = dateInTimezone(Date.now(), filters.timezone),
+    earliest = dateInTimezone(Date.now() - 89 * 86400000, filters.timezone);
+  function pick(key: keyof ReportFilters, value: string) {
+    const next = { ...filters, [key]: value };
+    setFilters(next);
+    void load(next);
+  }
+  function preset(days: number) {
+    const next = { ...filters, days: String(days), start: '', end: '', granularity: 'auto' };
+    setCustomRange(false);
+    setFilters(next);
+    void load(next);
+  }
+  function toggle(key: ReportMetric) {
+    setSelected((current) =>
+      current.includes(key)
+        ? current.length === 1
+          ? current
+          : current.filter((k) => k !== key)
+        : [...current, key],
+    );
+  }
+  function download() {
+    if (!report) return;
+    const url = URL.createObjectURL(
+      new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'wenbu-analytics.json';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
   const guidanceLabels: Record<string, string> = {
     guide_opened: '开始使用引导',
     guide_step_1: '返回选择主题',
@@ -58,30 +142,6 @@ export default function AnalyticsDashboard() {
     agent_started_followup: '发送追问草稿',
     agent_started_example: '发送示例提问',
   };
-  const select = (key: keyof typeof filters, title: string, options: readonly string[]) => (
-    <label>
-      {title}
-      <select value={filters[key]} onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}>
-        {key !== 'days' && <option value="">全部</option>}
-        {options.map((v) => (
-          <option key={v} value={v}>
-            {v}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-  function download() {
-    if (!report) return;
-    const url = URL.createObjectURL(
-      new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }),
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'wenbu-analytics.json';
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
   const breakdownNames: Record<string, string> = {
     source: '访问来源',
     medium: '渠道类型',
@@ -98,8 +158,21 @@ export default function AnalyticsDashboard() {
     mode: 'Agent 模式',
     action: '入口点击',
   };
+  const select = (key: keyof ReportFilters) => (
+    <label key={key}>
+      {reportLabels[key]}
+      <select value={filters[key]} onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}>
+        <option value="">全部</option>
+        {reportDimensions[key].map((v) => (
+          <option key={v} value={v}>
+            {reportLabel(v)}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
   return (
-    <section className="insights shell">
+    <section className="insights shell observatory">
       <header className="insights-header">
         <div>
           <span className="eyebrow accent">WENBU · PRODUCT OBSERVATORY</span>
@@ -107,7 +180,7 @@ export default function AnalyticsDashboard() {
             <BarChart3 size={28} />
             访问与使用
           </h1>
-          <p>从哪里来，在哪里开始，是否真正得到结果。</p>
+          <p>看见每个时段的变化，再沿着来源、页面与功能继续探索。</p>
         </div>
         <span className="insights-private">
           <LockKeyhole size={14} />
@@ -124,7 +197,7 @@ export default function AnalyticsDashboard() {
         >
           <LockKeyhole size={26} />
           <h2>打开数据观察室</h2>
-          <p>输入管理密钥查看汇总。密钥只用于本页请求，不写入网址或浏览器存储。</p>
+          <p>输入管理密钥查看统计。密钥仅用于本页请求，不写入网址或浏览器存储。</p>
           <label>
             管理密钥
             <input
@@ -151,9 +224,9 @@ export default function AnalyticsDashboard() {
               ] as const
             ).map(([key, label]) => (
               <button
+                key={key}
                 role="tab"
                 aria-selected={tab === key}
-                key={key}
                 onClick={() => {
                   setLinked({ operation: '', test: false });
                   setTab(key);
@@ -162,15 +235,7 @@ export default function AnalyticsDashboard() {
                 {label}
               </button>
             ))}
-            <button
-              onClick={() => {
-                setToken('');
-                setReport(undefined);
-                setTab('overview');
-              }}
-            >
-              退出
-            </button>
+            <button onClick={logout}>退出</button>
           </div>
           {tab !== 'overview' ? (
             <AnalyticsExplorer
@@ -187,247 +252,366 @@ export default function AnalyticsDashboard() {
           ) : (
             <>
               <form
-                className="insights-filters"
+                className="observatory-filter-panel"
                 onSubmit={(e) => {
                   e.preventDefault();
                   void load();
                 }}
               >
-                {select('days', '最近天数', ['1', '7', '30', '90'])}
-                {select('source', '来源', sources)}
-                {select('campaign', '活动', campaigns)}
-                {select('locale', '语言', ['zh', 'en'])}
-                {select('device', '设备', ['mobile', 'desktop', 'tablet', 'bot', 'unknown'])}
-                {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
-                <label className="insights-test">
-                  <input
-                    type="checkbox"
-                    checked={filters.test === 'true'}
-                    onChange={(e) => setFilters({ ...filters, test: String(e.target.checked) })}
-                  />
-                  包含测试流量
-                </label>
-                <button className="button" disabled={busy}>
-                  <RefreshCw size={14} />
-                  {busy ? '读取中' : '应用筛选'}
-                </button>
+                <fieldset disabled={busy}>
+                  <div className="observatory-period-row">
+                    <div className="observatory-periods" aria-label="统计时间范围">
+                      {reportPresets.map((d) => (
+                        <button
+                          type="button"
+                          key={d}
+                          aria-pressed={!customRange && filters.days === String(d)}
+                          onClick={() => preset(d)}
+                        >
+                          {d} 天{d === 1 && <small>24h</small>}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        aria-pressed={customRange}
+                        onClick={() => {
+                          setCustomRange(true);
+                          setFilters({
+                            ...filters,
+                            start: report.range.startDate,
+                            end: report.range.endDate,
+                          });
+                        }}
+                      >
+                        自定义
+                      </button>
+                    </div>
+                    <label>
+                      时区
+                      <select
+                        value={filters.timezone}
+                        onChange={(e) => setFilters({ ...filters, timezone: e.target.value })}
+                      >
+                        <option value="Asia/Shanghai">北京 · UTC+8</option>
+                        <option value="UTC">UTC</option>
+                      </select>
+                    </label>
+                    <label>
+                      曲线粒度
+                      <select
+                        value={filters.granularity}
+                        onChange={(e) => setFilters({ ...filters, granularity: e.target.value })}
+                      >
+                        <option value="auto">自动</option>
+                        <option value="hour" disabled={days > 7}>
+                          按小时（≤7 天）
+                        </option>
+                        <option value="day">按天</option>
+                      </select>
+                    </label>
+                  </div>
+                  {customRange && (
+                    <div className="observatory-dates">
+                      <label>
+                        开始日期
+                        <input
+                          type="date"
+                          required
+                          min={earliest}
+                          max={today}
+                          value={filters.start}
+                          onInput={(e) => {
+                            const start = e.currentTarget.value;
+                            setFilters((current) => ({ ...current, start, granularity: 'auto' }));
+                          }}
+                          onChange={(e) =>
+                            setFilters({ ...filters, start: e.target.value, granularity: 'auto' })
+                          }
+                        />
+                      </label>
+                      <span>至</span>
+                      <label>
+                        结束日期
+                        <input
+                          type="date"
+                          required
+                          min={filters.start || earliest}
+                          max={today}
+                          value={filters.end}
+                          onInput={(e) => {
+                            const end = e.currentTarget.value;
+                            setFilters((current) => ({ ...current, end, granularity: 'auto' }));
+                          }}
+                          onChange={(e) =>
+                            setFilters({ ...filters, end: e.target.value, granularity: 'auto' })
+                          }
+                        />
+                      </label>
+                      <p>包含起止日期，最多 90 天。</p>
+                    </div>
+                  )}
+                  <div className="observatory-main-filters">
+                    {(['source', 'page', 'device', 'locale'] as const).map(select)}
+                  </div>
+                  <details className="observatory-more-filters">
+                    <summary>
+                      <SlidersHorizontal size={14} />
+                      更多筛选<span>渠道、功能、进入页、国家地区等</span>
+                    </summary>
+                    <div className="observatory-extra-grid">
+                      {(
+                        [
+                          'medium',
+                          'campaign',
+                          'entry_page',
+                          'channel',
+                          'tool',
+                          'mode',
+                          'browser',
+                          'os',
+                        ] as const
+                      ).map(select)}
+                      <label>
+                        国家 / 地区代码
+                        <input
+                          value={filters.country}
+                          maxLength={2}
+                          pattern="[A-Z]{2}"
+                          placeholder="例如 CN、US"
+                          onChange={(e) => setFilters({ ...filters, country: e.target.value.toUpperCase() })}
+                        />
+                      </label>
+                    </div>
+                    <p>“功能事件”只保留该功能的操作记录。查看某个工具页的访问量，可使用“浏览页面”筛选。</p>
+                  </details>
+                  <div className="observatory-filter-footer">
+                    <label className="observatory-test">
+                      <input
+                        type="checkbox"
+                        checked={filters.test === 'true'}
+                        onChange={(e) => setFilters({ ...filters, test: String(e.target.checked) })}
+                      />
+                      包含测试流量
+                    </label>
+                    <span role="status">
+                      {changed ? '筛选已修改，应用后更新图表' : '全部图表使用同一组筛选'}
+                    </span>
+                    <button
+                      type="button"
+                      className="observatory-text-button"
+                      onClick={() => {
+                        const next = { ...defaultReportFilters };
+                        setCustomRange(false);
+                        setFilters(next);
+                        void load(next);
+                      }}
+                    >
+                      重置
+                    </button>
+                    <button className="button" type="submit">
+                      <RefreshCw size={14} className={busy ? 'observatory-refreshing' : ''} />
+                      {busy ? '读取中…' : '应用筛选'}
+                    </button>
+                  </div>
+                </fieldset>
               </form>
-              <div className="insights-toolbar">
+              <div className="insights-toolbar observatory-toolbar">
                 <span>
-                  最近 {report.days} 天 · UTC · {report.includeTest ? '包含测试' : '已排除测试'} ·{' '}
-                  {new Date(report.generatedAt).toLocaleString('zh-CN')}
+                  <b>
+                    {report.range.startDate} — {report.range.endDate}
+                  </b>{' '}
+                  · {report.timezone === 'Asia/Shanghai' ? '北京时间' : 'UTC'} ·{' '}
+                  {report.includeTest ? '含测试流量' : '已排除测试'}
+                  <small>数据截至 {formatReportTime(report.range.asOf, report.timezone, true)}</small>
                 </span>
-                <button onClick={download}>
-                  <Download size={15} />
-                  导出汇总
-                </button>
-                <button
-                  onClick={() => {
-                    setToken('');
-                    setReport(undefined);
-                  }}
-                >
-                  <LogOut size={15} />
-                  退出
+                <button type="button" onClick={download}>
+                  <Download size={14} />
+                  导出汇总 JSON
                 </button>
               </div>
-              <div className="insights-metrics">
-                {[
-                  ['pageviews', '页面浏览'],
-                  ['visitors', '匿名访客'],
-                  ['sessions', '访问会话'],
-                  ['calculations', '成功计算'],
-                  ['agent_complete', 'Agent 完成回合'],
-                  ['failures', '服务错误'],
-                ].map(([key, label]) => (
-                  <article key={key}>
-                    <span>{label}</span>
-                    <strong>{number(summary[key])}</strong>
-                  </article>
-                ))}
-              </div>
-              {!summary.events && (
-                <p className="insights-empty">
-                  这个范围内还没有记录。上线后的真实访问和功能使用会在这里出现。
+              {error && (
+                <p role="alert" className="error-message">
+                  {error}
                 </p>
               )}
-              <p className="insights-quality-note">
-                示例计算 {number(summary.examples)} 次 · 输入未通过 {number(summary.invalid_inputs)} 次 · 额度
-                / 限速 {number(summary.throttled)} 次 · 用户中断 {number(summary.cancellations)} 次。Agent
-                等待补充 {number(summary.agent_waiting)} 回合 · 受限 {number(summary.agent_limited)}{' '}
-                回合。以上与服务错误分开统计。
-              </p>
-              <div className="insights-primary">
-                <article className="insights-card">
-                  <h2>每日访问与使用</h2>
-                  <p>柱高代表浏览量，旁边列出成功计算次数。</p>
-                  <div className="insights-timeline">
-                    {report.data.daily.map((row) => (
-                      <div key={String(row.label)}>
-                        <span>{String(row.label).slice(5)}</span>
-                        <i
-                          style={{
-                            width: `${Math.max(2, (Number(row.views) / Math.max(1, ...report.data.daily.map((d) => Number(d.views)))) * 100)}%`,
-                          }}
-                        />
-                        <b>
-                          {number(row.views)} <small>浏览 · {number(row.calculations)} 计算</small>
-                        </b>
+              <div className="observatory-active-filters">
+                {Object.keys(reportLabels)
+                  .filter((key) => key in reportDimensions || key === 'country')
+                  .map(
+                    (key) =>
+                      report.filters[key as keyof ReportFilters] && (
+                        <button
+                          type="button"
+                          key={key}
+                          disabled={busy}
+                          onClick={() => pick(key as keyof ReportFilters, '')}
+                        >
+                          {reportLabels[key]}：{reportLabel(report.filters[key as keyof ReportFilters])}
+                          <X size={12} />
+                        </button>
+                      ),
+                  )}
+              </div>
+              <div className="observatory-results" aria-busy={busy}>
+                <div className="insights-metrics observatory-metrics">
+                  {reportMetrics.map((m) => (
+                    <button
+                      type="button"
+                      key={m.key}
+                      aria-pressed={selected.includes(m.key)}
+                      onClick={() => toggle(m.key)}
+                      style={{ borderTopColor: m.color }}
+                    >
+                      <span>{m.label}</span>
+                      <strong>{number(summary[m.key])}</strong>
+                      <small>{selected.includes(m.key) ? '曲线已显示' : '点击显示曲线'}</small>
+                    </button>
+                  ))}
+                </div>
+                {!summary.events && (
+                  <p className="insights-empty">
+                    当前筛选下还没有记录。可以扩大时间范围或移除筛选条件；图表不会填入演示数据。
+                  </p>
+                )}
+                <AnalyticsTrend report={report} selected={selected} onToggle={toggle} />
+                <p className="insights-quality-note">
+                  示例计算 {number(summary.examples)} 次 · 输入未通过 {number(summary.invalid_inputs)} 次 ·
+                  额度 / 限速 {number(summary.throttled)} 次 · 用户中断 {number(summary.cancellations)} 次 ·
+                  Agent 等待补充 {number(summary.agent_waiting)} 回合。与服务错误分开统计。
+                </p>
+                <AnalyticsBreakdownCharts report={report} onFilter={pick} />
+                <details className="observatory-detail-tables">
+                  <summary>
+                    展开详细统计表<span>来源、引导、性能与全部事件</span>
+                  </summary>
+                  <div className="insights-breakdowns">
+                    <details className="insights-card" open>
+                      <summary>Agent 提问引导</summary>
+                      <p>
+                        只统计步骤与操作类型，不记录选择内容。发送表示发起回合，不等同于服务端完成；不是严格漏斗。
+                      </p>
+                      <div className="insights-table">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>操作</th>
+                              <th>次数</th>
+                              <th>会话</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(report.data.guidance ?? []).map((row) => (
+                              <tr key={String(row.label)}>
+                                <th>{guidanceLabels[String(row.label)] ?? String(row.label)}</th>
+                                <td>{number(row.count)}</td>
+                                <td>{number(row.sessions)}</td>
+                              </tr>
+                            ))}
+                            {!report.data.guidance?.length && (
+                              <tr>
+                                <td colSpan={3}>所选范围内还没有引导事件。</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
                       </div>
+                      <small>自由修改后不再包含原建议的发送归为普通对话；不推断用户主题或个人特征。</small>
+                    </details>
+                    {Object.entries(breakdownNames).map(([key, label]) => (
+                      <details className="insights-card" key={key}>
+                        <summary>{label}</summary>
+                        <div className="insights-table">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>维度</th>
+                                <th>事件</th>
+                                <th>会话</th>
+                                <th>成功</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {report.data[key].map((row) => (
+                                <tr key={String(row.label)}>
+                                  <th>{String(row.label)}</th>
+                                  <td>{number(row.events)}</td>
+                                  <td>{number(row.sessions)}</td>
+                                  <td>{number(row.successes)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
                     ))}
                   </div>
-                </article>
-                <article className="insights-card">
-                  <h2>会话覆盖漏斗</h2>
-                  <p>
-                    同一会话内包含这些事件，非严格先后顺序。成功必须有服务端记录；静态工具示例不计入，发送
-                    Agent 示例问题计入真实回合。
-                  </p>
-                  {[
-                    ['visited', '访问页面'],
-                    ['started', '开始工具或对话'],
-                    ['succeeded', '实际完成'],
-                    ['saved', '保存为手记'],
-                  ].map(([key, label], i) => (
-                    <div className="insights-funnel" key={key}>
-                      <span>0{i + 1}</span>
-                      <strong>{label}</strong>
-                      <b>{number(funnel[key])}</b>
-                    </div>
-                  ))}
-                  <small>会话覆盖统计，不推断跨设备身份或因果关系。</small>
-                </article>
-              </div>
-              <div className="insights-breakdowns">
-                <details className="insights-card" open>
-                  <summary>Agent 提问引导</summary>
-                  <p>
-                    只统计步骤与操作类型，不记录选择内容。发送表示发起回合，不等同于服务端完成；不是严格漏斗。
-                  </p>
-                  <div className="insights-table">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>操作</th>
-                          <th>次数</th>
-                          <th>会话</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(report.data.guidance ?? []).map((row) => (
-                          <tr key={String(row.label)}>
-                            <th>{guidanceLabels[String(row.label)] ?? String(row.label)}</th>
-                            <td>{number(row.count)}</td>
-                            <td>{number(row.sessions)}</td>
-                          </tr>
-                        ))}
-                        {!report.data.guidance?.length && (
-                          <tr>
-                            <td colSpan={3}>所选范围内还没有引导事件。</td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                  <small>自由修改后不再包含原建议的发送归为普通对话；不推断用户主题或个人特征。</small>
-                </details>
-                {Object.entries(breakdownNames).map(([key, label]) => (
-                  <details
-                    className="insights-card"
-                    key={key}
-                    open={['source', 'page', 'tool', 'device'].includes(key)}
-                  >
-                    <summary>{label}</summary>
+                  <details className="insights-card">
+                    <summary>服务状态与耗时</summary>
                     <div className="insights-table">
                       <table>
                         <thead>
                           <tr>
-                            <th>维度</th>
-                            <th>事件</th>
-                            <th>会话</th>
-                            <th>成功</th>
+                            <th>功能</th>
+                            <th>状态</th>
+                            <th>次数</th>
+                            <th>平均耗时</th>
+                            <th>最大耗时</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {report.data[key].map((row) => (
-                            <tr key={String(row.label)}>
-                              <th>{String(row.label)}</th>
-                              <td>{number(row.events)}</td>
-                              <td>{number(row.sessions)}</td>
-                              <td>{number(row.successes)}</td>
+                          {report.data.performance.map((row, i) => (
+                            <tr key={i}>
+                              <th>{row.label}</th>
+                              <td>{row.status}</td>
+                              <td>{number(row.count)}</td>
+                              <td>{number(row.average_ms)} ms</td>
+                              <td>{number(row.max_ms)} ms</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
                   </details>
-                ))}
+                  <details className="insights-card">
+                    <summary>全部事件与接收位置</summary>
+                    <div className="insights-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>事件</th>
+                            <th>接收位置</th>
+                            <th>状态</th>
+                            <th>数量</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {report.data.events.map((row, i) => (
+                            <tr key={i}>
+                              <th>{row.label}</th>
+                              <td>{row.origin}</td>
+                              <td>{row.status}</td>
+                              <td>{number(row.count)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </details>
+                </details>
               </div>
-              <details className="insights-card">
-                <summary>服务状态与耗时</summary>
-                <div className="insights-table">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>功能</th>
-                        <th>状态</th>
-                        <th>次数</th>
-                        <th>平均耗时</th>
-                        <th>最大耗时</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {report.data.performance.map((row, i) => (
-                        <tr key={i}>
-                          <th>{row.label}</th>
-                          <td>{row.status}</td>
-                          <td>{number(row.count)}</td>
-                          <td>{number(row.average_ms)} ms</td>
-                          <td>{number(row.max_ms)} ms</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </details>
-              <details className="insights-card">
-                <summary>全部事件与接收位置</summary>
-                <div className="insights-table">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>事件</th>
-                        <th>接收位置</th>
-                        <th>状态</th>
-                        <th>数量</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {report.data.events.map((row, i) => (
-                        <tr key={i}>
-                          <th>{row.label}</th>
-                          <td>{row.origin}</td>
-                          <td>{row.status}</td>
-                          <td>{number(row.count)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </details>
             </>
           )}
         </>
       )}
-      {error && (
+      {error && !report && (
         <p role="alert" className="error-message">
           {error}
         </p>
       )}
       <p className="insights-footnote">
-        匿名访客是 30
-        天有效的浏览器标识，不代表精确人数。统计遵循用户关闭选项和浏览器隐私信号；拦截、离线和自动化流量会影响覆盖。事件明细在线保留
-        90 天，已归档事件存于私有 R2。数据用于产品改进，不用于计费。
+        近 N 天包含今天，按所选时区的自然日分组，今天仍在变化。匿名访客是 30
+        天有效的浏览器标识，不等于自然人数。拦截、关闭统计和延迟补发会影响覆盖；0 表示未记录到事件。最近 90
+        天明细可在线查看，更早记录从私有归档导出。数据用于产品改进，不用于计费。
       </p>
     </section>
   );

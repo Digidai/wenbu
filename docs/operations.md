@@ -8,7 +8,7 @@
 
 发布前完成 `verify` 与 `lint`，核对当前分支和 Cloudflare 账户。发布后分别检查页面、计算接口、MCP 和真实浏览器体验；只有需要验证模型时才发起有额度成本的 AI 请求。GitHub CI 通过不等于已部署，`/api/health` 显示已配置也不等于上游模型已经实测。
 
-会话/手记保存在用户浏览器，AI 额度在 Durable Object，近期使用事件与主动提交的反馈在 D1，长期事件归档在私有 R2。反馈摘录只有用户主动勾选并预览后才上传；行为事件不含对话正文。请求处理时 Cloudflare 与 DeepSeek 仍会接收相关数据；不要把“行为统计不存对话”写成“资料不出设备”。统计日报按 UTC 分组，AI 额度按上海时间零点重置。
+会话/手记保存在用户浏览器，AI 额度在 Durable Object，近期使用事件与主动提交的反馈在 D1，长期事件归档在私有 R2。反馈摘录只有用户主动勾选并预览后才上传；行为事件不含对话正文。请求处理时 Cloudflare 与 DeepSeek 仍会接收相关数据；不要把“行为统计不存对话”写成“资料不出设备”。统计概览按北京时间或 UTC 的日历日期分组；历史与反馈仍用滚动时间窗口。AI 额度按上海时间零点重置。
 
 ## Runtime
 
@@ -86,6 +86,8 @@ npm run deploy
 ```
 
 The database and production secret were provisioned for the 2026-09-29 release. Do not recreate them for routine deployments. The administrator opens `/insights/` and supplies the secret in the password field. An ignored mode-0600 `.analytics-admin-token` file contains the initial local copy; do not publish it. The report API requires `Authorization: Bearer ...`, sends no-store/noindex, and has a separate rate limit. See [analytics.md](analytics.md) for dimensions, privacy, opt-out and definitions.
+
+The chart/filter upgrade uses the existing schema and requires no migration or secret rotation. After deployment, `node scripts/smoke-analytics-trends.mjs` performs authenticated read-only checks of range sizes, timezone boundaries, filter round-trips, time-series/summary reconciliation, privacy headers and rejected invalid queries. It does not create events or expose credentials or traffic counts in its evidence. Set `WENBU_URL` for a local target and `WENBU_EVIDENCE` for an explicit evidence file. This check does not replace desktop/mobile browser verification.
 
 Private R2 bucket `wenbu-analytics-archive` is bound as `ANALYTICS_ARCHIVE`. Do not enable public access or set an expiry lifecycle. Cron `15 * * * *` archives events received more than one day ago in bounded NDJSON batches. Only archived rows older than 90 days can be pruned; failed uploads keep the original rows. Check `/api/admin/storage` for errors and backlog; a job handles at most 2,500 events per hour. A D1 lease prevents overlapping jobs. Archive downloads require the same admin token, and manifests contain SHA-256 hashes. Indexes bound time-window reads and retention deletes. Monitor D1 reads, writes, storage and Worker errors in Cloudflare; growth requires daily pre-aggregation before repeatedly querying large 90-day ranges. Public page beacons are approximate product measurement; server calculation receipts are recorded independently. Neither is a billing ledger.
 

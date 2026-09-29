@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: analytics trends and multidimensional filters (2026-09-29)
+
+The [analytics visualization release](analytics-trends-release.md) records hourly/daily curves, 1/3/7/14/30/90-day and custom-date filters, ranked distributions, exports, 178 tests, local fixture/browser evidence and the separate release checks. The Grok CLI attempts did not return a verdict.
+
 ## Latest: private feedback and retained usage history (2026-09-29)
 
 The [feedback and history release](feedback-history-release.md) records bilingual feedback, linked event history, private D1/R2 storage, authenticated exports and administration. Evidence includes 150 passing tests, CI, offline delivery recovery, live feedback correlation, a verified R2 archive and real DeepSeek tool phases. Grok CLI did not return a completed review; that limitation is separate from the successful tests and production checks.
