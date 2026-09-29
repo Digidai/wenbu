@@ -1,5 +1,6 @@
 ---
-import { ArrowUpRight, ArrowRight, BookOpen, Search, X, Compass } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, BookOpen, Search, X, Compass, LayoutGrid, Rows3 } from 'lucide-react';
+import ArticleCover from './ArticleCover.astro';
 import { articles } from '../data/articles';
 import { learningTopics } from '../data/learning-paths';
 import { choose, href } from '../lib/i18n';
@@ -32,7 +33,7 @@ const startingPoints = [
 ];
 ---
 
-<div class="knowledge-library" data-library data-locale={locale}>
+<div class="knowledge-library" data-library data-locale={locale} data-view="covers">
   <section class="library-welcome" aria-labelledby="library-start-title">
     <div class="library-welcome-copy">
       <span class="eyebrow">
@@ -116,7 +117,26 @@ const startingPoints = [
           </button>
         ))}
       </div>
-      <p class="library-search-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div class="library-view-toolbar">
+        <p class="library-search-status"></p>
+        <span
+          class="sr-only"
+          data-library-announcement
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></span>
+        <div class="library-view-switch" role="group" aria-label={t('浏览方式', 'View style')}>
+          <button type="button" data-library-view="covers" aria-pressed="true" aria-controls="library-topics">
+            <LayoutGrid size={15} aria-hidden="true" />
+            {t('封面', 'Covers')}
+          </button>
+          <button type="button" data-library-view="list" aria-pressed="false" aria-controls="library-topics">
+            <Rows3 size={15} aria-hidden="true" />
+            {t('列表', 'List')}
+          </button>
+        </div>
+      </div>
     </div>
     <div id="library-topics">
       {learningTopics.map((topic, index) => (
@@ -157,15 +177,21 @@ const startingPoints = [
                     .normalize('NFKC')
                     .toLowerCase()}
                 >
-                  <div class="library-guide-meta">
-                    <span>{t(topic.zh, topic.en)}</span>
-                    <span>
-                      {a.minutes} {t('分钟', 'min')}
+                  <ArticleCover article={a} />
+                  <div class="library-guide-copy">
+                    <div class="library-guide-meta">
+                      <span>{t(topic.zh, topic.en)}</span>
+                      <span>
+                        {a.minutes} {t('分钟', 'min')}
+                      </span>
+                    </div>
+                    <h4>{a[locale].title}</h4>
+                    <p>{a[locale].description}</p>
+                    <span class="library-guide-read">
+                      {t('继续阅读', 'Read the guide')}
+                      <ArrowUpRight size={15} aria-hidden="true" />
                     </span>
                   </div>
-                  <h4>{a[locale].title}</h4>
-                  <p>{a[locale].description}</p>
-                  <ArrowUpRight className="library-guide-arrow" size={18} aria-hidden="true" />
                 </a>
               ))}
           </div>
@@ -215,10 +241,20 @@ const startingPoints = [
     const filters = [...root.querySelectorAll<HTMLButtonElement>('[data-topic]')];
     const sections = [...root.querySelectorAll<HTMLElement>('[data-topic-section]')];
     const status = root.querySelector<HTMLElement>('.library-search-status')!;
+    const announcement = root.querySelector<HTMLElement>('[data-library-announcement]')!;
     const empty = root.querySelector<HTMLElement>('.library-no-results')!;
+    const viewButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-library-view]')];
+    for (const button of viewButtons)
+      button.addEventListener('click', () => {
+        root.dataset.view = button.dataset.libraryView;
+        for (const item of viewButtons) item.setAttribute('aria-pressed', String(item === button));
+        track('cta_click', { action: 'library-view', value: root.dataset.view === 'covers' ? 1 : 0 });
+      });
     let topic = 'all';
     let count = 0;
-    const apply = () => {
+    let lastAnnouncedCount = -1;
+    let announcementTimer: ReturnType<typeof setTimeout> | undefined;
+    const apply = (announce = true) => {
       const terms = input.value.normalize('NFKC').toLowerCase().trim().split(/\s+/).filter(Boolean);
       count = 0;
       for (const section of sections) {
@@ -241,8 +277,17 @@ const startingPoints = [
         root.dataset.locale === 'zh'
           ? `找到 ${count} 篇指南`
           : `${count} ${count === 1 ? 'guide' : 'guides'} found`;
+      clearTimeout(announcementTimer);
+      if (!announce) lastAnnouncedCount = count;
+      else
+        announcementTimer = setTimeout(() => {
+          if (count !== lastAnnouncedCount) {
+            announcement.textContent = status.textContent;
+            lastAnnouncedCount = count;
+          }
+        }, 300);
     };
-    input.addEventListener('input', apply);
+    input.addEventListener('input', () => apply());
     // Only a result count is recorded. Search terms may be personal and are never sent.
     input.addEventListener('change', () => track('cta_click', { action: 'library-search', value: count }));
     root.querySelector('form')!.addEventListener('submit', (event) => event.preventDefault());
@@ -264,6 +309,6 @@ const startingPoints = [
       input.focus();
     });
     controls.hidden = false;
-    apply();
+    apply(false);
   }
 </script>

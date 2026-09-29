@@ -1,0 +1,7 @@
+No blockers. Both fixes match the stated behavior, and the browser sequence you described is what this code should produce.
+
+**Hidden results in list view.** `.knowledge-library[data-view] .library-guide[hidden]` is four class/attribute selectors. `.knowledge-library[data-view='list'] .library-guide` is three, and it sets `display: grid` with no `!important`. The hidden rule wins in both covers and list, whether it appears earlier in the file or not. `card.hidden = !match` still reflects the `hidden` attribute, so non-matches leave the grid. Topic sections and the empty state still use their own `[hidden] { display: none }` rules, which nothing in the list view overrides.
+
+**Count and announcements.** `.library-search-status` is still written on every `apply()`, with no live-region role. The polite region is the separate empty `sr-only` node. `apply(false)` on startup only stores `lastAnnouncedCount` and does not write that node. Later calls debounce 300ms, cancel the previous timer, and copy the status text only when `count` differs. The timeout reads the current `count` and `status.textContent`, and every path that changes them goes through `apply()`, so the announced string stays aligned with the visible count. View switches do not call `apply()`.
+
+That covers the reproduced path: two reversed-tarot matches stay two cards in covers and in list, a topic filter shows three, and reset shows 21, with the visible line updating immediately and the live region speaking only after the count settles.

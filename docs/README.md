@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [封面、配图与文章列表设计](plans/2026-09-29-library-covers.md)
+- [封面升级：Grok 审查、布局与发布验证](reviews/library-covers-release.md)
 - [知识手册、双语表达与新手路径](plans/2026-09-29-library-content-design.md)
 - [知识手册升级：团队审稿、浏览器与发布验证](reviews/library-content-release.md)
 - [知识内容审核](reviews/knowledge-content-review.md)、[GTM 语言审核](reviews/gtm-language-review.md)、[文档准确性审核](reviews/docs-accuracy-review.md)

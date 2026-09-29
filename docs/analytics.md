@@ -101,9 +101,9 @@ Only registered sources, media, campaigns, actions and page paths are retained. 
 
 ### Knowledge library / 知识手册
 
-The library uses `cta_click` with registered actions `library-start`, `library-article`, `library-filter`, `library-search` and `article-next`. Search and filter events include only the numeric result count in `value`. Queries remain in the browser; they are not put in the URL or sent with events. All 21 guide paths are registered, including their normalized English equivalents.
+The library uses `cta_click` with registered actions `library-start`, `library-article`, `library-filter`, `library-search`, `library-view` and `article-next`. Search and filter events include only the numeric result count in `value`. View events use `value: 1` for covers and `value: 0` for the thumbnail list; repeated clicks are operations, not unique visitors or completed reads. Queries remain in the browser; they are not put in the URL or sent with events. All 21 guide paths are registered, including their normalized English equivalents.
 
-知识手册的统计分别记录新手入口、文章进入、主题筛选、搜索和后续阅读；筛选与搜索只附带结果数量，不记录输入词。可以结合已有页面、来源、语言与工具使用记录评估路径，但单次点击不等于完成阅读、实际掌握知识或获得准确预测。
+知识手册的统计分别记录新手入口、文章进入、主题筛选、搜索、视图切换和后续阅读；筛选与搜索只附带结果数量，不记录输入词。视图切换 library-view 的 value 为 1（封面）或 0（缩略图列表）；重复点击计为操作，不是独立访客。可以结合已有页面、来源、语言与工具使用记录评估路径，但单次点击不等于完成阅读、实际掌握知识或获得准确预测。
 
 AI referral categories reflect an observable referrer or a registered UTM value. Apps can omit referrers, so some visits appear as direct or other. This dashboard does not measure model citations, search rankings or all AI-generated exposure. Recorded model-call totals currently come from Agent turns, not the separate single-reading route, and are not an invoice.
 

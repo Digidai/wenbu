@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: article covers and browsing views (2026-09-29)
+
+The [cover release](library-covers-release.md) restores illustrated covers across the library, homepage and notes, adds a thumbnail list view, and records a reproduced search regression, its repair, two Grok reviews and responsive browser checks. See the [cover design](../plans/2026-09-29-library-covers.md) for image, motion and accessibility choices.
+
 ## Latest: beginner library and bilingual editorial review (2026-09-29)
 
 The [library content release](library-content-release.md) records 21 bilingual guides, new reading paths, topic search, article companions, Agent Team cross-review of knowledge, GTM and interface documentation, and separate local, Cloudflare and live evidence. The [design](../plans/2026-09-29-library-content-design.md) explains the beginner journey and measurement boundaries.

@@ -71,6 +71,7 @@ export const actions = [
   'library-article',
   'library-search',
   'library-filter',
+  'library-view',
   'article-next',
   'example',
   'calculate',

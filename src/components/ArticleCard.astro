@@ -2,23 +2,24 @@
 import type { Article } from '../data/articles';
 import type { Locale } from '../lib/schema';
 import { href, choose } from '../lib/i18n';
+import ArticleCover from './ArticleCover.astro';
 const { article, locale } = Astro.props as { article: Article; locale: Locale };
 const copy = article[locale];
 ---
 
 <a class="article-card" href={href(locale, `${article.category}/${article.slug}`)}>
-  <div class="article-art" aria-hidden="true">
-    <span>{article.symbol}</span>
+  <ArticleCover article={article} />
+  <div class="article-card-copy">
+    <span class="eyebrow">
+      {article.category === 'blog'
+        ? choose(locale, '问卜札记', 'NOTES FROM WENBU')
+        : choose(locale, '知识手册', 'THE WENBU LIBRARY')}{' '}
+      · {article.minutes} {choose(locale, '分钟', 'MIN READ')}
+    </span>
+    <h3>{copy.title}</h3>
+    <p>{copy.description}</p>
+    <span class="read-link">
+      {choose(locale, '继续阅读', article.category === 'blog' ? 'Read the note' : 'Read the guide')} ↗
+    </span>
   </div>
-  <span class="eyebrow">
-    {article.category === 'blog'
-      ? choose(locale, '问卜札记', 'NOTES FROM WENBU')
-      : choose(locale, '知识手册', 'THE WENBU LIBRARY')}{' '}
-    · {article.minutes} {choose(locale, '分钟', 'MIN READ')}
-  </span>
-  <h3>{copy.title}</h3>
-  <p>{copy.description}</p>
-  <span class="read-link">
-    {choose(locale, '继续阅读', article.category === 'blog' ? 'Read the note' : 'Read the guide')} ↗
-  </span>
 </a>
