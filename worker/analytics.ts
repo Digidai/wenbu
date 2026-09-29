@@ -9,9 +9,12 @@ import {
   sources,
   statuses,
   tools,
+  settings,
+  variants,
+  analyticsRelease,
 } from '../src/lib/analytics-contract';
 
-const contextSchema = z
+export const contextSchema = z
   .object({
     session: z.uuid(),
     visitor: z.uuid(),
@@ -22,11 +25,22 @@ const contextSchema = z
     medium: z.enum(mediums),
     campaign: z.enum(campaigns),
     test: z.boolean().default(false),
+    pageId: z.uuid().optional(),
+    operation: z.uuid().optional(),
+    parentOperation: z.uuid().optional(),
+    conversation: z.uuid().optional(),
+    release: z.enum(['legacy', analyticsRelease]).default('legacy'),
   })
   .strict();
 export const eventSchema = contextSchema
   .extend({
     id: z.uuid(),
+    occurredAt: z.number().int().nonnegative().max(8640000000000000).optional(),
+    sequence: z.number().int().nonnegative().max(10000000).optional(),
+    version: z.literal(2).optional(),
+    destination: z.string().max(120).transform(safePage).default('/other/'),
+    setting: z.enum(settings).default('none'),
+    variant: z.enum(variants).default('none'),
     event: z.enum(clientEvents),
     tool: z.enum(tools).default('none'),
     mode: z.enum(['none', 'explore', 'research']).default('none'),
@@ -38,9 +52,16 @@ export const eventSchema = contextSchema
   .strict();
 export const eventBatch = z.object({ events: z.array(eventSchema).min(1).max(10) }).strict();
 export type ServiceMetric = {
-  event: 'calculation_succeeded' | 'interpret_succeeded' | 'agent_finished' | 'api_failed' | 'mcp_finished';
+  event:
+    | 'calculation_succeeded'
+    | 'interpret_succeeded'
+    | 'agent_finished'
+    | 'agent_tool_finished'
+    | 'api_failed'
+    | 'mcp_finished';
   tool: (typeof tools)[number];
   status: (typeof statuses)[number];
+  action?: (typeof actions)[number];
   mode?: 'none' | 'explore' | 'research';
   locale?: 'zh' | 'en';
   duration: number;
@@ -85,9 +106,9 @@ export function requestDimensions(request: Request) {
   };
 }
 const columns =
-  'id,occurred_at,event,origin,session_id,visitor_id,page,entry_page,locale,source,medium,campaign,device,browser,os,country,channel,tool,mode,action,status,value,duration_ms,model_calls,tool_calls,artifacts,is_test';
-const insert = `INSERT OR IGNORE INTO events (${columns}) VALUES (${Array(27).fill('?').join(',')})`;
-const noTracking = (request: Request) =>
+  'id,occurred_at,event,origin,session_id,visitor_id,page,entry_page,locale,source,medium,campaign,device,browser,os,country,channel,tool,mode,action,status,value,duration_ms,model_calls,tool_calls,artifacts,is_test,received_at,client_at,page_id,operation_id,parent_operation_id,conversation_id,sequence,schema_version,release,destination_page,setting,variant';
+const insert = `INSERT OR IGNORE INTO events (${columns}) VALUES (${Array(39).fill('?').join(',')})`;
+export const noTracking = (request: Request) =>
   request.headers.get('DNT') === '1' ||
   request.headers.get('Sec-GPC') === '1' ||
   request.headers.get('X-Wenbu-Analytics') === 'off';
@@ -96,13 +117,18 @@ export async function collectEvents(raw: unknown, request: Request, env: Env) {
   if (noTracking(request)) return { accepted: 0 };
   if (!env.ANALYTICS) throw new Error('Analytics unavailable');
   const meta = requestDimensions(request);
+  const received = Date.now();
   const result = await env.ANALYTICS.batch(
     events.map((e) =>
       env
         .ANALYTICS!.prepare(insert)
         .bind(
           e.id,
-          Date.now(),
+          e.occurredAt !== undefined &&
+            e.occurredAt >= received - 7 * 86400000 &&
+            e.occurredAt <= received + 300000
+            ? e.occurredAt
+            : received,
           e.event,
           'client',
           e.session,
@@ -128,13 +154,25 @@ export async function collectEvents(raw: unknown, request: Request, env: Env) {
           0,
           0,
           Number(e.test),
+          received,
+          e.occurredAt ?? null,
+          e.pageId ?? null,
+          e.operation ?? null,
+          e.parentOperation ?? null,
+          e.conversation ?? null,
+          e.sequence ?? null,
+          e.version ?? 1,
+          e.release,
+          e.destination,
+          e.setting,
+          e.variant,
         ),
     ),
   );
   return { accepted: result.reduce((n, r) => n + (r.meta.changes ?? 0), 0) };
 }
-export async function recordService(request: Request, env: Env, metric: ServiceMetric) {
-  if (!env.ANALYTICS || noTracking(request)) return;
+export function requestContext(request: Request) {
+  if (noTracking(request)) return undefined;
   let context: z.infer<typeof contextSchema> | undefined;
   // Public correlation labels are approximate product analytics, never billing identity.
   const header = request.headers.get('X-Wenbu-Analytics');
@@ -145,6 +183,11 @@ export async function recordService(request: Request, env: Env, metric: ServiceM
       /* Discard the entire untrusted context. */
     }
   }
+  return context;
+}
+export async function recordService(request: Request, env: Env, metric: ServiceMetric) {
+  if (!env.ANALYTICS || noTracking(request)) return;
+  const context = requestContext(request);
   const meta = requestDimensions(request);
   const path = new URL(request.url).pathname;
   const channel = path.startsWith('/mcp')
@@ -175,7 +218,7 @@ export async function recordService(request: Request, env: Env, metric: ServiceM
       channel,
       metric.tool,
       metric.mode ?? 'none',
-      request.headers.get('X-Wenbu-Action') === 'example' ? 'example' : 'none',
+      metric.action ?? (request.headers.get('X-Wenbu-Action') === 'example' ? 'example' : 'none'),
       metric.status,
       0,
       Math.min(3600000, Math.max(0, Math.round(metric.duration))),
@@ -183,6 +226,18 @@ export async function recordService(request: Request, env: Env, metric: ServiceM
       metric.toolCalls ?? 0,
       metric.artifacts ?? 0,
       Number(context?.test ?? request.headers.get('X-Wenbu-Test') === 'true'),
+      Date.now(),
+      null,
+      context?.pageId ?? null,
+      context?.operation ?? null,
+      context?.parentOperation ?? null,
+      context?.conversation ?? null,
+      null,
+      2,
+      analyticsRelease,
+      '/other/',
+      'none',
+      'none',
     )
     .run();
 }
@@ -234,7 +289,7 @@ export async function analyticsReport(url: URL, env: Env) {
     ],
     [
       'performance',
-      `SELECT tool label, status, COUNT(*) count, ROUND(AVG(duration_ms)) average_ms, MAX(duration_ms) max_ms FROM events WHERE $WHERE AND origin='server' GROUP BY tool,status ORDER BY count DESC`,
+      `SELECT tool label, status, COUNT(*) count, ROUND(AVG(duration_ms)) average_ms, MAX(duration_ms) max_ms FROM events WHERE $WHERE AND origin='server' AND event!='agent_tool_finished' GROUP BY tool,status ORDER BY count DESC`,
     ],
     [
       'funnel',
@@ -278,7 +333,7 @@ export async function analyticsReport(url: URL, env: Env) {
 }
 export async function pruneAnalytics(env: Env) {
   if (env.ANALYTICS)
-    await env.ANALYTICS.prepare('DELETE FROM events WHERE occurred_at < ?')
+    await env.ANALYTICS.prepare('DELETE FROM events WHERE received_at < ? AND archive_key IS NOT NULL')
       .bind(Date.now() - 90 * 86400000)
       .run();
 }

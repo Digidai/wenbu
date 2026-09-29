@@ -15,7 +15,9 @@ import type { Reading } from '../lib/tools';
 import { choose, href } from '../lib/i18n';
 import { agentContext, downloadJson, readJournal, writeJournal, type Answer } from '../lib/journal';
 import ReadingView from './ReadingView';
-import { analyticsHeaders, track } from '../lib/analytics';
+import FeedbackTrigger from './FeedbackTrigger';
+import { readingExcerpt, answerExcerpt } from '../lib/feedback-excerpt';
+import { analyticsHeaders, track, type Correlation } from '../lib/analytics';
 import '../styles/reading-motion.css';
 
 async function post<T>(
@@ -23,10 +25,15 @@ async function post<T>(
   input: unknown,
   signal?: AbortSignal,
   action: 'example' | 'calculate' | 'none' = 'none',
+  correlation: Correlation = {},
 ): Promise<T> {
   const response = await fetch(path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...analyticsHeaders(), 'X-Wenbu-Action': action },
+    headers: {
+      'Content-Type': 'application/json',
+      ...analyticsHeaders(correlation),
+      'X-Wenbu-Action': action,
+    },
     body: JSON.stringify(input),
     signal,
   });
@@ -67,6 +74,8 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
   const resultRef = useRef<HTMLDivElement>(null);
   const aiAbort = useRef<AbortController | null>(null);
   const lock = useRef(false);
+  const operation = useRef<string | undefined>(undefined);
+  const interpretation = useRef<string | undefined>(undefined);
   const entryId = useRef<string | null>(null);
   useEffect(() => () => aiAbort.current?.abort(), []);
   function invalidateAnswer() {
@@ -102,7 +111,10 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
   async function run(demo = false) {
     if (lock.current) return;
     lock.current = true;
-    track('tool_started', { tool: kind, action: demo ? 'example' : 'calculate' });
+    const operationId = crypto.randomUUID();
+    operation.current = operationId;
+    interpretation.current = undefined;
+    track('tool_started', { tool: kind, operation: operationId, action: demo ? 'example' : 'calculate' });
     setBusy(true);
     setError('');
     setAiError('');
@@ -139,9 +151,15 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
           : { date: '2000-08-16', time: '03:30', sex, locale };
     }
     try {
-      const data = await post<Reading>(`/api/v1/${kind}`, payload, undefined, demo ? 'example' : 'calculate');
+      const data = await post<Reading>(
+        `/api/v1/${kind}`,
+        payload,
+        undefined,
+        demo ? 'example' : 'calculate',
+        { operation: operationId },
+      );
       setResult(data);
-      track('result_viewed', { tool: kind });
+      track('result_viewed', { tool: kind, operation: operationId, status: 'complete' });
       entryId.current = crypto.randomUUID();
       setSelected([]);
       requestAnimationFrame(() =>
@@ -151,7 +169,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         }),
       );
     } catch (e) {
-      track('client_error', { tool: kind, status: 'error' });
+      track('client_error', { tool: kind, operation: operationId, status: 'error' });
       setError(
         e instanceof Error ? e.message : t('连接失败，请重试。', 'Connection failed. Please try again.'),
       );
@@ -169,7 +187,10 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
   }
   async function ask() {
     if (!result || aiBusy || !consent || question.trim().length < 2) return;
-    track('ai_requested', { tool: kind });
+    const aiOperation = crypto.randomUUID();
+    const correlation = { operation: aiOperation, parentOperation: operation.current };
+    interpretation.current = aiOperation;
+    track('ai_requested', { tool: kind, ...correlation });
     setAiBusy(true);
     setAiError('');
     const controller = new AbortController();
@@ -185,14 +206,21 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         '/api/v1/interpret',
         { kind, input: readingInput, question, context, locale, consent: true },
         controller.signal,
+        'none',
+        correlation,
       );
       if (controller.signal.aborted) return;
       setAnswer(data.answer);
-      track('ai_result_viewed', { tool: kind });
+      track('ai_result_viewed', { tool: kind, ...correlation, status: 'complete' });
       setRemaining(data.remaining);
       setProvenance(data.provenance.servedModel);
       setSaved(false);
     } catch (e) {
+      track('client_error', {
+        tool: kind,
+        ...correlation,
+        status: controller.signal.aborted ? 'cancelled' : 'error',
+      });
       if (!controller.signal.aborted && e instanceof Error && e.name !== 'AbortError') setAiError(e.message);
     } finally {
       if (aiAbort.current === controller) setAiBusy(false);
@@ -220,7 +248,11 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         ...entries.filter((e) => e.id !== id),
       ]);
       setSaved(true);
-      track('journal_saved', { tool: kind, action: 'save' });
+      track('journal_saved', {
+        tool: kind,
+        operation: interpretation.current ?? operation.current,
+        action: 'save',
+      });
     } catch {
       setAiError(
         t('浏览器无法保存，请使用导出备份。', 'Browser storage is unavailable. Please export a backup.'),
@@ -422,6 +454,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                       aria-pressed={count === 1}
                       onClick={() => {
                         setCount(1);
+                        track('setting_changed', { tool: kind, setting: 'tarot-count', variant: 'one' });
                         setSelected([]);
                       }}
                     >
@@ -432,6 +465,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                       aria-pressed={count === 3}
                       onClick={() => {
                         setCount(3);
+                        track('setting_changed', { tool: kind, setting: 'tarot-count', variant: 'three' });
                         setSelected([]);
                       }}
                     >
@@ -442,7 +476,14 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                     <input
                       type="checkbox"
                       checked={reversals}
-                      onChange={(e) => setReversals(e.target.checked)}
+                      onChange={(e) => {
+                        setReversals(e.target.checked);
+                        track('setting_changed', {
+                          tool: kind,
+                          setting: 'tarot-reversals',
+                          variant: e.target.checked ? 'reversals' : 'upright',
+                        });
+                      }}
                     />
                     {t('包含逆位', 'Include reversed cards')}
                   </label>
@@ -483,14 +524,20 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                     <button
                       type="button"
                       aria-pressed={castMode === 'random'}
-                      onClick={() => setCastMode('random')}
+                      onClick={() => {
+                        setCastMode('random');
+                        track('setting_changed', { tool: kind, setting: 'iching-cast', variant: 'random' });
+                      }}
                     >
                       {t('在线起卦', 'Cast online')}
                     </button>
                     <button
                       type="button"
                       aria-pressed={castMode === 'manual'}
-                      onClick={() => setCastMode('manual')}
+                      onClick={() => {
+                        setCastMode('manual');
+                        track('setting_changed', { tool: kind, setting: 'iching-cast', variant: 'manual' });
+                      }}
                     >
                       {t('录入铜钱结果', 'Enter coin results')}
                     </button>
@@ -615,6 +662,13 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
               </button>
             </div>
             <ReadingView result={result} locale={locale} />
+            <FeedbackTrigger
+              locale={locale}
+              tool={kind}
+              category="reading"
+              operation={operation.current}
+              excerpt={readingExcerpt(result, question, locale)}
+            />
             <div className="reading-actions" data-saved={saved}>
               <button className="button secondary" type="button" onClick={save} disabled={saved}>
                 {saved ? <Check size={15} /> : <Bookmark size={15} />}{' '}
@@ -775,6 +829,13 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                     ))}
                   </ul>
                   <blockquote>{answer.question}</blockquote>
+                  <FeedbackTrigger
+                    locale={locale}
+                    tool={kind}
+                    category="reading"
+                    operation={interpretation.current}
+                    excerpt={answerExcerpt(answer, question)}
+                  />
                   <p className="form-note">
                     DeepSeek · {provenance} ·{' '}
                     {t(`今日剩余 ${remaining} 次`, `Today: ${remaining} requests left`)}

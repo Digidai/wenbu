@@ -811,6 +811,124 @@
           }
         }
       }
+    },
+    "/api/feedback": {
+      "post": {
+        "operationId": "submit_feedback",
+        "summary": "Privately submit a rating or product feedback",
+        "description": "Requires the exact site Origin header. Five submissions per network per minute. UUID receipts deduplicate retries; a changed payload must use a new UUID. Excerpts require an explicit user choice (shareContext=true); never attach conversation text automatically. Analytics opt-out does not prevent explicit feedback.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "page": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "locale": {
+                    "type": "string",
+                    "enum": [
+                      "zh",
+                      "en"
+                    ],
+                    "default": "zh"
+                  },
+                  "tool": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "bazi",
+                      "iching",
+                      "tarot",
+                      "ziwei",
+                      "agent",
+                      "interpret",
+                      "mcp"
+                    ],
+                    "default": "none"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "suggestion",
+                      "bug",
+                      "reading",
+                      "content",
+                      "other"
+                    ]
+                  },
+                  "rating": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "helpful",
+                      "mixed",
+                      "unhelpful"
+                    ],
+                    "default": "none"
+                  },
+                  "message": {
+                    "type": "string",
+                    "maxLength": 3000,
+                    "default": ""
+                  },
+                  "contact": {
+                    "type": "string",
+                    "maxLength": 254,
+                    "description": "Optional email address; omit or send an empty string for no contact."
+                  },
+                  "shareContext": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "excerpt": {
+                    "type": "string",
+                    "maxLength": 8000,
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "id",
+                  "page",
+                  "locale",
+                  "category"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved receipt: {id, saved:true}."
+          },
+          "403": {
+            "description": "Origin rejected."
+          },
+          "409": {
+            "description": "Receipt ID already used with different content."
+          },
+          "413": {
+            "description": "JSON body exceeds 48,000 bytes."
+          },
+          "422": {
+            "description": "Invalid input; provide a note or rating and explicit consent for any excerpt."
+          },
+          "429": {
+            "description": "Submission limit reached."
+          },
+          "503": {
+            "description": "Feedback storage unavailable."
+          }
+        }
+      }
     }
   }
 }

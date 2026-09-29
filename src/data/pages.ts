@@ -163,7 +163,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '你输入的资料怎样使用',
           paragraphs: [
-            '出生信息通过加密连接发送到 Cloudflare Worker，用于生成命盘。抽牌和起卦接口不需要发送你的问题。问卜不把出生资料、问题或解读写入服务器数据库，也不把它们放进页面地址。',
+            '出生信息通过加密连接发送到 Cloudflare Worker，用于生成命盘。抽牌和起卦接口不需要发送你的问题。问卜不会自动把出生资料、问题或解读写入服务器数据库，也不把它们放进页面地址。只有在反馈中主动勾选分享并提交的摘录会私密保存。',
             '单次解读在勾选发送说明后，将当前命盘、问题和主动补充的背景发送给 DeepSeek 官网 API。命理 Agent 在发送消息时，会发送最多 16 条最近消息、6 份命盘、2 版报告和你主动选择的出生资料、背景与手记。DeepSeek 按其自己的隐私政策处理这些数据；问卜不能代表上游承诺零保留。',
           ],
         },
@@ -180,21 +180,21 @@ export const pages: Record<string, Page> = {
           heading: '使用统计，可随时关闭',
           paragraphs: [
             '为了了解哪些页面和功能真正有用，我们通过本站接口向 Cloudflare D1 发送页面路径、来源类别、预先定义的推广活动、语言、国家级区域、设备与浏览器类别、功能事件、成功状态和耗时。不会发送出生日期、问题、聊天、命盘内容、笔记、原始 IP、完整来源网址或网址参数。',
-            '浏览器保存一个 30 天到期的随机访客标识和 30 分钟无活动后重置的会话标识。这些是浏览器访问估计，不等于真实人数。事件保留 90 天，后台只向持有管理凭据的人提供汇总统计。',
-            '本页可关闭本浏览器的统计；同时尊重 Do Not Track 和 Global Privacy Control。关闭后不再发送后续统计，不影响排盘或对话；已接收记录按保留期限移除。必要的额度与限速仍会运行。API、CLI 和 MCP 默认只记不含浏览器标识的功能、状态、耗时、国家与设备类别；可发送 X-Wenbu-Analytics: off，CLI 也可设置 WENBU_ANALYTICS=off。',
+            '浏览器保存一个 30 天到期的随机访客标识和 30 分钟无活动后重置的会话标识。这些是浏览器访问估计，不等于真实人数。事件还记录时间、页面、操作与 Agent 回合的随机关联标识，帮助复盘使用过程。近期明细在 D1 保留 90 天；事件同时归档到私有 R2 长期保存，目前不设自动到期时间。明细、汇总和归档只对持有管理凭据的人开放。离线待发事件在本机最多暂存 7 天、1,000 条。',
+            '本页可关闭本浏览器的统计；同时尊重 Do Not Track 和 Global Privacy Control。关闭后不再发送后续统计，不影响排盘或对话；已接收记录不会自动撤回，历史归档继续按上述政策保存。必要的额度与限速仍会运行。API、CLI 和 MCP 默认只记不含浏览器标识的功能、状态、耗时、国家与设备类别；可发送 X-Wenbu-Analytics: off，CLI 也可设置 WENBU_ANALYTICS=off。',
           ],
         },
         {
           heading: '免费额度与基础设施',
           paragraphs: [
             '为了控制滥用，Cloudflare 会处理请求的 IP。AI 额度使用每天变化的带密钥哈希，持久层只存日期、哈希和次数，按过期清理机制移除。边缘请求限速不等于真实用户识别，共享网络可能共用额度。',
-            '应用不记录请求正文、不安装广告追踪脚本，也不读取浏览器以外的聊天、文件或位置。Cloudflare 的基础设施处理及 DeepSeek 的模型处理受各自政策约束。',
+            '除主动提交的反馈及其勾选分享的摘录外，应用不记录请求正文、不安装广告追踪脚本，也不读取浏览器以外的聊天、文件或位置。Cloudflare 的基础设施处理及 DeepSeek 的模型处理受各自政策约束。',
           ],
         },
         {
           heading: '反馈与更新',
           paragraphs: [
-            '本说明更新于 2026-09-29。反馈入口位于 GitHub 项目；公开问题中请勿包含私人出生资料、聊天内容或密钥。需要删除本地记录，可在手记页面操作，或清除该站点的浏览器存储。',
+            '本说明更新于 2026-09-29。页面上的反馈入口私密保存评价、建议、可选邮箱和反馈编号。相关问题或结果的摘录默认不发送；勾选分享后可预览和删改。关闭使用统计仍可主动发送反馈，但不会附带统计身份。反馈用于处理问题和产品改进，目前不设自动到期时间；可通过新的反馈提供原反馈编号，请求删除。私人摘录和邮箱不会进入事件归档。公开 GitHub 问题中请勿包含私人资料或密钥。本地记录可在手记中删除，或清除本站浏览器存储。',
           ],
         },
       ],
@@ -207,7 +207,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'How your inputs are used',
           paragraphs: [
-            'Birth details are sent over an encrypted connection to a Cloudflare Worker to calculate the chart. Casting and card-draw endpoints do not need your question. Wenbu does not write birth details, questions or readings to its server database or put them in page URLs.',
+            'Birth details are sent over an encrypted connection to a Cloudflare Worker to calculate the chart. Casting and card-draw endpoints do not need your question. Wenbu does not automatically store birth details, questions or readings in its server database or put them in page URLs. An excerpt is stored privately only when you explicitly choose to share it in feedback.',
             'AI readings on the tool pages send the chart, question and selected context to the official DeepSeek API after you select the consent checkbox. Sending an Agent message shares up to 16 recent messages, 6 recent charts, 2 report versions and the birth details, notes and journal entries you explicitly select. DeepSeek processes them under its own privacy policy; Wenbu cannot promise zero retention on the provider’s behalf.',
           ],
         },
@@ -224,21 +224,21 @@ export const pages: Record<string, Page> = {
           heading: 'Optional usage statistics',
           paragraphs: [
             'Our first-party endpoint records page paths, source categories, registered campaigns, language, country-level region, device/browser categories, feature events, outcomes and durations in Cloudflare D1. It excludes birth details, questions, chat, chart contents, notes, raw IPs, full referrer URLs and URL query parameters.',
-            'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events are retained for 90 days. Aggregate reports require administrator credentials.',
-            'Disable measurement on this page at any time. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; existing records expire under the retention policy. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
+            'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events also carry timestamps and random page, operation and Agent-turn IDs so we can understand usage journeys. Recent detail stays in D1 for 90 days; private R2 archives currently have no automatic expiry. Reports, individual events and archives require administrator credentials. Pending events can stay on your device for up to seven days, with a 1,000-event limit.',
+            'Disable measurement on this page at any time. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; previously received events remain subject to the archive policy above. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
           ],
         },
         {
           heading: 'Free allowances and infrastructure',
           paragraphs: [
             'Cloudflare processes request IPs for abuse controls. The AI allowance uses a daily keyed hash; persistent storage holds only dates, hashes and counts with expiry cleanup. Edge rate limiting is not user identification, and people on a shared network may share an allowance.',
-            'The application does not log request bodies, include ad trackers or read external chats, files or location. Cloudflare infrastructure and DeepSeek model processing remain subject to their respective policies.',
+            'Apart from submitted feedback and explicitly shared excerpts, the application does not log request bodies, include ad trackers or read external chats, files or location. Cloudflare infrastructure and DeepSeek model processing remain subject to their respective policies.',
           ],
         },
         {
           heading: 'Feedback and updates',
           paragraphs: [
-            'Updated September 29, 2026. Use the GitHub project for feedback, without including birth details, private conversations or credentials in public issues. Remove local records in the journal or clear this site’s browser storage.',
+            'Updated September 29, 2026. The feedback button privately stores your rating, note, optional email and receipt ID. Excerpts are off by default; you can review and edit one before choosing to share it. Feedback still works with analytics disabled, without analytics identifiers. Feedback currently has no automatic expiry and is used for issue resolution and product improvement. To request deletion, send a new note with the original receipt ID. Shared excerpts and email addresses are excluded from event archives. Keep private information and credentials out of public GitHub issues. Delete local records in the journal or clear this site’s browser storage.',
           ],
         },
       ],

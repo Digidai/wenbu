@@ -2,8 +2,10 @@ import type { UsageGate } from './quota';
 export interface Env {
   ASSETS: Fetcher;
   ANALYTICS?: D1Database;
+  ANALYTICS_ARCHIVE?: R2Bucket;
   ANALYTICS_ADMIN_TOKEN?: string;
   ANALYTICS_LIMITER?: RateLimit;
+  FEEDBACK_LIMITER?: RateLimit;
   ADMIN_LIMITER?: RateLimit;
   QUOTA: DurableObjectNamespace<UsageGate>;
   RATE_LIMITER?: RateLimit;

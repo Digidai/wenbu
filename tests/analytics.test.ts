@@ -1,5 +1,4 @@
-import { DatabaseSync } from 'node:sqlite';
-import { readFileSync } from 'node:fs';
+import { database } from './helpers/analytics-db';
 import { describe, expect, it } from 'vitest';
 import {
   analyticsReport,
@@ -13,32 +12,8 @@ import { pagePaths, referrerSource, safePage } from '../src/lib/analytics-contra
 import { articles } from '../src/data/articles';
 import { comparisons } from '../src/data/comparisons';
 import { pages } from '../src/data/pages';
-import type { Env } from '../worker/types';
 import worker from '../worker/index';
 
-function database() {
-  const sql = new DatabaseSync(':memory:');
-  sql.exec(readFileSync(new URL('../migrations/0001_analytics.sql', import.meta.url), 'utf8'));
-  const prepare = (query: string, args: (string | number | null)[] = []) => ({
-    bind: (...values: (string | number | null)[]) => prepare(query, values),
-    all: async () => ({ results: sql.prepare(query).all(...args), success: true, meta: { changes: 0 } }),
-    run: async () => ({
-      results: [],
-      success: true,
-      meta: { changes: Number(sql.prepare(query).run(...args).changes) },
-    }),
-    query,
-  });
-  const binding = {
-    prepare,
-    batch: async (items: ReturnType<typeof prepare>[]) =>
-      Promise.all(items.map((i) => (i.query.startsWith('INSERT') ? i.run() : i.all()))),
-  };
-  return {
-    sql,
-    env: { ANALYTICS: binding, ANALYTICS_ADMIN_TOKEN: 'test-only-private-admin' } as unknown as Env,
-  };
-}
 function context() {
   return {
     session: crypto.randomUUID(),
@@ -215,7 +190,9 @@ describe('closed analytics contract', () => {
       env,
     );
     expect(injection.data.summary[0].events).toBe(1);
-    sql.prepare('UPDATE events SET occurred_at = ?').run(Date.now() - 91 * 86400000);
+    sql
+      .prepare("UPDATE events SET occurred_at = ?,received_at = ?, archive_key='verified-fixture'")
+      .run(Date.now() - 91 * 86400000, Date.now() - 91 * 86400000);
     await collectEvents({ events: [{ ...event, id: crypto.randomUUID() }] }, request(), env);
     await pruneAnalytics(env);
     expect(sql.prepare('SELECT COUNT(*) n FROM events').get()?.n).toBe(1);

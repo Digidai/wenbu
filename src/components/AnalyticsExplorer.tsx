@@ -1,0 +1,500 @@
+import { useEffect, useRef, useState } from 'react';
+import { Download, ArrowRight, RefreshCw, MessageSquare, CheckCircle2, Database, Search } from 'lucide-react';
+import { clientEvents, tools, statuses, sources, campaigns } from '../lib/analytics-contract';
+import { feedbackStates } from '../lib/feedback-contract';
+import '../styles/analytics-explorer.css';
+type Row = Record<string, string | number | null>;
+type Page = { rows: Row[]; next: string | null };
+type Storage = {
+  archiveConfigured: boolean;
+  hotDays: number;
+  events: Row;
+  archives: Row;
+  feedback: Row;
+  maintenance: Row | null;
+};
+const when = (value: unknown) =>
+  typeof value === 'number' ? new Date(value).toLocaleString('zh-CN', { hour12: false }) : '—';
+const stateNames: Record<string, string> = {
+  new: '待查看',
+  reviewing: '处理中',
+  resolved: '已解决',
+  dismissed: '已归档',
+};
+function saveBlob(blob: Blob, name: string) {
+  const url = URL.createObjectURL(blob),
+    link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+export default function AnalyticsExplorer({
+  token,
+  kind,
+  initialOperation = '',
+  includeTest = false,
+  onFollowOperation,
+}: {
+  token: string;
+  kind: 'events' | 'feedback' | 'archives';
+  initialOperation?: string;
+  includeTest?: boolean;
+  onFollowOperation?: (operation: string, kind: 'events' | 'feedback', test: boolean) => void;
+}) {
+  const [filters, setFilters] = useState({
+    days: kind === 'feedback' ? '3650' : initialOperation ? '90' : '7',
+    test: String(includeTest),
+    tool: '',
+    event: '',
+    status: '',
+    state: '',
+    session: '',
+    operation: initialOperation,
+    conversation: '',
+    visitor: '',
+    source: '',
+    campaign: '',
+    locale: '',
+    channel: '',
+  });
+  const [page, setPage] = useState<Page>();
+  const [storage, setStorage] = useState<Storage>();
+  const [detail, setDetail] = useState<Row>();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [applied, setApplied] = useState(filters);
+  const generation = useRef(0);
+  const detailRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (detail?.id) detailRef.current?.focus();
+  }, [detail?.id]);
+  async function api(path: string, init: RequestInit = {}) {
+    const response = await fetch('/api/admin/' + path, {
+      ...init,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+        ...init.headers,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok)
+      throw new Error(
+        response.status === 401
+          ? '管理凭据已失效，请退出后重新登录。'
+          : response.status === 429
+            ? '请求较频繁，请稍后再试。'
+            : response.status === 409
+              ? '这条反馈已被更新，请重新打开。'
+              : `读取或保存失败（${response.status}），请检查筛选条件后重试。`,
+      );
+    return response;
+  }
+  async function load(cursor = '', values = filters) {
+    const version = ++generation.current;
+    setBusy(true);
+    setError('');
+    setDetail(undefined);
+    try {
+      const params = new URLSearchParams({ ...values, cursor });
+      const result: Page = await (await api(kind + '?' + params)).json();
+      if (version === generation.current) {
+        setPage(result);
+        setApplied(values);
+      }
+    } catch (e) {
+      if (version === generation.current) setError((e as Error).message);
+    } finally {
+      if (version === generation.current) setBusy(false);
+    }
+  }
+  useEffect(() => {
+    void load();
+    void api('storage')
+      .then((r) => r.json())
+      .then(setStorage)
+      .catch(() => undefined);
+    return () => {
+      generation.current++;
+    };
+    // A keyed instance is created for every tab, and credentials never change in place.
+  }, []);
+  async function open(row: Row) {
+    if (kind !== 'feedback') {
+      setDetail(row);
+      return;
+    }
+    setError('');
+    setBusy(true);
+    try {
+      setDetail(await (await api('feedback/' + row.id)).json());
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function update(state: string) {
+    if (!detail) return;
+    setBusy(true);
+    setError('');
+    try {
+      await api('feedback/' + detail.id, {
+        method: 'PATCH',
+        body: JSON.stringify({ state, revision: detail.revision }),
+      });
+      const next = { ...detail, state, revision: Number(detail.revision) + 1 };
+      setDetail(next);
+      void api('storage')
+        .then((r) => r.json())
+        .then(setStorage)
+        .catch(() => undefined);
+      setPage(
+        (old) =>
+          old && {
+            ...old,
+            rows: old.rows.map((row) =>
+              row.id === detail.id ? { ...row, state, revision: Number(row.revision) + 1 } : row,
+            ),
+          },
+      );
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function downloadArchive(key: string) {
+    setBusy(true);
+    setError('');
+    try {
+      const response = await api('archive?key=' + encodeURIComponent(key));
+      saveBlob(await response.blob(), 'wenbu-' + key.split('/').slice(-2).join('-'));
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  function focus(name: 'session' | 'operation' | 'conversation' | 'visitor', value: string) {
+    const next = { ...filters, session: '', operation: '', conversation: '', visitor: '', [name]: value };
+    setFilters(next);
+    void load('', next);
+  }
+  const select = (name: keyof typeof filters, label: string, values: readonly string[]) => (
+    <label>
+      {label}
+      <select value={filters[name]} onChange={(e) => setFilters({ ...filters, [name]: e.target.value })}>
+        <option value="">全部</option>
+        {values.map((v) => (
+          <option key={v} value={v}>
+            {stateNames[v] ?? v}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+  return (
+    <section
+      className="history-explorer"
+      aria-label={kind === 'events' ? '使用历史' : kind === 'feedback' ? '用户反馈' : '历史归档'}
+    >
+      <div className="history-heading">
+        <div>
+          <span className="eyebrow accent">
+            {kind === 'events' ? 'THE JOURNEY' : kind === 'feedback' ? 'VOICES & NOTES' : 'THE ARCHIVE'}
+          </span>
+          <h2>
+            {kind === 'events'
+              ? '从一次操作，看见整个过程'
+              : kind === 'feedback'
+                ? '听见用户，跟进改进'
+                : '历史数据，有据可查'}
+          </h2>
+          <p>
+            {kind === 'events'
+              ? '按实际发生时间倒序排列。点击会话或操作标识，查看相关事件；旧版事件可能没有关联标识。'
+              : kind === 'feedback'
+                ? '反馈、评价和处理状态集中在这里。主动分享的摘录与联系邮箱仅在展开详情时读取。'
+                : '超过一天的事件按小时归档到私有 R2。D1 保留最近 90 天明细；归档未成功的记录不会因到期被删除。'}
+          </p>
+        </div>
+      </div>
+      {storage && (
+        <div className="history-storage">
+          <span>
+            <Database size={15} />
+            {Number(storage.events.events).toLocaleString()} 条在线事件（含测试）
+          </span>
+          <span>{Number(storage.archives.archived_events).toLocaleString()} 条已归档（含测试）</span>
+          <span>待归档：{Number(storage.events.unarchived || 0).toLocaleString()} 条（含当天）</span>
+          <span>
+            <MessageSquare size={15} />
+            {Number(storage.feedback.unread || 0)} 条待看反馈
+          </span>
+          <span className={storage.maintenance?.status === 'error' ? 'error-message' : ''}>
+            {!storage.archiveConfigured
+              ? '归档未配置'
+              : storage.maintenance?.status === 'error'
+                ? '最近归档失败 · 原始记录仍保留'
+                : storage.maintenance?.last_success
+                  ? '最近归档：' + when(storage.maintenance.last_success)
+                  : '等待首次归档'}
+          </span>
+        </div>
+      )}
+      {kind !== 'archives' && (
+        <form
+          className="insights-filters history-filters"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void load();
+          }}
+        >
+          <label>
+            时间范围
+            <select value={filters.days} onChange={(e) => setFilters({ ...filters, days: e.target.value })}>
+              {[1, 7, 30, 90, ...(kind === 'feedback' ? [365, 3650] : [])].map((n) => (
+                <option key={n} value={n}>
+                  {n === 3650 ? '最近 10 年' : `最近 ${n} 天`}
+                </option>
+              ))}
+            </select>
+          </label>
+          {select('tool', '功能', tools)}
+          {select('locale', '语言', ['zh', 'en'])}
+          {kind === 'events' ? (
+            <>
+              {select('event', '事件', [
+                ...clientEvents,
+                'calculation_succeeded',
+                'interpret_succeeded',
+                'agent_finished',
+                'agent_tool_finished',
+                'api_failed',
+                'mcp_finished',
+              ])}
+              {select('status', '结果', statuses)}
+              {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
+              {select('source', '来源', sources)}
+              {select('campaign', '活动', campaigns)}
+            </>
+          ) : (
+            select('state', '处理状态', feedbackStates)
+          )}
+          {(['session', 'operation', 'conversation', 'visitor'] as const).map((name, i) => (
+            <label key={name}>
+              {['会话 ID', '操作 ID', '对话 ID', '访客 ID'][i]}
+              <input
+                value={filters[name]}
+                placeholder="UUID"
+                onChange={(e) => setFilters({ ...filters, [name]: e.target.value.trim() })}
+              />
+            </label>
+          ))}
+          <label className="insights-test">
+            <input
+              type="checkbox"
+              checked={filters.test === 'true'}
+              onChange={(e) => setFilters({ ...filters, test: String(e.target.checked) })}
+            />
+            包含测试数据
+          </label>
+          <button className="button" disabled={busy}>
+            <Search size={14} />
+            查询
+          </button>
+        </form>
+      )}
+      <div className="insights-toolbar">
+        <span>
+          {page
+            ? `本页 ${page.rows.length} 条 · ${kind === 'archives' ? '完整归档文件' : applied.test === 'true' ? '包含测试' : '已排除测试'}`
+            : '正在读取…'}
+        </span>
+        <button disabled={busy} onClick={() => void load()}>
+          <RefreshCw size={14} />
+          回到最新
+        </button>
+        <button
+          disabled={!page?.rows.length || busy}
+          onClick={() =>
+            saveBlob(
+              new Blob([page!.rows.map((r) => JSON.stringify(r)).join('\n') + '\n'], {
+                type: 'application/x-ndjson',
+              }),
+              `wenbu-${kind}-page.ndjson`,
+            )
+          }
+        >
+          <Download size={14} />
+          导出本页
+        </button>
+      </div>
+      {error && (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      )}
+      {page?.rows.length === 0 && (
+        <div className="history-empty">
+          <CheckCircle2 size={28} />
+          <p>这个范围内还没有记录。</p>
+          <span>可调整时间、筛选项，或勾选测试数据检查接入情况。</span>
+        </div>
+      )}
+      <div className="history-list" aria-busy={busy}>
+        {page?.rows.map((row) => (
+          <article className="history-row" key={String(row.id ?? row.key)}>
+            <div className="history-time">
+              <time>{when(row.occurred_at ?? row.created_at)}</time>
+              <small>
+                {kind === 'events'
+                  ? `${row.origin === 'server' ? '服务端确认' : '浏览器上报'} · ${row.locale}`
+                  : kind === 'feedback'
+                    ? `${row.category} · ${row.locale}`
+                    : `${Number(row.event_count).toLocaleString()} 条事件`}
+              </small>
+            </div>
+            <div className="history-main">
+              <strong>
+                {kind === 'events'
+                  ? row.event
+                  : kind === 'feedback'
+                    ? row.rating === 'none'
+                      ? '一条新建议'
+                      : row.rating === 'helpful'
+                        ? '有帮助'
+                        : row.rating === 'mixed'
+                          ? '还有提升空间'
+                          : '没帮到我'
+                    : `${when(row.first_received_at)} — ${when(row.last_received_at)}`}
+              </strong>
+              {kind === 'feedback' ? (
+                <p className="history-preview">{row.message || '用户留下了评价。'}</p>
+              ) : kind === 'events' ? (
+                <p>
+                  {row.page} · {row.tool} · {row.status}
+                  {row.action !== 'none' ? ` · ${row.action}` : ''}
+                  {row.duration_ms ? ` · ${row.duration_ms} ms` : ''}
+                  {row.setting !== 'none' ? ` · ${row.setting}: ${row.variant}` : ''}
+                </p>
+              ) : (
+                <p>{Math.round(Number(row.byte_count) / 1024)} KB · NDJSON · SHA-256 已记录</p>
+              )}
+              {kind === 'events' && (
+                <div className="history-links">
+                  {(['session', 'operation', 'conversation', 'visitor'] as const).map(
+                    (name, i) =>
+                      row[name + '_id'] && (
+                        <button
+                          key={name}
+                          title={String(row[name + '_id'])}
+                          disabled={busy}
+                          onClick={() => focus(name, String(row[name + '_id']))}
+                        >
+                          {['会话', '操作', '对话', '访客'][i]} {String(row[name + '_id']).slice(0, 8)} ↗
+                        </button>
+                      ),
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="history-row-action">
+              {kind === 'feedback' && (
+                <span className={'history-state state-' + row.state}>{stateNames[String(row.state)]}</span>
+              )}
+              <button
+                disabled={busy}
+                onClick={() => (kind === 'archives' ? void downloadArchive(String(row.key)) : void open(row))}
+              >
+                {kind === 'archives' ? (
+                  <>
+                    <Download size={14} />
+                    下载原始记录
+                  </>
+                ) : (
+                  <>
+                    查看详情 <ArrowRight size={14} />
+                  </>
+                )}
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+      {page?.next && (
+        <button
+          className="button secondary history-more"
+          disabled={busy}
+          onClick={() => void load(page.next!, applied)}
+        >
+          更早的记录 <ArrowRight size={15} />
+        </button>
+      )}
+      {detail && (
+        <section ref={detailRef} tabIndex={-1} className="history-detail" aria-label="记录详情">
+          <div className="history-detail-title">
+            <h3>{kind === 'feedback' ? '反馈详情' : '事件详情'}</h3>
+            <button onClick={() => setDetail(undefined)}>收起 ×</button>
+          </div>
+          {kind === 'feedback' ? (
+            <>
+              <p className="history-body">{detail.message || '仅评价，无补充文字。'}</p>
+              {detail.contact && <p>联系邮箱：{detail.contact}</p>}
+              {Boolean(detail.share_context) && (
+                <details>
+                  <summary>用户主动分享的摘录</summary>
+                  <pre>{detail.context_excerpt}</pre>
+                </details>
+              )}
+              <label className="history-state-control">
+                处理状态
+                <select
+                  disabled={busy}
+                  value={String(detail.state)}
+                  onChange={(e) => void update(e.target.value)}
+                >
+                  {feedbackStates.map((v) => (
+                    <option key={v} value={v}>
+                      {stateNames[v]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <dl>
+                {['id', 'page', 'tool', 'session_id', 'operation_id', 'conversation_id'].map((k) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{detail[k] ?? '—'}</dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          ) : (
+            <pre>{JSON.stringify(detail, null, 2)}</pre>
+          )}
+          {detail.operation_id && onFollowOperation && (
+            <button
+              className="button secondary"
+              onClick={() =>
+                onFollowOperation(
+                  String(detail.operation_id),
+                  kind === 'feedback' ? 'events' : 'feedback',
+                  Boolean(detail.is_test),
+                )
+              }
+            >
+              {kind === 'feedback' ? '查看这次操作的使用历史' : '查看这次操作的反馈'} <ArrowRight size={14} />
+            </button>
+          )}
+        </section>
+      )}
+      <p className="insights-footnote">
+        事件使用随机标识关联，不代表实名用户。此处导出当前页；完整分页导出与归档重建方法见项目
+        docs/analytics.md。归档文件包含测试事件，请按 is_test 筛选；历史合并按事件 id 去重。
+      </p>
+    </section>
+  );
+}

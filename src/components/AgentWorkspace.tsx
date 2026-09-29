@@ -1,3 +1,4 @@
+import FeedbackTrigger from './FeedbackTrigger';
 import { analyticsHeaders, track } from '../lib/analytics';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
@@ -265,7 +266,12 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   function stop() {
     const running = pending.current;
     if (!running) return;
-    track('agent_stopped', { tool: 'agent', status: 'cancelled' });
+    track('agent_stopped', {
+      tool: 'agent',
+      status: 'cancelled',
+      operation: running.messageId,
+      conversation: running.sessionId,
+    });
     pending.current = null;
     running.controller.abort();
     patchMessage(running.sessionId, running.messageId, (m) => ({
@@ -330,7 +336,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }));
   }
   function openArtifact(id: string) {
-    track('artifact_opened', { tool: 'agent' });
+    track('artifact_opened', {
+      tool: 'agent',
+      conversation: activeId,
+      operation: active?.messages.find((m) => m.artifacts.some((a) => a.id === id))?.id,
+    });
     setArrivingArtifacts([]);
     setSelectedArtifact(id);
     setPanel('results');
@@ -374,7 +384,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     }
     setNotice('');
     setDraft('');
+    const user = newMessage('user', value.trim());
+    const assistant = newMessage('assistant', '');
+    const correlation = { operation: assistant.id, conversation: session.id };
     track('agent_started', {
+      ...correlation,
       tool: 'agent',
       mode: session.mode,
       action:
@@ -386,8 +400,6 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     setBusy(true);
     setMobilePane('chat');
     stickToBottom.current = true;
-    const user = newMessage('user', value.trim());
-    const assistant = newMessage('assistant', '');
     setCurrentTurn([user.id, assistant.id]);
     const controller = new AbortController();
     const generationId = crypto.randomUUID();
@@ -419,7 +431,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
     try {
       const response = await fetch('/api/v1/agent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...analyticsHeaders() },
+        headers: { 'Content-Type': 'application/json', ...analyticsHeaders(correlation) },
         signal: controller.signal,
         body: JSON.stringify({
           message: value.trim().slice(0, 3000),
@@ -459,6 +471,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           if (event.type === 'done' || event.type === 'error') {
             terminal = true;
             track('agent_received', {
+              ...correlation,
               tool: 'agent',
               mode: session.mode,
               status: event.type === 'done' ? event.status : 'error',
@@ -482,6 +495,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           ),
         );
     } catch (error) {
+      if (isCurrent()) track('client_error', { tool: 'agent', ...correlation, status: 'error' });
       if (isCurrent())
         patchMessage(session.id, assistant.id, (m) =>
           updateMessage(m, {
@@ -905,6 +919,23 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                       )}
                     </div>
                   )}
+                  {message.role === 'assistant' && message.status !== 'running' && message.text && (
+                    <FeedbackTrigger
+                      locale={locale}
+                      tool="agent"
+                      category="reading"
+                      operation={message.id}
+                      conversation={active?.id}
+                      excerpt={
+                        (active?.messages
+                          .slice(0, active.messages.indexOf(message))
+                          .reverse()
+                          .find((m) => m.role === 'user')?.text ?? '') +
+                        '\n\n' +
+                        message.text
+                      }
+                    />
+                  )}
                   {!!message.artifacts.length && (
                     <div className="agent-artifact-links">
                       {message.artifacts.map((a) => (
@@ -1262,7 +1293,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   <button
                     onClick={() => {
                       downloadMarkdown(artifactMarkdown(artifact, sources));
-                      track('report_exported', { tool: 'agent', action: 'export' });
+                      track('report_exported', { tool: 'agent', action: 'export', conversation: activeId });
                     }}
                   >
                     <Download size={14} />

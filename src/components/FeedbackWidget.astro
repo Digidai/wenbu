@@ -1,0 +1,285 @@
+---
+import type { Locale } from '../lib/schema';
+import { choose, href } from '../lib/i18n';
+import '../styles/feedback.css';
+const { locale } = Astro.props as { locale: Locale };
+const t = (zh: string, en: string) => choose(locale, zh, en);
+---
+
+<button class="feedback-launch" data-feedback-open hidden type="button" aria-haspopup="dialog">
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    aria-hidden="true"
+  >
+    <path d="M20 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3H20Z" />
+    <path d="M7 9h8M7 13h5" />
+  </svg>
+  {t('反馈', 'Feedback')}
+</button>
+<dialog id="feedback-dialog" class="feedback-dialog" aria-labelledby="feedback-title" data-locale={locale}>
+  <button
+    type="button"
+    class="feedback-close"
+    aria-label={t('关闭反馈', 'Close feedback')}
+    data-feedback-close
+  >
+    ×
+  </button>
+  <div class="feedback-form-view">
+    <span class="eyebrow accent">WENBU · A NOTE TO US</span>
+    <h2 id="feedback-title">{t('让下一次，更好一点。', 'Help shape what comes next.')}</h2>
+    <p class="feedback-intro">
+      {t(
+        '哪里帮到了你，哪里还不够好？我们会认真看。',
+        'What helped? What could work better? We read every note.',
+      )}
+    </p>
+    <form id="feedback-form">
+      <fieldset class="feedback-rating">
+        <legend>{t('这次体验如何？', 'How was this experience?')}</legend>
+        {[
+          ['helpful', '有帮助', 'Helpful', '↗'],
+          ['mixed', '还有提升空间', 'Room to improve', '≈'],
+          ['unhelpful', '没帮到我', 'Not helpful', '−'],
+        ].map(([value, zh, en, mark]) => (
+          <label>
+            <input type="radio" name="rating" value={value} />
+            <span>
+              <b aria-hidden="true">{mark}</b>
+              {t(zh, en)}
+            </span>
+          </label>
+        ))}
+      </fieldset>
+      <label class="feedback-field">
+        {t('想反馈什么', 'What is your note about?')}
+        <select name="category">
+          {[
+            ['suggestion', '产品建议', 'Suggestion'],
+            ['bug', '遇到了问题', 'Something went wrong'],
+            ['reading', '计算或解读', 'Calculation or reading'],
+            ['content', '文章与内容', 'Articles and content'],
+            ['other', '其他', 'Something else'],
+          ].map(([value, zh, en]) => (
+            <option value={value}>{t(zh, en)}</option>
+          ))}
+        </select>
+      </label>
+      <label class="feedback-field">
+        {t('留下一句话', 'Leave us a note')}
+        <textarea
+          name="message"
+          rows="3"
+          maxlength="3000"
+          placeholder={t(
+            '例如：希望在抽牌前更容易找到正逆位的说明。',
+            'For example: I’d like a clearer explanation of reversed cards before drawing.',
+          )}
+        ></textarea>
+      </label>
+      <label class="feedback-field">
+        {t('联系邮箱（选填）', 'Email (optional)')}
+        <input
+          name="contact"
+          type="email"
+          maxlength="254"
+          autocomplete="email"
+          placeholder={t('如果你愿意收到回复', 'Only if you’d like a reply')}
+        />
+      </label>
+      <div class="feedback-context" hidden>
+        <label class="feedback-consent">
+          <input name="shareContext" type="checkbox" />
+          <span>{t('附上这次问题与结果的摘录', 'Include an excerpt of this question and result')}</span>
+        </label>
+        <p>
+          {t(
+            '默认不发送。勾选后可先删改，只有下方文字会随反馈保存。',
+            'Off by default. Review and edit the text below before sharing it with your feedback.',
+          )}
+        </p>
+        <label class="feedback-field feedback-preview" hidden>
+          {t('将分享的内容（可编辑）', 'Text to share (editable)')}
+          <textarea name="excerpt" rows="5" maxlength="8000"></textarea>
+        </label>
+      </div>
+      <p class="feedback-privacy">
+        {t(
+          '反馈会私密保存，用于改进产品。请勿填写密码或他人的私人信息。',
+          'Your feedback is stored privately to improve Wenbu. Please leave out passwords and other people’s private details.',
+        )}{' '}
+        <a href={href(locale, 'privacy')}>{t('隐私说明', 'Privacy details')} ↗</a>
+      </p>
+      <p class="error-message" data-feedback-error role="alert" hidden></p>
+      <button class="button feedback-submit" type="submit">
+        {t('发送反馈', 'Send feedback')} <span aria-hidden="true">↗</span>
+      </button>
+    </form>
+  </div>
+  <div class="feedback-thanks" hidden role="status">
+    <span class="feedback-receipt-mark" aria-hidden="true">
+      ✓
+    </span>
+    <h2>{t('收到了，谢谢你。', 'Received. Thank you.')}</h2>
+    <p>
+      {t(
+        '你的反馈已保存，会成为改进问卜的依据。',
+        'Your feedback has been saved and will help us improve Wenbu.',
+      )}
+    </p>
+    <span>{t('反馈编号', 'Your receipt')}</span>
+    <code data-feedback-receipt></code>
+    <button class="button secondary" type="button" data-feedback-close>
+      {t('继续探索', 'Keep exploring')}
+    </button>
+  </div>
+</dialog>
+<script>
+  import { analyticsHeaders, track } from '../lib/analytics';
+  import { safePage } from '../lib/analytics-contract';
+  import { feedbackCategories, feedbackRatings, type FeedbackRequest } from '../lib/feedback-contract';
+  const dialog = document.querySelector<HTMLDialogElement>('#feedback-dialog')!;
+  const form = dialog.querySelector<HTMLFormElement>('form')!;
+  const zh = dialog.dataset.locale === 'zh';
+  const t = (cn: string, en: string) => (zh ? cn : en);
+  const field = <T extends HTMLElement>(name: string) => form.elements.namedItem(name) as T;
+  const share = field<HTMLInputElement>('shareContext');
+  const excerpt = field<HTMLTextAreaElement>('excerpt');
+  const submit = dialog.querySelector<HTMLButtonElement>('.feedback-submit')!;
+  const error = dialog.querySelector<HTMLElement>('[data-feedback-error]')!;
+  const formView = dialog.querySelector<HTMLElement>('.feedback-form-view')!;
+  const thanks = dialog.querySelector<HTMLElement>('.feedback-thanks')!;
+  const preview = dialog.querySelector<HTMLElement>('.feedback-preview')!;
+  let detail: FeedbackRequest = {},
+    id = '',
+    busy = false,
+    opener: HTMLElement | null = null;
+  function show(value: FeedbackRequest = {}) {
+    if (dialog.open) return;
+    opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    detail = value;
+    id = crypto.randomUUID();
+    form.reset();
+    error.hidden = true;
+    thanks.hidden = true;
+    formView.hidden = false;
+    field<HTMLSelectElement>('category').value = feedbackCategories.includes(value.category!)
+      ? value.category!
+      : 'suggestion';
+    if (value.rating && feedbackRatings.includes(value.rating)) {
+      const input = form.querySelector<HTMLInputElement>(`input[name="rating"][value="${value.rating}"]`);
+      if (input) input.checked = true;
+    }
+    excerpt.value = typeof value.excerpt === 'string' ? value.excerpt.slice(0, 8000) : '';
+    dialog.querySelector<HTMLElement>('.feedback-context')!.hidden = !excerpt.value;
+    preview.hidden = true;
+    dialog.showModal();
+    track('feedback_opened', {
+      tool: value.tool ?? 'none',
+      operation: value.operation,
+      conversation: value.conversation,
+      action: 'feedback',
+    });
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-feedback-open]').forEach((button) => {
+    button.hidden = false;
+    button.addEventListener('click', () => show());
+  });
+  window.addEventListener('wenbu:feedback', (event) => show((event as CustomEvent<FeedbackRequest>).detail));
+  dialog.querySelectorAll('[data-feedback-close]').forEach((button) =>
+    button.addEventListener('click', () => {
+      if (!busy) dialog.close();
+    }),
+  );
+  dialog.addEventListener('cancel', (e) => {
+    if (busy) e.preventDefault();
+  });
+  dialog.addEventListener('close', () => {
+    excerpt.value = '';
+    detail = {};
+    opener?.focus();
+  });
+  form.addEventListener('input', () => {
+    id = crypto.randomUUID();
+    error.hidden = true;
+  });
+  share.addEventListener('change', () => {
+    preview.hidden = !share.checked;
+    if (share.checked) excerpt.focus();
+  });
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (busy) return;
+    const data = new FormData(form),
+      rating = String(data.get('rating') || 'none');
+    if (!String(data.get('message')).trim() && rating === 'none') {
+      error.textContent = t('选一个评价，或留下一句话。', 'Choose a rating or leave a note.');
+      error.hidden = false;
+      return;
+    }
+    busy = true;
+    submit.disabled = true;
+    submit.textContent = t('正在发送…', 'Sending…');
+    error.hidden = true;
+    // Take an immutable snapshot; edits during delivery are disabled to protect the receipt.
+    const body = {
+      id,
+      page: safePage(location.pathname),
+      locale: zh ? 'zh' : 'en',
+      tool: detail.tool ?? 'none',
+      category: data.get('category'),
+      rating,
+      message: data.get('message'),
+      contact: String(data.get('contact')).trim(),
+      shareContext: share.checked,
+      excerpt: share.checked ? excerpt.value : '',
+    };
+    const inputs = [
+      ...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+        'input,textarea,select',
+      ),
+    ];
+    inputs.forEach((el) => (el.disabled = true));
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...analyticsHeaders(detail) },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(20000),
+      });
+      if (!response.ok)
+        throw new Error(
+          response.status === 429
+            ? t('提交得有些频繁，请一分钟后再试。', 'Please wait a minute before sending another note.')
+            : t(
+                '暂时没能保存，请稍后重试。内容还在这里。',
+                'We couldn’t save this yet. Your note is still here; please try again.',
+              ),
+        );
+      const receipt = await response.json();
+      dialog.querySelector<HTMLElement>('[data-feedback-receipt]')!.textContent = receipt.id;
+      formView.hidden = true;
+      thanks.hidden = false;
+      (thanks.querySelector('button') as HTMLButtonElement).focus();
+    } catch (e) {
+      error.textContent =
+        e instanceof Error && e.name !== 'TimeoutError'
+          ? e.message
+          : t(
+              '连接超时，请重试。重复提交不会重复保存。',
+              'The connection timed out. You can retry without creating a duplicate.',
+            );
+      error.hidden = false;
+    } finally {
+      busy = false;
+      submit.disabled = false;
+      inputs.forEach((el) => (el.disabled = false));
+      submit.textContent = t('发送反馈 ↗', 'Send feedback ↗');
+    }
+  });
+</script>

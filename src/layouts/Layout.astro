@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import FeedbackWidget from '../components/FeedbackWidget.astro';
 import '@fontsource-variable/dm-sans';
 import '@fontsource/cormorant-garamond/400.css';
 import '@fontsource/cormorant-garamond/500.css';
@@ -270,6 +271,7 @@ const schema = {
         </div>
       </div>
     </footer>
+    {path !== 'insights' && <FeedbackWidget locale={locale} />}
     <script>
       import { initializeAnalytics } from '../lib/analytics';
       initializeAnalytics();

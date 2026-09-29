@@ -75,7 +75,7 @@ See [brand-and-growth.md](research/brand-and-growth.md). Change all absolute ide
 
 ## Product analytics
 
-Cloudflare D1 `wenbu-analytics` is bound as `ANALYTICS`; schema is versioned in `migrations/0001_analytics.sql`. Apply migrations before code deployment:
+Cloudflare D1 `wenbu-analytics` is bound as `ANALYTICS`; schema is versioned in `migrations/` (including `0002_feedback_history.sql`). Apply migrations before code deployment:
 
 ```sh
 npx wrangler d1 migrations apply wenbu-analytics --local
@@ -87,11 +87,11 @@ npm run deploy
 
 The database and production secret were provisioned for the 2026-09-29 release. Do not recreate them for routine deployments. The administrator opens `/insights/` and supplies the secret in the password field. An ignored mode-0600 `.analytics-admin-token` file contains the initial local copy; do not publish it. The report API requires `Authorization: Bearer ...`, sends no-store/noindex, and has a separate rate limit. See [analytics.md](analytics.md) for dimensions, privacy, opt-out and definitions.
 
-Cron `15 19 * * *` deletes raw events older than 90 days. Indexes bound time-window reads and retention deletes. Monitor D1 reads, writes, storage and Worker errors in Cloudflare; growth requires daily pre-aggregation before repeatedly querying large 90-day ranges. Public page beacons are approximate product measurement; server calculation receipts are recorded independently. Neither is a billing ledger.
+Private R2 bucket `wenbu-analytics-archive` is bound as `ANALYTICS_ARCHIVE`. Do not enable public access or set an expiry lifecycle. Cron `15 * * * *` archives events received more than one day ago in bounded NDJSON batches. Only archived rows older than 90 days can be pruned; failed uploads keep the original rows. Check `/api/admin/storage` for errors and backlog; a job handles at most 2,500 events per hour. A D1 lease prevents overlapping jobs. Archive downloads require the same admin token, and manifests contain SHA-256 hashes. Indexes bound time-window reads and retention deletes. Monitor D1 reads, writes, storage and Worker errors in Cloudflare; growth requires daily pre-aggregation before repeatedly querying large 90-day ranges. Public page beacons are approximate product measurement; server calculation receipts are recorded independently. Neither is a billing ledger.
 
 QA sets `X-Wenbu-Test: true` for native requests or `sessionStorage['wenbu.analytics.test']='true'` in the dedicated QA browser tab before loading the page. Test traffic is excluded from the default dashboard. Automated smoke now sets this header, including MCP. Do not clear production tables to reset QA.
 
-Worker rollback does not roll back D1 schema or data. This initial migration only adds a separate analytics table; the previous app version can continue without it. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [deck-analytics-release.md](reviews/deck-analytics-release.md).
+Worker rollback does not roll back D1 schema or data. Migrations are additive; old code can continue reading the original columns. However, code rollback must preserve the new archive-before-prune maintenance path: an old cron handler would delete unarchived events. Disable the trigger before rolling back to pre-archive code. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [deck-analytics-release.md](reviews/deck-analytics-release.md).
 
 ## Keep documentation in sync
 

@@ -280,6 +280,26 @@ describe('DeepSeek Agent harness', () => {
     expect(output.reusedOriginal).toBe(true);
     expect(output.verifiedCalculation.original.number).toBe(1);
   });
+  it('records closed tool activity without arguments, question text or double-counted calls', async () => {
+    const { env } = testEnv();
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      model(null, [{ name: 'ask_user', args: { question: 'private question text', form: 'birth' } }]),
+    );
+    const finish = vi.fn(),
+      activity = vi.fn();
+    await events(await agentResponse({ message: '请排盘', consent: true }, request(), env, finish, activity));
+    expect(activity).toHaveBeenCalledTimes(1);
+    expect(activity.mock.calls[0][0]).toMatchObject({
+      event: 'agent_tool_finished',
+      action: 'agent-clarify',
+      status: 'complete',
+      tool: 'agent',
+    });
+    expect(JSON.stringify(activity.mock.calls)).not.toContain('private question');
+    expect(activity.mock.calls[0][0]).not.toHaveProperty('toolCalls');
+    expect(finish).toHaveBeenCalledTimes(1);
+    expect(finish.mock.calls[0][0]).toMatchObject({ status: 'waiting', toolCalls: 1 });
+  });
   it.each([false, true])('clarification preempts the batch in either order (%s)', async (reverse) => {
     const { env } = testEnv();
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(

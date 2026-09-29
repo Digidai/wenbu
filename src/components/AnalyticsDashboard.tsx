@@ -1,3 +1,4 @@
+import AnalyticsExplorer from './AnalyticsExplorer';
 import { useState } from 'react';
 import { BarChart3, Download, LockKeyhole, RefreshCw, LogOut } from 'lucide-react';
 import { campaigns, sources } from '../lib/analytics-contract';
@@ -5,6 +6,8 @@ type Row = Record<string, string | number | null>;
 type Report = { generatedAt: string; days: number; includeTest: boolean; data: Record<string, Row[]> };
 const number = (value: unknown) => (typeof value === 'number' ? value.toLocaleString() : '0');
 export default function AnalyticsDashboard() {
+  const [tab, setTab] = useState<'overview' | 'events' | 'feedback' | 'archives'>('overview');
+  const [linked, setLinked] = useState({ operation: '', test: false });
   const [token, setToken] = useState('');
   const [report, setReport] = useState<Report>();
   const [busy, setBusy] = useState(false);
@@ -138,233 +141,282 @@ export default function AnalyticsDashboard() {
         </form>
       ) : (
         <>
-          <form
-            className="insights-filters"
-            onSubmit={(e) => {
-              e.preventDefault();
-              void load();
-            }}
-          >
-            {select('days', '最近天数', ['1', '7', '30', '90'])}
-            {select('source', '来源', sources)}
-            {select('campaign', '活动', campaigns)}
-            {select('locale', '语言', ['zh', 'en'])}
-            {select('device', '设备', ['mobile', 'desktop', 'tablet', 'bot', 'unknown'])}
-            {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
-            <label className="insights-test">
-              <input
-                type="checkbox"
-                checked={filters.test === 'true'}
-                onChange={(e) => setFilters({ ...filters, test: String(e.target.checked) })}
-              />
-              包含测试流量
-            </label>
-            <button className="button" disabled={busy}>
-              <RefreshCw size={14} />
-              {busy ? '读取中' : '应用筛选'}
-            </button>
-          </form>
-          <div className="insights-toolbar">
-            <span>
-              最近 {report.days} 天 · UTC · {report.includeTest ? '包含测试' : '已排除测试'} ·{' '}
-              {new Date(report.generatedAt).toLocaleString('zh-CN')}
-            </span>
-            <button onClick={download}>
-              <Download size={15} />
-              导出汇总
-            </button>
+          <div className="insights-tabs" role="tablist" aria-label="数据视图">
+            {(
+              [
+                ['overview', '使用概览'],
+                ['events', '使用历史'],
+                ['feedback', '用户反馈'],
+                ['archives', '历史归档'],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                role="tab"
+                aria-selected={tab === key}
+                key={key}
+                onClick={() => {
+                  setLinked({ operation: '', test: false });
+                  setTab(key);
+                }}
+              >
+                {label}
+              </button>
+            ))}
             <button
               onClick={() => {
                 setToken('');
                 setReport(undefined);
+                setTab('overview');
               }}
             >
-              <LogOut size={15} />
               退出
             </button>
           </div>
-          <div className="insights-metrics">
-            {[
-              ['pageviews', '页面浏览'],
-              ['visitors', '匿名访客'],
-              ['sessions', '访问会话'],
-              ['calculations', '成功计算'],
-              ['agent_complete', 'Agent 完成回合'],
-              ['failures', '服务错误'],
-            ].map(([key, label]) => (
-              <article key={key}>
-                <span>{label}</span>
-                <strong>{number(summary[key])}</strong>
-              </article>
-            ))}
-          </div>
-          {!summary.events && (
-            <p className="insights-empty">这个范围内还没有记录。上线后的真实访问和功能使用会在这里出现。</p>
-          )}
-          <p className="insights-quality-note">
-            示例计算 {number(summary.examples)} 次 · 输入未通过 {number(summary.invalid_inputs)} 次 · 额度 /
-            限速 {number(summary.throttled)} 次 · 用户中断 {number(summary.cancellations)} 次。Agent 等待补充{' '}
-            {number(summary.agent_waiting)} 回合 · 受限 {number(summary.agent_limited)}{' '}
-            回合。以上与服务错误分开统计。
-          </p>
-          <div className="insights-primary">
-            <article className="insights-card">
-              <h2>每日访问与使用</h2>
-              <p>柱高代表浏览量，旁边列出成功计算次数。</p>
-              <div className="insights-timeline">
-                {report.data.daily.map((row) => (
-                  <div key={String(row.label)}>
-                    <span>{String(row.label).slice(5)}</span>
-                    <i
-                      style={{
-                        width: `${Math.max(2, (Number(row.views) / Math.max(1, ...report.data.daily.map((d) => Number(d.views)))) * 100)}%`,
-                      }}
-                    />
-                    <b>
-                      {number(row.views)} <small>浏览 · {number(row.calculations)} 计算</small>
-                    </b>
-                  </div>
+          {tab !== 'overview' ? (
+            <AnalyticsExplorer
+              key={tab + linked.operation}
+              token={token.trim()}
+              kind={tab}
+              initialOperation={linked.operation}
+              includeTest={linked.test}
+              onFollowOperation={(operation, destination, test) => {
+                setLinked({ operation, test });
+                setTab(destination);
+              }}
+            />
+          ) : (
+            <>
+              <form
+                className="insights-filters"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void load();
+                }}
+              >
+                {select('days', '最近天数', ['1', '7', '30', '90'])}
+                {select('source', '来源', sources)}
+                {select('campaign', '活动', campaigns)}
+                {select('locale', '语言', ['zh', 'en'])}
+                {select('device', '设备', ['mobile', 'desktop', 'tablet', 'bot', 'unknown'])}
+                {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
+                <label className="insights-test">
+                  <input
+                    type="checkbox"
+                    checked={filters.test === 'true'}
+                    onChange={(e) => setFilters({ ...filters, test: String(e.target.checked) })}
+                  />
+                  包含测试流量
+                </label>
+                <button className="button" disabled={busy}>
+                  <RefreshCw size={14} />
+                  {busy ? '读取中' : '应用筛选'}
+                </button>
+              </form>
+              <div className="insights-toolbar">
+                <span>
+                  最近 {report.days} 天 · UTC · {report.includeTest ? '包含测试' : '已排除测试'} ·{' '}
+                  {new Date(report.generatedAt).toLocaleString('zh-CN')}
+                </span>
+                <button onClick={download}>
+                  <Download size={15} />
+                  导出汇总
+                </button>
+                <button
+                  onClick={() => {
+                    setToken('');
+                    setReport(undefined);
+                  }}
+                >
+                  <LogOut size={15} />
+                  退出
+                </button>
+              </div>
+              <div className="insights-metrics">
+                {[
+                  ['pageviews', '页面浏览'],
+                  ['visitors', '匿名访客'],
+                  ['sessions', '访问会话'],
+                  ['calculations', '成功计算'],
+                  ['agent_complete', 'Agent 完成回合'],
+                  ['failures', '服务错误'],
+                ].map(([key, label]) => (
+                  <article key={key}>
+                    <span>{label}</span>
+                    <strong>{number(summary[key])}</strong>
+                  </article>
                 ))}
               </div>
-            </article>
-            <article className="insights-card">
-              <h2>会话覆盖漏斗</h2>
-              <p>
-                同一会话内包含这些事件，非严格先后顺序。成功必须有服务端记录；静态工具示例不计入，发送 Agent
-                示例问题计入真实回合。
+              {!summary.events && (
+                <p className="insights-empty">
+                  这个范围内还没有记录。上线后的真实访问和功能使用会在这里出现。
+                </p>
+              )}
+              <p className="insights-quality-note">
+                示例计算 {number(summary.examples)} 次 · 输入未通过 {number(summary.invalid_inputs)} 次 · 额度
+                / 限速 {number(summary.throttled)} 次 · 用户中断 {number(summary.cancellations)} 次。Agent
+                等待补充 {number(summary.agent_waiting)} 回合 · 受限 {number(summary.agent_limited)}{' '}
+                回合。以上与服务错误分开统计。
               </p>
-              {[
-                ['visited', '访问页面'],
-                ['started', '开始工具或对话'],
-                ['succeeded', '实际完成'],
-                ['saved', '保存为手记'],
-              ].map(([key, label], i) => (
-                <div className="insights-funnel" key={key}>
-                  <span>0{i + 1}</span>
-                  <strong>{label}</strong>
-                  <b>{number(funnel[key])}</b>
-                </div>
-              ))}
-              <small>会话覆盖统计，不推断跨设备身份或因果关系。</small>
-            </article>
-          </div>
-          <div className="insights-breakdowns">
-            <details className="insights-card" open>
-              <summary>Agent 提问引导</summary>
-              <p>
-                只统计步骤与操作类型，不记录选择内容。发送表示发起回合，不等同于服务端完成；不是严格漏斗。
-              </p>
-              <div className="insights-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>操作</th>
-                      <th>次数</th>
-                      <th>会话</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(report.data.guidance ?? []).map((row) => (
-                      <tr key={String(row.label)}>
-                        <th>{guidanceLabels[String(row.label)] ?? String(row.label)}</th>
-                        <td>{number(row.count)}</td>
-                        <td>{number(row.sessions)}</td>
-                      </tr>
+              <div className="insights-primary">
+                <article className="insights-card">
+                  <h2>每日访问与使用</h2>
+                  <p>柱高代表浏览量，旁边列出成功计算次数。</p>
+                  <div className="insights-timeline">
+                    {report.data.daily.map((row) => (
+                      <div key={String(row.label)}>
+                        <span>{String(row.label).slice(5)}</span>
+                        <i
+                          style={{
+                            width: `${Math.max(2, (Number(row.views) / Math.max(1, ...report.data.daily.map((d) => Number(d.views)))) * 100)}%`,
+                          }}
+                        />
+                        <b>
+                          {number(row.views)} <small>浏览 · {number(row.calculations)} 计算</small>
+                        </b>
+                      </div>
                     ))}
-                    {!report.data.guidance?.length && (
-                      <tr>
-                        <td colSpan={3}>所选范围内还没有引导事件。</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                  </div>
+                </article>
+                <article className="insights-card">
+                  <h2>会话覆盖漏斗</h2>
+                  <p>
+                    同一会话内包含这些事件，非严格先后顺序。成功必须有服务端记录；静态工具示例不计入，发送
+                    Agent 示例问题计入真实回合。
+                  </p>
+                  {[
+                    ['visited', '访问页面'],
+                    ['started', '开始工具或对话'],
+                    ['succeeded', '实际完成'],
+                    ['saved', '保存为手记'],
+                  ].map(([key, label], i) => (
+                    <div className="insights-funnel" key={key}>
+                      <span>0{i + 1}</span>
+                      <strong>{label}</strong>
+                      <b>{number(funnel[key])}</b>
+                    </div>
+                  ))}
+                  <small>会话覆盖统计，不推断跨设备身份或因果关系。</small>
+                </article>
               </div>
-              <small>自由修改后不再包含原建议的发送归为普通对话；不推断用户主题或个人特征。</small>
-            </details>
-            {Object.entries(breakdownNames).map(([key, label]) => (
-              <details
-                className="insights-card"
-                key={key}
-                open={['source', 'page', 'tool', 'device'].includes(key)}
-              >
-                <summary>{label}</summary>
+              <div className="insights-breakdowns">
+                <details className="insights-card" open>
+                  <summary>Agent 提问引导</summary>
+                  <p>
+                    只统计步骤与操作类型，不记录选择内容。发送表示发起回合，不等同于服务端完成；不是严格漏斗。
+                  </p>
+                  <div className="insights-table">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>操作</th>
+                          <th>次数</th>
+                          <th>会话</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(report.data.guidance ?? []).map((row) => (
+                          <tr key={String(row.label)}>
+                            <th>{guidanceLabels[String(row.label)] ?? String(row.label)}</th>
+                            <td>{number(row.count)}</td>
+                            <td>{number(row.sessions)}</td>
+                          </tr>
+                        ))}
+                        {!report.data.guidance?.length && (
+                          <tr>
+                            <td colSpan={3}>所选范围内还没有引导事件。</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <small>自由修改后不再包含原建议的发送归为普通对话；不推断用户主题或个人特征。</small>
+                </details>
+                {Object.entries(breakdownNames).map(([key, label]) => (
+                  <details
+                    className="insights-card"
+                    key={key}
+                    open={['source', 'page', 'tool', 'device'].includes(key)}
+                  >
+                    <summary>{label}</summary>
+                    <div className="insights-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>维度</th>
+                            <th>事件</th>
+                            <th>会话</th>
+                            <th>成功</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {report.data[key].map((row) => (
+                            <tr key={String(row.label)}>
+                              <th>{String(row.label)}</th>
+                              <td>{number(row.events)}</td>
+                              <td>{number(row.sessions)}</td>
+                              <td>{number(row.successes)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </details>
+                ))}
+              </div>
+              <details className="insights-card">
+                <summary>服务状态与耗时</summary>
                 <div className="insights-table">
                   <table>
                     <thead>
                       <tr>
-                        <th>维度</th>
-                        <th>事件</th>
-                        <th>会话</th>
-                        <th>成功</th>
+                        <th>功能</th>
+                        <th>状态</th>
+                        <th>次数</th>
+                        <th>平均耗时</th>
+                        <th>最大耗时</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {report.data[key].map((row) => (
-                        <tr key={String(row.label)}>
-                          <th>{String(row.label)}</th>
-                          <td>{number(row.events)}</td>
-                          <td>{number(row.sessions)}</td>
-                          <td>{number(row.successes)}</td>
+                      {report.data.performance.map((row, i) => (
+                        <tr key={i}>
+                          <th>{row.label}</th>
+                          <td>{row.status}</td>
+                          <td>{number(row.count)}</td>
+                          <td>{number(row.average_ms)} ms</td>
+                          <td>{number(row.max_ms)} ms</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               </details>
-            ))}
-          </div>
-          <details className="insights-card">
-            <summary>服务状态与耗时</summary>
-            <div className="insights-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>功能</th>
-                    <th>状态</th>
-                    <th>次数</th>
-                    <th>平均耗时</th>
-                    <th>最大耗时</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {report.data.performance.map((row, i) => (
-                    <tr key={i}>
-                      <th>{row.label}</th>
-                      <td>{row.status}</td>
-                      <td>{number(row.count)}</td>
-                      <td>{number(row.average_ms)} ms</td>
-                      <td>{number(row.max_ms)} ms</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
-          <details className="insights-card">
-            <summary>全部事件与接收位置</summary>
-            <div className="insights-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>事件</th>
-                    <th>接收位置</th>
-                    <th>状态</th>
-                    <th>数量</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {report.data.events.map((row, i) => (
-                    <tr key={i}>
-                      <th>{row.label}</th>
-                      <td>{row.origin}</td>
-                      <td>{row.status}</td>
-                      <td>{number(row.count)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
+              <details className="insights-card">
+                <summary>全部事件与接收位置</summary>
+                <div className="insights-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>事件</th>
+                        <th>接收位置</th>
+                        <th>状态</th>
+                        <th>数量</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {report.data.events.map((row, i) => (
+                        <tr key={i}>
+                          <th>{row.label}</th>
+                          <td>{row.origin}</td>
+                          <td>{row.status}</td>
+                          <td>{number(row.count)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            </>
+          )}
         </>
       )}
       {error && (
@@ -374,8 +426,8 @@ export default function AnalyticsDashboard() {
       )}
       <p className="insights-footnote">
         匿名访客是 30
-        天有效的浏览器标识，不代表精确人数。统计遵循用户关闭选项和浏览器隐私信号；拦截、离线和自动化流量会影响覆盖。事件保留
-        90 天。数据用于产品改进，不用于计费。
+        天有效的浏览器标识，不代表精确人数。统计遵循用户关闭选项和浏览器隐私信号；拦截、离线和自动化流量会影响覆盖。事件明细在线保留
+        90 天，已归档事件存于私有 R2。数据用于产品改进，不用于计费。
       </p>
     </section>
   );

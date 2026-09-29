@@ -1,5 +1,9 @@
+import { enqueue, pendingEvents, removeEvents, trimOutbox, type PendingEvent } from './analytics-outbox';
 import {
   actions,
+  analyticsRelease,
+  type settings,
+  type variants,
   campaigns,
   mediums,
   referrerSource,
@@ -10,7 +14,11 @@ import {
   type statuses,
 } from './analytics-contract';
 
-type Dimensions = {
+export type Correlation = { operation?: string; parentOperation?: string; conversation?: string };
+type Dimensions = Correlation & {
+  destination?: string;
+  setting?: (typeof settings)[number];
+  variant?: (typeof variants)[number];
   tool?: (typeof tools)[number];
   mode?: 'none' | 'explore' | 'research';
   action?: (typeof actions)[number];
@@ -23,10 +31,14 @@ const preferenceKey = 'wenbu.analytics.disabled';
 let session: Session | undefined;
 let visitor = '';
 let initialized = false;
-let queue: Record<string, unknown>[] = [];
+let sequence = 0;
+let pageId: string | undefined;
+let writes: Promise<void> = Promise.resolve();
+let flushing = false;
+let retryDelay = 1500;
+let batchSize = 10;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let memoryDisabled = false;
-const retried = new Set<string>();
 
 export function analyticsEnabled() {
   if (
@@ -54,14 +66,13 @@ export function setAnalyticsEnabled(enabled: boolean) {
     /* Preference applies to this page even when storage is unavailable. */
   }
   if (!enabled) {
-    queue = [];
+    void writes.then(() => removeEvents());
     session = undefined;
     visitor = '';
     clearTimeout(timer);
   }
   window.dispatchEvent(new Event('wenbu:analytics-preference'));
   if (enabled) track('page_view');
-  else retried.clear();
 }
 function identity() {
   if (!analyticsEnabled()) return;
@@ -108,11 +119,20 @@ function identity() {
     return;
   }
 }
-export function analyticsContext() {
+const validId = (value?: string) =>
+  value && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
+    ? value
+    : undefined;
+export function analyticsContext(correlation: Correlation = {}) {
   const s = identity();
   return s
     ? {
         session: s.id,
+        pageId: (pageId ??= crypto.randomUUID()),
+        operation: validId(correlation.operation),
+        parentOperation: validId(correlation.parentOperation),
+        conversation: validId(correlation.conversation),
+        release: analyticsRelease,
         visitor,
         source: s.source,
         medium: s.medium,
@@ -124,24 +144,48 @@ export function analyticsContext() {
       }
     : undefined;
 }
-export function analyticsHeaders(): Record<string, string> {
-  const context = analyticsContext();
+export function analyticsHeaders(correlation: Correlation = {}): Record<string, string> {
+  const context = analyticsContext(correlation);
   return { 'X-Wenbu-Client': 'web', 'X-Wenbu-Analytics': context ? JSON.stringify(context) : 'off' };
 }
 export function track(event: ClientEvent, dimensions: Dimensions = {}) {
-  const context = analyticsContext();
+  if (typeof location !== 'undefined' && location.pathname.includes('/insights')) return;
+  const context = analyticsContext(dimensions);
   if (!context) return;
-  queue.push({ id: crypto.randomUUID(), event, ...context, ...dimensions });
-  if (queue.length >= 10) void flush();
-  else if (!timer) timer = setTimeout(() => void flush(), 1500);
+  const entry: PendingEvent = {
+    id: crypto.randomUUID(),
+    event,
+    ...dimensions,
+    ...context,
+    occurredAt: Date.now(),
+    sequence: ++sequence,
+    version: 2,
+  };
+  writes = writes
+    .then(async () => {
+      if (!analyticsEnabled()) return;
+      await enqueue(entry);
+      if (!analyticsEnabled()) await removeEvents();
+    })
+    .catch(() => undefined);
+  if (!timer) timer = setTimeout(() => void flush(), 1500);
 }
 async function flush() {
   clearTimeout(timer);
   timer = undefined;
-  if (!analyticsEnabled() || !queue.length) return;
-  const events = queue.splice(0, 10);
+  if (flushing || !analyticsEnabled()) return;
+  flushing = true;
+  let again = false;
   try {
-    // No retry storm or duplicate conversion. Event IDs are also deduplicated on the server.
+    await writes;
+    const trimmed = await trimOutbox();
+    if (trimmed.expired)
+      track('telemetry_gap', { variant: 'queue-expired', value: Math.min(100, trimmed.expired) });
+    if (trimmed.overflow)
+      track('telemetry_gap', { variant: 'queue-full', value: Math.min(100, trimmed.overflow) });
+    const events = await pendingEvents(batchSize);
+    if (!events.length || !analyticsEnabled()) return;
+    again = true;
     const response = await fetch('/api/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -149,23 +193,52 @@ async function flush() {
       keepalive: true,
       credentials: 'omit',
     });
-    if (response.status === 429 || response.status >= 500) throw new Error('Retryable analytics response');
-    retried.delete(String(events[0].id));
+    if (response.ok) {
+      await removeEvents(events.map((e) => e.id));
+      batchSize = 10;
+      retryDelay = 2200;
+    } else if ([400, 413, 422].includes(response.status)) {
+      // Isolate a stale or malformed entry without dropping the rest of its batch.
+      if (events.length > 1) batchSize = 1;
+      else {
+        await removeEvents([events[0].id]);
+        batchSize = 10;
+        if (events[0].event !== 'telemetry_gap') track('telemetry_gap', { variant: 'rejected', value: 1 });
+      }
+      retryDelay = 1000;
+    } else throw new Error('Delivery deferred');
   } catch {
-    const id = String(events[0].id);
-    if (analyticsEnabled() && !retried.has(id) && queue.length < 40) {
-      retried.add(id);
-      queue.unshift(...events);
-      timer = setTimeout(() => void flush(), 5000);
-      return;
+    retryDelay = Math.min(60000, Math.max(5000, retryDelay * 2));
+    again = true;
+  } finally {
+    flushing = false;
+    if (again && analyticsEnabled()) {
+      clearTimeout(timer);
+      timer = setTimeout(() => void flush(), retryDelay);
     }
-    retried.delete(id);
   }
-  if (queue.length) timer = setTimeout(() => void flush(), 100);
 }
 export function initializeAnalytics() {
   if (initialized || location.pathname.includes('/insights')) return;
   initialized = true;
+  if (!analyticsEnabled()) void removeEvents();
+  window.addEventListener('online', () => void flush());
+  window.addEventListener('storage', (e) => {
+    if (e.key === preferenceKey) {
+      memoryDisabled = e.newValue === 'true';
+      if (memoryDisabled) {
+        void writes.then(() => removeEvents());
+        session = undefined;
+        visitor = '';
+        try {
+          sessionStorage.removeItem('wenbu.analytics.session');
+        } catch {
+          /* The preference still applies in memory. */
+        }
+        clearTimeout(timer);
+      }
+    }
+  });
   track('page_view');
   const depth = new Set<number>();
   let engaged = false;
@@ -184,7 +257,11 @@ export function initializeAnalytics() {
     updateVisible();
     if (document.visibilityState === 'hidden') void flush();
   });
-  window.addEventListener('pagehide', () => void flush());
+  window.addEventListener('pagehide', () => {
+    updateVisible();
+    track('page_exit', { duration: Math.min(3600000, visibleMs) });
+    void flush();
+  });
   window.addEventListener(
     'scroll',
     () => {
@@ -202,7 +279,24 @@ export function initializeAnalytics() {
   document.addEventListener('click', (e) => {
     const el = (e.target as Element)?.closest<HTMLElement>('[data-track]');
     const action = actions.find((a) => a === el?.dataset.track);
-    if (action && action !== 'none') track(action === 'source' ? 'source_opened' : 'cta_click', { action });
+    if (action && action !== 'none')
+      track(action === 'source' ? 'source_opened' : 'cta_click', {
+        action,
+        destination:
+          el instanceof HTMLAnchorElement && el.origin === location.origin
+            ? safePage(el.pathname)
+            : '/other/',
+      });
+  });
+  window.addEventListener('pageshow', (event) => {
+    if (!event.persisted) return;
+    pageId = crypto.randomUUID();
+    sequence = 0;
+    depth.clear();
+    engaged = false;
+    visibleMs = 0;
+    visibleSince = document.visibilityState === 'visible' ? Date.now() : 0;
+    track('page_view');
   });
   const forms = new WeakSet<Element>();
   document.addEventListener('focusin', (e) => {

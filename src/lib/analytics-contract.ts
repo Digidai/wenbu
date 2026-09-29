@@ -1,6 +1,10 @@
 /** Deliberately closed vocabulary: no prompts, birth inputs, arbitrary URLs or labels. */
 export const clientEvents = [
   'page_view',
+  'page_exit',
+  'setting_changed',
+  'feedback_opened',
+  'telemetry_gap',
   'engaged',
   'scroll_depth',
   'cta_click',
@@ -83,6 +87,28 @@ export const actions = [
   'guided',
   'clarification',
   'followup',
+  'feedback',
+  'agent-search',
+  'agent-read',
+  'agent-calculate',
+  'agent-report',
+  'agent-clarify',
+] as const;
+export const analyticsRelease = '2026-09-29-feedback-v1';
+export const settings = ['none', 'tarot-count', 'tarot-reversals', 'iching-cast', 'agent-mode'] as const;
+export const variants = [
+  'none',
+  'one',
+  'three',
+  'upright',
+  'reversals',
+  'random',
+  'manual',
+  'explore',
+  'research',
+  'queue-expired',
+  'queue-full',
+  'rejected',
 ] as const;
 export const statuses = [
   'none',

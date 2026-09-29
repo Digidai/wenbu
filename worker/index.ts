@@ -11,9 +11,10 @@ import {
   recordService,
   authorizedAnalytics,
   analyticsReport,
-  pruneAnalytics,
   type ServiceMetric,
 } from './analytics';
+import { submitFeedback, updateFeedback } from './feedback';
+import { historyReport, feedbackDetail, storageStatus, archiveAnalytics, archiveDownload } from './history';
 export { UsageGate } from './quota';
 
 const apiHeaders = {
@@ -88,7 +89,10 @@ export default {
       ServiceMetric['tool'] | undefined;
     let locale: 'zh' | 'en' = 'en';
     const record = (metric: ServiceMetric) => {
-      const task = recordService(request, env, metric).catch(() => undefined);
+      const task = recordService(request, env, metric).catch(() => {
+        // No request data or exception payload: expose a fixed operational signal only.
+        console.error('WENBU_ANALYTICS_WRITE_FAILED');
+      });
       if (ctx) ctx.waitUntil(task);
     };
     try {
@@ -105,16 +109,50 @@ export default {
         if (!env.ANALYTICS) return json({ error: { code: 'analytics_unavailable' } }, 503);
         return json(await collectEvents(await boundedBody(request, 16000), request, env));
       }
-      if (path === '/api/admin/analytics') {
+      if (path === '/api/feedback') {
+        if (request.method !== 'POST') return json({ error: { code: 'method_not_allowed' } }, 405);
+        if (request.headers.get('Origin') !== url.origin)
+          return json({ error: { code: 'origin_denied' } }, 403);
+        if (
+          env.FEEDBACK_LIMITER &&
+          !(await env.FEEDBACK_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') ?? 'local' }))
+            .success
+        )
+          return json({ error: { code: 'rate_limited' } }, 429);
+        return json(await submitFeedback(await boundedBody(request, 48000), request, env));
+      }
+      if (path.startsWith('/api/admin/')) {
         if (
           env.ADMIN_LIMITER &&
           !(await env.ADMIN_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') ?? 'local' }))
             .success
         )
           return json({ error: { code: 'rate_limited' } }, 429);
-        if (request.method !== 'GET') return json({ error: { code: 'method_not_allowed' } }, 405);
         if (!(await authorizedAnalytics(request, env))) return json({ error: { code: 'unauthorized' } }, 401);
-        return json(await analyticsReport(url, env));
+        if (!env.ANALYTICS) return json({ error: { code: 'analytics_unavailable' } }, 503);
+        if (request.method === 'GET') {
+          if (path === '/api/admin/analytics') return json(await analyticsReport(url, env));
+          if (path === '/api/admin/events') return json(await historyReport(url, env, 'events'));
+          if (path === '/api/admin/feedback') return json(await historyReport(url, env, 'feedback'));
+          if (path === '/api/admin/archives') return json(await historyReport(url, env, 'archives'));
+          if (path === '/api/admin/storage') return json(await storageStatus(env));
+          if (path === '/api/admin/archive') return archiveDownload(url.searchParams.get('key') ?? '', env);
+          if (path.startsWith('/api/admin/feedback/'))
+            return json(await feedbackDetail(path.slice('/api/admin/feedback/'.length), env));
+        }
+        if (request.method === 'PATCH' && path.startsWith('/api/admin/feedback/')) {
+          if (request.headers.get('Origin') !== url.origin)
+            return json({ error: { code: 'origin_denied' } }, 403);
+          return json(
+            await updateFeedback(path.slice('/api/admin/feedback/'.length), await boundedBody(request), env),
+          );
+        }
+        if (request.method === 'POST' && path === '/api/admin/archives/run') {
+          if (request.headers.get('Origin') !== url.origin)
+            return json({ error: { code: 'origin_denied' } }, 403);
+          return json(await archiveAnalytics(env));
+        }
+        return json({ error: { code: 'not_found' } }, 404);
       }
       if (path === '/api/health' && request.method === 'GET')
         return json({
@@ -176,8 +214,12 @@ export default {
       const raw = await boundedBody(request, path === '/api/v1/agent' ? AGENT_BODY_LIMIT : 8192);
       locale = raw && typeof raw === 'object' && raw.locale === 'zh' ? 'zh' : 'en';
       if (path === '/api/v1/agent')
-        return await agentResponse(raw, request, env, (metric) =>
-          record({ ...metric, locale, duration: Date.now() - started }),
+        return await agentResponse(
+          raw,
+          request,
+          env,
+          (metric) => record({ ...metric, locale, duration: Date.now() - started }),
+          record,
         );
       if (path === '/api/v1/interpret') {
         const result = await interpret(raw, request, env);
@@ -246,6 +288,6 @@ export default {
     }
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(pruneAnalytics(env));
+    ctx.waitUntil(archiveAnalytics(env));
   },
 } satisfies ExportedHandler<Env>;

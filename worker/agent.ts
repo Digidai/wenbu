@@ -198,6 +198,7 @@ export async function agentResponse(
   request: Request,
   env: Env,
   onFinish?: (metric: ServiceMetric) => void,
+  onActivity?: (metric: ServiceMetric) => void,
 ) {
   const input = agentRequestSchema.parse(raw);
   // Rebuild charts and validate original random results BEFORE reserving a paid turn.
@@ -289,10 +290,40 @@ export async function agentResponse(
     toolCalls: 0,
     artifacts: 0,
   };
+  const runningTools = new Map<string, { action: ServiceMetric['action']; started: number }>();
+  const activityActions: Record<string, ServiceMetric['action']> = {
+    search_library: 'agent-search',
+    read_reference: 'agent-read',
+    write_report: 'agent-report',
+    ask_user: 'agent-clarify',
+    calculate_bazi: 'agent-calculate',
+    calculate_ziwei: 'agent-calculate',
+    cast_iching: 'agent-calculate',
+    draw_tarot: 'agent-calculate',
+  };
+  const finishActivity = (id: string, status: ServiceMetric['status']) => {
+    const activity = runningTools.get(id);
+    if (!activity) return;
+    runningTools.delete(id);
+    onActivity?.({
+      event: 'agent_tool_finished',
+      tool: 'agent',
+      mode: input.mode,
+      action: activity.action,
+      status,
+      duration: Math.max(0, Date.now() - activity.started),
+      locale: input.locale,
+    });
+  };
   let recorded = false;
   const finishMetric = () => {
     if (!recorded) {
       recorded = true;
+      for (const id of runningTools.keys())
+        finishActivity(
+          id,
+          metrics.status === 'cancelled' || metrics.status === 'timeout' ? metrics.status : 'error',
+        );
       onFinish?.(metrics);
     }
   };
@@ -305,7 +336,14 @@ export async function agentResponse(
       const emit = (event: AgentEvent) => {
         if (closed || cancelled || abort.signal.aborted) return;
         if (event.type === 'artifact') metrics.artifacts = (metrics.artifacts ?? 0) + 1;
-        if (event.type === 'tool_start') metrics.toolCalls = (metrics.toolCalls ?? 0) + 1;
+        if (event.type === 'tool_start') {
+          metrics.toolCalls = (metrics.toolCalls ?? 0) + 1;
+          runningTools.set(event.tool.id, {
+            action: activityActions[event.tool.name] ?? 'none',
+            started: Date.now(),
+          });
+        }
+        if (event.type === 'tool_end') finishActivity(event.id, event.status);
         if (event.type === 'done') {
           metrics.status = event.status;
           metrics.modelCalls = event.modelCalls;

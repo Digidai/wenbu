@@ -1,6 +1,6 @@
 # 访问与使用统计
 
-2026-09-29。Cloudflare Worker + D1 第一方统计，不引入外部追踪脚本。管理入口 `/insights/`；页面 noindex，汇总 API 要求管理密钥。原始事件保留 90 天，每天 UTC 19:15 清理过期记录。文末提供英文指标与使用说明。
+2026-09-29。Cloudflare Worker + D1 第一方统计，不引入外部追踪脚本。管理入口 `/insights/`；页面 noindex，所有管理 API 要求管理密钥。D1 保存最近 90 天事件明细；私有 R2 保存长期原始事件归档。每小时 UTC 第 15 分钟归档已接收超过一天的事件，仅已归档事件允许从近期表清理。文末提供英文指标与使用说明。
 
 ## 第一次查看后台
 
@@ -28,7 +28,7 @@
 
 浏览器记录：`page_view`、可见时间满 30 秒的 `engaged`、50/90% `scroll_depth`、`cta_click`、`form_started`、`tool_started`、`result_viewed`、`ai_requested`、`ai_result_viewed`、`agent_started`、`agent_received`、`agent_stopped`、`artifact_opened`、`card_inspected`、`source_opened`、`context_opened`、保存/导出及 `client_error`。
 
-服务端独立记录：`calculation_succeeded`、`interpret_succeeded`、`agent_finished`、`mcp_finished`、`api_failed`。开始按钮、HTTP 200 或客户端自行上报，都不等同于实际完成。MCP 以真实工具返回为依据，Agent 以最终状态为依据；完成、等用户补充、受限、中断、超时、错误分开。
+服务端独立记录：`agent_tool_finished`（工具阶段的类别、状态与耗时，不含参数、正文或工具输出）、`calculation_succeeded`、`interpret_succeeded`、`agent_finished`、`mcp_finished`、`api_failed`。开始按钮、HTTP 200 或客户端自行上报，都不等同于实际完成。MCP 以真实工具返回为依据，Agent 以最终状态为依据；完成、等用户补充、受限、中断、超时、错误分开。
 
 首页六个 KPI 是浏览、浏览器标识数、访问会话、非示例成功计算、完成的 Agent 回合、服务错误。示例、输入错误、限流和用户中断单列。Agent 一回合可有多次内部工具调用，不能把回合与工具调用相加成“用户人数”。MCP 工具完成在事件明细和性能表单列，不冒充网站转化。
 
@@ -56,9 +56,9 @@ AI 引荐只表示浏览器可观察到的来源类别或约定的 UTM。很多�
 
 ## 隐私与管理
 
-不收集问题、出生日期时间地点、命盘、对话正文、笔记、原始 IP、完整 URL、搜索词或自定义任意属性。路径经过站内白名单；来源仅分类；国家只保留两位国家代码。随机浏览器标识有效 30 天，不做指纹或跨设备身份合并，不等同于自然人数。
+行为事件不收集问题、出生日期时间地点、命盘、对话正文、笔记、原始 IP、完整 URL、搜索词或自定义任意属性。单独的反馈表保存用户主动提交的文字、评价、可选邮箱；只有勾选并预览后分享的摘录会保存正文。路径经过站内白名单；来源仅分类；国家只保留两位国家代码。随机浏览器标识有效 30 天，不做指纹或跨设备身份合并，不等同于自然人数。
 
-`/privacy/` 可关闭统计；DNT / GPC 自动关闭；浏览器无法使用存储时关闭。关闭时清空待发队列、移除当前标识，此后的服务请求发送 `X-Wenbu-Analytics: off`。已经收到的历史事件不会立即撤回，按保留期限移除。关闭使用统计不会取消维持服务所需的限流与 AI 额度计数。
+`/privacy/` 可关闭统计；DNT / GPC 自动关闭；浏览器无法使用存储时关闭。关闭时清空待发队列、移除当前标识，此后的服务请求发送 `X-Wenbu-Analytics: off`。已经收到的历史事件不会立即撤回；私有归档长期保存，目前不设自动到期。关闭使用统计不会取消维持服务所需的限流与 AI 额度计数。
 
 API / MCP 可传 `X-Wenbu-Analytics: off`；CLI 用 `WENBU_ANALYTICS=off node wenbu.mjs ...`。不传标识的服务调用只记粗粒度工具状态，不建立隐形用户标识。
 
@@ -66,7 +66,7 @@ API / MCP 可传 `X-Wenbu-Analytics: off`；CLI 用 `WENBU_ANALYTICS=off node we
 
 ## 可靠性、规模与限制
 
-浏览器最多 10 条一批，离线 / 429 / 5xx 有一次有界重试，以事件 UUID 在 D1 去重。收集 API 与工具 API 使用独立限流器，管理员汇总接口也单独限速。统计写入失败不阻止占卜或 Agent 返回。
+浏览器事件写入 IndexedDB outbox，最多 1,000 条、7 天；刷新或重新联网后继续补发，每批最多 10 条，以事件 UUID 在 D1 去重。网络 / 429 / 5xx 使用最长 60 秒的退避，输入错误逐条隔离。队列过期、超量、拒绝会尽力发送 telemetry_gap；浏览器不支持 IndexedDB 时退化为本页内存队列。退出或页面崩溃仍可能丢失尚未写入的事件。收集 API 与工具 API 使用独立限流器，管理员汇总接口也单独限速。统计写入失败不阻止占卜或 Agent 返回；服务端数据库写入失败会发出固定的 WENBU_ANALYTICS_WRITE_FAILED 运维日志信号，不记录异常正文或请求数据。当前没有持久消息队列，数据库不可用期间的服务端事件仍可能丢失；不能把本功能描述为无损计费账本。
 
 公开客户端事件与归因可被模拟，不能用于计费或反作弊；服务端成功事件禁止由收集接口写入。广告拦截、关闭统计、网络故障、机器人会影响覆盖。来源归因是可观察的引荐或 UTM，不是广告平台归因系统。
 
@@ -107,8 +107,40 @@ The library uses `cta_click` with registered actions `library-start`, `library-a
 
 AI referral categories reflect an observable referrer or a registered UTM value. Apps can omit referrers, so some visits appear as direct or other. This dashboard does not measure model citations, search rankings or all AI-generated exposure. Recorded model-call totals currently come from Agent turns, not the separate single-reading route, and are not an invoice.
 
-D1 events exclude prompts, birth inputs, charts, conversation text, notes, raw IPs and full referrer URLs. Random browser IDs expire after 30 days; raw events expire after 90 days. There is no fingerprinting or cross-device identity merge. Infrastructure providers still process request metadata under their own practices.
+D1 events exclude prompts, birth inputs, charts, conversation text, notes, raw IPs and full referrer URLs. Random browser IDs expire after 30 days. Recent event rows stay in D1 for 90 days; private R2 archives have no automatic expiry. There is no fingerprinting or cross-device identity merge. Infrastructure providers still process request metadata under their own practices.
 
 The privacy page offers an opt-out; the browser also honors DNT/GPC and disables analytics when storage is unavailable. Native clients can send `X-Wenbu-Analytics: off`; the CLI accepts `WENBU_ANALYTICS=off`. Opting out stops subsequent analytics and does not remove required quota controls or immediately erase received events.
 
 Browser events can be blocked, lost or fabricated. Server success events cannot be submitted through the public collection endpoint, but analytics still is not a billing or fraud-detection ledger. QA requests use `X-Wenbu-Test: true`, or the dedicated browser tab sets `sessionStorage['wenbu.analytics.test']='true'` before loading product pages. Test events are excluded by default. See [operations](operations.md) for migration, access and retention procedures.
+
+
+## 反馈、历史与归档（2026-09-29 升级）
+
+- 页面反馈按钮与工具/Agent 结果评价入口共用私密表单。评价与文字至少有一项；邮箱可选。摘录默认关闭，勾选后可编辑预览。只发送用户实际提交的文本。反馈独立于统计开关，关闭统计时不附带访客、会话、操作或对话 ID。
+- `feedback` 表保留评价、类别、正文、可选邮箱/摘录、同意标记、页面、随机关联 ID、状态和版本。当前不自动过期，不复制到事件归档。管理员可标记待查看、处理中、已解决、已归档；状态更新带 revision 防止覆盖其他管理员的更新。“已归档”是处理状态，不是删除。删除请求凭反馈编号由维护者核实后执行 D1 参数化 DELETE，不把私人数据贴到公开 issue。
+- 使用历史显示 `occurred_at`（有效客户端时间或接收时间）、`received_at`（服务端接收时间）、`client_at`（原始设备时钟）、`page_id`、`sequence`、`operation_id`、`parent_operation_id`、`conversation_id` 和 schema/release。客户端时间只接受过去 7 天至未来 5 分钟的范围，其他值以接收时间排序但保留时钟诊断。旧事件只能补接收时间，不虚构旧会话的关联或正文。
+- 排盘的一次开始、实际服务成功、结果展示和反馈共享 operation ID；AI 解读另建 operation 并关联 parent；Agent 使用 assistant message ID 作为 operation，浏览器会话 ID 与 Agent conversation ID 分开。普通行为按 session/page 关联。随机标识是可伪造的相关性信息，不构成身份或安全边界。
+- 新事件还包括 `page_exit`（可见时长）、`setting_changed`（抽牌数量、正逆位、起卦与 Agent 模式）、`feedback_opened`、`telemetry_gap`。反馈数量以 feedback 表实际收件为准，不使用按钮点击代替。
+- 每小时最多 5 批 × 500 事件归档，日处理上限约 60,000 条；观察 unarchived 与 oldest_received，持续增长需提高任务吞吐或增加队列。D1 租约防止 cron 与手动任务同时运行；确定性 SHA-256 对象名支持失败重试，上传成功后才事务写 manifest 和精确行标记。归档失败保留原始事件并更新 error 状态。对象没有公开域名或公共读权限。
+- 管理端 `/api/admin/events`、`feedback`、`archives` 用带固定查询时刻的 `(time,id,asOf)` 游标分页（默认 50，最多 100）。feedback 详情才返回邮箱和主动分享的摘录。`/api/admin/storage` 显示存储量/积压/上次成功；`POST /api/admin/archives/run` 可补跑一轮，要求管理凭据及同源 Origin。归档通过受保护的 `/api/admin/archive?key=...` 下载。
+- D1 最近事件和 R2 归档有重叠。重建历史时必须以 `id` 去重，并按 `is_test=0` 排除测试，再按 occurred_at / page_id / sequence 分析。归档中的设备/国家为接收请求时的近似分类。超过 90 天的查询通过归档离线分析，后台汇总仍限近期。
+
+### 完整导出
+
+在项目目录运行：
+
+```sh
+node scripts/export-history.mjs --kind=all --out=/absolute/private/wenbu-export-20260929
+```
+
+`--kind=events` 导出最近 90 天全部分页；feedback 默认最近 10 年（当前所有数据均在此范围）；archives 下载所有分页的 manifest 及原始文件并校验 SHA-256。`--days`、`--test=true`、`--operation=UUID` 等可限定明细；归档文件本身不按这些筛选裁剪。脚本读取环境变量 `WENBU_ANALYTICS_ADMIN_TOKEN` 或本地忽略的 `.analytics-admin-token`，不在参数/输出打印凭据。输出路径必须是尚不存在的新目录，避免覆盖旧导出；文件权限 0600，新目录 0700；保存在 Git 目录之外。中断的 `.partial` 不算完成，换一个空目录重跑。Feedback 批量导出不含邮箱/摘录；需要处理具体问题时由后台打开单条详情。
+
+### English: history and feedback
+
+The feedback form stores ratings, notes and an optional email privately. A question/result excerpt is shared only after an explicit choice and editable preview. Feedback works with analytics off, without analytics identifiers. Feedback and private event archives currently have no automatic expiry; private excerpts never enter event archives.
+
+The History tab lets maintainers inspect individual events and follow session, operation, conversation or visitor IDs. Browser events persist in a bounded IndexedDB outbox (seven days / 1,000 entries) for later delivery, with UUID deduplication. Storage failures can fall back to memory; blockers, opt-outs and interrupted writes still limit coverage. Earlier missing or deleted events cannot be reconstructed.
+
+The Archive tab exposes authenticated NDJSON downloads. D1 keeps recent events for 90 days; only rows successfully archived to private R2 can be pruned. Run the export script above to follow every page and verify archive hashes. Combined files must be deduplicated by event ID and filtered for test traffic. Do not treat analytics as a billing ledger or proof of predictive accuracy.
+
+Technical references: [Cloudflare R2 Workers API](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/), [D1 limits](https://developers.cloudflare.com/d1/platform/limits/), [D1 querying](https://developers.cloudflare.com/d1/best-practices/query-d1/).

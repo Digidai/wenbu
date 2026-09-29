@@ -109,7 +109,9 @@ Conversations and artifacts are saved in the browser. Requests send the selected
 
 Shared networks can share an allowance. Failed or cancelled attempts may count. Calculators and MCP do not use the model budget, but request rate limits still apply. Visitors are not charged; the operator pays upstream and infrastructure costs.
 
-Cloudflare Workers serves Astro static assets and API routes. A SQLite Durable Object manages AI quotas, D1 holds first-party product analytics, and rate-limit bindings protect the endpoints. The UI uses Astro 7 and React 19; calculations use pinned versions of lunar-typescript and iztro. Fonts are self-hosted. The optional model runs through DeepSeek's official API with requested model `deepseek-v4-flash`; responses record the model name reported by the provider.
+Cloudflare Workers serves Astro static assets and API routes. A SQLite Durable Object manages AI quotas, D1 holds first-party product events and private feedback, private R2 preserves raw event archives, and rate-limit bindings protect the endpoints. The UI uses Astro 7 and React 19; calculations use pinned versions of lunar-typescript and iztro. Fonts are self-hosted. The optional model runs through DeepSeek's official API with requested model `deepseek-v4-flash`; responses record the model name reported by the provider.
+
+Feedback is available from every public page and from reading/Agent results. Administrators can inspect linked usage history, triage feedback and download private NDJSON archives at `/insights/`. See [storage, export and privacy details](docs/analytics.md). Personal excerpts are shared only by an explicit choice in the feedback form.
 
 ## Check and contribute
 
