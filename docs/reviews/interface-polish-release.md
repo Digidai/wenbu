@@ -11,6 +11,7 @@
 - 真实计算返回后，独立工具显示收束墨线；四柱依序展开、卦线自下而上展开，紫微选宫有轻反馈。保留原有牌面揭示，不增加人为等待时间。
 - 图表补上点选五行、打开牌面看细节等提示；禁用解读按钮旁说明还缺问题还是分享确认；手记保存成功有明确回执。
 - 修正塔罗结果页仍称牌面为“抽象图形”的旧说明，改为与当前资产一致的原创 AI 插画说明。
+- 英文牌名允许完整换行，并用共享行对齐三张牌的正逆位和关键词，避免高低错落。保留不支持 subgrid 的浏览器原有可读布局；牌面放大按钮补上有效的键盘焦点描边。
 
 ## 验证与审查
 
@@ -21,9 +22,15 @@
 - 系统减少动效时，四柱/墨线/引导/提示动画全部为 none；Agent 内暂停同样覆盖现有和新增动效。真实请求与结果不会被动画阻塞。
 - [Grok 第一轮](interface-polish-review.md)：修复通知 key 引起的焦点风险，将保存回执改为清晰的正向间距。补充完整样式上下文后，[复审](interface-polish-final-review.md)确认减少动效和四个固定工具名的布局。
 - Grok 随后误判 JSX 缩进会形成空白文本。实际构建 DOM 为 childNodes=0、:empty=true、display=none。向 Grok 提供该证据后，[最终复核](interface-polish-reconciliation-review.md)撤回该条并返回 **No blocking defects found**。不把工具退出码或未复现判断视作通过证据。
+- 上线视觉复查发现英文牌名长短不一时，正逆位和关键词未对齐。补充 subgrid 修复后，[320/390/1280 px 实测](polish-card-alignment-local.json)显示同行坐标一致；键盘放大、Esc 关闭后，焦点恢复且描边为 3 px。[Grok 补充审查](interface-polish-card-alignment-review.md)确认五个正常文档流子元素及弹窗行为，无阻塞问题。
 
 ## 发布
 
-发布与线上验证记录将在当前实现部署后补全。
+- 已推送主实现 `5238891` 与视觉复查修复 `ffa7a67` 至 `origin/main`。两次源代码 CI 均通过：[主实现](https://github.com/Digidai/wenbu/actions/runs/36505530699)、[最终修复](https://github.com/Digidai/wenbu/actions/runs/36507035269)。
+- Cloudflare 最终 Worker 版本：`e64faaf2-18de-4e21-aff7-04b26b22a9a9`，对应源码 `ffa7a670052f633485ac34b9a086b7317ed4d089`。此前版本 `ebac4abd-f313-4047-bf46-4610514c715b` 已被该版本替代。
+- [线上冒烟](polish-site-live.json)：74 个路径、八字/易经/塔罗/紫微四种计算接口、6 个 MCP 工具。
+- [资源一致性](polish-assets-live.json)：中英文 Agent 及英文塔罗页面引用的 6 个 CSS/JS 资源与本地最终构建逐字节一致。
+- [线上浏览器记录](polish-browser-live.json)：中文桌面、英文提问到草稿、320 px 英文资料单列、390 px 英文结果、减少动效。草稿阶段实际 Agent 请求数为 0。切换视口过程曾记录牌扇的 250 ms transform 过渡中间值；过渡结束后 320 px 宽的牌扇 scrollWidth/clientWidth 均为 246，牌边均在容器内。
+- 线上截图：[英文引导草稿](polish-agent-en-mobile.png)、[320 px 英文资料](polish-context-en-mobile.png)、[英文卡牌结果](polish-tarot-en-mobile.png)。测试访问使用站内测试标记，结束后清除；不提交用户出生资料、不调用 DeepSeek、不保存测试结果到生产手记。
 
 本次是交互与排版优化，不修改计算算法或模型配置，不声称改变预测准确率或获得流量。浏览器检查使用 Codex IAB；未声称覆盖所有浏览器和实体手机。受控 SSE 仅验收进度、完成、等待和失败界面，不作为真实 DeepSeek 推理质量证据。

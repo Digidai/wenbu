@@ -1,0 +1,237 @@
+{
+  "base": "https://wenbu.genedai.me",
+  "finalWorkerVersion": "e64faaf2-18de-4e21-aff7-04b26b22a9a9",
+  "source": "ffa7a670052f633485ac34b9a086b7317ed4d089",
+  "note": "Core UI checks on initial release; final release rechecked English Agent and card alignment after CSS-only follow-up. Mobile deck intermediate transition recorded alongside settled result.",
+  "draftAgentRequests": 0,
+  "checks": [
+    {
+      "buttons": [
+        {
+          "scroll": 181,
+          "text": "New exploration",
+          "whiteSpace": "nowrap",
+          "width": 181
+        }
+      ],
+      "instruments": [
+        {
+          "scroll": 82,
+          "text": "BaZi",
+          "whiteSpace": "nowrap",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "I Ching",
+          "whiteSpace": "nowrap",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "Tarot",
+          "whiteSpace": "nowrap",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "Zi Wei",
+          "whiteSpace": "nowrap",
+          "width": 82
+        }
+      ],
+      "name": "english-desktop-final-release",
+      "overflow": false,
+      "width": 1280
+    },
+    {
+      "focus": "TEXTAREA",
+      "name": "english-guided-draft-mobile",
+      "overflow": false,
+      "receipt": "Draft added · edit before sending",
+      "receiptLive": "status",
+      "width": 390
+    },
+    {
+      "grid": [
+        {
+          "columns": "242px",
+          "scroll": 242,
+          "width": 242
+        }
+      ],
+      "inputs": [
+        {
+          "font": "16px",
+          "height": 48.3984375,
+          "width": 242
+        },
+        {
+          "font": "16px",
+          "height": 48.3984375,
+          "width": 242
+        },
+        {
+          "font": "16px",
+          "height": 46.3984375,
+          "width": 242
+        },
+        {
+          "font": "16px",
+          "height": 44,
+          "width": 242
+        },
+        {
+          "font": "16px",
+          "height": 44,
+          "width": 242
+        },
+        {
+          "font": "16px",
+          "height": 46.3984375,
+          "width": 242
+        }
+      ],
+      "name": "english-context-320",
+      "overflow": false,
+      "title": "Bring the context that matters.",
+      "width": 320
+    },
+    {
+      "deck": [
+        {
+          "scroll": 277,
+          "step": "clamp(18px, calc((100cqw - 116px) / 6), 38px)",
+          "width": 246
+        }
+      ],
+      "name": "english-tarot-deck-320",
+      "overflow": false,
+      "width": 320
+    },
+    {
+      "arrival": "none",
+      "hints": [
+        "Add your question, then confirm sharing to begin."
+      ],
+      "ink": "reading-ink",
+      "name": "english-tarot-result-320",
+      "overflow": false,
+      "ready": "02Your reading is ready",
+      "width": 320
+    },
+    {
+      "animations": [
+        {
+          "after": "none",
+          "animation": "none",
+          "element": "reading-arrival"
+        },
+        {
+          "after": "none",
+          "animation": "none",
+          "element": "step-label reading-complete"
+        }
+      ],
+      "name": "tarot-reduced-motion"
+    },
+    {
+      "cards": [
+        {
+          "left": 40.6553955078125,
+          "right": 149.3446044921875
+        },
+        {
+          "left": 67.86245727539062,
+          "right": 165.47088623046875
+        },
+        {
+          "left": 96.0194320678711,
+          "right": 180.6472320556641
+        },
+        {
+          "left": 125,
+          "right": 195
+        },
+        {
+          "left": 139.35275268554688,
+          "right": 223.9805603027344
+        },
+        {
+          "left": 154.52911376953125,
+          "right": 252.13754272460935
+        },
+        {
+          "left": 170.6553955078125,
+          "right": 279.3446044921875
+        }
+      ],
+      "deck": [
+        {
+          "scroll": 246,
+          "width": 246
+        }
+      ],
+      "name": "english-tarot-deck-320-settled",
+      "overflow": false,
+      "width": 320
+    },
+    {
+      "instruments": [
+        {
+          "scroll": 82,
+          "text": "八字",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "易经",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "塔罗",
+          "width": 82
+        },
+        {
+          "scroll": 82,
+          "text": "紫微",
+          "width": 82
+        }
+      ],
+      "name": "chinese-agent-desktop",
+      "overflow": false,
+      "width": 1280
+    },
+    {
+      "hints": [
+        "Open a card to see the details",
+        "Add your question, then confirm sharing to begin."
+      ],
+      "name": "final-release-english-tarot-alignment-390",
+      "overflow": false,
+      "ready": "02Your reading is ready",
+      "rows": [
+        {
+          "keywordTop": 441.4921875,
+          "orientationTop": 421.296875,
+          "title": "Knight of Cups",
+          "titleHeight": 44.1875
+        },
+        {
+          "keywordTop": 441.4921875,
+          "orientationTop": 421.296875,
+          "title": "Three of Wands",
+          "titleHeight": 44.1875
+        },
+        {
+          "keywordTop": 441.4921875,
+          "orientationTop": 421.296875,
+          "title": "Eight of Wands",
+          "titleHeight": 44.1875
+        }
+      ],
+      "width": 390
+    }
+  ]
+}

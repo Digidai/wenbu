@@ -1,0 +1,45 @@
+{
+  "base": "https://wenbu.genedai.me",
+  "checkedAt": "2026-09-29T01:17:22.795Z",
+  "workerVersion": "e64faaf2-18de-4e21-aff7-04b26b22a9a9",
+  "source": "ffa7a670052f633485ac34b9a086b7317ed4d089",
+  "assets": [
+    {
+      "asset": "/_astro/Layout.VzSQloXb.css",
+      "bytes": 59075,
+      "sha256": "aa3d88d8e59275d79e33ded0d9a3ee879df0b6ce29aa8f37fe9b349c30c5c8c1",
+      "matches": true
+    },
+    {
+      "asset": "/_astro/_..C9MVSzNe.css",
+      "bytes": 61184,
+      "sha256": "51db8570b7c4558d506ab2483b6e1efb0cd92452c5c8dc572ff9de47f6ccd4d5",
+      "matches": true
+    },
+    {
+      "asset": "/_astro/AgentWorkspace.Cg98ptBw.js",
+      "bytes": 317166,
+      "sha256": "02496d623bacf3c52478cfea7a8d738fed79b29368f36ea47c8638fd23987092",
+      "matches": true
+    },
+    {
+      "asset": "/_astro/client.CR8yD_wm.js",
+      "bytes": 212922,
+      "sha256": "2348ef80a958a54782254558452f28c545b9375ca00b7540bcf5d16bba461e65",
+      "matches": true
+    },
+    {
+      "asset": "/_astro/Layout.astro_astro_type_script_index_0_lang.S1EtJUyF.js",
+      "bytes": 597,
+      "sha256": "c12ca5ec635e8c781a8f393fe7b0d554f0607c0bee7c60cb3178d5cc61e9c344",
+      "matches": true
+    },
+    {
+      "asset": "/_astro/ToolDesk.BdN82GS1.js",
+      "bytes": 20235,
+      "sha256": "61b40cc8cc08bd9bef13f5f9790cc416a5bd3110f299e0caa57ce80ff721bc4c",
+      "matches": true
+    }
+  ],
+  "result": "passed"
+}
