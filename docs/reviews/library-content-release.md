@@ -26,4 +26,15 @@
 - [布局测量](library-layout-local.json)：89 个生成路由 × 320 / 390 / 768 / 1024 / 1280 px，共 445 次检查，无页级横向溢出。检测到的内部越界仅为允许局部滚动的比较表；额外人工检查输入、英文标题、导航标签、文章目录和阅读顺序。
 - 操作实测：中文“逆位”找到 2 篇，塔罗主题 3 篇，无结果提示与重置恢复 21 篇；英文“birth time”找到 3 篇，“reversals”找到 2 篇。手机搜索框在 320 / 390 px 且带清除按钮时分别有 214 / 284 px 实际宽度。
 
-生产部署与实际线上复验记录随发布补充于下方。没有开展真实移动硬件、多浏览器认证、预测效力评估、索引提交或新增流量归因实验。
+没有开展真实移动硬件、多浏览器认证、预测效力评估、索引提交或新增流量归因实验。
+
+## 生产发布与线上复验
+
+- 主实现提交 `118ae078af6c81512c431e8865dc8e5b0d04c9de`，其 [GitHub Quality CI](https://github.com/Digidai/wenbu/actions/runs/36517116534) 通过。
+- 最终补查发现搜索提示中的两个自然语言短语不是目录关键词，改成可直接匹配的“提问”和“first visit”。提示修正提交 `f3632b92036d8ed99fa70af8b72cb453f44aac96`，其 [Quality CI](https://github.com/Digidai/wenbu/actions/runs/36517648947) 通过。六组中英文提示均在生产浏览器逐项查询并取得结果。
+- 最终 Cloudflare Worker 版本：`e2399a82-5c39-42ec-bb93-29d960e46d3f`，服务于 [wenbu.genedai.me](https://wenbu.genedai.me/learn/)。保留既有绑定、域名、预算与模型配置。
+- [线上接口检查](library-live-smoke.json)在主实现部署后通过：94 个网页/公开资源、四种计算 API、MCP 初始化/六工具/固定乾卦/双语新手全文及请求边界。之后仅修改上述两个搜索提示；最终上线另外核对这六组查询和页面资源。
+- [最终资源核验](library-live-assets.json)：八个代表页面的应用 HTML 与本地构建一致，四个 CSS / JS 文件 SHA-256 完全一致；Cloudflare 在 HTML 尾部注入的 JS Detections 脚本单独识别并在文本比对时剔除，不将原始 HTML 声称为字节相同。21 项目录结构化数据、新旧文章发布日期、修改日期和三层面包屑均通过。
+- [线上浏览器记录](library-live-browser.json)：中文桌面与英文手机目录、实时搜索、主题筛选、文章目录锚点通过。真实 `library-filter` 与 `library-search` 请求得到 HTTP 200，仅包含结果数量等白名单字段，无搜索词。
+- 上述专项浏览器验证使用 `test: true`，以便与正式产品统计区分。第一次打开原版目录时尚未设置该标记，可能留下一次普通访问；没有把整轮浏览行为都声称为排除在统计之外。HTTP 200 是请求接收证据，不作为正式用户转化或新增访问成果。
+- 保存[中文桌面截图](screenshots/library-zh-desktop.png)与[英文手机截图](screenshots/library-en-mobile.png)。临时窗口尺寸与统计测试标记在完成后还原。

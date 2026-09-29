@@ -1,0 +1,134 @@
+{
+  "checkedAt": "2026-09-29T03:32:59.187Z",
+  "productionSearch": {
+    "zh": {
+      "guides": ["第一次读塔罗：从一个好问题开始", "塔罗逆位一定不好吗？先选好阅读规则"],
+      "status": "找到 2 篇指南",
+      "url": "https://wenbu.genedai.me/learn/"
+    },
+    "en": {
+      "focus": "Clear search",
+      "matching": ["/en/learn/tarot-beginner/", "/en/learn/tarot-reversals/"],
+      "scrollWidth": 390,
+      "searchWidth": 284,
+      "status": "2 guides found",
+      "width": 390
+    }
+  },
+  "productionAnalytics": {
+    "events": [
+      {
+        "event": "cta_click",
+        "action": "library-filter",
+        "value": 2,
+        "page": "/learn/",
+        "locale": "zh",
+        "test": true
+      },
+      {
+        "event": "cta_click",
+        "action": "library-search",
+        "value": 2,
+        "page": "/learn/",
+        "locale": "en",
+        "test": true
+      }
+    ],
+    "responses": [
+      {
+        "status": 200,
+        "url": "https://wenbu.genedai.me/api/events"
+      },
+      {
+        "status": 200,
+        "url": "https://wenbu.genedai.me/api/events"
+      },
+      {
+        "status": 200,
+        "url": "https://wenbu.genedai.me/api/events"
+      }
+    ],
+    "searchTermsAbsent": true,
+    "testFlag": true
+  },
+  "localTableKeyboard": {
+    "focus": "table-scroll",
+    "hintVisible": true,
+    "overflow": false,
+    "tableScroll": 40
+  },
+  "noJavaScript": {
+    "controlsHidden": true,
+    "firstReadingLink": "/en/learn/first-reading/",
+    "links": 21,
+    "topics": 6
+  },
+  "localPlaceholderExamples": [
+    {
+      "path": "/learn/",
+      "query": "出生时间",
+      "count": 2
+    },
+    {
+      "path": "/learn/",
+      "query": "逆位",
+      "count": 2
+    },
+    {
+      "path": "/learn/",
+      "query": "提问",
+      "count": 1
+    },
+    {
+      "path": "/en/learn/",
+      "query": "birth time",
+      "count": 3
+    },
+    {
+      "path": "/en/learn/",
+      "query": "reversals",
+      "count": 2
+    },
+    {
+      "path": "/en/learn/",
+      "query": "first visit",
+      "count": 1
+    }
+  ],
+  "productionArticleAnchor": "https://wenbu.genedai.me/en/learn/first-reading/#section-2",
+  "finalSourceCommit": "f3632b92036d8ed99fa70af8b72cb453f44aac96",
+  "finalWorkerVersion": "e2399a82-5c39-42ec-bb93-29d960e46d3f",
+  "finalCheckedAt": "2026-09-29T03:34:46.177Z",
+  "productionPlaceholderExamples": [
+    {
+      "path": "/learn/",
+      "query": "出生时间",
+      "count": 2
+    },
+    {
+      "path": "/learn/",
+      "query": "逆位",
+      "count": 2
+    },
+    {
+      "path": "/learn/",
+      "query": "提问",
+      "count": 1
+    },
+    {
+      "path": "/en/learn/",
+      "query": "birth time",
+      "count": 3
+    },
+    {
+      "path": "/en/learn/",
+      "query": "reversals",
+      "count": 2
+    },
+    {
+      "path": "/en/learn/",
+      "query": "first visit",
+      "count": 1
+    }
+  ]
+}
