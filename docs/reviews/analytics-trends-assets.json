@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-09-29T09:05:17.000Z",
+  "source": "8d9674de43f34e5e6b846c51559f3f823686dec1",
+  "workerVersion": "a981f577-74d8-412d-91ad-e2c4ad2dab3a",
+  "pages": [
+    {
+      "route": "/insights/",
+      "status": 200,
+      "buildShellMatches": true,
+      "cloudflareChallengeAppend": true
+    },
+    {
+      "route": "/en/insights/",
+      "status": 200,
+      "buildShellMatches": true,
+      "cloudflareChallengeAppend": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/_astro/Layout.BS53NfK5.css",
+      "sha256": "32392bee3ce04d33772d579a154129958c0150a9b7f1228c35345ec589d7999e",
+      "exactBuild": true
+    },
+    {
+      "path": "/_astro/_..DSITfiE-.css",
+      "sha256": "dd2449f45ddd9797d1bd4dc813ade5e6129660546184f9e0a30142fbe894213b",
+      "exactBuild": true
+    },
+    {
+      "path": "/_astro/AnalyticsDashboard.DD016jfx.js",
+      "sha256": "23f516030ac7eb2c26fccab4103e1c982e7193ba6b412472ed5840ab400383fd",
+      "exactBuild": true
+    },
+    {
+      "path": "/_astro/client.DLrVKEOT.js",
+      "sha256": "111d707c30b73aee59ce760b1a4f3791743372adf57a9e10e390e18be856df7c",
+      "exactBuild": true
+    },
+    {
+      "path": "/_astro/Layout.astro_astro_type_script_index_0_lang.BWLzFwKu.js",
+      "sha256": "31c593c9b1cbc801316118f89462fb6345a1c51877fa936f7162742cdce256ca",
+      "exactBuild": true
+    }
+  ],
+  "health": {
+    "status": 200
+  },
+  "result": "passed"
+}

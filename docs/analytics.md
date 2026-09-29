@@ -86,7 +86,7 @@ API / MCP 可传 `X-Wenbu-Analytics: off`；CLI 用 `WENBU_ANALYTICS=off node we
 
 D1 记录是实际写入而非采样估算；仍有读取 / 写入 / 数据库容量成本和账户限制。后台 22 组查询当前按 90 天内索引时间窗口汇总，流量增长后应增加按天预聚合、监控 D1 rows_read / rows_written、再决定迁移，不预先承诺无限容量或零成本。查询同时限制事件发生时间和接收时间，避免未来时间戳或查询后才接收的事件混入本次快照。当天无记录时显示空状态，不生成演示数字。
 
-运维与迁移见 [operations.md](operations.md)，上线验证见 [反馈与历史存储质量记录](reviews/feedback-history-release.md)。
+运维与迁移见 [operations.md](operations.md)，上线验证见 [图表与筛选质量记录](reviews/analytics-trends-release.md) 和 [反馈与历史存储质量记录](reviews/feedback-history-release.md)。
 
 ## English: using the dashboard
 

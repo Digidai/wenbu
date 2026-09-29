@@ -38,4 +38,11 @@ The visualization uses pinned Recharts 3.10.1 in the private admin island, with 
 
 ## Release evidence
 
-Production deployment and the authenticated live check will be recorded separately after release. No live traffic, SEO, indexing or growth outcome is inferred from local fixtures.
+- Runtime source: `8d9674de43f34e5e6b846c51559f3f823686dec1`, pushed to `main`. [GitHub Quality run 36546229758](https://github.com/Digidai/wenbu/actions/runs/36546229758) passed a clean install, verify (178 tests) and lint.
+- Cloudflare Worker `wenbu`, version `a981f577-74d8-412d-91ad-e2c4ad2dab3a`, deployed through Wrangler to `wenbu.genedai.me`. Existing D1/R2 bindings, secrets and hourly archive trigger were retained. No migrations or production test fixtures were applied.
+- [Authenticated production checks](analytics-trends-live.json) passed all presets, explicit hourly detail, UTC boundaries, inclusive custom dates, every dimension filter, invalid-query/auth rejection and additive total reconciliation. Evidence contains check outcomes, not private usage counts or identifiers.
+- [Served build verification](analytics-trends-assets.json): Chinese and English admin pages contain the built shell and identical referenced asset paths; all five referenced JS/CSS assets match local build bytes. Cloudflare appends its own challenge-platform script before `</body>`; HTML is therefore not claimed byte-identical. The append was identified separately, with no security setting changed.
+- Production IAB: authenticated 1-day view showed 24 data rows, test traffic excluded. Desktop 1280 px and mobile 390 × 844 had no horizontal overflow; the mobile 3-day hourly curve rendered correctly. History retained its entry and all six time presets. Inspected console had no errors; logout cleared the report and returned the credential field. Temporary tabs were closed, viewport override reset and the local preview stopped.
+- The original checkout's unrelated documentation drafts were preserved. Release evidence is a subsequent documentation-only commit; it does not change the deployed runtime.
+
+No SEO, indexing or growth outcome is inferred from local fixtures or this dashboard release. Additional browser engines and real mobile hardware were not tested.
