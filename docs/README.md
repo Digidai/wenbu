@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [中英文界面审查：换行、提示与克制动效](plans/2026-09-29-interface-polish.md)
+- [界面优化上线与验证](reviews/interface-polish-release.md)
 - [Agent 提问引导：意图、渐进选择与可编辑澄清](plans/2026-09-29-agent-guidance-design.md)
 - [提问引导上线：Grok、真实模型、浏览器与统计验证](reviews/agent-guidance-release.md)
 - [2026-09-29 系统评估与优化：插画、准确度、GTM、可读性](research/product-audit-2026-09-29.md)

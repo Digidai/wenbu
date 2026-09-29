@@ -85,6 +85,11 @@ h2,
 h3 {
   font-weight: 500;
 }
+.page-intro h1,
+.hero-copy h1,
+.home-agent-entry strong {
+  text-wrap: balance;
+}
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -946,6 +951,7 @@ html[lang='en'] .section-heading h2 {
   padding: 30px;
   background: #efeee5;
   border-right: 1px solid var(--line);
+  container-type: inline-size;
 }
 .step-label {
   font-size: 11px;
@@ -974,8 +980,12 @@ html[lang='en'] .section-heading h2 {
 }
 .field-pair {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: 12px;
+}
+.field-pair input {
+  margin-top: auto;
+  min-height: 46px;
 }
 .field input,
 .field select,
@@ -1310,6 +1320,7 @@ html[lang='en'] .section-heading h2 {
   justify-content: space-between;
   gap: 15px;
   padding: 18px 0 30px;
+  flex-wrap: wrap;
 }
 .reading-actions .button {
   font-size: 11px;
@@ -1440,15 +1451,19 @@ html[lang='en'] .section-heading h2 {
   flex: 1;
   padding: 9px 5px;
   font-size: 10px;
+  min-width: 0;
+  min-height: 44px;
+  text-wrap: balance;
 }
 .segmented button[aria-pressed='true'] {
   background: var(--ink);
   color: var(--paper-light);
 }
 .tarot-deck {
+  --deck-step: clamp(18px, calc((100cqw - 116px) / 6), 38px);
   height: 190px;
   position: relative;
-  margin: 22px -5px 12px;
+  margin: 22px 0 12px;
 }
 .card-back {
   position: absolute;
@@ -1456,7 +1471,7 @@ html[lang='en'] .section-heading h2 {
   height: 103px;
   top: 28px;
   left: calc(50% - 31px);
-  transform: translateX(calc(var(--card-i) * 28px)) translateY(calc(abs(var(--card-i)) * 7px))
+  transform: translateX(calc(var(--card-i) * var(--deck-step))) translateY(calc(abs(var(--card-i)) * 7px))
     rotate(calc(var(--card-i) * 8deg));
   background: #34483d;
   border: 1px solid #b1aa86;
@@ -1479,7 +1494,8 @@ html[lang='en'] .section-heading h2 {
 }
 .card-back:hover,
 .card-back.selected {
-  transform: translateX(calc(var(--card-i) * 28px)) translateY(-12px) rotate(calc(var(--card-i) * 8deg));
+  transform: translateX(calc(var(--card-i) * var(--deck-step))) translateY(-12px)
+    rotate(calc(var(--card-i) * 8deg));
   background: #a85e44;
   z-index: 2;
 }
@@ -1626,8 +1642,9 @@ html[lang='en'] .section-heading h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 69px;
-  height: 69px;
+  width: min(69px, 24%);
+  height: auto;
+  aspect-ratio: 1;
   border: 1px solid #a99969;
   border-radius: 50%;
   color: #8b7a47;
@@ -2458,12 +2475,13 @@ html[lang='en'] .section-heading h2 {
     width: 70px;
     height: 110px;
     left: calc(50% - 35px);
-    transform: translateX(calc(var(--card-i) * 38px)) translateY(calc(abs(var(--card-i)) * 7px))
+    transform: translateX(calc(var(--card-i) * var(--deck-step))) translateY(calc(abs(var(--card-i)) * 7px))
       rotate(calc(var(--card-i) * 8deg));
   }
   .card-back:hover,
   .card-back.selected {
-    transform: translateX(calc(var(--card-i) * 38px)) translateY(-12px) rotate(calc(var(--card-i) * 8deg));
+    transform: translateX(calc(var(--card-i) * var(--deck-step))) translateY(-12px)
+      rotate(calc(var(--card-i) * 8deg));
   }
 }
 @media (max-width: 560px) {
@@ -3549,7 +3567,7 @@ html[lang='en'] .section-heading h2 {
 .card-back:hover,
 .card-back.selected {
   background: #34483d url('/images/tarot/back.webp') center / cover;
-  outline: 2px solid var(--vermillion);
+  outline: 2px solid var(--red);
   outline-offset: 3px;
 }
 .tarot-gallery {
@@ -3650,4 +3668,32 @@ html[lang='en'] .section-heading h2 {
     padding-top: 40px;
     padding-bottom: 40px;
   }
+}
+
+/* Keep full labels readable when the form has less room than a two-column field. */
+@media (max-width: 480px) {
+  .field-pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+.reading-hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #6b795f;
+  font-size: 11px;
+  line-height: 1.65;
+  margin: 0 0 18px;
+  text-wrap: pretty;
+}
+.element-detail .reading-hint {
+  margin-bottom: 8px;
+}
+.drawn-card-wrap h3 {
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.agent-chart .reading-hint {
+  font-size: 10px;
 }

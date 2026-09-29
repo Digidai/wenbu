@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: bilingual interface and motion polish (2026-09-29)
+
+The [interface polish release](interface-polish-release.md) records responsive English/Chinese layout fixes, useful input and result hints, restrained event-driven motion, three Grok review passes, browser measurements and release evidence.
+
 ## Latest: guided Agent conversations (2026-09-29)
 
 The [guided conversation release](agent-guidance-release.md) adds intent-based onboarding, editable clarification options, contextual follow-ups and a privacy-bounded guidance report. It records three Grok reviews and fixes, keyboard/mobile QA, real DeepSeek turns, Cloudflare deployment, exact served assets and analytics receipts. Earlier records below retain their historical scope.

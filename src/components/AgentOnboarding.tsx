@@ -82,7 +82,10 @@ export default function AgentOnboarding({
     }
   }
   return (
-    <div className={`agent-welcome agent-onboarding ${step === 0 ? 'is-intro' : 'is-detail'}`}>
+    <div
+      className={`agent-welcome agent-onboarding ${step === 0 ? 'is-intro' : 'is-detail'}`}
+      data-ready={ready}
+    >
       <div className="agent-onboarding-heading">
         <span className="agent-guide-mark" aria-hidden="true">
           问

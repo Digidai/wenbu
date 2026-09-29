@@ -1,0 +1,2442 @@
+[
+  {
+    "route": "/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/ziwei/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/terms/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/deck/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/sources/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/privacy/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/methodology/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ziwei-twelve-palaces/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/unknown-birth-time/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/tarot-beginner/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/iching-three-coins/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/five-elements/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/choose-a-tool/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/chinese-zodiac-vs-bazi/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/birth-time-timezone/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-vs-western-astrology/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-basics/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ai-divination/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/journal/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/insights/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/iching/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/free/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/ziwei/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/terms/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/deck/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/sources/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/privacy/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/methodology/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ziwei-twelve-palaces/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/unknown-birth-time/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/tarot-beginner/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/iching-three-coins/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/five-elements/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/choose-a-tool/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/chinese-zodiac-vs-bazi/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/birth-time-timezone/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-vs-western-astrology/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-basics/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ai-divination/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/journal/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/insights/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/iching/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/free/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/labyrinthos/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/fatetell/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/chatbot/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/why-calculation-comes-first/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/a-reading-you-can-return-to/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/bazi/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agents/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agent/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/about/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/labyrinthos/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/fatetell/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/chatbot/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/why-calculation-comes-first/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/a-reading-you-can-return-to/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/bazi/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/agents/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/agent/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/about/",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/404.html",
+    "width": 320,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/ziwei/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/terms/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/deck/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/sources/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/privacy/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/methodology/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ziwei-twelve-palaces/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/unknown-birth-time/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/tarot-beginner/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/iching-three-coins/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/five-elements/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/choose-a-tool/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/chinese-zodiac-vs-bazi/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/birth-time-timezone/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-vs-western-astrology/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-basics/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ai-divination/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/journal/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/insights/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/iching/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/free/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/ziwei/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/terms/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/deck/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/sources/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/privacy/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/methodology/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ziwei-twelve-palaces/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/unknown-birth-time/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/tarot-beginner/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/iching-three-coins/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/five-elements/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/choose-a-tool/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/chinese-zodiac-vs-bazi/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/birth-time-timezone/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-vs-western-astrology/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-basics/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ai-divination/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/journal/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/insights/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/iching/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/free/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/labyrinthos/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/fatetell/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/chatbot/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/why-calculation-comes-first/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/a-reading-you-can-return-to/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/bazi/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agents/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agent/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/about/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/labyrinthos/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/fatetell/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/chatbot/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/why-calculation-comes-first/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/a-reading-you-can-return-to/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/bazi/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/agents/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/agent/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/about/",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/404.html",
+    "width": 390,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 7,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOM把心里的问题，看得更清楚。免费排八字与紫微命盘、抽塔罗、问易经。也可以直接与 Agent "
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/ziwei/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/terms/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/deck/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/sources/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/privacy/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/methodology/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ziwei-twelve-palaces/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/unknown-birth-time/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/tarot-beginner/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/iching-three-coins/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/five-elements/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/choose-a-tool/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/chinese-zodiac-vs-bazi/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/birth-time-timezone/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-vs-western-astrology/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-basics/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ai-divination/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/journal/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/insights/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/iching/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/free/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 9,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOMBring your question.Find a fresh perspective."
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/ziwei/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/terms/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/deck/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/sources/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/privacy/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/methodology/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ziwei-twelve-palaces/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/unknown-birth-time/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/tarot-beginner/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/iching-three-coins/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/five-elements/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/choose-a-tool/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/chinese-zodiac-vs-bazi/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/birth-time-timezone/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-vs-western-astrology/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-basics/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ai-divination/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/journal/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/insights/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/iching/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/free/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/labyrinthos/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/fatetell/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/chatbot/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/why-calculation-comes-first/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/a-reading-you-can-return-to/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/bazi/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agents/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agent/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/about/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/labyrinthos/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/fatetell/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/chatbot/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/why-calculation-comes-first/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/a-reading-you-can-return-to/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/bazi/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/agents/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/agent/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/about/",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/404.html",
+    "width": 768,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 16,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOM把心里的问题，看得更清楚。免费排八字与紫微命盘、抽塔罗、问易经。也可以直接与 Agent "
+      },
+      {
+        "css": "hero-visual",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN天地有序 · 万物有时"
+      },
+      {
+        "css": "instrument",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/ziwei/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/terms/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/deck/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/sources/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/privacy/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/methodology/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ziwei-twelve-palaces/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/unknown-birth-time/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/tarot-beginner/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/iching-three-coins/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/five-elements/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/choose-a-tool/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/chinese-zodiac-vs-bazi/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/birth-time-timezone/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-vs-western-astrology/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-basics/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ai-divination/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/journal/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/insights/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/iching/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/free/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 16,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOMBring your question.Find a fresh perspective."
+      },
+      {
+        "css": "hero-visual",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHINEVERYTHING HAS ITS SEASON"
+      },
+      {
+        "css": "instrument",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/ziwei/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/terms/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/deck/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/sources/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/privacy/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/methodology/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ziwei-twelve-palaces/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/unknown-birth-time/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/tarot-beginner/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/iching-three-coins/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/five-elements/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/choose-a-tool/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/chinese-zodiac-vs-bazi/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/birth-time-timezone/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-vs-western-astrology/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-basics/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ai-divination/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/journal/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/insights/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/iching/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/free/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/labyrinthos/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/fatetell/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/chatbot/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/why-calculation-comes-first/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/a-reading-you-can-return-to/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/bazi/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agents/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agent/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/about/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/labyrinthos/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/fatetell/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/chatbot/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/why-calculation-comes-first/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/a-reading-you-can-return-to/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/bazi/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/agents/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/agent/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/about/",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/404.html",
+    "width": 1024,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 12,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOM把心里的问题，看得更清楚。免费排八字与紫微命盘、抽塔罗、问易经。也可以直接与 Agent "
+      },
+      {
+        "css": "hero-visual",
+        "excess": 12,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN天地有序 · 万物有时"
+      },
+      {
+        "css": "instrument",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/ziwei/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/terms/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/deck/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/sources/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/privacy/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/methodology/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ziwei-twelve-palaces/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/unknown-birth-time/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/tarot-beginner/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/iching-three-coins/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/five-elements/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/choose-a-tool/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/chinese-zodiac-vs-bazi/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/birth-time-timezone/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-vs-western-astrology/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/bazi-basics/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/learn/ai-divination/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/journal/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/insights/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/iching/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/free/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "hero",
+        "excess": 12,
+        "tag": "SECTION",
+        "text": "AN OPEN DOOR TO ANCIENT WISDOMBring your question.Find a fresh perspective."
+      },
+      {
+        "css": "hero-visual",
+        "excess": 12,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHINEVERYTHING HAS ITS SEASON"
+      },
+      {
+        "css": "instrument",
+        "excess": 16,
+        "tag": "DIV",
+        "text": "乾兑离震巽坎艮坤问31° N · 121° EAS ABOVE, SO WITHIN"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/ziwei/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "星"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/terms/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/deck/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/sources/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/privacy/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/methodology/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ziwei-twelve-palaces/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/unknown-birth-time/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/tarot-beginner/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/iching-three-coins/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/five-elements/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/choose-a-tool/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/chinese-zodiac-vs-bazi/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/birth-time-timezone/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-vs-western-astrology/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/bazi-basics/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/learn/ai-divination/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/journal/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/insights/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/iching/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "易"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/free/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/labyrinthos/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/fatetell/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/compare/chatbot/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/why-calculation-comes-first/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/blog/a-reading-you-can-return-to/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/bazi/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agents/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/agent/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/en/about/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/labyrinthos/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/fatetell/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/compare/chatbot/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/why-calculation-comes-first/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/blog/a-reading-you-can-return-to/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/bazi/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "命"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/agents/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/agent/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/about/",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/404.html",
+    "width": 1280,
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/",
+    "width": 320,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/",
+    "width": 390,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/",
+    "width": 768,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/",
+    "width": 1024,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/tarot/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "route": "/en/tarot/",
+    "width": 1280,
+    "clips": [
+      {
+        "css": "empty-orbit",
+        "excess": 20,
+        "tag": "DIV",
+        "text": "象"
+      }
+    ],
+    "overflow": 0
+  }
+]

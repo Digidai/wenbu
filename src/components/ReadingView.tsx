@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MousePointer2, ZoomIn } from 'lucide-react';
 import TarotCard from './TarotCard';
 import type { Reading } from '../lib/tools';
 import type { Locale } from '../lib/schema';
@@ -79,6 +80,10 @@ export default function ReadingView({ result, locale }: { result: Reading; local
             </svg>
           </div>
           <div className="element-detail">
+            <p className="reading-hint">
+              <MousePointer2 size={13} aria-hidden="true" />
+              {t('点选五行，查看构成', 'Select an element to explore')}
+            </p>
             <h3>{t('你的五行底色', 'Your elemental palette')}</h3>
             <div className="element-buttons">
               {result.elements.map((e, i) => (
@@ -188,6 +193,10 @@ export default function ReadingView({ result, locale }: { result: Reading; local
   if (result.kind === 'tarot')
     return (
       <div className="tarot-result">
+        <p className="reading-hint">
+          <ZoomIn size={13} aria-hidden="true" />
+          {t('轻点牌面，放大看细节', 'Open a card to see the details')}
+        </p>
         <div className={`drawn-cards count-${result.cards.length}`}>
           {result.cards.map((card, i) => (
             <div
@@ -231,8 +240,8 @@ export default function ReadingView({ result, locale }: { result: Reading; local
           <summary>{t('抽牌方法与牌义', 'Draw method & card notes')}</summary>
           <p>
             {t(
-              '78 张完整牌组，不放回随机抽取。逆位开启时，每张牌独立以 50% 概率逆位。牌面为原创抽象图形。',
-              'A full 78-card deck, drawn without replacement. When enabled, each card independently has a 50% chance of reversal. Artwork is original and abstract.',
+              '78 张完整牌组，不放回随机抽取。逆位开启时，每张牌独立以 50% 概率逆位。牌面为问卜原创 AI 插画。',
+              'A full 78-card deck, drawn without replacement. When enabled, each card independently has a 50% chance of reversal. Original AI illustrations by Wenbu.',
             )}
           </p>
           {result.cards.map((c) => (
@@ -300,7 +309,7 @@ export default function ReadingView({ result, locale }: { result: Reading; local
         ))}
       </div>
       <div className="palace-detail" aria-live="polite">
-        <h3>
+        <h3 key={current.name}>
           {current.name}
           {t(current.name.endsWith('宫') ? '' : '宫', ' palace')}
         </h3>

@@ -16,6 +16,7 @@ import { choose, href } from '../lib/i18n';
 import { agentContext, downloadJson, readJournal, writeJournal, type Answer } from '../lib/journal';
 import ReadingView from './ReadingView';
 import { analyticsHeaders, track } from '../lib/analytics';
+import '../styles/reading-motion.css';
 
 async function post<T>(
   path: string,
@@ -565,6 +566,13 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
         </div>
       </div>
       <div className="tool-result-panel" ref={resultRef} aria-busy={busy}>
+        <p className="tool-status" role="status" aria-atomic="true">
+          {busy
+            ? t('正在生成图景。', 'Preparing your reading.')
+            : result
+              ? t('图景已展开，可以查看结果。', 'Your reading is ready to explore.')
+              : ''}
+        </p>
         {!result ? (
           <div className="empty-reading">
             <div className="empty-orbit">
@@ -588,10 +596,10 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
             </a>
           </div>
         ) : (
-          <>
-            <div className="step-label">
+          <div className="reading-arrival">
+            <div className="step-label reading-complete">
               <span>02</span>
-              {t('看见你的图景', 'Your perspective, made visible')}
+              {t('图景已展开', 'Your reading is ready')}
               <button
                 className="icon-button"
                 type="button"
@@ -607,7 +615,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
               </button>
             </div>
             <ReadingView result={result} locale={locale} />
-            <div className="reading-actions">
+            <div className="reading-actions" data-saved={saved}>
               <button className="button secondary" type="button" onClick={save} disabled={saved}>
                 {saved ? <Check size={15} /> : <Bookmark size={15} />}{' '}
                 {t(saved ? '已保存到手记' : '保存到手记', saved ? 'Saved to journal' : 'Save reading')}
@@ -617,6 +625,13 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                 {t('导出给 Agent', 'Export for an agent')}
               </button>
             </div>
+            <p className="reading-saved-note" role="status">
+              {saved &&
+                t(
+                  '已留在本机手记，随时回来续写。',
+                  'Saved in this browser’s journal. Return whenever you like.',
+                )}
+            </p>
             {exportOpen && (
               <div className="export-panel">
                 <h3>{t('选择要交给 Agent 的上下文', 'Choose what your agent receives')}</h3>
@@ -701,6 +716,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                 className="button primary"
                 type="button"
                 onClick={() => void ask()}
+                aria-describedby="reading-request-hint"
                 disabled={aiBusy || !consent || question.trim().length < 2}
               >
                 {aiBusy ? (
@@ -715,6 +731,18 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                   </>
                 )}
               </button>
+              <p className="reading-request-hint" id="reading-request-hint" aria-live="polite">
+                {aiBusy
+                  ? t('正在结合图景与问题整理，请稍候。', 'Bringing your question and reading together.')
+                  : question.trim().length < 2
+                    ? t(
+                        '先写下想探索的问题，再确认分享，即可开始解读。',
+                        'Add your question, then confirm sharing to begin.',
+                      )
+                    : !consent
+                      ? t('确认上方的分享选项，即可开始解读。', 'Confirm the sharing option above to begin.')
+                      : t('准备好了，点击即可开始。', 'Ready when you are.')}
+              </p>
               <p className="form-note">
                 {t(
                   '每个网络每日 5 次；全站有免费总额度。额度用完仍可排盘、抽牌与保存。',
@@ -770,7 +798,7 @@ export default function ToolDesk({ kind, locale }: { kind: ToolKind; locale: Loc
                 </article>
               )}
             </section>
-          </>
+          </div>
         )}
       </div>
     </div>

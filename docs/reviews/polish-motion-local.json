@@ -1,0 +1,43 @@
+[
+  {
+    "buttons": [
+      {
+        "height": 26.5,
+        "overflow": 0,
+        "text": "Tool activity · previewDone"
+      },
+      {
+        "height": 26.5,
+        "overflow": 0,
+        "text": "Writing a report · previewDone"
+      }
+    ],
+    "check": "scripted-report-desktop",
+    "heading": "Motion review: a traceable process",
+    "overflow": 0,
+    "phase": "settled"
+  },
+  {
+    "check": "scripted-report-320",
+    "clips": [],
+    "overflow": 0
+  },
+  {
+    "animations": [],
+    "check": "agent-paused-progress",
+    "mode": "quiet",
+    "phase": "opening"
+  },
+  {
+    "check": "scripted-waiting",
+    "guide": "Choose an answer, or add your ownAdd birth detailsExisting details are kept. You can say if the time is uncertain.None quite fits — I’ll explainI’m not sureChoosing an option prepares a draft; it does not send it.",
+    "overflow": 0,
+    "phase": "waiting"
+  },
+  {
+    "check": "scripted-error",
+    "error": "Scripted preview: the source failed; no result was generated.Continue with existing results →",
+    "overflow": 0,
+    "phase": "interrupted"
+  }
+]

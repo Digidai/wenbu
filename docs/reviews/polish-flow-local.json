@@ -1,0 +1,90 @@
+[
+  {
+    "check": "context-save-focus",
+    "dialogClosed": true,
+    "notice": "Context updated. Your next message will use your selection.",
+    "passed": true
+  },
+  {
+    "check": "agent-system-reduced",
+    "checkmark": "none",
+    "motion": "quiet",
+    "notice": "none",
+    "stage": "none"
+  },
+  {
+    "check": "narrow-keyboard-card-selection",
+    "deckScroll": 246,
+    "deckWidth": 246,
+    "outline": "rgb(171, 73, 54) solid 2px",
+    "overflow": 0,
+    "selected": "Choose 3 · 2 selected"
+  },
+  {
+    "check": "saved-receipt",
+    "gap": 10,
+    "hint": "Add your question, then confirm sharing to begin.",
+    "markAnimation": "reading-check",
+    "note": "Saved in this browser’s journal. Return whenever you like.",
+    "overflow": 0
+  },
+  {
+    "buttonEnabled": true,
+    "check": "reading-readiness-hint",
+    "hint": "Ready when you are."
+  },
+  {
+    "check": "bazi-reduced-motion",
+    "overflow": 0,
+    "pillars": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "receipt": "none"
+  },
+  {
+    "check": "iching-arrival-order",
+    "lines": [
+      {
+        "delay": "0.25s",
+        "name": "reading-ink"
+      },
+      {
+        "delay": "0.2s",
+        "name": "reading-ink"
+      },
+      {
+        "delay": "0.15s",
+        "name": "reading-ink"
+      },
+      {
+        "delay": "0.1s",
+        "name": "reading-ink"
+      },
+      {
+        "delay": "0.05s",
+        "name": "reading-ink"
+      },
+      {
+        "delay": "0s",
+        "name": "reading-ink"
+      }
+    ],
+    "overflow": 0
+  },
+  {
+    "check": "unsaved-status-line",
+    "childNodes": 0,
+    "display": "none",
+    "empty": true,
+    "height": 0
+  },
+  {
+    "animation": "reading-unfold",
+    "check": "palace-selection",
+    "overflow": 0,
+    "title": "命宫"
+  }
+]

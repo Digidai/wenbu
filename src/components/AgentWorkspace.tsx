@@ -119,6 +119,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   const scroll = useRef<HTMLDivElement>(null);
   const stickToBottom = useRef(true);
   const dialog = useRef<HTMLDialogElement>(null);
+  const focusAfterContext = useRef(false);
   const sidebarRef = useRef<HTMLElement>(null);
   const sessionRef = useRef(sessions);
   const pending = useRef<{
@@ -211,7 +212,13 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
   }, [draft]);
   useEffect(() => {
     if (contextOpen) dialog.current?.showModal();
-    else dialog.current?.close();
+    else {
+      dialog.current?.close();
+      if (focusAfterContext.current) {
+        focusAfterContext.current = false;
+        textarea.current?.focus();
+      }
+    }
   }, [contextOpen]);
 
   useEffect(() => {
@@ -589,7 +596,6 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
         <button className="agent-new" onClick={createSession} disabled={!loaded}>
           <Plus size={17} />
           {t('开始新的探索', 'New exploration')}
-          <span>↗</span>
         </button>
         <label className="agent-session-search">
           <Search size={14} />
@@ -734,7 +740,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
         )}
         {notice && (
           <div className="agent-notice" role="status">
-            {notice}
+            <span key={notice}>{notice}</span>
             <button
               className="agent-icon-button"
               aria-label={t('关闭提示', 'Dismiss')}
@@ -999,6 +1005,14 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
               if (!busy) void send();
             }}
           >
+            <div className="agent-draft-receipt" role="status" aria-atomic="true">
+              {isSuggestionIntact(draft, stagedSuggestion.current) && stagedSuggestion.current.text && (
+                <span key={stagedSuggestion.current.text}>
+                  <Check size={13} aria-hidden="true" />
+                  {t('已放入草稿，可修改后发送', 'Draft added · edit before sending')}
+                </span>
+              )}
+            </div>
             <textarea
               ref={textarea}
               value={draft}
@@ -1028,6 +1042,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                 <button
                   type="button"
                   className={active?.mode === 'explore' ? 'selected' : ''}
+                  title={t(
+                    '围绕你的问题对话，按需使用排盘与抽取工具',
+                    'Talk through your question and use reading tools when needed',
+                  )}
                   onClick={() => active && mutateSession(active.id, (s) => ({ ...s, mode: 'explore' }))}
                 >
                   <Compass size={13} />
@@ -1036,6 +1054,10 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                 <button
                   type="button"
                   className={active?.mode === 'research' ? 'selected' : ''}
+                  title={t(
+                    '查阅资料、核对出处，整理研究札记',
+                    'Read sources and prepare a referenced research note',
+                  )}
                   onClick={() => active && mutateSession(active.id, (s) => ({ ...s, mode: 'research' }))}
                 >
                   <BookOpen size={13} />
@@ -1278,6 +1300,7 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
           onSubmit={(e) => {
             e.preventDefault();
             if (active) mutateSession(active.id, (s) => ({ ...s, context: contextDraft }));
+            focusAfterContext.current = !resumeAfterContext || busy;
             setContextOpen(false);
             if (resumeAfterContext && !busy) {
               void send(
@@ -1293,7 +1316,6 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                   'Context updated. Your next message will use your selection.',
                 ),
               );
-              textarea.current?.focus();
             }
           }}
         >
