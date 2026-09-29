@@ -13,6 +13,9 @@ interface Props {
   path?: string;
   noindex?: boolean;
   article?: boolean;
+  published?: string;
+  modified?: string;
+  collection?: { title: string; path: string }[];
   workspace?: boolean;
 }
 const {
@@ -22,6 +25,9 @@ const {
   path = '',
   noindex = false,
   article = false,
+  published = '2026-09-28',
+  modified = published,
+  collection,
   workspace = false,
 } = Astro.props;
 const t = (zh: string, en: string) => choose(locale, zh, en);
@@ -39,18 +45,31 @@ const schema = {
       description: 'Free BaZi, I Ching, tarot and Zi Wei tools for cultural reflection.',
     },
     {
-      '@type': article ? 'Article' : 'WebPage',
+      '@type': article ? 'Article' : collection ? 'CollectionPage' : 'WebPage',
       '@id': canonical,
       url: canonical,
       name: title,
       description,
       inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
       isPartOf: { '@id': `${site}/#website` },
+      ...(collection
+        ? {
+            mainEntity: {
+              '@type': 'ItemList',
+              itemListElement: collection.map((item, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                name: item.title,
+                url: site + href(locale, item.path),
+              })),
+            },
+          }
+        : {}),
       ...(article
         ? {
             headline: title,
-            datePublished: '2026-09-28',
-            dateModified: '2026-09-28',
+            datePublished: published,
+            dateModified: modified,
             author: { '@type': 'Organization', name: 'Wenbu', url: `${site}/about/` },
             image: `${site}/og.png`,
           }
@@ -62,7 +81,17 @@ const schema = {
             '@type': 'BreadcrumbList',
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: t('首页', 'Home'), item: site + href(locale) },
-              { '@type': 'ListItem', position: 2, name: title, item: canonical },
+              ...(article
+                ? [
+                    {
+                      '@type': 'ListItem',
+                      position: 2,
+                      name: path.startsWith('learn/') ? t('知识手册', 'Library') : t('问卜札记', 'Notes'),
+                      item: site + href(locale, path.split('/')[0]),
+                    },
+                  ]
+                : []),
+              { '@type': 'ListItem', position: article ? 3 : 2, name: title, item: canonical },
             ],
           },
         ]
@@ -138,7 +167,9 @@ const schema = {
         <a href={href(locale, 'tarot')} aria-current={path === 'tarot' ? 'page' : undefined}>
           {t('塔罗', 'Tarot')}
         </a>
-        <a href={href(locale, 'ziwei')} aria-current={path === 'ziwei' ? 'page' : undefined}>{t('紫微', 'Zi Wei')}</a>
+        <a href={href(locale, 'ziwei')} aria-current={path === 'ziwei' ? 'page' : undefined}>
+          {t('紫微', 'Zi Wei')}
+        </a>
         <a href={href(locale, 'learn')} aria-current={path.startsWith('learn') ? 'page' : undefined}>
           {t('知识手册', 'The library')}
         </a>
@@ -203,7 +234,7 @@ const schema = {
               wenbu<span class="brand-dot">.</span>
             </span>
           </a>
-          <p>{t('古老的智慧，当下的自己。', 'Old wisdom. A present perspective.')}</p>
+          <p>{t('看懂传统，从自己的问题开始。', 'Explore the traditions. Start with your question.')}</p>
         </div>
         <div class="footer-links">
           <div>

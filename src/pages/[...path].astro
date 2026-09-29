@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import '../styles/library.css';
+import KnowledgeLibrary from '../components/KnowledgeLibrary.astro';
+import ArticleCompanion from '../components/ArticleCompanion.astro';
+import { newGuideSlugs, topicForGuide } from '../data/learning-paths';
 import AnalyticsDashboard from '../components/AnalyticsDashboard';
 import TarotGallery from '../components/TarotGallery';
 import AnalyticsPreference from '../components/AnalyticsPreference';
@@ -57,7 +61,7 @@ const titles: Record<string, [string, string]> = {
   ziwei: ['免费紫微斗数排盘，十二宫可视化', 'Free Zi Wei Dou Shu chart calculator'],
   journal: ['我的手记', 'Your reading journal'],
   learn: ['知识手册', 'The Wenbu library'],
-  blog: ['问卜札记', 'The Wenbu journal'],
+  blog: ['问卜札记', 'Notes from Wenbu'],
   agents: ['与你的 Agent 一起探索', 'Wenbu for agents · MCP, CLI & Skills'],
   agent: ['命理 Agent · 对话、排盘与有依据的研习', 'Wenbu Agent · chat, charts & sourced research'],
   insights: ['访问与使用 · 管理后台', 'Product analytics · administration'],
@@ -77,8 +81,8 @@ const descriptions: Record<string, [string, string]> = {
     'Keep the question you had and the understanding that followed. Your entries stay in this browser, ready to revisit and export.',
   ],
   learn: [
-    '从符号的来由，到计算的边界。用清楚的语言，读懂每一次探索。',
-    'From the meaning of a symbol to the limits of a calculation. Clear guides for a more thoughtful reading.',
+    '第一次怎么选、怎么问、怎么看结果？从上手步骤到术语与计算依据，按你遇到的问题慢慢读。',
+    'New to BaZi, tarot, the I Ching or Zi Wei? Start with a practical guide, learn the terms and check the sources. Read in English or Chinese.',
   ],
   blog: [
     '记录我们如何提问、如何理解，又如何回到真实生活。阅读关于手记习惯、计算依据和日常自我觉察的原创文章。',
@@ -90,7 +94,7 @@ const descriptions: Record<string, [string, string]> = {
   ],
   agent: [
     '与 DeepSeek 驱动的命理 Agent 对话，调用八字、易经、塔罗与紫微工具，查阅资料、查看命盘、整理带出处的研究札记，并持续追问。',
-    'Explore with a DeepSeek-powered agent: calculate BaZi and Zi Wei, cast I Ching, draw tarot, read sources and create research notes in a private local workspace.',
+    'Explore with a DeepSeek-powered agent: calculate BaZi and Zi Wei, cast I Ching, draw tarot, read sources and create research notes in a workspace with conversations saved in this browser.',
   ],
   sources: [
     '把经典、计算依据、研究和产品自述分开，知道每一种说法从哪里来。',
@@ -115,6 +119,27 @@ const description =
       )
     : t(...(descriptions[path] || descriptions[''])));
 const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
+const articlePublished =
+  article && (newGuideSlugs as readonly string[]).includes(article.slug) ? '2026-09-29' : '2026-09-28';
+const articleTopic = article ? topicForGuide(article.slug) : undefined;
+const nextArticles = article
+  ? articleTopic
+    ? articleTopic.slugs
+        .map((slug) => articles.find((a) => a.slug === slug))
+        .filter((a) => a && a.slug !== article.slug)
+        .slice(0, 2)
+    : articles.filter(
+        (a) => a.category === 'learn' && (a.slug === 'review-a-reading' || a.slug === 'first-reading'),
+      )
+  : [];
+const ctaLabels: Record<string, [string, string]> = {
+  bazi: ['排一张八字命盘', 'Calculate a BaZi chart'],
+  iching: ['试一次易经起卦', 'Try an I Ching cast'],
+  tarot: ['从一张塔罗牌开始', 'Try a tarot reading'],
+  ziwei: ['查看紫微命盘', 'Calculate a Zi Wei chart'],
+  agent: ['打开命理 Agent', 'Open Wenbu Agent'],
+  journal: ['打开我的手记', 'Open your journal'],
+};
 ---
 
 <Layout
@@ -124,6 +149,15 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
   path={path}
   noindex={path === 'journal' || path === 'insights'}
   article={Boolean(article)}
+  published={articlePublished}
+  modified={article ? '2026-09-29' : undefined}
+  collection={
+    path === 'learn'
+      ? articles
+          .filter((a) => a.category === 'learn')
+          .map((a) => ({ title: a[locale].title, path: `learn/${a.slug}` }))
+      : undefined
+  }
   workspace={path === 'agent'}
 >
   {path === '' ? (
@@ -149,7 +183,7 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
     </>
   ) : (
     <div class="shell">
-      <header class="page-intro">
+      <header class:list={['page-intro', { 'library-intro': path === 'learn' }]}>
         <div class="breadcrumbs">
           <a href={href(locale)}>{t('首页', 'Home')}</a>
           <span>/</span>
@@ -158,7 +192,7 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
               <a href={href(locale, article.category)}>
                 {t(
                   article.category === 'blog' ? '札记' : '手册',
-                  article.category === 'blog' ? 'Journal' : 'Library',
+                  article.category === 'blog' ? 'Notes' : 'Library',
                 )}
               </a>
               <span>/</span>
@@ -167,21 +201,23 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
           <span>{kind ? t(tool!.zh, tool!.en) : article ? t('阅读', 'Reading') : t('探索', 'Explore')}</span>
         </div>
         <span class="eyebrow">
-          {tool?.eyebrow ||
+          {(tool ? t(tool.eyebrowZh, tool.eyebrow) : null) ||
             (article
               ? article.category === 'blog'
-                ? 'WENBU JOURNAL'
-                : 'FIELD NOTES'
+                ? t('问卜札记', 'NOTES FROM WENBU')
+                : t('知识手册', 'THE WENBU LIBRARY')
               : comparison
-                ? 'AN HONEST COMPARISON'
-                : 'THE WENBU WAY')}
+                ? t('产品比较', 'PRODUCT COMPARISON')
+                : path === 'learn'
+                  ? t('一起从基础读起', 'A GUIDE TO GETTING STARTED')
+                  : t('关于问卜', 'ABOUT WENBU'))}
         </span>
         <h1>{displayHeading}</h1>
         <p>{tool ? t(tool.descriptionZh, tool.descriptionEn) : description}</p>
         {article && (
           <div class="article-meta">
             <span>Wenbu · {t('AI 辅助编辑', 'AI-assisted editorial')}</span>
-            <span>2026.09.28</span>
+            <time datetime="2026-09-29">{t('更新于 2026.09.29', 'Updated Sep 29, 2026')}</time>
             <span>
               {article.minutes} {t('分钟阅读', 'min read')}
             </span>
@@ -267,7 +303,8 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
         </>
       )}
       {path === 'journal' && <Journal locale={locale} client:load />}
-      {(path === 'learn' || path === 'blog') && (
+      {path === 'learn' && <KnowledgeLibrary locale={locale} />}
+      {path === 'blog' && (
         <>
           <div class="article-grid library-grid">
             {articles
@@ -281,19 +318,22 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
             {comparisons.map((c) => (
               <a href={href(locale, `compare/${c.slug}`)}>{c[locale].title} ↗</a>
             ))}
-            <a href={href(locale, path === 'learn' ? 'blog' : 'learn')}>
-              {t(
-                path === 'learn' ? '阅读问卜札记' : '翻开知识手册',
-                path === 'learn' ? 'Read the journal' : 'Browse the library',
-              )}{' '}
-              ↗
-            </a>
+            <a href={href(locale, 'learn')}>{t('翻开知识手册', 'Browse the library')} ↗</a>
           </div>
         </>
       )}
       {article && (
         <div class="prose-grid">
           <article class="prose">
+            <details class="article-mobile-toc">
+              <summary>{t('这一篇讲什么', 'On this page')}</summary>
+              <nav aria-label={t('文章目录', 'Article contents')}>
+                {article[locale].sections.map((s, i) => (
+                  <a href={`#section-${i}`}>{s.heading}</a>
+                ))}
+              </nav>
+            </details>
+            <ArticleCompanion slug={article.slug} locale={locale} />
             {article[locale].sections.map((section, i) => (
               <section id={`section-${i}`}>
                 <h2>{section.heading}</h2>
@@ -323,9 +363,24 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
                 )}
               </p>
             </div>
-            <a class="button primary" href={href(locale, article.tool)}>
-              {t('带着理解，开始探索', 'Try it with a clearer perspective')} ↗
-            </a>
+            <div class="article-try">
+              <p>{t('读到这里，可以试一试。', 'Ready to put this into practice?')}</p>
+              <a class="button primary" href={href(locale, article.tool)} data-track="article-tool">
+                {t(...(ctaLabels[article.tool] || ctaLabels.agent))} ↗
+              </a>
+            </div>
+            <nav class="article-next" aria-label={t('继续阅读', 'Further reading')}>
+              <h2>{t('接下来可以读', 'Read next')}</h2>
+              {nextArticles.map(
+                (a) =>
+                  a && (
+                    <a href={href(locale, `${a.category}/${a.slug}`)} data-track="article-next">
+                      {a[locale].title} ↗
+                    </a>
+                  ),
+              )}
+              <a href={href(locale, 'learn')}>{t('查看全部指南', 'Browse all guides')} ↗</a>
+            </nav>
           </article>
           <aside class="article-aside">
             <span>{t('这一页', 'ON THIS PAGE')}</span>
@@ -451,17 +506,28 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
             <p>{comparison[locale].intro}</p>
             <p class="form-note">
               {t(
-                '公开资料核验：2026-09-28。未登录、未购买，不以功能宣传代替实际验证。',
-                'Public sources checked September 28, 2026. No paid or logged-in competitor testing.',
+                `公开资料核验：${comparison.reviewed}。根据官方公开页面比较，未测试登录后或付费体验。`,
+                `Public pages checked ${comparison.reviewed}. This comparison uses official sources; paid and signed-in features have not been tested.`,
               )}
             </p>
-            <div class="table-scroll">
+            <p class="table-scroll-hint">
+              {t(
+                '左右滑动查看完整对比；使用键盘时，可聚焦表格后按方向键。',
+                'Scroll sideways to see the full comparison. With a keyboard, focus the table and use the arrow keys.',
+              )}
+            </p>
+            <div
+              class="table-scroll"
+              role="region"
+              aria-label={t('产品功能对比', 'Product comparison')}
+              tabindex="0"
+            >
               <table class="comparison-table">
                 <thead>
                   <tr>
                     <th>{t('维度', 'Dimension')}</th>
                     <th>Wenbu</th>
-                    <th>{comparison.name}</th>
+                    <th>{t(comparison.nameZh, comparison.nameEn)}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -474,14 +540,16 @@ const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
             <h2>{t('怎样选', 'Making a choice')}</h2>
             <p>{comparison[locale].conclusion}</p>
             <div class="source-list">
-              <a href={comparison.url} target="_blank" rel="noreferrer">
-                {comparison.name} · {t('官方资料', 'Official source')} ↗
-              </a>
+              {comparison.sources.map((source) => (
+                <a href={source.url} target="_blank" rel="noreferrer" data-track="source">
+                  {source.title} ↗
+                </a>
+              ))}
               <a href={href(locale, 'methodology')}>Wenbu · {t('计算方法', 'Methodology')}</a>
               <a href={href(locale, 'free')}>Wenbu · {t('免费使用说明', 'Free-use policy')}</a>
             </div>
-            <a class="button primary" href={href(locale, 'bazi')}>
-              {t('免费试用问卜', 'Try Wenbu for free')} ↗
+            <a class="button primary" href={href(locale, 'learn/choose-a-tool')} data-track="library-start">
+              {t('选一个适合的工具', 'Find your starting point')} ↗
             </a>
           </article>
           <aside class="article-aside">

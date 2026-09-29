@@ -2,192 +2,235 @@ export const comparisons = [
   {
     slug: 'fatetell',
     name: 'FateTell',
+    nameZh: 'FateTell',
+    nameEn: 'FateTell',
     url: 'https://fatetell.com/',
+    reviewed: '2026-09-29',
+    sources: [
+      { title: 'FateTell · product overview', url: 'https://fatetell.com/' },
+      {
+        title: 'FateTell · free BaZi calculator and calculation rules',
+        url: 'https://fatetell.com/bazi-calculator',
+      },
+    ],
     zh: {
-      title: 'Wenbu 与 FateTell：怎样选择适合自己的入口',
+      title: '问卜与 FateTell：按你想做的事来选',
       description:
-        '基于 FateTell 公开官网与问卜实际功能，比较免费排盘、解读方式、记录与 Agent 接口，不替任何产品宣称预测准确率。',
+        '比较问卜与 FateTell 的免费排盘、对话、公开计算规则及 Agent 接口。按使用方式选择，并查看官方来源。',
       intro:
-        'FateTell 的公开网站围绕八字、对话、FateBook 和 AnnualBook 展开。Wenbu 则把独立命理 Agent、四种免费工具、可查看的计算约定和本地手记放在网页里。选哪一个，取决于你需要的是哪种使用方式。',
+        '两者都有免费、免注册的八字排盘，也都说明计算规则。FateTell 另有 FateBook、AnnualBook 与 AI 对话；问卜把八字、易经、塔罗、紫微及资料研习放在同一个网页 Agent 里。先想清楚你要排盘、读报告，还是围绕一个问题持续讨论。',
       rows: [
         [
-          '核心入口',
-          '对话与研习工作台，以及八字、易经、塔罗、紫微工具',
-          '公开官网强调八字与 AI 对话、FateBook、AnnualBook',
+          '主要入口',
+          '四种独立工具，以及可排盘、查资料、整理报告的 Agent',
+          '八字计算器、AI 对话、FateBook 与 AnnualBook',
         ],
         [
           '免费范围',
-          '排盘与记录免费；单次解读每日 5 次、Agent 12 回合，按网络计数并受全站额度限制',
-          '官网提供免费八字计算器；报告与其他权益以其当前页面为准',
+          '工具与手记免费；每网络每日最多 5 次 AI 解读、12 回合 Agent，另受全站额度限制',
+          '简版和专业版八字排盘免费免注册；AI 解读与 FateBook 为另外的产品',
+        ],
+        ['计算规则', '公开引擎版本、时区、换日与随机抽取规则', '计算器公开节气、时区、太阳时与换日等约定'],
+        [
+          '资料与记录',
+          '出生资料发送到服务器计算；会话与手记保存在浏览器，可导出 JSON',
+          '计算器说明在浏览器本地计算与保存；应用内记录与导出未作账户测试',
         ],
         [
-          '计算透明度',
-          '公开引擎版本、时区、换日与随机规则',
-          '官网自述专业算法、专家系统与人工解读调校；未独立验证',
-        ],
-        ['记录', '当前浏览器本地保存，JSON 导出', '官网强调在应用中回看；具体保存与导出能力需实际账户核验'],
-        [
-          'Agent 使用',
-          '公开 MCP、REST、CLI 与 Skill',
-          '本次公开主页未核实同等接口；不据此断言产品不存在该能力',
+          '连接自己的 Agent',
+          '公开 MCP、REST、CLI 与 Skill，可返回结构化结果',
+          '本次查阅页面未说明对应接口，不能据此认定没有',
         ],
       ],
       conclusion:
-        '如果你想不注册就尝试多种工具，并把结构化命盘交给自己的 Agent，Wenbu 的入口更直接。如果你希望体验 FateTell 的应用内报告与其解释风格，可以查看它的最新官方说明。我们没有登录测试其付费体验，也没有实测两者的预测准确率。',
+        '只想免费排八字，两者都可以作为入口。想在多种工具之间切换、查阅资料，或把结果接到自己的 AI 助手，可以试问卜。想了解 FateTell 的报告产品，可继续看其官方介绍。本页核对公开页面，没有登录测试付费功能，也没有比较预测准确率。',
     },
     en: {
-      title: 'Wenbu and FateTell: choosing a starting point',
+      title: 'Wenbu or FateTell: what do you want to do?',
       description:
-        'Compare the public FateTell offering with Wenbu’s free tools, visible calculation conventions, local journal and agent interfaces.',
+        'Compare free chart access, conversations, published calculation rules and agent integrations, with links to the official product pages.',
       intro:
-        'FateTell’s public site centers on BaZi, dialogue, FateBook and AnnualBook. Wenbu brings a dedicated conversational Agent, four free tools, visible calculation conventions and a local journal to the web. The useful comparison is between workflows, not unverified claims of predictive accuracy.',
+        'Both offer free BaZi charts without an account and publish calculation conventions. FateTell also presents FateBook, AnnualBook and AI conversations. Wenbu combines BaZi, I Ching, tarot and Zi Wei with an Agent that can read references. Your choice depends on whether you want a chart, a report or a conversation you can keep developing.',
       rows: [
         [
           'Main experience',
-          'Agent conversation and research alongside four web tools',
-          'Public site emphasizes BaZi dialogue, FateBook and AnnualBook',
+          'Four standalone tools and an Agent for charts, reference reading and reports',
+          'BaZi calculator, AI conversations, FateBook and AnnualBook',
         ],
         [
           'Free access',
-          'Free calculations and journal; five single readings and 12 Agent turns per network daily within a shared budget',
-          'Free BaZi calculator advertised; reports and benefits follow current product terms',
+          'Free tools and journal; up to five AI readings and 12 Agent turns per network daily, within a site budget',
+          'Simple and Professional BaZi charts are free without an account; AI readings and FateBook are separate products',
         ],
         [
-          'Calculation transparency',
-          'Published engine versions, time conventions and random methods',
-          'Site describes specialized algorithms, expert systems and human calibration; not independently verified',
+          'Calculation rules',
+          'Published engine versions, time conventions and draw methods',
+          'Calculator publishes solar-term, time-zone, solar-time and day-boundary conventions',
         ],
         [
-          'Records',
-          'Local browser journal and JSON exports',
-          'Site discusses revisiting readings in the app; account features and export need hands-on verification',
+          'Data and records',
+          'Birth details go to the server for calculation; conversations and journal records save in the browser and export as JSON',
+          'Calculator describes browser-based calculation and storage; app records and exports were not tested in an account',
         ],
         [
-          'Agent access',
-          'Public MCP, REST, CLI and Skill',
-          'Equivalent interfaces were not verified from the reviewed homepage; this does not establish their absence',
+          'Your own AI assistant',
+          'Public MCP, REST, CLI and Skill with structured results',
+          'The pages reviewed do not describe equivalent interfaces; their absence has not been established',
         ],
       ],
       conclusion:
-        'Wenbu is a direct starting point if you want several no-account tools and structured context for your own agent. If you want FateTell’s reports and interpretation style, consult its current official product information. This comparison does not include logged-in paid testing or a predictive-accuracy experiment.',
+        'Either can be a starting point for a free BaZi chart. Try Wenbu if you want to move between traditions, consult references or use the results with your own assistant. Explore FateTell’s official pages for its report products. This comparison covers public pages, without paid account testing or a test of predictive accuracy.',
     },
   },
   {
     slug: 'labyrinthos',
     name: 'Labyrinthos',
+    nameZh: 'Labyrinthos',
+    nameEn: 'Labyrinthos',
     url: 'https://labyrinthos.co/',
+    reviewed: '2026-09-29',
+    sources: [
+      { title: 'Labyrinthos · app, readings and journal allowances', url: 'https://app.labyrinthos.co/' },
+      {
+        title: 'Labyrinthos · beginner tarot lessons',
+        url: 'https://labyrinthos.co/pages/learn-tarot-for-beginners-with-our-online-tarot-classes',
+      },
+      { title: 'Labyrinthos · tarot decks', url: 'https://labyrinthos.co/collections/tarot-decks-for-sale' },
+    ],
     zh: {
-      title: 'Wenbu 与 Labyrinthos：塔罗、学习和手记',
+      title: '问卜与 Labyrinthos：学塔罗，还是先试一次？',
       description:
-        '比较免费塔罗体验、学习体系、牌面风格与个人记录，帮助你在多传统工具和塔罗专门产品之间选择。',
+        '比较塔罗练习、牌阵、牌面与手记。了解 Labyrinthos 的学习功能，以及问卜的四种工具和 Agent 用法。',
       intro:
-        'Labyrinthos 以塔罗学习、牌义内容、牌组与记录体验见长。Wenbu 将塔罗放在八字、易经与紫微旁边，提供简洁的网页探索与开放计算接口。两者的产品重心不同。',
+        'Labyrinthos 的公开介绍包括牌义练习、多种牌阵和阅读日志，适合想持续学塔罗的人了解。问卜提供单张与三张牌，和八字、易经、紫微共用一个手记与对话入口。两者的重点不同，问卜不把基础入门内容称作完整塔罗课程。',
       rows: [
-        ['范围', '四种传统工具，统一手记', '塔罗学习与阅读为主要入口'],
-        ['抽牌', '78 张；单张与三张；可选逆位', '提供在线塔罗与牌阵，具体当前范围见官方应用'],
-        ['牌面', '原创抽象线条与符号', '具有完整视觉风格的牌组与相关实体产品'],
-        ['记录', '浏览器本地，最多 100 条，JSON 导出', '官方提供阅读日志，免费容量与付费权益以当前政策为准'],
-        ['Agent', 'MCP / CLI / Skill 可获取结构化牌面', '本次公开来源未核实对应接口'],
+        ['学习方式', '双语入门指南、牌义关键词，可向 Agent 追问', '卡片式练习、牌义参考与故事化课程'],
+        ['抽牌', '78 张牌，单张或三张，可选逆位', '多种预设牌阵，也可创建自己的牌阵'],
+        ['牌面', '78 张原创 AI 插画，可放大查看', '多套插画牌组，并销售实体牌'],
+        [
+          '记录与费用',
+          '浏览器保存最近 100 条手记，可导出 JSON；AI 解读有免费额度',
+          '官方说明基础抽牌免费，免费账户可存 100 条日志；其他权益以当前订阅说明为准',
+        ],
+        ['连接自己的 Agent', '通过 MCP、CLI 或 Skill 获取结构化牌面结果', '本次查阅页面未说明对应接口'],
       ],
       conclusion:
-        '希望系统学习塔罗、研究牌面象征或选择实体牌组，可以深入查看 Labyrinthos。希望偶尔抽牌，同时探索东方命理并与自己的 Agent 配合，可以从 Wenbu 开始。我们不使用对方牌图或复制其牌义内容。',
+        '想练习牌义、尝试更多牌阵或购买实体牌，可以继续了解 Labyrinthos。想从简单的一次抽牌开始，再试其他传统或把结果交给自己的 AI 助手，可以试问卜。这里比较公开功能，没有评测付费体验或解读准确率。',
     },
     en: {
-      title: 'Wenbu and Labyrinthos: tarot, learning and journaling',
+      title: 'Wenbu or Labyrinthos: a first reading or a tarot practice?',
       description:
-        'Compare the focus of a dedicated tarot learning product with Wenbu’s multi-tradition tools and portable reading context.',
+        'Compare lessons, spreads, artwork and journals. See how Labyrinthos’s tarot learning features differ from Wenbu’s four tools and Agent.',
       intro:
-        'Labyrinthos focuses on tarot learning, card meanings, decks and reading records. Wenbu places a compact tarot experience alongside BaZi, I Ching and Zi Wei, with shared journaling and open calculation interfaces.',
+        'Labyrinthos describes card-meaning exercises, varied spreads and a reading journal for people building a tarot practice. Wenbu offers one- and three-card readings alongside BaZi, I Ching and Zi Wei, with a shared journal and conversation space. Wenbu’s beginner guides are an introduction, not a full tarot course.',
       rows: [
-        ['Scope', 'Four symbolic traditions and one local journal', 'Tarot learning and reading are central'],
+        [
+          'Learning',
+          'Bilingual starter guides, card keywords and follow-up questions for the Agent',
+          'Flashcard exercises, a meanings reference and story-based lessons',
+        ],
         [
           'Draws',
           '78 cards; one- and three-card spreads; optional reversals',
-          'Online readings and spreads; consult the current official app for scope',
+          'Preset spreads and custom spreads',
         ],
         [
           'Artwork',
-          'Original abstract lines and symbols',
-          'Distinctive deck artwork and related physical products',
+          '78 original AI illustrations with a closer-view option',
+          'Several illustrated decks, including physical decks for sale',
         ],
         [
-          'Journal',
-          'Local browser storage, latest 100 entries, JSON export',
-          'Reading journal offered; current capacity and paid benefits follow its policy',
+          'Journal and cost',
+          'Latest 100 entries in browser storage, JSON export and a limited free AI allowance',
+          'Official site lists free basic readings and 100 saved readings per free account; check current subscription terms for extras',
         ],
         [
-          'Agent use',
-          'Structured cards through MCP, CLI and Skill',
-          'Equivalent interfaces were not verified from reviewed sources',
+          'Your own AI assistant',
+          'Structured card results through MCP, the CLI or a Skill',
+          'The pages reviewed do not describe equivalent interfaces',
         ],
       ],
       conclusion:
-        'Explore Labyrinthos for a dedicated tarot curriculum, detailed visual symbolism or physical decks. Try Wenbu for a light web reading alongside Eastern traditions and your own agent. Wenbu does not reuse Labyrinthos artwork or copy its card-meaning text.',
+        'Explore Labyrinthos for regular card practice, more spreads or a physical deck. Try Wenbu for a simple draw, other traditions or results you can use with your own assistant. This is a comparison of public features, without paid account testing or an assessment of predictive accuracy.',
     },
   },
   {
     slug: 'chatbot',
-    name: 'General chatbot',
-    url: 'https://api-docs.deepseek.com/',
+    name: 'Chatbot without tools',
+    nameZh: '未调用工具的 AI',
+    nameEn: 'Chatbot without tools',
+    url: 'https://api-docs.deepseek.com/guides/tool_calls/',
+    reviewed: '2026-09-29',
+    sources: [
+      {
+        title: 'DeepSeek · how external tool calls work',
+        url: 'https://api-docs.deepseek.com/guides/tool_calls/',
+      },
+      { title: 'Wenbu · calculation source code', url: 'https://github.com/Digidai/wenbu/tree/main/src/lib' },
+    ],
     zh: {
-      title: '专用排盘工具与直接问 AI，有什么差别？',
+      title: '直接问 AI，还是先用工具计算？',
       description:
-        '比较确定性排盘、对话上下文、随机抽取与解释来源，理解为什么一段好提示词仍需要可靠的计算输入。',
+        '了解计算工具与语言模型各自负责什么，以及怎样核对历法、随机抽取和解释。支持工具调用的 AI 也能使用问卜。',
       intro:
-        '通用 AI 适合讨论背景、整理想法和解释术语。专用计算器负责把明确输入按明确规则转换成结果。两者可以配合，关键是不要让语言模型猜日期或假装随机。',
+        'AI 可以帮你说明背景、解释术语和整理想法。排盘则需要实际执行历法规则，抽牌需要明确的随机过程。本页比较的是「调用工具后回答」和「只生成文字」两种方式；支持工具的通用 AI 也能完成前一种，差别不在产品名称。',
       rows: [
-        ['历法', '程序计算并返回约定', '若没有真实工具调用，可能仅凭语言生成'],
-        ['随机过程', '密码学抽取，保留原始牌或爻值', '模型写出一个牌名不等于指定随机分布'],
         [
-          '上下文',
-          'Agent 会话历史、用户选定的出生资料与手记',
-          '可能已有长对话背景，应留意具体产品的数据范围',
+          '排盘',
+          '程序按输入和约定计算四柱或紫微盘，并返回计算说明',
+          '一段排盘文字本身不能证明执行了哪套历法规则',
         ],
-        ['解释', '调用 DeepSeek，明确标注为 AI 生成', '由当前对话模型生成，同样可能出错'],
+        ['抽牌与起卦', '程序随机抽取，返回原始牌面或爻值', '写出一个牌名，不能证明采用了怎样的随机过程'],
         [
-          '组合方式',
-          '内置 DeepSeek Agent；也可通过 MCP 接入其他 Agent',
-          '具备工具能力的 Agent 可以调用 Wenbu 后继续讨论',
+          '背景资料',
+          '内置 Agent 使用本次对话和你选择的资料，发送给 DeepSeek',
+          '使用范围取决于所在产品的对话与数据设置',
+        ],
+        ['解释', 'DeepSeek 根据工具结果解释，AI 内容仍可能出错', '模型生成解释，也需要核对输入与来源'],
+        [
+          '配合使用',
+          '可在网页继续对话，也可通过 MCP 把结果交给自己的 Agent',
+          '支持 MCP 或工具调用的助手，可以接入计算器后继续讨论',
         ],
       ],
       conclusion:
-        '如果已有熟悉你的 Agent，直接连接 Wenbu MCP 通常很方便：由工具提供可复核的结构，让 Agent 在你授权的上下文内解释。专用网页则适合想先看清图表、保留一份安静记录的人。',
+        '核对时，先找原始输入、工具结果和计算约定，再读解释。已有熟悉的 AI 助手，可以连接问卜 MCP；它提供计算与资料工具，解释使用宿主自己的模型。希望直接看图表、选资料并继续追问，可以使用网页 Agent。',
     },
     en: {
-      title: 'A chart calculator or a general chatbot?',
+      title: 'Ask a chatbot, or use a calculator first?',
       description:
-        'Why a good prompt still needs reliable calendar inputs, explicit random draws and clear boundaries between calculation and interpretation.',
+        'Understand what a language model does, what needs an actual calculation, and how a tool-enabled assistant can use Wenbu.',
       intro:
-        'A general chatbot can discuss context, organize thoughts and explain terminology. A dedicated calculator turns defined inputs into a result under named rules. They work well together when the model is not asked to invent calendar arithmetic or simulate an unstated random process.',
+        'A chatbot can explain terms, discuss your circumstances and organize thoughts. A chart needs calendar rules to be executed; a draw needs a defined random process. This comparison is about a tool-backed answer versus text generated without a tool. A general assistant with the right tools can do the former too.',
       rows: [
         [
-          'Calendar',
-          'Code calculates a result with explicit conventions',
-          'Without a real tool call, a model may generate rather than calculate',
+          'Charts',
+          'Code calculates BaZi or Zi Wei from stated inputs and returns the conventions',
+          'A written chart alone does not show which calendar rules were executed',
         ],
         [
-          'Randomness',
-          'Cryptographic draw with original cards or line values',
-          'Writing a card name is not evidence of a specified random distribution',
+          'Draws and casts',
+          'Code performs the draw and returns the original cards or line values',
+          'A card name alone does not show how it was selected',
         ],
         [
-          'Context',
-          'Agent history and explicitly selected birth details and journal entries',
-          'A conversation may already hold context; data scope depends on the host',
+          'Personal context',
+          'The built-in Agent sends the conversation and your selected context to DeepSeek',
+          'Context and data use depend on the host application’s settings',
         ],
         [
           'Interpretation',
-          'DeepSeek, labeled as AI-generated',
-          'The current conversational model; it can also be wrong',
+          'DeepSeek interprets the tool result; the explanation can still be wrong',
+          'Model-generated interpretation also needs its inputs and sources checked',
         ],
         [
-          'Working together',
-          'Built-in DeepSeek Agent or MCP for your own agent',
-          'A tool-capable agent can call Wenbu, then continue the discussion',
+          'Using both',
+          'Continue in the web Agent or pass results to your own assistant through MCP',
+          'An assistant that supports MCP or tool calls can use a calculator in the conversation',
         ],
       ],
       conclusion:
-        'If you already use an agent, Wenbu MCP lets it work with a reproducible structure and the context you authorize. The website is useful when you want a visual chart and a quiet local record first.',
+        'Look for the inputs, tool output and calculation conventions before assessing the prose. Connect Wenbu MCP to an assistant you already use for calculations and reference tools; its own model provides the interpretation. Choose the web Agent if you want charts, context selection and follow-up questions in one place.',
     },
   },
 ];

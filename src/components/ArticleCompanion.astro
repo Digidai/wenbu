@@ -1,0 +1,35 @@
+---
+import { ArrowRight, BookOpen } from 'lucide-react';
+import { guidePrimers } from '../data/learning-paths';
+import type { Locale } from '../lib/schema';
+import { choose } from '../lib/i18n';
+const { slug, locale } = Astro.props as { slug: string; locale: Locale };
+const primer = guidePrimers[slug];
+const t = (zh: string, en: string) => choose(locale, zh, en);
+---
+
+{primer && (
+  <aside
+    class:list={['guide-primer', { 'is-sequence': primer.mode === 'steps' }]}
+    aria-label={t(primer.zh, primer.en)}
+  >
+    <p class="guide-primer-label">
+      <BookOpen size={16} aria-hidden="true" />
+      {t(primer.zh, primer.en)}
+    </p>
+    <ol>
+      {primer.items.map((item, i) => (
+        <li>
+          <span class="primer-number" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <strong>{t(item.zh, item.en)}</strong>
+          <p>{t(item.detailZh, item.detailEn)}</p>
+          {primer.mode === 'steps' && i < primer.items.length - 1 && (
+            <ArrowRight className="primer-arrow" size={15} aria-hidden="true" />
+          )}
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}

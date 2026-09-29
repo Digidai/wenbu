@@ -1,9 +1,17 @@
 import assert from 'node:assert/strict';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 const base = process.env.WENBU_URL || 'https://wenbu.genedai.me';
-const evidence = { base, checkedAt: new Date().toISOString(), pages: [], api: [], mcp: [], ai: null };
+const evidence = {
+  base,
+  checkedAt: new Date().toISOString(),
+  pages: [],
+  api: [],
+  mcp: [],
+  library: [],
+  ai: null,
+};
 const fetchSafe = (url, init = {}) => fetch(url, { ...init, signal: AbortSignal.timeout(50000) });
 async function post(path, body, extra = {}) {
   return fetchSafe(base + path, {
@@ -17,7 +25,12 @@ assert.equal(health.status, 200);
 evidence.health = await health.json();
 const sitemap = await (await fetchSafe(base + '/sitemap.xml')).text();
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => new URL(x[1]).pathname);
-assert.equal(urls.length, 64);
+const builtSitemap = await readFile(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
+const builtPaths = [...builtSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+  (match) => new URL(match[1]).pathname,
+);
+assert.ok(builtPaths.length > 0, 'Build the site before running its release smoke check.');
+assert.deepEqual([...urls].sort(), [...builtPaths].sort(), 'Live sitemap must match this build.');
 assert.ok(urls.includes('/tarot/deck/') && urls.includes('/en/tarot/deck/'));
 assert.ok(!urls.some((url) => url.includes('/insights/')));
 for (let i = 0; i < urls.length; i += 4) {
@@ -91,6 +104,20 @@ try {
   for (const tool of listed.tools) evidence.mcp.push(tool.name);
   const result = await client.callTool({ name: 'cast_iching', arguments: { lines: [7, 7, 7, 7, 7, 7] } });
   assert.equal(result.structuredContent.original.number, 1);
+  for (const locale of ['zh', 'en']) {
+    const guide = await client.callTool({
+      name: 'read_library',
+      arguments: { id: 'guide-first-reading', locale },
+    });
+    const content = guide.structuredContent;
+    assert.equal(content.source.id, 'guide-first-reading');
+    assert.ok(content.content.length > 500);
+    assert.equal(
+      new URL(content.source.url).pathname,
+      `${locale === 'en' ? '/en' : ''}/learn/first-reading/`,
+    );
+    evidence.library.push({ locale, id: content.source.id, title: content.source.title });
+  }
   const resources = await client.listResources();
   assert.ok(resources.resources.some((x) => x.uri === 'wenbu://methodology'));
 } finally {
@@ -122,6 +149,7 @@ console.log(
       pages: evidence.pages.length,
       api: evidence.api,
       mcp: evidence.mcp,
+      library: evidence.library,
       ai: evidence.ai,
       result: evidence.result,
     },

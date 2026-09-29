@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: beginner library and bilingual editorial review (2026-09-29)
+
+The [library content release](library-content-release.md) records 21 bilingual guides, new reading paths, topic search, article companions, Agent Team cross-review of knowledge, GTM and interface documentation, and separate local, Cloudflare and live evidence. The [design](../plans/2026-09-29-library-content-design.md) explains the beginner journey and measurement boundaries.
+
 ## Latest: bilingual interface and motion polish (2026-09-29)
 
 The [interface polish release](interface-polish-release.md) records responsive English/Chinese layout fixes, useful input and result hints, restrained event-driven motion, three Grok review passes, browser measurements and release evidence.

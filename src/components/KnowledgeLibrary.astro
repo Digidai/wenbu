@@ -1,0 +1,269 @@
+---
+import { ArrowUpRight, ArrowRight, BookOpen, Search, X, Compass } from 'lucide-react';
+import { articles } from '../data/articles';
+import { learningTopics } from '../data/learning-paths';
+import { choose, href } from '../lib/i18n';
+import type { Locale } from '../lib/schema';
+const { locale } = Astro.props as { locale: Locale };
+const t = (zh: string, en: string) => choose(locale, zh, en);
+const guides = articles.filter((a) => a.category === 'learn');
+const startingPoints = [
+  {
+    slug: 'choose-a-tool',
+    zh: '不知道选哪个工具？',
+    en: 'Which tool should I choose?',
+    detailZh: '按问题和手头资料来选',
+    detailEn: 'Choose by your question and the details you have',
+  },
+  {
+    slug: 'ask-a-better-question',
+    zh: '心里有事，不知道怎么问？',
+    en: 'How do I put my question into words?',
+    detailZh: '参考例子，写出自己的问题',
+    detailEn: 'Adapt an example to your own situation',
+  },
+  {
+    slug: 'read-ai-with-sources',
+    zh: '拿到结果，接着看什么？',
+    en: 'What should I look for in a result?',
+    detailZh: '分清计算、传统解释与建议',
+    detailEn: 'Separate calculations, interpretations and suggestions',
+  },
+];
+---
+
+<div class="knowledge-library" data-library data-locale={locale}>
+  <section class="library-welcome" aria-labelledby="library-start-title">
+    <div class="library-welcome-copy">
+      <span class="eyebrow">
+        <Compass size={16} aria-hidden="true" />
+        {t('给第一次来的你', 'YOUR FIRST VISIT')}
+      </span>
+      <h2 id="library-start-title">
+        {t('不必先懂命理。\n从一件具体的事开始。', 'Start with a question.\nLearn as you go.')}
+      </h2>
+      <p>
+        {t(
+          '先试一次，再学看盘、读牌和查依据。我们把步骤、例子和常见疑问放在一起，你可以按自己的节奏读。',
+          'Try a reading, then learn to read the chart, understand the cards and check the sources. Follow the examples at your own pace.',
+        )}
+      </p>
+      <a class="button primary" href={href(locale, 'learn/first-reading')} data-track="library-start">
+        {t('跟着做一次', 'Your first reading')}
+        <ArrowRight size={16} aria-hidden="true" />
+      </a>
+      <p class="library-edition">
+        {t(
+          `${guides.length} 篇双语指南 · 免费阅读`,
+          `${guides.length} guides in Chinese and English · Free to read`,
+        )}
+      </p>
+    </div>
+    <ol class="library-starting-points">
+      {startingPoints.map((item, i) => (
+        <li>
+          <a href={href(locale, `learn/${item.slug}`)} data-track="library-start">
+            <span class="library-point-number" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span>
+              <strong>{t(item.zh, item.en)}</strong>
+              <small>{t(item.detailZh, item.detailEn)}</small>
+            </span>
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="library-catalogue" aria-labelledby="library-catalogue-title">
+    <div class="library-catalogue-heading">
+      <div>
+        <span class="eyebrow">{t('按主题慢慢读', 'EXPLORE BY TOPIC')}</span>
+        <h2 id="library-catalogue-title">{t('你的问题，从这里找', 'Find a guide for your question')}</h2>
+      </div>
+      <a class="text-link" href={href(locale, 'sources')}>
+        <BookOpen size={15} aria-hidden="true" />
+        {t('查看参考资料', 'Browse the sources')}
+        <ArrowUpRight size={14} aria-hidden="true" />
+      </a>
+    </div>
+    <div class="library-controls" data-library-controls hidden>
+      <form class="library-search" role="search" aria-label={t('搜索知识手册', 'Search the library')}>
+        <label for="library-query">
+          <Search size={17} aria-hidden="true" />
+          <span>{t('搜索指南', 'Find a guide')}</span>
+        </label>
+        <input
+          id="library-query"
+          type="search"
+          autocomplete="off"
+          placeholder={t('试试：出生时间、逆位、怎么提问', 'Try: birth time, reversals, asking questions')}
+          aria-controls="library-topics"
+        />
+        <button type="button" class="library-clear" aria-label={t('清除搜索', 'Clear search')} hidden>
+          <X size={16} aria-hidden="true" />
+        </button>
+      </form>
+      <div class="library-filters" role="group" aria-label={t('筛选主题', 'Filter by topic')}>
+        <button type="button" data-topic="all" aria-pressed="true">
+          {t('全部', 'All guides')}
+        </button>
+        {learningTopics.map((topic) => (
+          <button type="button" data-topic={topic.id} aria-pressed="false">
+            {t(topic.zh, topic.en)}
+          </button>
+        ))}
+      </div>
+      <p class="library-search-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+    <div id="library-topics">
+      {learningTopics.map((topic, index) => (
+        <section class="library-topic" data-topic-section={topic.id} aria-labelledby={`topic-${topic.id}`}>
+          <div class="library-topic-heading">
+            <span class="library-topic-seal" aria-hidden="true">
+              {topic.symbol}
+            </span>
+            <div>
+              <h3 id={`topic-${topic.id}`}>{t(topic.zh, topic.en)}</h3>
+              <p>{t(topic.descriptionZh, topic.descriptionEn)}</p>
+            </div>
+            <span class="library-topic-index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <div class="library-guide-grid">
+            {topic.slugs
+              .map((slug) => guides.find((a) => a.slug === slug))
+              .filter((a) => a !== undefined)
+              .map((a) => (
+                <a
+                  class="library-guide"
+                  href={href(locale, `learn/${a.slug}`)}
+                  data-track="library-article"
+                  data-guide
+                  data-search={[
+                    a.slug.replaceAll('-', ' '),
+                    a.zh.title,
+                    a.en.title,
+                    a.zh.description,
+                    a.en.description,
+                    topic.zh,
+                    topic.en,
+                    a.tool,
+                  ]
+                    .join(' ')
+                    .normalize('NFKC')
+                    .toLowerCase()}
+                >
+                  <div class="library-guide-meta">
+                    <span>{t(topic.zh, topic.en)}</span>
+                    <span>
+                      {a.minutes} {t('分钟', 'min')}
+                    </span>
+                  </div>
+                  <h4>{a[locale].title}</h4>
+                  <p>{a[locale].description}</p>
+                  <ArrowUpRight className="library-guide-arrow" size={18} aria-hidden="true" />
+                </a>
+              ))}
+          </div>
+        </section>
+      ))}
+    </div>
+    <div class="library-no-results" hidden>
+      <Search size={26} aria-hidden="true" />
+      <h3>{t('暂时没有匹配的指南', 'No matching guides')}</h3>
+      <p>
+        {t(
+          '试试更短的词，或清除筛选查看全部主题。',
+          'Try a shorter search, or clear the filters to see all topics.',
+        )}
+      </p>
+      <button type="button" class="button secondary" data-reset-library>
+        {t('查看全部指南', 'Show all guides')}
+      </button>
+    </div>
+  </section>
+  <section class="library-continue" aria-labelledby="library-continue-title">
+    <div>
+      <span class="eyebrow">{t('带着问题继续', 'PUT IT INTO PRACTICE')}</span>
+      <h2 id="library-continue-title">
+        {t('看不懂的地方，可以接着问。', 'Ask about anything that’s unclear.')}
+      </h2>
+      <p>
+        {t(
+          '让 Agent 用例子解释一个术语，或查阅手册和精选参考资料。发送前，你可以先检查自己的问题。',
+          'Ask the Agent to explain a term with an example, or consult the library and selected references. You can review your question before sending it.',
+        )}
+      </p>
+    </div>
+    <a class="button secondary" href={href(locale, 'agent')} data-track="article-tool">
+      {t('打开命理 Agent', 'Open Wenbu Agent')}
+      <ArrowUpRight size={16} aria-hidden="true" />
+    </a>
+  </section>
+</div>
+
+<script>
+  import { track } from '../lib/analytics';
+  for (const root of document.querySelectorAll<HTMLElement>('[data-library]')) {
+    const controls = root.querySelector<HTMLElement>('[data-library-controls]')!;
+    const input = root.querySelector<HTMLInputElement>('#library-query')!;
+    const clear = root.querySelector<HTMLButtonElement>('.library-clear')!;
+    const filters = [...root.querySelectorAll<HTMLButtonElement>('[data-topic]')];
+    const sections = [...root.querySelectorAll<HTMLElement>('[data-topic-section]')];
+    const status = root.querySelector<HTMLElement>('.library-search-status')!;
+    const empty = root.querySelector<HTMLElement>('.library-no-results')!;
+    let topic = 'all';
+    let count = 0;
+    const apply = () => {
+      const terms = input.value.normalize('NFKC').toLowerCase().trim().split(/\s+/).filter(Boolean);
+      count = 0;
+      for (const section of sections) {
+        let visible = 0;
+        for (const card of section.querySelectorAll<HTMLElement>('[data-guide]')) {
+          const match =
+            (topic === 'all' || section.dataset.topicSection === topic) &&
+            terms.every((term) => card.dataset.search!.includes(term));
+          card.hidden = !match;
+          if (match) visible++;
+        }
+        section.hidden = visible === 0;
+        count += visible;
+      }
+      for (const filter of filters)
+        filter.setAttribute('aria-pressed', String(filter.dataset.topic === topic));
+      clear.hidden = !input.value;
+      empty.hidden = count > 0;
+      status.textContent =
+        root.dataset.locale === 'zh'
+          ? `找到 ${count} 篇指南`
+          : `${count} ${count === 1 ? 'guide' : 'guides'} found`;
+    };
+    input.addEventListener('input', apply);
+    // Only a result count is recorded. Search terms may be personal and are never sent.
+    input.addEventListener('change', () => track('cta_click', { action: 'library-search', value: count }));
+    root.querySelector('form')!.addEventListener('submit', (event) => event.preventDefault());
+    clear.addEventListener('click', () => {
+      input.value = '';
+      apply();
+      input.focus();
+    });
+    for (const filter of filters)
+      filter.addEventListener('click', () => {
+        topic = filter.dataset.topic!;
+        apply();
+        track('cta_click', { action: 'library-filter', value: count });
+      });
+    root.querySelector('[data-reset-library]')!.addEventListener('click', () => {
+      topic = 'all';
+      input.value = '';
+      apply();
+      input.focus();
+    });
+    controls.hidden = false;
+    apply();
+  }
+</script>

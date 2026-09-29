@@ -1,0 +1,3678 @@
+{
+  "environment": "Cloudflare Wrangler local production build",
+  "checkedAt": "2026-09-29T03:22:56.844Z",
+  "noJavaScript": {
+    "controlsHidden": true,
+    "firstReadingLink": "/en/learn/first-reading/",
+    "links": 21,
+    "topics": 6
+  },
+  "results": [
+    {
+      "path": "/about/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "关于问卜 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/agent/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "命理 Agent · 对话、排盘与有依据的研习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/agents/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "与你的 Agent 一起探索 · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "工具名称输入与结果calculate_bazi日期、时刻、时区；四柱、五行、约定与不确定性。cast_iching随机或手动六爻；本卦、之卦与动爻。draw_t"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/bazi/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费八字排盘，读懂你的五行底色 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "一份值得回看的占卜手记，应该写什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/blog/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "问卜札记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "为什么问卜先给你一张盘，再给一段话 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "直接问 AI，还是先用工具计算？ · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度Wenbu未调用工具的 AI排盘程序按输入和约定计算四柱或紫微盘，并返回计算说明一段排盘文字本身不能证明执行了哪套历法规则抽牌与起卦程序随机抽取，返回原始牌"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "问卜与 FateTell：按你想做的事来选 · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度WenbuFateTell主要入口四种独立工具，以及可排盘、查资料、整理报告的 Agent八字计算器、AI 对话、FateBook 与 AnnualBook"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "问卜与 Labyrinthos：学塔罗，还是先试一次？ · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度WenbuLabyrinthos学习方式双语入门指南、牌义关键词，可向 Agent 追问卡片式练习、牌义参考与故事化课程抽牌78 张牌，单张或三张，可选逆位"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/en/about/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "About Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/agent/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Wenbu Agent · chat, charts & sourced research · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/agents/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Wenbu for agents · MCP, CLI & Skills · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "ToolInput and resultcalculate_baziDate, time and zone; pillars, visible elements"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/en/bazi/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free BaZi calculator & Four Pillars chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How to keep a useful reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/blog/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Notes from Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Why Wenbu shows a chart before it writes a story · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Ask a chatbot, or use a calculator first? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuChatbot without toolsChartsCode calculates BaZi or Zi Wei from sta"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Wenbu or FateTell: what do you want to do? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuFateTellMain experienceFour standalone tools and an Agent for char"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Wenbu or Labyrinthos: a first reading or a tarot practice? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuLabyrinthosLearningBilingual starter guides, card keywords and fol"
+        }
+      ],
+      "width": 320
+    },
+    {
+      "path": "/en/free/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free to use, with clear limits · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/iching/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free I Ching reading & hexagram oracle · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free BaZi, I Ching, tarot & Zi Wei tools · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Why an AI reading can feel accurate · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How to turn a vague worry into a useful question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How to read a BaZi chart, one pillar at a time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "The Ten Gods in BaZi: a worked example with Jia Wood · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "BaZi and Western astrology: what each chart calculates · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Birth time, time zones and apparent solar time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Chinese zodiac and BaZi: which new year counts? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "BaZi, I Ching, tarot or Zi Wei: where should you begin? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Your first visit: start with one small question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Does a missing element need to be “fixed”? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How three coins become an I Ching hexagram · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Trigrams and hexagrams: read the structure first · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "searchWidth": 250,
+      "title": "The Wenbu library · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "What to prepare before creating a birth chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How to read an AI interpretation and check its sources · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "After the reading: a simple way to reflect and follow up · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Your first tarot reading starts with a better question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Are reversed tarot cards bad? Start with a clear rule · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Tarot suits and court cards without the memorization · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Can you use BaZi without a birth time? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Zi Wei’s Four Transformations: Lu, Quan, Ke and Ji · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Reading the twelve palaces of Zi Wei Dou Shu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/methodology/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "How the tools calculate results · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/privacy/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Privacy and your data · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/sources/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Sources & further reading · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "78 tarot cards · the illustrated Wenbu deck · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/tarot/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free tarot reading · one & three cards · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/terms/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Terms and use of Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/ziwei/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Free Zi Wei Dou Shu chart calculator · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/free/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费功能与使用额度 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/iching/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费易经占卜，从一卦看见变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费八字、易经、塔罗与紫微工具 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "AI 算命说得很像我，意味着什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "不会提问也没关系：把困惑说清楚 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "十神是什么？用甲木日主读懂十种关系 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "八字与西方占星：两种地图，不是一套算法 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "生肖与八字：为什么立春和春节不能混用 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "八字、易经、塔罗、紫微，我该从哪里开始？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "第一次用问卜：从一个小问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "五行缺什么，就一定要补什么吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "三枚铜钱怎样组成一卦？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "八卦与六十四卦：先认上下，再读变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "searchWidth": 250,
+      "title": "知识手册 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "排盘前准备什么？一张出生资料清单 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "怎样读一份 AI 解读：看结果，也看依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "读完以后做什么：一次简单的复盘练习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "第一次读塔罗：从一个好问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "塔罗逆位一定不好吗？先选好阅读规则 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "塔罗四种花色与宫廷牌，怎样记才不乱？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "不知道出生时间，还能排八字吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "紫微四化入门：禄、权、科、忌该怎么看 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "紫微斗数十二宫：怎样读一张星盘 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/methodology/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "计算与依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/privacy/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "隐私与数据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/sources/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "参考资料与研究来源 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "78 张塔罗牌图鉴 · 问卜原创插画与牌义 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/tarot/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费塔罗占卜，遇见新的视角 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/terms/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "使用说明与条款 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/ziwei/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "免费紫微斗数排盘，十二宫可视化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/journal/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "我的手记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/journal/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Your reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/insights/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "访问与使用 · 管理后台 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/en/insights/",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Product analytics · administration · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/404.html",
+      "overflow": false,
+      "scrollWidth": 320,
+      "title": "Page not found · 此处留白 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 320
+    },
+    {
+      "path": "/about/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "关于问卜 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/agent/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "命理 Agent · 对话、排盘与有依据的研习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/agents/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "与你的 Agent 一起探索 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/bazi/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费八字排盘，读懂你的五行底色 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "一份值得回看的占卜手记，应该写什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/blog/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "问卜札记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "为什么问卜先给你一张盘，再给一段话 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "直接问 AI，还是先用工具计算？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "问卜与 FateTell：按你想做的事来选 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "问卜与 Labyrinthos：学塔罗，还是先试一次？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/about/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "About Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/agent/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Wenbu Agent · chat, charts & sourced research · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/agents/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Wenbu for agents · MCP, CLI & Skills · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/bazi/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free BaZi calculator & Four Pillars chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How to keep a useful reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/blog/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Notes from Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Why Wenbu shows a chart before it writes a story · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Ask a chatbot, or use a calculator first? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Wenbu or FateTell: what do you want to do? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Wenbu or Labyrinthos: a first reading or a tarot practice? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/free/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free to use, with clear limits · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/iching/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free I Ching reading & hexagram oracle · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free BaZi, I Ching, tarot & Zi Wei tools · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Why an AI reading can feel accurate · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How to turn a vague worry into a useful question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How to read a BaZi chart, one pillar at a time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "The Ten Gods in BaZi: a worked example with Jia Wood · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "BaZi and Western astrology: what each chart calculates · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Birth time, time zones and apparent solar time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Chinese zodiac and BaZi: which new year counts? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "BaZi, I Ching, tarot or Zi Wei: where should you begin? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Your first visit: start with one small question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Does a missing element need to be “fixed”? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How three coins become an I Ching hexagram · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Trigrams and hexagrams: read the structure first · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "searchWidth": 1052.578125,
+      "title": "The Wenbu library · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "What to prepare before creating a birth chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How to read an AI interpretation and check its sources · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "After the reading: a simple way to reflect and follow up · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Your first tarot reading starts with a better question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Are reversed tarot cards bad? Start with a clear rule · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Tarot suits and court cards without the memorization · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Can you use BaZi without a birth time? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Zi Wei’s Four Transformations: Lu, Quan, Ke and Ji · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Reading the twelve palaces of Zi Wei Dou Shu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/methodology/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "How the tools calculate results · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/privacy/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Privacy and your data · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/sources/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Sources & further reading · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "78 tarot cards · the illustrated Wenbu deck · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/tarot/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free tarot reading · one & three cards · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/terms/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Terms and use of Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/ziwei/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Free Zi Wei Dou Shu chart calculator · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/free/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费功能与使用额度 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/iching/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费易经占卜，从一卦看见变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费八字、易经、塔罗与紫微工具 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "AI 算命说得很像我，意味着什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "不会提问也没关系：把困惑说清楚 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "十神是什么？用甲木日主读懂十种关系 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "八字与西方占星：两种地图，不是一套算法 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "生肖与八字：为什么立春和春节不能混用 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "八字、易经、塔罗、紫微，我该从哪里开始？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "第一次用问卜：从一个小问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "五行缺什么，就一定要补什么吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "三枚铜钱怎样组成一卦？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "八卦与六十四卦：先认上下，再读变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "searchWidth": 1072,
+      "title": "知识手册 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "排盘前准备什么？一张出生资料清单 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "怎样读一份 AI 解读：看结果，也看依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "读完以后做什么：一次简单的复盘练习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "第一次读塔罗：从一个好问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "塔罗逆位一定不好吗？先选好阅读规则 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "塔罗四种花色与宫廷牌，怎样记才不乱？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "不知道出生时间，还能排八字吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "紫微四化入门：禄、权、科、忌该怎么看 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "紫微斗数十二宫：怎样读一张星盘 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/methodology/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "计算与依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/privacy/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "隐私与数据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/sources/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "参考资料与研究来源 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "78 张塔罗牌图鉴 · 问卜原创插画与牌义 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/tarot/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费塔罗占卜，遇见新的视角 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/terms/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "使用说明与条款 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/ziwei/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "免费紫微斗数排盘，十二宫可视化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/journal/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "我的手记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/journal/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Your reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/insights/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "访问与使用 · 管理后台 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/en/insights/",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Product analytics · administration · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/404.html",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "title": "Page not found · 此处留白 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1280
+    },
+    {
+      "path": "/about/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "关于问卜 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/agent/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "命理 Agent · 对话、排盘与有依据的研习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/agents/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "与你的 Agent 一起探索 · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "工具名称输入与结果calculate_bazi日期、时刻、时区；四柱、五行、约定与不确定性。cast_iching随机或手动六爻；本卦、之卦与动爻。draw_t"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/bazi/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费八字排盘，读懂你的五行底色 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "一份值得回看的占卜手记，应该写什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/blog/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "问卜札记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "为什么问卜先给你一张盘，再给一段话 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "直接问 AI，还是先用工具计算？ · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度Wenbu未调用工具的 AI排盘程序按输入和约定计算四柱或紫微盘，并返回计算说明一段排盘文字本身不能证明执行了哪套历法规则抽牌与起卦程序随机抽取，返回原始牌"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "问卜与 FateTell：按你想做的事来选 · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度WenbuFateTell主要入口四种独立工具，以及可排盘、查资料、整理报告的 Agent八字计算器、AI 对话、FateBook 与 AnnualBook"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "问卜与 Labyrinthos：学塔罗，还是先试一次？ · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "维度WenbuLabyrinthos学习方式双语入门指南、牌义关键词，可向 Agent 追问卡片式练习、牌义参考与故事化课程抽牌78 张牌，单张或三张，可选逆位"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/en/about/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "About Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/agent/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Wenbu Agent · chat, charts & sourced research · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/agents/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Wenbu for agents · MCP, CLI & Skills · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "ToolInput and resultcalculate_baziDate, time and zone; pillars, visible elements"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/en/bazi/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free BaZi calculator & Four Pillars chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How to keep a useful reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/blog/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Notes from Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Why Wenbu shows a chart before it writes a story · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Ask a chatbot, or use a calculator first? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuChatbot without toolsChartsCode calculates BaZi or Zi Wei from sta"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Wenbu or FateTell: what do you want to do? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuFateTellMain experienceFour standalone tools and an Agent for char"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Wenbu or Labyrinthos: a first reading or a tarot practice? · Wenbu 问卜",
+      "visibleOverflow": [
+        {
+          "class": "comparison-table",
+          "tag": "TABLE",
+          "text": "DimensionWenbuLabyrinthosLearningBilingual starter guides, card keywords and fol"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "path": "/en/free/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free to use, with clear limits · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/iching/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free I Ching reading & hexagram oracle · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free BaZi, I Ching, tarot & Zi Wei tools · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Why an AI reading can feel accurate · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How to turn a vague worry into a useful question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How to read a BaZi chart, one pillar at a time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "The Ten Gods in BaZi: a worked example with Jia Wood · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "BaZi and Western astrology: what each chart calculates · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Birth time, time zones and apparent solar time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Chinese zodiac and BaZi: which new year counts? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "BaZi, I Ching, tarot or Zi Wei: where should you begin? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Your first visit: start with one small question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Does a missing element need to be “fixed”? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How three coins become an I Ching hexagram · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Trigrams and hexagrams: read the structure first · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "searchWidth": 320,
+      "title": "The Wenbu library · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "What to prepare before creating a birth chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How to read an AI interpretation and check its sources · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "After the reading: a simple way to reflect and follow up · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Your first tarot reading starts with a better question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Are reversed tarot cards bad? Start with a clear rule · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Tarot suits and court cards without the memorization · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Can you use BaZi without a birth time? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Zi Wei’s Four Transformations: Lu, Quan, Ke and Ji · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Reading the twelve palaces of Zi Wei Dou Shu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/methodology/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "How the tools calculate results · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/privacy/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Privacy and your data · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/sources/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Sources & further reading · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "78 tarot cards · the illustrated Wenbu deck · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/tarot/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free tarot reading · one & three cards · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/terms/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Terms and use of Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/ziwei/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Free Zi Wei Dou Shu chart calculator · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/free/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费功能与使用额度 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/iching/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费易经占卜，从一卦看见变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费八字、易经、塔罗与紫微工具 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "AI 算命说得很像我，意味着什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "不会提问也没关系：把困惑说清楚 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "十神是什么？用甲木日主读懂十种关系 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "八字与西方占星：两种地图，不是一套算法 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "生肖与八字：为什么立春和春节不能混用 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "八字、易经、塔罗、紫微，我该从哪里开始？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "第一次用问卜：从一个小问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "五行缺什么，就一定要补什么吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "三枚铜钱怎样组成一卦？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "八卦与六十四卦：先认上下，再读变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "searchWidth": 320,
+      "title": "知识手册 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "排盘前准备什么？一张出生资料清单 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "怎样读一份 AI 解读：看结果，也看依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "读完以后做什么：一次简单的复盘练习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "第一次读塔罗：从一个好问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "塔罗逆位一定不好吗？先选好阅读规则 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "塔罗四种花色与宫廷牌，怎样记才不乱？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "不知道出生时间，还能排八字吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "紫微四化入门：禄、权、科、忌该怎么看 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "紫微斗数十二宫：怎样读一张星盘 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/methodology/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "计算与依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/privacy/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "隐私与数据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/sources/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "参考资料与研究来源 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "78 张塔罗牌图鉴 · 问卜原创插画与牌义 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/tarot/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费塔罗占卜，遇见新的视角 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/terms/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "使用说明与条款 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/ziwei/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "免费紫微斗数排盘，十二宫可视化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/journal/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "我的手记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/journal/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Your reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/insights/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "访问与使用 · 管理后台 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/en/insights/",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Product analytics · administration · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/404.html",
+      "overflow": false,
+      "scrollWidth": 390,
+      "title": "Page not found · 此处留白 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 390
+    },
+    {
+      "path": "/about/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "关于问卜 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/agent/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "命理 Agent · 对话、排盘与有依据的研习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/agents/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "与你的 Agent 一起探索 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/bazi/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费八字排盘，读懂你的五行底色 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "一份值得回看的占卜手记，应该写什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/blog/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "问卜札记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "为什么问卜先给你一张盘，再给一段话 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "直接问 AI，还是先用工具计算？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "问卜与 FateTell：按你想做的事来选 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "问卜与 Labyrinthos：学塔罗，还是先试一次？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/about/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "About Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/agent/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Wenbu Agent · chat, charts & sourced research · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/agents/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Wenbu for agents · MCP, CLI & Skills · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/bazi/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free BaZi calculator & Four Pillars chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How to keep a useful reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/blog/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Notes from Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Why Wenbu shows a chart before it writes a story · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Ask a chatbot, or use a calculator first? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Wenbu or FateTell: what do you want to do? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Wenbu or Labyrinthos: a first reading or a tarot practice? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/free/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free to use, with clear limits · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/iching/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free I Ching reading & hexagram oracle · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free BaZi, I Ching, tarot & Zi Wei tools · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Why an AI reading can feel accurate · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How to turn a vague worry into a useful question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How to read a BaZi chart, one pillar at a time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "The Ten Gods in BaZi: a worked example with Jia Wood · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "BaZi and Western astrology: what each chart calculates · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Birth time, time zones and apparent solar time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Chinese zodiac and BaZi: which new year counts? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "BaZi, I Ching, tarot or Zi Wei: where should you begin? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Your first visit: start with one small question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Does a missing element need to be “fixed”? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How three coins become an I Ching hexagram · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Trigrams and hexagrams: read the structure first · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "searchWidth": 592.578125,
+      "title": "The Wenbu library · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "What to prepare before creating a birth chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How to read an AI interpretation and check its sources · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "After the reading: a simple way to reflect and follow up · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Your first tarot reading starts with a better question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Are reversed tarot cards bad? Start with a clear rule · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Tarot suits and court cards without the memorization · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Can you use BaZi without a birth time? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Zi Wei’s Four Transformations: Lu, Quan, Ke and Ji · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Reading the twelve palaces of Zi Wei Dou Shu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/methodology/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "How the tools calculate results · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/privacy/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Privacy and your data · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/sources/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Sources & further reading · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "78 tarot cards · the illustrated Wenbu deck · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/tarot/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free tarot reading · one & three cards · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/terms/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Terms and use of Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/ziwei/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Free Zi Wei Dou Shu chart calculator · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/free/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费功能与使用额度 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/iching/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费易经占卜，从一卦看见变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费八字、易经、塔罗与紫微工具 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "AI 算命说得很像我，意味着什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "不会提问也没关系：把困惑说清楚 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "十神是什么？用甲木日主读懂十种关系 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "八字与西方占星：两种地图，不是一套算法 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "生肖与八字：为什么立春和春节不能混用 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "八字、易经、塔罗、紫微，我该从哪里开始？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "第一次用问卜：从一个小问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "五行缺什么，就一定要补什么吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "三枚铜钱怎样组成一卦？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "八卦与六十四卦：先认上下，再读变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "searchWidth": 612,
+      "title": "知识手册 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "排盘前准备什么？一张出生资料清单 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "怎样读一份 AI 解读：看结果，也看依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "读完以后做什么：一次简单的复盘练习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "第一次读塔罗：从一个好问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "塔罗逆位一定不好吗？先选好阅读规则 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "塔罗四种花色与宫廷牌，怎样记才不乱？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "不知道出生时间，还能排八字吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "紫微四化入门：禄、权、科、忌该怎么看 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "紫微斗数十二宫：怎样读一张星盘 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/methodology/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "计算与依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/privacy/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "隐私与数据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/sources/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "参考资料与研究来源 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "78 张塔罗牌图鉴 · 问卜原创插画与牌义 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/tarot/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费塔罗占卜，遇见新的视角 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/terms/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "使用说明与条款 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/ziwei/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "免费紫微斗数排盘，十二宫可视化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/journal/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "我的手记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/journal/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Your reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/insights/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "访问与使用 · 管理后台 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/en/insights/",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Product analytics · administration · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/404.html",
+      "overflow": false,
+      "scrollWidth": 768,
+      "title": "Page not found · 此处留白 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 768
+    },
+    {
+      "path": "/about/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "关于问卜 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/agent/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "命理 Agent · 对话、排盘与有依据的研习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/agents/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "与你的 Agent 一起探索 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/bazi/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费八字排盘，读懂你的五行底色 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "一份值得回看的占卜手记，应该写什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/blog/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "问卜札记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "为什么问卜先给你一张盘，再给一段话 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "直接问 AI，还是先用工具计算？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "问卜与 FateTell：按你想做的事来选 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "问卜与 Labyrinthos：学塔罗，还是先试一次？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/about/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "About Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/agent/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Wenbu Agent · chat, charts & sourced research · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/agents/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Wenbu for agents · MCP, CLI & Skills · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/bazi/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free BaZi calculator & Four Pillars chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/blog/a-reading-you-can-return-to/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How to keep a useful reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/blog/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Notes from Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/blog/why-calculation-comes-first/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Why Wenbu shows a chart before it writes a story · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/compare/chatbot/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Ask a chatbot, or use a calculator first? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/compare/fatetell/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Wenbu or FateTell: what do you want to do? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/compare/labyrinthos/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Wenbu or Labyrinthos: a first reading or a tarot practice? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/free/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free to use, with clear limits · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/iching/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free I Ching reading & hexagram oracle · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free BaZi, I Ching, tarot & Zi Wei tools · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Why an AI reading can feel accurate · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How to turn a vague worry into a useful question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How to read a BaZi chart, one pillar at a time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "The Ten Gods in BaZi: a worked example with Jia Wood · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "BaZi and Western astrology: what each chart calculates · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Birth time, time zones and apparent solar time · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Chinese zodiac and BaZi: which new year counts? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "BaZi, I Ching, tarot or Zi Wei: where should you begin? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Your first visit: start with one small question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Does a missing element need to be “fixed”? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How three coins become an I Ching hexagram · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Trigrams and hexagrams: read the structure first · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "searchWidth": 830.578125,
+      "title": "The Wenbu library · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "What to prepare before creating a birth chart · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How to read an AI interpretation and check its sources · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "After the reading: a simple way to reflect and follow up · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Your first tarot reading starts with a better question · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Are reversed tarot cards bad? Start with a clear rule · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Tarot suits and court cards without the memorization · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Can you use BaZi without a birth time? · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Zi Wei’s Four Transformations: Lu, Quan, Ke and Ji · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Reading the twelve palaces of Zi Wei Dou Shu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/methodology/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "How the tools calculate results · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/privacy/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Privacy and your data · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/sources/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Sources & further reading · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "78 tarot cards · the illustrated Wenbu deck · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/tarot/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free tarot reading · one & three cards · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/terms/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Terms and use of Wenbu · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/ziwei/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Free Zi Wei Dou Shu chart calculator · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/free/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费功能与使用额度 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/iching/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费易经占卜，从一卦看见变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费八字、易经、塔罗与紫微工具 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/ai-divination/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "AI 算命说得很像我，意味着什么？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/ask-a-better-question/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "不会提问也没关系：把困惑说清楚 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/bazi-basics/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "十神是什么？用甲木日主读懂十种关系 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/bazi-vs-western-astrology/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "八字与西方占星：两种地图，不是一套算法 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/birth-time-timezone/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "出生时间、时区与真太阳时，怎样选才清楚？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/chinese-zodiac-vs-bazi/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "生肖与八字：为什么立春和春节不能混用 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/choose-a-tool/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "八字、易经、塔罗、紫微，我该从哪里开始？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/first-reading/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "第一次用问卜：从一个小问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/five-elements/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "五行缺什么，就一定要补什么吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/iching-three-coins/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "三枚铜钱怎样组成一卦？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/iching-trigrams/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "八卦与六十四卦：先认上下，再读变化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "searchWidth": 850,
+      "title": "知识手册 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "排盘前准备什么？一张出生资料清单 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "怎样读一份 AI 解读：看结果，也看依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "读完以后做什么：一次简单的复盘练习 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/tarot-beginner/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "第一次读塔罗：从一个好问题开始 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/tarot-reversals/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "塔罗逆位一定不好吗？先选好阅读规则 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "塔罗四种花色与宫廷牌，怎样记才不乱？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/unknown-birth-time/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "不知道出生时间，还能排八字吗？ · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "紫微四化入门：禄、权、科、忌该怎么看 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/learn/ziwei-twelve-palaces/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "紫微斗数十二宫：怎样读一张星盘 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/methodology/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "计算与依据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/privacy/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "隐私与数据 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/sources/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "参考资料与研究来源 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/tarot/deck/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "78 张塔罗牌图鉴 · 问卜原创插画与牌义 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/tarot/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费塔罗占卜，遇见新的视角 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/terms/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "使用说明与条款 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/ziwei/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "免费紫微斗数排盘，十二宫可视化 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/journal/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "我的手记 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/journal/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Your reading journal · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/insights/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "访问与使用 · 管理后台 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/en/insights/",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Product analytics · administration · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    },
+    {
+      "path": "/404.html",
+      "overflow": false,
+      "scrollWidth": 1024,
+      "title": "Page not found · 此处留白 · Wenbu 问卜",
+      "visibleOverflow": [],
+      "width": 1024
+    }
+  ]
+}

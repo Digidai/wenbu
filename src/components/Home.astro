@@ -6,13 +6,17 @@ import { choose, href, toolInfo } from '../lib/i18n';
 import type { Locale, ToolKind } from '../lib/schema';
 const { locale } = Astro.props as { locale: Locale };
 const t = (zh: string, en: string) => choose(locale, zh, en);
+const featuredArticles = ['first-reading', 'choose-a-tool', 'tarot-beginner']
+  .map((slug) => articles.find((article) => article.slug === slug))
+  .filter((article): article is (typeof articles)[number] => Boolean(article));
 ---
 
 <div class="shell">
   <section class="hero">
     <div class="hero-copy">
       <span class="eyebrow accent">
-        <i class="small-dot"></i>AN OPEN DOOR TO ANCIENT WISDOM
+        <i class="small-dot"></i>
+        {t('八字 · 易经 · 塔罗 · 紫微', 'BAZI · I CHING · TAROT · ZI WEI')}
       </span>
       <h1>
         {locale === 'zh' ? (
@@ -25,14 +29,14 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
           <>
             Bring your question.
             <br />
-            <em>Find a fresh perspective.</em>
+            <em>See it more clearly.</em>
           </>
         )}
       </h1>
       <p class="hero-description">
         {t(
-          '免费排八字与紫微命盘、抽塔罗、问易经。也可以直接与 Agent 对话，让它调用工具、查阅资料，把结果和出处放在一起。',
-          'Calculate a birth chart, draw tarot or cast the I Ching for free. Or ask Wenbu Agent to use the tools, read references and bring the results together.',
+          '不懂命理也可以开始。把工作、关系或眼前的困惑告诉 Agent，它会帮你理清问题，按需要排盘、抽牌或查资料。也可以直接使用四种免费工具。',
+          'You don’t need to know the terminology. Tell Wenbu Agent what’s on your mind, and it can help frame your question, use a tool and look up references. Or explore the four free tools yourself.',
         )}
       </p>
       <div class="hero-buttons">
@@ -41,13 +45,13 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
           <span aria-hidden="true">↗</span>
         </a>
         <a class="text-link" data-track="hero-chart" href={href(locale, 'bazi')}>
-          {t('直接免费排盘', 'Go straight to a chart')}
+          {t('打开八字排盘', 'Try the BaZi calculator')}
           <span aria-hidden="true">→</span>
         </a>
       </div>
       <div class="hero-meta">
         <span>{t('无需注册', 'NO ACCOUNT')}</span>
-        <span>{t('工具免费', 'FREE TO EXPLORE')}</span>
+        <span>{t('工具免费', 'FREE TOOLS')}</span>
         <span>{t('计算有依据', 'METHODS YOU CAN CHECK')}</span>
       </div>
     </div>
@@ -59,9 +63,9 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
   <a class="home-agent-entry" data-track="home-agent" href={href(locale, 'agent')}>
     <span class="home-agent-mark">问</span>
     <span>
-      <small>WENBU AGENT · {t('独立研习室', 'THE RESEARCH STUDIO')}</small>
+      <small>WENBU AGENT · {t('从提问到看懂结果', 'HELP WITH YOUR FIRST QUESTION')}</small>
       <strong>
-        {t('命盘、图解与出处，放进同一段对话。', 'Charts, visual notes and sources, in one conversation.')}
+        {t('还不知道怎么问？从几个选项开始。', 'Not sure what to ask? Start with a few choices.')}
       </strong>
     </span>
     <span class="home-agent-cta">{t('与命理 Agent 对话', 'Meet Wenbu Agent')} ↗</span>
@@ -74,19 +78,19 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
       </svg>
       <span>{t('留白一刻', 'A QUIET THOUGHT')}</span>
     </div>
-    <p>{t('不急着知道答案，先听清自己的问题。', 'Before finding an answer, listen to the question.')}</p>
+    <p>{t('先从最近的一件具体小事说起。', 'Start with one situation you can describe.')}</p>
     <span class="small-label">{t('问卜 · 日常灵感', 'WENBU · A DAILY PRACTICE')}</span>
   </div>
   <section class="section reveal" id="explore">
     <div class="section-heading">
       <div>
-        <span class="eyebrow">FOUR WAYS TO LOOK WITHIN</span>
-        <h2>{t('一问之间，换个角度。', 'One question. A different perspective.')}</h2>
+        <span class="eyebrow">{t('四种工具，各有入口', 'FOUR WAYS TO BEGIN')}</span>
+        <h2>{t('选择适合当前问题的工具。', 'Choose a way to begin.')}</h2>
       </div>
       <p>
         {t(
-          '选择一种方式，给心里的事情一个新的入口。',
-          'Choose a tradition. Give what is on your mind a new place to begin.',
+          '想看出生时的命盘，选八字或紫微；想梳理一件具体的事，可以从易经或塔罗开始。',
+          'BaZi and Zi Wei use your birth details. I Ching and tarot start with a question about your current situation.',
         )}
       </p>
     </div>
@@ -145,12 +149,17 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
             <div class="tool-card-bottom">
               <span>
                 {t(
-                  ['出生的五行底色', '变化中的一束光', '一场直觉的相遇', '十二宫的人生地图'][i],
                   [
-                    'YOUR ELEMENTAL PALETTE',
-                    'THE LANGUAGE OF CHANGE',
-                    'A MOMENT OF INTUITION',
-                    'A TWELVE-PALACE MAP',
+                    '出生日期 · 时间可选',
+                    '一个问题 · 六爻成卦',
+                    '单张或三张 · 无需生日',
+                    '需要出生日期与时辰',
+                  ][i],
+                  [
+                    'BIRTH DATE · TIME OPTIONAL',
+                    'ONE QUESTION · SIX LINES',
+                    'ONE OR THREE CARDS',
+                    'BIRTH DATE AND TIME',
                   ][i],
                 )}
               </span>
@@ -168,12 +177,12 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
       <img src="/images/tarot/19-sun.webp" width="180" height="270" alt="" loading="lazy" />
     </div>
     <div>
-      <span class="eyebrow accent">THE WENBU DECK · 78 ILLUSTRATIONS</span>
-      <h2 id="deck-heading">{t('让一个画面，打开另一种看法。', 'A picture. Another way to see.')}</h2>
+      <span class="eyebrow accent">{t('问卜牌组 · 78 张原创插画', 'THE WENBU DECK · 78 ILLUSTRATIONS')}</span>
+      <h2 id="deck-heading">{t('先看画面，再读牌义。', 'Take a closer look at the cards.')}</h2>
       <p>
         {t(
-          '78 张原创 AI 插画，重新描绘传统塔罗意象。抽一张整理思绪，或用三张牌看见当下、牵引与下一步。每张牌都可以放大细看。',
-          '78 original AI illustrations reinterpret traditional tarot imagery. Draw one card for reflection, or three for the situation, tension and next step. Open any card to look closer.',
+          '78 张原创 AI 插画，配有正逆位关键词。可以抽一张整理思绪，也可以用三张牌分别思考当下、牵引与下一步。点开牌面，慢慢看清细节。',
+          'Browse 78 original AI illustrations with upright and reversed keywords. Draw one card, or use three to consider your situation, the tension within it and a possible next step. Open any card to see the details.',
         )}
       </p>
       <a class="text-link" data-track="tool-entry" href={href(locale, 'tarot/deck')}>
@@ -183,11 +192,11 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
   </section>
   <div class="home-proof-row">
     <a href={href(locale, 'methodology')}>
-      <strong>{t('计算与解释分开', 'Calculations come first')}</strong>
+      <strong>{t('先看结果，再读解释', 'Check the basis')}</strong>
       <span>
         {t(
-          '四柱、星盘与抽牌由工具产生；解释标明依据与边界。',
-          'Tools produce the chart or draw. Interpretations state their scope.',
+          '四柱、星曜、牌面和爻值由工具生成，可查看计算规则与来源。',
+          'Inspect the chart or draw, then check the calculation rules and references.',
         )}
       </span>
     </a>
@@ -195,36 +204,36 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
       <strong>{t('免费额度公开', 'Clear free allowances')}</strong>
       <span>
         {t(
-          '无需注册。AI 解读每天 5 次，Agent 每天 12 回合，按网络计数。',
-          'No account. Five AI readings and 12 Agent turns per network each day.',
+          '每个网络每日最多 5 次 AI 解读、12 回合 Agent 对话，另有全站额度。',
+          'Up to five AI readings and 12 Agent turns per network daily, within a shared site budget.',
         )}
       </span>
     </a>
     <a href={href(locale, 'privacy')}>
-      <strong>{t('资料由你选择', 'You choose the context')}</strong>
+      <strong>{t('发送的资料由你选择', 'Know what you’re sharing')}</strong>
       <span>
         {t(
-          '会话与手记留在本机；发送前可查看会分享什么。',
-          'Conversations and journals stay in this browser. You choose what to share.',
+          '记录保存在本浏览器。对话发送时，消息和所选资料会交给 DeepSeek。',
+          'Records are saved in this browser. Sending a message shares the conversation and selected context with DeepSeek.',
         )}
       </span>
     </a>
   </div>
   <section class="manifesto reveal">
     <div>
-      <span class="eyebrow accent">A MIRROR, NOT A VERDICT</span>
+      <span class="eyebrow accent">{t('看懂来由，保留判断', 'MAKE SENSE OF YOUR READING')}</span>
       <h2>
         {locale === 'zh' ? (
           <>
-            借古人的眼光，
+            看懂结果，
             <br />
-            看见<em>自己的可能。</em>
+            也保留<em>自己的判断。</em>
           </>
         ) : (
           <>
-            An old language.
+            Understand the reading.
             <br />
-            <em>Your own meaning.</em>
+            <em>Choose your next step.</em>
           </>
         )}
       </h2>
@@ -232,24 +241,24 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
     <div class="manifesto-items">
       {[
         [
-          t('看得见的依据', 'A basis you can see'),
+          t('核对计算规则', 'Check the method'),
           t(
-            '先呈现命盘和符号，再说它们意味着什么。计算规则与来源，始终可以查看。',
-            'See the chart and symbols before the story. Calculation conventions and sources are always within reach.',
+            '时区、换日方式和随机抽取规则都会影响结果。先确认采用哪套规则，再比较不同工具的结果。',
+            'Time zones, day boundaries and draw methods matter. Check the settings before comparing results from different tools.',
           ),
         ],
         [
-          t('留得住的思考', 'A thought you can return to'),
+          t('记下当时的想法', 'Keep a useful record'),
           t(
-            '把有共鸣的瞬间记下来，过些时候再读。手记只在你自己的浏览器里。',
-            'Save a moment that resonates and revisit it later. Your journal lives in your own browser.',
+            '保存结果，补上当时的问题和自己的理解。过些时候再看，哪些贴合，哪些没有。手记可导出备份。',
+            'Save the result with your question and notes. Return later to see what held up and what didn’t. Export your journal to keep a backup.',
           ),
         ],
         [
-          t('由你决定的下一步', 'A next step that belongs to you'),
+          t('回到现实里验证', 'Test an idea in daily life'),
           t(
-            '不替你给人生下定论。把解读当作一个问题，把选择留给真实生活里的你。',
-            'Take a reading as a question to consider. The choices and the life around them remain yours.',
+            '把有用的启发变成一次沟通、一次查证或一个小尝试。解读提供思路，具体选择还需要现实信息。',
+            'Turn an insight into a conversation or a small change you can try. Make decisions with evidence from your actual situation.',
           ),
         ],
       ].map(([title, body], i) => (
@@ -266,27 +275,27 @@ const t = (zh: string, en: string) => choose(locale, zh, en);
   <section class="section reveal">
     <div class="section-heading">
       <div>
-        <span class="eyebrow">THE WENBU LIBRARY</span>
-        <h2>{t('不止读懂结果，也读懂来由。', 'Understand the why behind the reading.')}</h2>
+        <span class="eyebrow">{t('知识手册 · 从零开始', 'THE WENBU LIBRARY · START HERE')}</span>
+        <h2>{t('第一次使用，先读这几篇。', 'A little guidance for your first reading.')}</h2>
       </div>
       <a class="text-link" href={href(locale, 'learn')}>
         {t('翻开知识手册', 'Explore the library')} ↗
       </a>
     </div>
     <div class="article-grid">
-      {[articles[0], articles[3], articles[6]].map((article) => (
+      {featuredArticles.map((article) => (
         <ArticleCard article={article} locale={locale} />
       ))}
     </div>
   </section>
   <section class="agent-banner reveal">
     <div>
-      <span class="eyebrow">FOR THE AGENTS IN YOUR LIFE</span>
-      <h2>{t('把理解带走，把对话继续。', 'Take the context. Continue the conversation.')}</h2>
+      <span class="eyebrow">{t('连接你自己的 Agent', 'FOR YOUR OWN AI ASSISTANT')}</span>
+      <h2>{t('在熟悉的 Agent 里继续聊。', 'Bring it to your own AI assistant.')}</h2>
       <p>
         {t(
-          '你的命盘，可以成为下一次对话的起点。通过 MCP、CLI 或 Skill，与你自己的 Agent 一起探索。',
-          'Your chart can become the starting point for another conversation. Bring it to your agent through MCP, CLI or a Skill.',
+          '通过 MCP、CLI 或 Skill 获取结构化命盘，也可以导出当前结果和自己选择的背景，让已有的对话接着往下走。',
+          'Use MCP, the CLI or a Skill to get structured results. You can also export a reading with the context you choose and bring it into an existing conversation.',
         )}
       </p>
       <a class="text-link" href={href(locale, 'agents')}>

@@ -11,10 +11,14 @@ const copy = article[locale];
     <span>{article.symbol}</span>
   </div>
   <span class="eyebrow">
-    {article.category === 'blog' ? 'WENBU JOURNAL' : 'FIELD NOTES'} · {article.minutes}{' '}
-    {choose(locale, '分钟', 'MIN READ')}
+    {article.category === 'blog'
+      ? choose(locale, '问卜札记', 'NOTES FROM WENBU')
+      : choose(locale, '知识手册', 'THE WENBU LIBRARY')}{' '}
+    · {article.minutes} {choose(locale, '分钟', 'MIN READ')}
   </span>
   <h3>{copy.title}</h3>
   <p>{copy.description}</p>
-  <span class="read-link">{choose(locale, '继续阅读', 'Read the story')} ↗</span>
+  <span class="read-link">
+    {choose(locale, '继续阅读', article.category === 'blog' ? 'Read the note' : 'Read the guide')} ↗
+  </span>
 </a>

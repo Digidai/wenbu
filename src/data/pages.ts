@@ -4,21 +4,20 @@ export const pages: Record<string, Page> = {
   about: {
     zh: {
       title: '关于问卜',
-      description:
-        'Wenbu 问卜是一组免费、透明、易于使用的命理与占卜工具，帮助人们在古老符号中找到当下的思考。',
+      description: '了解问卜如何帮你理清问题、使用八字与占卜工具、核对资料，并把有用的理解记下来。',
       sections: [
         {
-          heading: '问而有思，行而有度',
+          heading: '从一个具体问题开始',
           paragraphs: [
-            '问卜，是提出一个问题，也给自己留下一点思考的空间。Wenbu 读作 wen-boo，来自中文「问卜」。我们希望古老的符号可以进入现代生活，同时保留清楚的来由与边界。',
-            '网站由 Gene Dai 构建，提供八字、易经、塔罗和紫微工具，以及可导出的本地手记。无需姓名和账户即可开始。',
+            'Wenbu 读作 wen-boo，中文是「问卜」。你可以带着关于工作、关系或日常选择的问题进来，也可以只是想学会看一张命盘。无需先熟悉术语。',
+            '网站由 Gene Dai 构建。Agent 会用选项帮你整理问题，按需调用八字、易经、塔罗或紫微工具，查阅资料并整理结果。四种工具也能独立使用，记录可保存到浏览器并导出。开始使用无需姓名或账户。',
           ],
         },
         {
           heading: '我们在乎什么',
           paragraphs: [
-            '让计算可复核，让解释被明确标记，让不确定性被保留。我们不制造专家头衔、用户见证或准确率，也不用恐吓性的说法推动付费。',
-            '内容与代码使用 AI 辅助制作，解释性文字并非由经认证的命理专家审定。算法采用公开库和明确的约定；发现问题时，优先修正计算、来源或表达，而不是为旧答案补故事。',
+            '一份结果应该说清楚用了哪些输入、采用什么规则、哪些部分只是解释。问卜展示原始命盘或抽取结果，再提供可选的 AI 解读；有出处的说法可以继续核对，不确定的地方应保留说明。',
+            '内容与代码使用 AI 辅助制作，解释性文字没有经过命理专业人士逐篇审定。计算采用公开程序库和明确的约定。我们会修正发现的计算、来源和表达问题，不以头衔、用户感言或未经验证的准确率代替证据。',
           ],
         },
         {
@@ -32,20 +31,20 @@ export const pages: Record<string, Page> = {
     en: {
       title: 'About Wenbu',
       description:
-        'Free, transparent tools for BaZi, I Ching, tarot and Zi Wei, built to make cultural reflection accessible without turning symbols into verdicts.',
+        'Meet Wenbu: a place to ask a question, explore BaZi, I Ching, tarot or Zi Wei, and understand how a reading was made.',
       sections: [
         {
-          heading: 'Ask thoughtfully. Act with care.',
+          heading: 'Start with something on your mind',
           paragraphs: [
-            'Wenbu, pronounced wen-boo, comes from the Chinese phrase 问卜: to ask an oracle. We want old symbolic languages to be accessible in modern life, with their methods and limits kept visible.',
-            'Built by Gene Dai, Wenbu offers four tools and an exportable local journal. You can begin without a name or an account.',
+            'Wenbu, pronounced wen-boo, comes from 问卜, Chinese for consulting an oracle. Bring a question about work, a relationship or an everyday choice. You can also come simply to learn how a chart works. You do not need to know the terminology first.',
+            'Built by Gene Dai, Wenbu offers an Agent that helps frame your question, uses one of four tools when needed, reads references and brings the results together. You can also use each tool directly. Save readings in your browser and export them for later. You can start without an account or your name.',
           ],
         },
         {
           heading: 'What matters to us',
           paragraphs: [
-            'Calculations should be reproducible. Interpretations should be labeled. Uncertainty should remain visible. We do not invent credentials, testimonials or accuracy rates, or use frightening claims to push purchases.',
-            'The content and code are AI-assisted; interpretive material has not been certified by a professional practitioner. The engines use public libraries and explicit conventions. When something is wrong, the response is to fix the calculation, source or wording.',
+            'A reading should tell you what went into it, how the result was calculated and where interpretation begins. Wenbu shows the chart or draw separately from the optional AI reading. You can check cited sources and see where the answer remains uncertain.',
+            'AI helps produce the content and code. Interpretive articles have not each been reviewed by a professional practitioner. Calculations use public libraries and stated conventions. When we find an error, we correct the calculation, source or wording; credentials, testimonials and untested accuracy claims are not substitutes for evidence.',
           ],
         },
         {
@@ -63,89 +62,93 @@ export const pages: Record<string, Page> = {
       description: '公开问卜的八字、易经、塔罗与紫微计算规则、模型分工、版本和不确定性，方便你独立核对结果。',
       sections: [
         {
-          heading: '计算、传统与解释，分别说明',
+          heading: '先分清结果和解释',
           paragraphs: [
-            '命盘和随机结果由代码生成，DeepSeek 只在用户请求时参与解释。页面把原始结构和解读分开。符号解释属于文化探索，不是对未来、性格或他人的事实鉴定。',
+            '八字和紫微根据输入资料排盘；塔罗和在线起卦由程序随机抽取。页面会保留原始结果。你可以自己阅读，也可以请求 DeepSeek 解读，或与 Agent 继续讨论。',
+            '计算能按约定复现，不代表解释已经得到科学验证。传统含义、AI 推断和你提供的现实情况需要分开看。比较两份结果时，先核对输入与计算规则。',
           ],
         },
         {
           heading: '八字：时间规则要先说清楚',
           paragraphs: [
-            '采用 lunar-typescript 1.8.6。出生资料为 1901–2099 年公历日期、当地时间、IANA 时区或明确偏移。年、月柱用对应绝对时刻在固定东八区标准时（UTC+08:00，不叠加历史夏令时）下的节气规则；日、时柱用所选当地时钟。',
-            '默认零点换日（sect=2），可选子初换日（sect=1）。默认规则下晚子时时干仍使用库的次日约定。可选真太阳时采用经度与低阶均时差近似，不承诺天文历表级精度。未知时间不生成时柱，年、月柱以中午暂定并提示交节不确定性。',
-            '五行图每个可见干支各计一次，不加入藏干权重、季节强度或喜用神判定。',
+            '采用 lunar-typescript 1.8.6。输入为 1901 至 2099 年的公历日期、出生地钟表时间，以及 IANA 时区名称或明确的 UTC 偏移。年、月柱按出生绝对时刻与节气时刻比较，使用固定东八区标准时（UTC+08:00，不叠加历史夏令时）；日、时柱默认使用所选当地钟表时间。',
+            '默认在 00:00 换日（sect=2），也可选 23:00 子初换日（sect=1）。默认规则下，晚子时的时干仍使用库的次日约定。开启真太阳时后，日、时柱使用经度与均时差近似校正，年、月柱仍按原绝对时刻计算。出生时间未知时不生成时柱，年、月柱以当地中午暂定，交节日会提示不确定性。',
+            '五行图把每个可见天干和地支各计一次，表示出现次数。它不加入藏干权重或季节影响，不能单凭数量判断五行强弱、格局或喜用神。真太阳时采用近似公式，临近换日或时辰边界时，建议对照不同设置的结果。',
           ],
         },
         {
           heading: '易经：保留六个原始数字',
           paragraphs: [
-            '在线起卦使用密码学随机数模拟三枚公平硬币；也可手动录入 6–9。六爻按自下而上排列。6 与 9 为动爻，翻转后构成之卦。卦名采用文王卦序映射。',
-            '主题提示为原创文字。我们没有将现代注本整本复制进模型提示，也不把多动爻的某一种解释规则宣称为唯一传统。',
+            '在线起卦用密码学随机数模拟三枚公平硬币，也可输入自己投币得到的六个数值。每爻取 6、7、8 或 9，六爻自下而上排列；6 与 9 是动爻，翻转后得到之卦。卦名按文王卦序对应。',
+            '卦象主题提示由问卜编写，不作为古籍原文引用。多个动爻怎样取用有不同传统，本工具展示全部动爻，不指定一种方法为唯一标准。',
           ],
         },
         {
           heading: '塔罗：完整牌组，明确随机过程',
           paragraphs: [
-            '从 78 张牌中均匀、不放回抽取 1 张或 3 张。开启逆位时，每张牌独立以 50% 概率逆位。三张牌阵为当下、牵引、下一步；它们是阅读位置，不是预测保证。牌面抽象图形与提示文字为原创。',
+            '从 78 张牌中等概率抽取 1 张或 3 张，同一次抽取不会重复。开启逆位时，每张牌独立有 50% 的概率呈逆位。三张牌的位置是「当下、牵引、下一步」，用于组织思考，不代表必然发生的顺序。',
+            '78 张牌面为原创 AI 插画，参考传统塔罗意象；关键词与提示文字由问卜编写。模型收到的是牌名、正逆位和关键词，不是牌面图像，因此不应把对传统意象的解释说成看到了图中的细节。',
           ],
         },
         {
           heading: '紫微：保留流派边界',
           paragraphs: [
-            '采用 iztro 2.6.1 默认配置、fixLeap=true，输入当地民用日期与已知时间，不自动校正太阳时。早子、晚子分开处理。传统男女参数用于排盘规则，不用于评价人的身份或资格。宫位与星曜保留中文名称。',
+            '采用 iztro 2.6.1 默认配置，fixLeap=true。输入出生地的公历日期与已知钟表时间，不自动换算时区或校正太阳时。早子时和晚子时分别处理。传统男女参数用于排盘规则；宫位与星曜保留中文名称。不同流派的规则可能不同，对盘前应先核对设置。',
           ],
         },
         {
           heading: '模型与验证',
           paragraphs: [
-            'AI 请求发往 DeepSeek 官网 API，配置名为 deepseek-v4-flash。官方当前把该兼容别名路由到 V4.1-Flash，界面会显示上游实际返回的模型名。模型可以产生错误解释，不能作为计算或科学预测的证据。',
+            'AI 请求发往 DeepSeek 官网 API，当前配置名为 deepseek-v4-flash。服务方可能更新别名对应的模型；结果会显示其返回的模型名称，这不是对底层模型身份的独立验证。模型负责对话与解释，也可能误读结果或来源，重要说法仍需核对。',
             '工程检查包括历法样例、时区与夏令时边界、全部 64 种卦象映射、牌组去重、API 输入校验与 MCP 协议测试。通过软件测试仅说明这些已测试行为符合约定，不等于命理预测得到验证。',
           ],
         },
       ],
     },
     en: {
-      title: 'Our methods, in the open',
+      title: 'How the tools calculate results',
       description:
         'Calculation conventions, random-draw methods, model responsibilities and uncertainty for all four Wenbu tools.',
       sections: [
         {
-          heading: 'Calculation, tradition and interpretation',
+          heading: 'The result and the interpretation',
           paragraphs: [
-            'Code generates the chart or draw. DeepSeek only interprets it when you request a reading. The interface separates the original structure from the prose. Symbolic interpretation is cultural exploration, not a factual assessment of the future or another person.',
+            'BaZi and Zi Wei use your inputs to calculate a chart. Tarot and online I Ching casts use random draws. Wenbu keeps that result visible. Read it yourself, ask DeepSeek for an interpretation or discuss it with the Agent.',
+            'A reproducible calculation does not establish that an interpretation predicts events. Keep the calculation, traditional meanings and AI suggestions distinct. When two results differ, compare the inputs and conventions first.',
           ],
         },
         {
           heading: 'BaZi: explicit time conventions',
           paragraphs: [
-            'The engine is lunar-typescript 1.8.6. Input is a Gregorian date from 1901–2099, local time, and IANA zone or explicit offset. Year/month pillars follow solar terms at the absolute instant expressed in fixed UTC+08:00 standard time; day/hour pillars follow the selected local clock.',
-            'The default is midnight (sect=2), with a 23:00 Zi option (sect=1). Under the default late-Zi convention, the library advances the hour stem. Optional solar correction uses longitude and a low-order equation-of-time approximation, not a precision ephemeris. Unknown time omits the hour pillar and flags provisional noon-based year/month results.',
-            'The element chart counts each visible stem and branch once. It does not weight hidden stems, season or favorable elements.',
+            'The engine is lunar-typescript 1.8.6. It accepts a Gregorian date from 1901 to 2099, the local birth time, and an IANA time zone or explicit UTC offset. Year and month pillars compare the birth instant with solar terms in fixed UTC+08:00 standard time. Day and hour pillars use the selected local clock unless solar correction is enabled.',
+            'The day changes at midnight by default (sect=2); 23:00 is available as an alternative (sect=1). Under the default late-Zi convention, the library still advances the hour stem. Optional apparent solar time adjusts the day and hour calculation using longitude and an approximate equation of time. Year and month pillars keep the original birth instant. If the birth time is unknown, the hour pillar is omitted and year/month results use local noon provisionally, with a warning about solar-term dates.',
+            'The element chart counts each visible stem and branch once. These are counts, not strength scores. They do not account for hidden-stem weights or seasonal effects and cannot establish favorable elements. Solar correction is approximate; compare settings when the time is close to a day or hour boundary.',
           ],
         },
         {
           heading: 'I Ching: keep the six original values',
           paragraphs: [
-            'Online casts use cryptographic randomness to simulate three fair coins. Manual values 6–9 are also accepted. Lines run bottom to top; 6 and 9 change to construct the resulting hexagram. Names use the King Wen sequence.',
-            'Themes are original editorial prompts. We do not bundle modern commentaries wholesale or present one multiple-changing-line method as the only tradition.',
+            'Online casts use cryptographic randomness to simulate three fair coins. You can also enter six values from your own coin tosses. Each line is 6, 7, 8 or 9. Read the lines from bottom to top; 6 and 9 change to form the resulting hexagram. Names follow the King Wen sequence.',
+            'The theme prompts are written for Wenbu and are not quotations from a classical text. Traditions differ on how to read several changing lines. The tool shows all of them without presenting one approach as the only standard.',
           ],
         },
         {
           heading: 'Tarot: a full deck and a stated draw',
           paragraphs: [
-            'One or three cards are selected uniformly without replacement from 78 cards. Optional reversals use an independent 50 percent chance per card. The three positions are Situation, Tension and Next Step. Artwork and prompt wording are original.',
+            'A draw selects one or three cards with equal probability from a 78-card deck, without repeats. If reversals are enabled, each card has an independent 50 percent chance of being reversed. The three positions are Situation, Tension and Next Step. They organize the reading; they do not establish a sequence of future events.',
+            'The 78 cards use original AI illustrations based on traditional tarot imagery, with keywords and prompts written for Wenbu. The model receives card names, orientations and keywords, not the images. Its comments on traditional symbolism should not be read as observations of details in this particular deck.',
           ],
         },
         {
           heading: 'Zi Wei: preserve school differences',
           paragraphs: [
-            'The engine is iztro 2.6.1 with its default configuration and fixLeap=true. It uses entered local civil date/time, no solar correction, and separate early/late-Zi indexes. The traditional sex parameter is a calculation input, not an evaluation of identity or eligibility. Star and palace labels remain in Chinese.',
+            'The engine is iztro 2.6.1 with its default configuration and fixLeap=true. Enter the Gregorian date and known clock time at the birthplace. This tool does not convert time zones or apply solar correction, and it distinguishes early and late Zi hours. The traditional sex parameter is used by the calculation. Star and palace names remain in Chinese. Check conventions before comparing charts from different schools.',
           ],
         },
         {
           heading: 'The model and the checks',
           paragraphs: [
-            'AI requests use the official DeepSeek API with the configured name deepseek-v4-flash. DeepSeek currently routes that compatibility alias to V4.1-Flash; the interface shows the model reported by the provider. Interpretation can still be wrong.',
+            'AI requests use the official DeepSeek API with the configured name deepseek-v4-flash. The provider can change which model a name refers to. Results show the model name returned by the service, not an independent verification of the underlying model. The model handles conversation and interpretation; it can still misread a result or a source.',
             'Software checks cover calendar fixtures, time-zone transitions, all 64 hexagram mappings, unique card draws, API input validation and MCP protocol behavior. Passing those tests supports the tested implementation conventions, not claims of divinatory accuracy.',
           ],
         },
@@ -161,20 +164,20 @@ export const pages: Record<string, Page> = {
           heading: '你输入的资料怎样使用',
           paragraphs: [
             '出生信息通过加密连接发送到 Cloudflare Worker，用于生成命盘。抽牌和起卦接口不需要发送你的问题。问卜不把出生资料、问题或解读写入服务器数据库，也不把它们放进页面地址。',
-            '单次解读在勾选发送说明后，将当前命盘、问题和主动补充的背景发送给 DeepSeek 官网 API。命理 Agent 在发送消息时，会发送最近 16 条消息、6 份命盘、2 版报告和你主动选择的出生资料、背景与手记。DeepSeek 按其自己的隐私政策处理这些数据；问卜不能代表上游承诺零保留。',
+            '单次解读在勾选发送说明后，将当前命盘、问题和主动补充的背景发送给 DeepSeek 官网 API。命理 Agent 在发送消息时，会发送最多 16 条最近消息、6 份命盘、2 版报告和你主动选择的出生资料、背景与手记。DeepSeek 按其自己的隐私政策处理这些数据；问卜不能代表上游承诺零保留。',
           ],
         },
         {
           heading: '会话、手记与导出文件',
           paragraphs: [
-            '保存按钮将结果写入当前浏览器的 localStorage，最多保留最近 100 条。没有默认的云端同步。共享设备上的其他使用者可能访问这些记录，清理浏览器数据会将其删除。',
-            'Agent 会话自动保存在当前浏览器，可逐段删除、导出 JSON，报告可导出 Markdown。关闭资料选项不会抹去已分享的历史；新建对话会从空白上下文开始。页面关闭后不继续执行任务，刷新后保留已收到的结果。存储不足会提示导出备份。',
+            '手记的保存按钮将结果写入当前浏览器的 localStorage，最多保留最近 100 条。没有默认的云端同步。共享设备上的其他使用者可能访问这些记录，清理浏览器数据会将其删除。',
+            'Agent 会话自动保存在当前浏览器，可删除整段会话、导出 JSON，报告可导出 Markdown。取消选择资料不会从旧消息或已有命盘中移除这些信息；新建对话会从空白上下文开始。页面关闭会中断任务，已成功保存的结果可在刷新后恢复。存储不足时会提示导出备份。',
             '研习搜索问卜资料库与精选来源目录；外部阅读仅请求目录中的公开页面地址，不把出生资料或问题附加到这些网址。来源网站仍可能处理服务器请求信息。',
-            '你可以逐条移除手记、在当前页面撤销，或导出 JSON 备份。Agent 上下文导出可预览，原始出生信息需额外勾选；即使不包含出生日期，命盘和问题仍可能属于个人信息。',
+            '手记可逐条删除、在当前页面撤销，或导出 JSON 备份。工具页的「导出给 Agent」可以先预览，原始出生资料需额外勾选。完整会话导出则包含已保存的对话、资料与结果；即使没有出生日期，命盘和问题也可能涉及个人信息。',
           ],
         },
         {
-          heading: '匿名使用统计，可随时关闭',
+          heading: '使用统计，可随时关闭',
           paragraphs: [
             '为了了解哪些页面和功能真正有用，我们通过本站接口向 Cloudflare D1 发送页面路径、来源类别、预先定义的推广活动、语言、国家级区域、设备与浏览器类别、功能事件、成功状态和耗时。不会发送出生日期、问题、聊天、命盘内容、笔记、原始 IP、完整来源网址或网址参数。',
             '浏览器保存一个 30 天到期的随机访客标识和 30 分钟无活动后重置的会话标识。这些是浏览器访问估计，不等于真实人数。事件保留 90 天，后台只向持有管理凭据的人提供汇总统计。',
@@ -184,7 +187,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '免费额度与基础设施',
           paragraphs: [
-            '为了控制滥用，Cloudflare 会处理请求的 IP。AI 额度使用每天变化的加密哈希，持久层只存日期、哈希和次数，按过期清理机制移除。边缘请求限速不等于真实用户识别，共享网络可能共用额度。',
+            '为了控制滥用，Cloudflare 会处理请求的 IP。AI 额度使用每天变化的带密钥哈希，持久层只存日期、哈希和次数，按过期清理机制移除。边缘请求限速不等于真实用户识别，共享网络可能共用额度。',
             '应用不记录请求正文、不安装广告追踪脚本，也不读取浏览器以外的聊天、文件或位置。Cloudflare 的基础设施处理及 DeepSeek 的模型处理受各自政策约束。',
           ],
         },
@@ -205,20 +208,20 @@ export const pages: Record<string, Page> = {
           heading: 'How your inputs are used',
           paragraphs: [
             'Birth details are sent over an encrypted connection to a Cloudflare Worker to calculate the chart. Casting and card-draw endpoints do not need your question. Wenbu does not write birth details, questions or readings to its server database or put them in page URLs.',
-            'Single readings send the chart, question and selected context to the official DeepSeek API after you check the disclosure. Sending an Agent message shares up to 16 recent messages, 6 recent charts, 2 report versions and the birth details, notes and journal entries you explicitly select. DeepSeek processes them under its own privacy policy; Wenbu cannot promise zero retention on the provider’s behalf.',
+            'AI readings on the tool pages send the chart, question and selected context to the official DeepSeek API after you select the consent checkbox. Sending an Agent message shares up to 16 recent messages, 6 recent charts, 2 report versions and the birth details, notes and journal entries you explicitly select. DeepSeek processes them under its own privacy policy; Wenbu cannot promise zero retention on the provider’s behalf.',
           ],
         },
         {
           heading: 'Conversations, local journal and exports',
           paragraphs: [
-            'Saving writes a record to this browser’s localStorage, retaining the most recent 100 entries. There is no automatic cloud sync. Other users of a shared browser may access the records, and clearing browser storage removes them.',
-            'Agent conversations save automatically in this browser. Delete individual conversations, export JSON or download reports as Markdown. Deselecting context does not erase already shared history; a new conversation starts fresh. Tasks stop when the page closes, and received results survive reloads. Storage failures show a backup warning.',
+            'Saving a journal entry writes it to this browser’s localStorage, which retains the latest 100 entries. There is no automatic cloud sync. Other users of a shared browser may access the records, and clearing browser storage removes them.',
+            'Agent conversations save automatically in this browser. You can delete a conversation, export it as JSON or download reports as Markdown. Deselecting context does not remove the information from earlier messages or charts. Start a new conversation for an empty context. Closing the page interrupts the task; results that were saved successfully return after a reload. A storage failure prompts you to export a backup.',
             'Research searches Wenbu’s library and curated catalogue. External reading requests only listed public page URLs, without adding your question or birth details. Source websites may still process server request metadata.',
-            'You can remove individual entries, undo a removal on the current page and export JSON backups. Agent exports can be previewed and omit original birth details unless selected. A chart or personal question may still be sensitive even without a birth date.',
+            'You can delete individual journal entries, undo a deletion on the current page and export JSON backups. On a tool page, “Export for an agent” offers a preview and excludes original birth details unless you select them. A full conversation export includes the saved messages, context and results. Even without a birth date, a chart or question may contain personal information.',
           ],
         },
         {
-          heading: 'Optional anonymous usage measurement',
+          heading: 'Optional usage statistics',
           paragraphs: [
             'Our first-party endpoint records page paths, source categories, registered campaigns, language, country-level region, device/browser categories, feature events, outcomes and durations in Cloudflare D1. It excludes birth details, questions, chat, chart contents, notes, raw IPs, full referrer URLs and URL query parameters.',
             'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events are retained for 90 days. Aggregate reports require administrator credentials.',
@@ -235,7 +238,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'Feedback and updates',
           paragraphs: [
-            'Updated September 28, 2026. Use the GitHub project for feedback, without including birth details, private conversations or credentials in public issues. Remove local records in the journal or clear this site’s browser storage.',
+            'Updated September 29, 2026. Use the GitHub project for feedback, without including birth details, private conversations or credentials in public issues. Remove local records in the journal or clear this site’s browser storage.',
           ],
         },
       ],
@@ -263,15 +266,15 @@ export const pages: Record<string, Page> = {
         {
           heading: '费用与可用性',
           paragraphs: [
-            '当前排盘、起卦、抽牌和本地手记免费；AI 解读与 Agent 对话有公开额度。当前没有订阅收费或付费解锁结果。我们不承诺永久可用、无限调用或任何流量与预测结果。',
-            '模型或网络失败时，计算工具与已保存记录尽可能保持独立可用。请自行导出本地记录的备份。',
+            '当前排盘、起卦、抽牌和本地手记免费；AI 解读与 Agent 对话有公开额度。当前没有订阅收费或付费解锁结果。免费服务受维护、网络与模型可用性影响，不提供无限调用或预测保证。',
+            'AI 不可用或额度用完时，排盘与已保存的记录不受模型额度影响。排盘仍需网络连接。请自行导出本地记录的备份。',
           ],
         },
         {
           heading: '知识产权与反馈',
           paragraphs: [
             '源代码按仓库 LICENSE 提供，第三方依赖遵守各自许可证。品牌名称与第三方产品名称分别属于其权利人；比较页面不表示合作或背书。',
-            '这些说明更新于 2026-09-28。发现计算错误或内容问题时，可通过项目 GitHub 提交可复现且不含私人资料的反馈。',
+            '这些说明更新于 2026-09-29。发现计算错误或内容问题时，可通过项目 GitHub 提交可复现且不含私人资料的反馈。',
           ],
         },
       ],
@@ -298,15 +301,15 @@ export const pages: Record<string, Page> = {
         {
           heading: 'Cost and availability',
           paragraphs: [
-            'Charts, casts, draws and the local journal are currently free. AI readings have a published allowance. There are no current subscriptions or paid result unlocks. We do not promise permanent availability, unlimited calls or guaranteed predictions or traffic.',
-            'Calculations and saved records are designed to remain usable independently of model availability. Export your own local backups.',
+            'Charts, casts, draws and the local journal are currently free. AI readings and Agent conversations have published allowances. There are no current subscriptions or paid result unlocks. Service availability depends on maintenance, network conditions and model access. Free use does not include unlimited calls or guaranteed predictions.',
+            'Calculations and saved records do not use the AI allowance. Calculations still need a network connection. Export local records to keep your own backup.',
           ],
         },
         {
           heading: 'Ownership and feedback',
           paragraphs: [
             'Source code is provided under the repository LICENSE; dependencies retain their own licenses. Product names belong to their respective holders, and comparisons do not imply a partnership or endorsement.',
-            'Updated September 28, 2026. Report calculation or content issues through GitHub with reproducible examples and private information removed.',
+            'Updated September 29, 2026. Report calculation or content issues through GitHub with reproducible examples and private information removed.',
           ],
         },
       ],
@@ -314,29 +317,29 @@ export const pages: Record<string, Page> = {
   },
   free: {
     zh: {
-      title: '免费使用，说明白',
+      title: '免费功能与使用额度',
       description:
         '八字、易经、塔罗、紫微和本地手记免费。单次 AI 解读每天 5 次，Agent 每天 12 回合，均按网络计数并受全站额度限制。',
       sections: [
         {
           heading: '哪些功能免费？',
           paragraphs: [
-            '八字排盘、五行可见字图、紫微十二宫、三钱法起卦、78 张塔罗抽牌、本地手记、JSON 导出、公开学习内容，以及 MCP 和 CLI 的计算接口，当前都无需付款或注册。',
-            '工具接口有每分钟请求限速，用于维持服务可用，并不意味着无限批量调用。',
+            '八字排盘与五行构成图、紫微十二宫、易经三钱法起卦、78 张塔罗抽牌、本地手记、JSON 导出和知识手册，当前都无需付款或注册。MCP 与 CLI 的计算接口也免费开放。',
+            '工具接口当前按请求 IP 限流，每分钟最多 60 次；同一网络的使用者可能共享限制。请避免短时间内大量重复请求。',
           ],
         },
         {
           heading: 'AI 解读怎样计算额度？',
           paragraphs: [
-            '每个网络每天最多 5 次单次 AI 解读，另有 12 回合 Agent 对话。两者共享每天 1,000 次模型请求的全站预算，其中 Agent 最多使用 600 次。每回合最多 5 次模型请求、12 次工具执行，按实际发起的模型请求计入全站额度；按上海时间零点换日。共享 Wi-Fi、公司网络或同一 IPv6 网段可能共用额度；这不是精确的个人账户计数。',
-            '每次 AI 请求在调用上游前占用一次额度。超时或上游失败也可能消耗额度，因为远端调用可能已经发生。单次输入、上下文和输出都有长度限制。',
+            '每个网络每天最多 5 次工具页 AI 解读，另有 12 回合 Agent 对话，按上海时间（UTC+08:00）零点重置。一次发送算一个对话回合，后续追问使用新回合。共享 Wi-Fi、公司网络或同一 IPv6 网段可能共用额度，不是按个人账户计数。',
+            '所有访客另共享每天 1,000 次模型请求的全站预算，其中 Agent 最多使用 600 次。一回合最多调用模型 5 次、执行工具 12 次；模型请求会在调用前预留额度。超时或服务失败也可能消耗额度。输入、上下文和输出有长度限制。',
           ],
         },
         {
           heading: '额度结束之后',
           paragraphs: [
-            '你仍然可以查看命盘、抽牌、起卦、记录手记和导出上下文。也可以通过 MCP 把计算结果交给你自己使用的 Agent 解读；Wenbu 不向 Agent 索取 DeepSeek 密钥。',
-            '这些限制是当前运行配置。若未来调整，会更新此页与界面说明，而不会把已保存的本地记录放到付费墙后面。',
+            'AI 额度用完后，仍可排盘、抽牌、起卦、保存手记和导出结果。也可以通过 MCP 把计算结果交给你自己的 AI 助手；外部助手使用的模型与费用按其服务计算，Wenbu 的计算接口不需要你的 DeepSeek 密钥。',
+            '额度以当前运行配置为准。若有调整，会更新此页与界面说明；已保存的本地记录不受 AI 额度影响。',
           ],
         },
       ],
@@ -349,22 +352,22 @@ export const pages: Record<string, Page> = {
         {
           heading: 'What is free?',
           paragraphs: [
-            'BaZi charts, visible-element diagrams, Zi Wei palaces, three-coin I Ching casts, 78-card tarot draws, the local journal, JSON exports, learning content and calculation access through MCP and CLI currently need no payment or account.',
-            'Tool endpoints have a per-minute rate limit to keep the service available. Free access does not mean unlimited automated bulk requests.',
+            'BaZi charts and element counts, Zi Wei charts, three-coin I Ching casts, 78-card tarot draws, the local journal, JSON exports and learning guides are free to use without an account. Calculation tools are also free through MCP and the CLI.',
+            'Tool endpoints currently allow up to 60 requests per minute per IP address. People sharing a network may share this limit. Avoid sending large bursts of repeated requests.',
           ],
         },
         {
           heading: 'How the AI allowance works',
           paragraphs: [
-            'Each network receives up to five single AI readings and a separate 12 Agent turns per day. Both share a site-wide budget of 1,000 model attempts, with Agent use capped at 600. An Agent turn allows up to five model calls and 12 tool executions; each model attempt counts toward the shared budget. The day resets at midnight in Shanghai. Shared Wi-Fi, office networks or an IPv6 network prefix may share the allowance; it is not an individual-account counter.',
-            'A request reserves an allowance before contacting the provider. Timeouts and provider failures may consume a request because an upstream call may already have occurred. Input, context and output lengths are bounded.',
+            'Each network can use up to five AI readings on the tool pages and 12 Agent turns per day. Sending a message starts one turn; a follow-up uses another. Allowances reset at midnight in Shanghai (UTC+08:00). People on shared Wi-Fi, an office network or the same IPv6 network prefix may share this allowance. It is not an individual account limit.',
+            'All visitors also share a daily budget of 1,000 model requests, of which the Agent can use up to 600. A turn can make up to five model calls and 12 tool calls. Each model request reserves its allowance before contacting DeepSeek, so timeouts and provider failures may still use it. Input, context and output lengths are limited.',
           ],
         },
         {
           heading: 'After the allowance is used',
           paragraphs: [
-            'You can still calculate charts, cast, draw, save and export. MCP also lets your own agent interpret the calculation using its model. Wenbu never asks an agent for the DeepSeek service key.',
-            'These are the current operating limits. Future changes will be reflected here and in the interface; local journal records are not placed behind a paywall.',
+            'You can still calculate charts, cast, draw cards, save readings and export results. MCP lets an AI assistant you already use interpret the result with its own model. That assistant’s fees and limits still apply. Wenbu’s calculation tools do not require your DeepSeek key.',
+            'These are the current operating limits. We will update this page and the interface if they change. The AI allowance does not restrict access to records saved in your browser.',
           ],
         },
       ],

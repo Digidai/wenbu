@@ -8,18 +8,43 @@ const config = JSON.stringify({ mcpServers: { wenbu: { url: origin + '/mcp' } } 
 const cli = [
   'curl -fsS ' + origin + '/wenbu.mjs -o wenbu.mjs',
   'node wenbu.mjs --help',
-  'node wenbu.mjs tarot \'{"count":3}\'',
-  'node wenbu.mjs bazi --file birth.json',
-  'node wenbu.mjs agent --file selected-context.json',
+  `node wenbu.mjs iching '{"lines":[7,7,7,7,7,7],"locale":"${locale}"}'`,
 ].join('\n');
 ---
 
 <div class="prose-grid">
   <article class="prose">
-    <h2>{t('一个地址，六种工具', 'One endpoint. Six tools.')}</h2>
+    <h2>{t('先选一种接入方式', 'Choose how to connect')}</h2>
+    <ul>
+      <li>
+        {t(
+          '已经在用其他 Agent：连接 MCP，由你的 Agent 调用计算与资料工具。',
+          'Already using an agent? Connect MCP so it can calculate charts and read Wenbu guides.',
+        )}
+      </li>
+      <li>
+        {t(
+          '想在终端或程序中拿到结果：使用下方 CLI 或 REST 示例。',
+          'Building a script or working in a terminal? Start with the CLI or REST example below.',
+        )}
+      </li>
+      <li>
+        {t(
+          '希望问卜自己查资料、整理札记：使用内置 DeepSeek Agent。',
+          'Want Wenbu to research a question and write a note? Use the built-in DeepSeek Agent.',
+        )}
+      </li>
+    </ul>
     <p>
       {t(
-        'MCP 使用无会话的 Streamable HTTP。排盘和抽取不需要 API key；Agent 使用自己的模型解释，Wenbu 返回结构化数据、版本与计算约定。',
+        '三种方式都无需问卜账户。计算请求会送达问卜服务；只有选择内置 AI 功能时，所选内容才会进一步交给 DeepSeek。外部 Agent 的数据处理由其宿主决定。',
+        'None requires a Wenbu account. Calculation requests reach Wenbu’s service. Using the built-in AI also sends selected content to DeepSeek; an external agent follows its own host’s data practices.',
+      )}
+    </p>
+    <h2>{t('连接 MCP：六种工具', 'Connect MCP: six tools')}</h2>
+    <p>
+      {t(
+        'MCP 使用无会话的 Streamable HTTP。不需要问卜 API key，也不会调用问卜的 DeepSeek。你的 Agent 用自己的模型解释，问卜返回结构化结果与计算约定。',
         'MCP uses stateless Streamable HTTP. Calculations and draws need no API key. Your agent interprets with its own model; Wenbu supplies structured results, versions and conventions.',
       )}
     </p>
@@ -31,11 +56,22 @@ const cli = [
         'Clients with direct URL support can use this configuration. Host formats vary; use CLI or REST when a host does not support remote MCP.',
       )}
     </p>
-    <div class="table-scroll">
+    <p class="table-scroll-hint">
+      {t(
+        '左右滑动查看完整表格；使用键盘时，可聚焦表格后按方向键。',
+        'Scroll sideways to see the full table. With a keyboard, focus the table and use the arrow keys.',
+      )}
+    </p>
+    <div
+      class="table-scroll"
+      role="region"
+      aria-label={t('MCP 工具与输入说明', 'MCP tools and inputs')}
+      tabindex="0"
+    >
       <table class="comparison-table">
         <thead>
           <tr>
-            <th>Tool</th>
+            <th>{t('工具名称', 'Tool')}</th>
             <th>{t('输入与结果', 'Input and result')}</th>
           </tr>
         </thead>
@@ -79,8 +115,8 @@ const cli = [
             </td>
             <td>
               {t(
-                '日期、已知时间、传统男女参数；十二宫与星曜。',
-                'Date, known time and traditional sex parameter; twelve palaces and stars.',
+                '公历日期、已知当地时刻、传统男女参数；十二宫与星曜，不自动修正真太阳时。',
+                'Gregorian date, known local time and traditional sex parameter; twelve palaces and stars, without solar-time correction.',
               )}
             </td>
           </tr>
@@ -101,15 +137,27 @@ const cli = [
             </td>
             <td>
               {t(
-                '读取原创资料正文、来源编号与链接。外部来源由宿主自行核验。',
-                'Read original content with a source ID and URL. External references need verification by the host.',
+                '读取搜索返回的 guide 或 symbol 条目；外部来源编号不支持此工具。',
+                'Read a guide or symbol entry returned by search. External reference IDs are not supported by this tool.',
               )}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h2>CLI</h2>
+    <p>
+      {t(
+        '先调用 search_library，再把返回的 guide 或 symbol 编号交给 read_library。遇到外部来源，MCP 没有 read_reference 工具，需要宿主自行打开返回的链接；搜索摘要不代表已经读过正文。',
+        'Call search_library, then pass a guide or symbol ID to read_library. For an external reference, have the host open the returned URL: MCP does not expose read_reference. A search snippet is not evidence that a page has been read.',
+      )}
+    </p>
+    <p>
+      {t(
+        '建议每次明确传 locale:"zh" 或 locale:"en"。MCP 默认英文，REST 和 CLI 默认中文；紫微宫位、星曜等传统名称仍保留中文。',
+        'Set locale:"zh" or locale:"en" explicitly. MCP defaults to English; REST and CLI default to Chinese. Traditional labels such as Zi Wei palaces and stars remain in Chinese.',
+      )}
+    </p>
+    <h2>{t('CLI：先跑通一个无隐私示例', 'CLI: try a non-personal example')}</h2>
     <p>
       {t(
         'Node.js 22 或更高版本，无需安装依赖。下载后可以先查看源码，再运行。输入文件只读取你明确指定的那一个。',
@@ -118,17 +166,45 @@ const cli = [
     </p>
     <pre><code>{cli}</code></pre>
     <p>
-      <code>birth.json</code> · {t('示例资料，非真实用户', 'Synthetic example')}
+      {t(
+        '下载后先检查源码，再运行。最后一行使用固定六爻，不会随机起卦或调用模型。成功时返回 kind:"iching" 的 JSON，lines 为六个 7，动爻列表为空。',
+        'Inspect the downloaded source before running it. The final command uses six fixed lines, with no random draw or model call. A successful response is JSON with kind:"iching", six 7s in lines and an empty changing-line list.',
+      )}
+    </p>
+    <p>
+      {t('要试排八字，将以下虚构资料保存为 ', 'To try BaZi, save this synthetic input as ')}
+      <code>birth.json</code>
+      {t('。', '.')}
     </p>
     <pre><code>{JSON.stringify({date:'2000-08-16',time:'03:30',timezone:'Asia/Shanghai',dayBoundary:'midnight',locale},null,2)}</code></pre>
+    <pre><code>{'node wenbu.mjs bazi --file birth.json'}</code></pre>
+    <p>
+      {t(
+        '真实资料请用文件或标准输入，避免进入命令历史。文件只是本次请求的输入，CLI 不会自动读取目录、手记或先前对话。',
+        'Use a file or stdin for personal details to keep them out of shell history. The CLI reads that input only; it does not discover folders, journals or earlier conversations.',
+      )}
+    </p>
     <h2>{t('让 DeepSeek Agent 执行一回合', 'Run a DeepSeek Agent turn')}</h2>
     <p>
       {t(
-        'agent 命令接收消息、用户选定资料和明确的 consent:true，输出逐行 JSON 事件，包括文字、真实工具执行、来源、命盘、报告与完成状态。它不会读取其他文件或自动附带会话历史。',
-        'The agent command accepts a message, selected context and explicit consent:true. It returns newline-delimited JSON events for text, real tool activity, sources, charts, reports and completion. It does not read other files or attach history automatically.',
+        'agent 命令把消息和所选上下文发送给 DeepSeek，输出逐行 JSON 事件。确认用户愿意分享后，将以下内容保存为 request.json，再执行命令。它不会自动附带历史；如需追问，由调用方明确提供 history 和 context。',
+        'The agent command sends the message and selected context to DeepSeek and returns newline-delimited JSON events. After the person chooses to share them, save the following as request.json and run the command. For follow-ups, the caller supplies history and context explicitly.',
       )}
     </p>
     <pre><code>{JSON.stringify({message:locale==='zh'?'查阅资料，解释八字换日的两种约定。':'Research the two BaZi day-boundary conventions.',mode:'research',locale,consent:true},null,2)}</code></pre>
+    <pre><code>{'node wenbu.mjs agent --file request.json'}</code></pre>
+    <p>
+      {t(
+        '最后检查 done 事件的 status：complete 表示本回合完成，waiting 表示还需用户补充，limited 表示预算已用完。error 或没有终止事件的断流都不是完成；已收到的内容可以保留，重试需由用户决定。',
+        'Check the final done event: complete means the turn finished, waiting means it needs input, and limited means the work budget ran out. An error event or a stream that closes without a terminal event is not a completed turn. Keep partial results and let the person decide whether to retry.',
+      )}
+    </p>
+    <p>
+      {t(
+        '网页「导出给 Agent」下载的是资料包，不是上述请求格式。不要直接传给 agent 命令；按协议选择 message、context 和原始命盘输入后再发送。',
+        'The website’s agent-context export is a data bundle, not this request format. Do not pass it directly to the agent command. Select the message, context and original chart input using the protocol first.',
+      )}
+    </p>
     <p>
       <a href="/agent-protocol.md">{t('流式协议与上下文说明', 'Streaming protocol and context guide')} ↗</a> ·{' '}
       <a href={href(locale, 'agent')}>{t('打开网页工作台', 'Open the web workspace')} ↗</a>
@@ -136,8 +212,8 @@ const cli = [
     <h2>Agent Skill</h2>
     <p>
       {t(
-        '下载 SKILL.md 放入宿主的技能目录。它说明何时询问出生资料、怎样选择工具、怎样保留计算约定，以及如何使用用户选择的上下文。',
-        'Place SKILL.md in your host’s skill directory. It explains which birth details to request, tool selection, calculation conventions and user-selected context.',
+        '先阅读 SKILL.md，再按宿主的安装方式放入技能目录。它提供工具选择和上下文处理说明；安装 Skill 不会自动配置 MCP，也不会授予其他聊天或文件的读取权限。',
+        'Read SKILL.md, then follow your host’s skill installation instructions. It describes tool selection and context handling. Installing it does not configure MCP or grant access to other chats or files.',
       )}
     </p>
     <div class="agent-links">
@@ -154,7 +230,7 @@ const cli = [
         Context schema ↗
       </a>
     </div>
-    <h2>REST API</h2>
+    <h2>{t('REST：直接获取 JSON', 'REST: receive JSON directly')}</h2>
     <p>
       {t(
         '所有计算接口使用 POST application/json；个人输入不得放到 URL。成功结果为 JSON，错误包含稳定的 code 和用户可读消息。接口每个网络每分钟有请求限制，遇到 429 请退避。',
@@ -162,6 +238,12 @@ const cli = [
       )}
     </p>
     <pre><code>{'curl -sS '+origin+'/api/v1/bazi -H "Content-Type: application/json" --data-binary @birth.json'}</code></pre>
+    <p>
+      {t(
+        '使用上文的 birth.json。422 通常表示字段或时刻无效；429 表示短时限流或 AI 额度不足，请阅读错误消息。AI 已开始的请求即使失败也可能计次，不要自动重试。',
+        'Use the birth.json file above. A 422 response usually means an invalid field or time; 429 means throttling or an AI allowance limit. Read the error message before retrying. A failed AI request may still count, so do not retry it automatically.',
+      )}
+    </p>
     <h2>{t('让上下文由用户决定', 'Let the person choose the context')}</h2>
     <p>
       {t(
@@ -177,7 +259,7 @@ const cli = [
     </p>
   </article>
   <aside class="article-aside">
-    <span>BUILD WITH WENBU</span>
+    <span>{t('开发者接入', 'BUILD WITH WENBU')}</span>
     <a href="https://github.com/Digidai/wenbu">GitHub ↗</a>
     <a href={href(locale, 'methodology')}>{t('计算约定', 'Methodology')}</a>
     <a href={href(locale, 'privacy')}>{t('数据与隐私', 'Data and privacy')}</a>

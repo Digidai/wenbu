@@ -1,3 +1,5 @@
+import { beginnerArticles } from './beginner-articles';
+
 export type Copy = {
   title: string;
   description: string;
@@ -31,6 +33,7 @@ const tarot = {
   url: 'https://www.gutenberg.org/ebooks/43548',
 };
 export const articles: Article[] = [
+  ...beginnerArticles,
   {
     slug: 'bazi-basics',
     category: 'learn',
@@ -76,10 +79,17 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: '把阅读变成一个可检验的问题',
+          heading: '带着一个例子读命盘',
           paragraphs: [
             '与其问「我是不是注定适合某职业」，不如记录「这种解释让我想到哪段具体经历？又有哪些经历与它相反？」把相符与不符的例子一起保留，会比只寻找印证更有帮助。',
             '问卜先呈现可复核的命盘，再给出明确标记的 AI 解读。你始终可以只使用排盘，不请求解读，也不保存任何资料。',
+          ],
+        },
+        {
+          heading: '现在试一次：只读一根柱',
+          paragraphs: [
+            '用页面示例生成一张盘，先找到日柱中的天干，再在五行图上点选它所属的元素。把你看到的结果写成一句话：“这张示例盘的日主是……，图中的数量采用可见字计数。”',
+            '这一步练习的是识别结构。想继续学习，可以读十神入门，或请 Agent 用一个天干关系举例，不必一次解释整个人生。',
           ],
         },
       ],
@@ -116,10 +126,17 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: 'Turn an interpretation into a question',
+          heading: 'Compare the reading with a real example',
           paragraphs: [
             'Instead of asking whether a career is destined, ask which concrete experiences a reading brings to mind, and which experiences contradict it. Keeping both kinds of examples is more informative than looking only for confirmation.',
             'Wenbu displays the calculation first and labels optional AI reflections separately. You can use the chart without requesting a reading or saving personal details.',
+          ],
+        },
+        {
+          heading: 'Try it: read one pillar',
+          paragraphs: [
+            'Generate a chart with the example details. Find the day pillar’s stem, then select its element in the diagram. Describe only what you can see: “This example has … as its Day Master; the diagram counts visible characters.”',
+            'Once that is clear, move on to the Ten Gods guide or ask the Agent to explain one stem relationship. You do not need to interpret the entire chart at once.',
           ],
         },
       ],
@@ -140,7 +157,7 @@ export const articles: Article[] = [
       description: '理解木火土金水的关系，分清可见字数量、季节旺衰与喜用神，避免把漂亮的五行图误当成诊断。',
       sections: [
         {
-          heading: '五行首先是一套关系语言',
+          heading: '先看五行之间的关系',
           paragraphs: [
             '木、火、土、金、水，在传统思想中用于组织生长、转化、承载、收敛与流动等关系。它们不是身体里五种可以化验的物质，也不是人格的五个科学维度。',
             '相生与相克是系统内的关系。木生火、火生土、土生金、金生水、水生木构成相生循环；相克也不是简单的「不好」，而是另一类制约关系。',
@@ -167,6 +184,13 @@ export const articles: Article[] = [
             '真正决定职业、关系、健康和财务选择的，仍然需要现实信息、沟通与专业判断。',
           ],
         },
+        {
+          heading: '一个不会越界的读图例子',
+          paragraphs: [
+            '假设一张已知时辰的示例盘显示木 2、火 1、土 3、金 2、水 0，总数是 8。你可以确认“可见字里水为 0，土出现最多”，但不能据此说“命里缺水”或“土最旺”。',
+            '下一步在图例中逐项点选，把数量与四柱中的字对上。若想问季节或藏干，请把它写成新的问题，而不是让计数图替你回答。',
+          ],
+        },
       ],
     },
     en: {
@@ -175,10 +199,10 @@ export const articles: Article[] = [
         'Understand the five elements without confusing visible counts, seasonal strength and favorable-element interpretation.',
       sections: [
         {
-          heading: 'A language of relationships',
+          heading: 'Start with the relationships between elements',
           paragraphs: [
             'Wood, Fire, Earth, Metal and Water organize relationships such as growth, transformation, support, refinement and movement in traditional Chinese thought. They are not five substances that a medical test can measure, or five scientifically validated personality scores.',
-            'The generating cycle runs Wood–Fire–Earth–Metal–Water–Wood. The controlling cycle describes another set of relationships. A controlling relationship is not automatically a bad outcome.',
+            'The generating cycle follows Wood, Fire, Earth, Metal and Water, then returns to Wood. The controlling cycle describes another set of relationships. A controlling relationship is not automatically a bad outcome.',
           ],
         },
         {
@@ -200,6 +224,13 @@ export const articles: Article[] = [
           paragraphs: [
             'If Wood suggests growth, name something you want to cultivate. If Metal suggests boundaries, review whether you have overcommitted. These are prompts for observation, not facts inferred from an element.',
             'Decisions about work, relationships, health and money still need real information, conversation and appropriate professional judgment.',
+          ],
+        },
+        {
+          heading: 'A worked example of reading the counts',
+          paragraphs: [
+            'Suppose a complete example chart shows Wood 2, Fire 1, Earth 3, Metal 2 and Water 0. The total is eight. You can say that no visible character is assigned to Water and that Earth occurs most often. The count alone does not establish a deficiency or rank seasonal strength.',
+            'Select each element and match the count to the visible pillars. Treat questions about season or hidden stems as a separate step with its own method.',
           ],
         },
       ],
@@ -231,7 +262,7 @@ export const articles: Article[] = [
         {
           heading: '遇到夏令时重复或缺失的时间',
           paragraphs: [
-            '夏令时前拨会跳过一段钟表时间；后拨可能让同一个时间出现两次。遇到这种输入，问卜会提示补充明确偏移，而不会默默替用户选择一个时刻。',
+            '夏令时前拨会跳过一段钟表时间；后拨可能让同一个时间出现两次。遇到这种输入，问卜的八字工具会提示补充明确偏移，而不会默默替用户选择一个时刻。',
             '例如纽约 2024 年 3 月 10 日的 02:30 并不存在于当地民用时钟；11 月 3 日的 01:30 则有两种可能。此时应查出生记录，再用明确 UTC 偏移表达所指时刻。',
           ],
         },
@@ -247,6 +278,13 @@ export const articles: Article[] = [
           paragraphs: [
             '问卜默认零点换日，同时提供 23:00 子初换日。lunar-typescript 在默认规则下，晚子时的日柱保留当日、时干按次日计算；这一约定会在命盘里注明。',
             '年柱和月柱按绝对交节时刻判定；日柱和时柱采用选定的当地时钟。保存或导出时，会携带这些约定，方便你和其他工具逐项核对。',
+          ],
+        },
+        {
+          heading: '拿到两张不同命盘时，按顺序排查',
+          paragraphs: [
+            '先比较输入的公历日期与当地时刻，再比较时区和夏令时处理，然后核对交节、换日与真太阳时设置。一次只改一项，记录究竟是哪根柱发生了变化。',
+            '提问时可以写：“两盘的年、月柱相同，日柱不同；输入都接近当地 23 点。请先比较换日规则。”如果只是希望学习流程，可以用明确标为示例的日期，不必公开自己的出生记录。',
           ],
         },
       ],
@@ -266,7 +304,7 @@ export const articles: Article[] = [
         {
           heading: 'Some clock times are missing or repeated',
           paragraphs: [
-            'A spring clock change can skip a time; an autumn change can repeat it. Wenbu rejects these ambiguous or nonexistent inputs instead of silently picking an instant. Resolve the recorded time and supply an explicit UTC offset when necessary.',
+            'A spring clock change can skip a time; an autumn change can repeat it. Wenbu’s BaZi calculator rejects these ambiguous or nonexistent inputs instead of silently picking an instant. Resolve the recorded time and supply an explicit UTC offset when necessary.',
             'In New York, 02:30 on March 10, 2024 did not occur on the local civil clock. At the autumn transition, 01:30 on November 3, 2024 has two possible offsets. A birth record or other reliable historical information is needed to choose.',
           ],
         },
@@ -282,6 +320,13 @@ export const articles: Article[] = [
           paragraphs: [
             'The default day boundary is midnight; a 23:00 Zi boundary is also available. In the library’s midnight convention, a late-Zi day pillar stays on the civil day while the hour stem advances. The chart discloses that choice.',
             'Year and month pillars follow absolute solar-term boundaries. Day and hour pillars use the selected local clock. Exports preserve the settings so a discrepancy with another calculator can be investigated rather than explained away.',
+          ],
+        },
+        {
+          heading: 'Compare disagreeing charts one setting at a time',
+          paragraphs: [
+            'Check the Gregorian date and local clock time first, then the time zone and daylight-saving treatment. Next compare solar-term boundaries, the day boundary and solar-time correction. Change one setting at a time and note which pillar changes.',
+            'For example: “The year and month pillars agree, but the day pillar differs for a time near 23:00. Please compare the day-boundary rules first.” Use clearly labeled example details when you only need to demonstrate the issue.',
           ],
         },
       ],
@@ -323,10 +368,17 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: '阅读时，不制造唯一答案',
+          heading: '多条动爻，怎样开始读？',
           paragraphs: [
             '多条动爻怎样取用，存在不同解读传统。问卜把所有动爻呈现出来，不把某一套选爻规则伪装成普遍共识。首页提示语为原创反思文字，不冒充《周易》原文。',
             '先写下一个具体、开放的问题，再记录卦象让你联想到什么。过些时候回来看，你当时忽略了哪些事实、采取了什么行动，会比反复求一个满意的答案更值得留存。',
+          ],
+        },
+        {
+          heading: '用六个数字练习一次',
+          paragraphs: [
+            '把 6、7、8、9、7、8 按从下到上的顺序记录。第一爻的 6 与第四爻的 9 是动爻：前者由阴变阳，后者由阳变阴，其余四爻保持不变。',
+            '在问卜选择“录入铜钱结果”，按这个顺序输入，核对动爻位置，再读卦名。这个例子只用来检查转换规则，没有替任何现实问题起卦。',
           ],
         },
       ],
@@ -351,17 +403,24 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: 'The original and changed hexagrams',
+          heading: 'The original and resulting hexagrams',
           paragraphs: [
-            'Draw the original hexagram from the six line values. Flip only the changing lines to construct the changed hexagram. If none change, the two are identical. This transformation is deterministic and can be checked independently of an AI interpretation.',
+            'Draw the original hexagram from the six line values. Flip only the changing lines to construct the resulting hexagram. If none change, the two are identical. This transformation is deterministic and can be checked independently of an AI interpretation.',
             'Wenbu simulates coin outcomes with cryptographic randomness and also accepts physical coin results. The six values, changing positions and King Wen numbers remain visible for review.',
           ],
         },
         {
-          heading: 'A reading does not have to pretend certainty',
+          heading: 'Where to begin when several lines change',
           paragraphs: [
             'Traditions differ on how to read multiple changing lines. Wenbu shows every changing position rather than claiming a universal selection rule. The short themes are original reflection prompts, not quotations from a classical edition.',
             'Begin with an open, concrete question. Record what the imagery brings to mind and revisit the note later. What you overlooked and what you actually did can be more useful than repeatedly casting until an answer feels comfortable.',
+          ],
+        },
+        {
+          heading: 'Check the process with six numbers',
+          paragraphs: [
+            'Write 6, 7, 8, 9, 7, 8 in bottom-to-top order. Lines one and four change: the first changes from yin to yang, the fourth from yang to yin. The other four stay as they are.',
+            'Enter these as manual coin results in Wenbu and check the changing positions before reading the names. This is a worked example of the transformation, not a cast for a real-life question.',
           ],
         },
       ],
@@ -382,7 +441,7 @@ export const articles: Article[] = [
           heading: '牌组的结构',
           paragraphs: [
             '常见的韦特体系塔罗有 78 张牌：22 张大阿尔卡那，以及权杖、圣杯、宝剑、星币四组各 14 张的小阿尔卡那。小牌各有一至十和四张宫廷牌。',
-            '大牌常用来讨论较大的经验主题，小牌可以帮助观察具体情境。这是阅读惯例，不表示抽到大牌就一定会发生重大事件。问卜使用完整牌组，并创作自己的抽象牌面与简短提示。',
+            '大牌常用来讨论较大的经验主题，小牌可以帮助观察具体情境。这是阅读惯例，不表示抽到大牌就一定会发生重大事件。问卜使用完整牌组，配有原创 AI 插画和简短提示；具体插画不等同于经典韦特原牌图。',
           ],
         },
         {
@@ -406,6 +465,13 @@ export const articles: Article[] = [
             '保存后隔一段时间再看，同时记录没有对应上的部分。塔罗可以陪伴思考，但不替代与当事人的沟通，也不替代医疗、法律或财务专业建议。',
           ],
         },
+        {
+          heading: '第一次可以只抽一张',
+          paragraphs: [
+            '例如用“这周准备一次沟通时，我还需要考虑什么？”作为问题。选一张牌，记下一个联想，再列一个需要向当事人确认的问题。没有联想也没关系，不必硬凑。',
+            '想继续学习，可以先看四种花色与宫廷牌，再比较正位与逆位的阅读方式。同一个问题不必连续重抽到满意为止；新的事实或新的问题出现后，再决定是否开始下一次探索。',
+          ],
+        },
       ],
     },
     en: {
@@ -416,8 +482,8 @@ export const articles: Article[] = [
         {
           heading: 'Know the structure of the deck',
           paragraphs: [
-            'A common Rider–Waite–Smith-style deck contains 78 cards: 22 Major Arcana and 56 Minor Arcana. The four minor suits are Wands, Cups, Swords and Pentacles. Each has Ace through Ten and four court cards.',
-            'Major cards are often read as broader themes, while minor cards invite attention to everyday situations. This convention does not mean a major event is guaranteed. Wenbu uses the full deck, with original abstract artwork and concise editorial prompts.',
+            'A common Rider-Waite-Smith-style deck contains 78 cards: 22 Major Arcana and 56 Minor Arcana. The four minor suits are Wands, Cups, Swords and Pentacles. Each has Ace through Ten and four court cards.',
+            'Major cards are often read as broader themes, while minor cards invite attention to everyday situations. This convention does not mean a major event is guaranteed. Wenbu uses the full deck with original AI illustrations and short reading prompts. Its artwork is not a reproduction of the historical Rider-Waite-Smith deck.',
           ],
         },
         {
@@ -439,6 +505,13 @@ export const articles: Article[] = [
           paragraphs: [
             'Write down the card names, positions and orientations before interpreting them. Add “This reminds me of…” and one small action. The distinction makes it easier to see where an association came from.',
             'Return later and record what did not fit as well as what did. Tarot may support reflection, but it cannot replace conversation with the people involved or qualified advice about health, law and money.',
+          ],
+        },
+        {
+          heading: 'A first reading can be one card',
+          paragraphs: [
+            'Try a question such as: “What should I consider before a conversation this week?” Draw one card, note an association, and write one question you still need to ask the person involved. If nothing comes to mind, you do not need to force a connection.',
+            'Next, learn the suits and court cards, then compare approaches to reversals. Keep the first result rather than redrawing until you like it. New information or a changed question can give a later session a clearer purpose.',
           ],
         },
       ],
@@ -483,6 +556,13 @@ export const articles: Article[] = [
             '尤其不要用疾厄宫诊断疾病，或用夫妻宫断言他人的忠诚。真实的问题要回到真实的资料、沟通和专业帮助。',
           ],
         },
+        {
+          heading: '第一次点开哪些地方',
+          paragraphs: [
+            '先在宫位图中找到命宫，再点一个与你本次问题有关的宫位，分别记录宫名、列出的主星和页面显示的标记。当前页面保留中文宫名和星名，便于与资料逐字核对。',
+            '例如研究工作相关术语，可以请 Agent 说明官禄宫的传统含义，再指出这张盘实际列出了哪些星。先完成“认图”，再决定是否讨论它与你现实经历的联系。',
+          ],
+        },
       ],
     },
     en: {
@@ -516,6 +596,13 @@ export const articles: Article[] = [
           paragraphs: [
             'A friendship palace can prompt you to review which collaborations communicate well. A work palace can prompt a list of tasks you enjoy or resist. Those observations belong to you; the stars have not independently verified them.',
             'Do not use a health palace to diagnose illness or a partnership palace to assert another person’s loyalty. Real questions still need real evidence, conversation and qualified support.',
+          ],
+        },
+        {
+          heading: 'What to open on your first visit',
+          paragraphs: [
+            'Find 命宫, the Life Palace, then select one palace relevant to your question. Note its name, listed major stars and visible markers. Wenbu retains the Chinese palace and star names so you can match them directly with references.',
+            'For a question about work, ask the Agent to explain the traditional context of 官禄宫, the Career Palace, then identify the stars actually listed. Learn to read the chart’s labels before connecting them to your circumstances.',
           ],
         },
       ],
@@ -560,6 +647,13 @@ export const articles: Article[] = [
             '选择能支持当前思考的工具，比填满一张信息不足的表格更重要。',
           ],
         },
+        {
+          heading: '可以这样告诉 Agent',
+          paragraphs: [
+            '“我知道公历生日，但只知道出生在上午，具体时刻没有记录。请先保留未知，不要替我选一个时辰；如果某项结论依赖时柱，请单独说明。”这比填入一个看似精确的默认时间更便于后续核对。',
+            '下一步先做一次不含时柱的八字排盘，读页面的不确定性提示。若只想谈眼前的选择，也可以直接从对话开始。',
+          ],
+        },
       ],
     },
     en: {
@@ -595,6 +689,13 @@ export const articles: Article[] = [
             'A tool that supports the question you actually have is more useful than a fully filled form built on uncertain data.',
           ],
         },
+        {
+          heading: 'Tell the Agent what is known',
+          paragraphs: [
+            'Try: “I know the Gregorian date and that I was born in the morning, but I have no recorded time. Keep the hour unknown. Please identify anything that would depend on an hour pillar.” This preserves a useful distinction for later checks.',
+            'Start with a BaZi chart that omits the hour and read its uncertainty notes. If you only want to discuss a current decision, you can begin with conversation instead.',
+          ],
+        },
       ],
     },
   },
@@ -625,7 +726,7 @@ export const articles: Article[] = [
         '区分算法结果、模型解释与个人联想，识别宽泛描述、确认偏误和伪精确，不把语言流畅当成预测证据。',
       sections: [
         {
-          heading: '共鸣是真实的，结论仍需检查',
+          heading: '一句“很像我”的话，能说明多少？',
           paragraphs: [
             '读到一句贴近经历的话，感到被理解，是一种真实的体验。但「这句话让我有共鸣」和「这个系统能预测我的未来」，是两个不同的命题。',
             '宽泛而兼顾两面的描述可能适用于很多人。我们也更容易记住命中的部分，忽略不符合的部分。面对一段顺畅、温柔的 AI 文字，这些倾向不会自动消失。',
@@ -657,15 +758,22 @@ export const articles: Article[] = [
             '页面记录请求模型名与服务返回的实际模型名。流畅的回答仍然可能有解释错误；欢迎通过项目问题页提交具体例子，避免附带他人的私人资料。',
           ],
         },
+        {
+          heading: '检查一句最有共鸣的话',
+          paragraphs: [
+            '如果回答说“你重视独立，也渴望被理解”，先想一想这句话能适用于多少人，再找一个具体经历和一个反例。你可以觉得它有帮助，同时不把它视为系统准确识别了你。',
+            '下一步请 Agent 把一段回答拆成“实际输入或计算结果”“传统说法”“结合背景的推测”，并标出哪些句子缺少依据。更详细的检查方法见手册中的来源阅读指南。',
+          ],
+        },
       ],
     },
     en: {
-      title: 'An AI reading feels accurate. What does that establish?',
+      title: 'Why an AI reading can feel accurate',
       description:
         'Separate calculation, interpretation and personal association, and avoid confusing fluent language with evidence of predictive accuracy.',
       sections: [
         {
-          heading: 'Resonance is real; the conclusion still needs checking',
+          heading: 'Feeling understood and checking a claim',
           paragraphs: [
             'Feeling understood by a sentence is a real experience. It is different from demonstrating that a system can predict future events. A description can be meaningful to you without establishing predictive validity.',
             'Broad statements can fit many people. We also tend to remember matches more readily than misses. Fluent, reassuring AI prose does not remove these ordinary tendencies.',
@@ -693,8 +801,15 @@ export const articles: Article[] = [
         {
           heading: 'How Wenbu uses a model',
           paragraphs: [
-            'Code calculates charts and performs random draws. DeepSeek receives the result with the question and context you choose to submit. It writes a clearly labeled symbolic reflection; it does not calculate birth dates or supply invented classical quotations.',
+            'Code calculates charts and performs random draws. DeepSeek receives the result with the question and context you choose to submit. It is instructed to use the calculated result and avoid invented classical quotations. Its interpretation and any references still need checking.',
             'The interface records the requested model and the model reported by the service. An articulate answer can still be wrong. Concrete bug reports are welcome, with private information removed.',
+          ],
+        },
+        {
+          heading: 'Check the sentence that feels most personal',
+          paragraphs: [
+            'If an answer says “You value independence but also want to be understood,” consider how many people it could describe. Find a specific example and a counterexample from your experience. A sentence can be useful without demonstrating that the system has identified something uniquely true about you.',
+            'Ask the Agent to separate a paragraph into inputs or calculated results, traditional meanings and inferences from your context. Have it identify any unsupported claim. The source-reading guide gives a fuller method.',
           ],
         },
       ],
@@ -712,7 +827,7 @@ export const articles: Article[] = [
       description: '生肖年、农历新年和八字年柱使用不同边界。用一个清楚的例子理解年初出生者常见的排盘差异。',
       sections: [
         {
-          heading: '同一个「年」，可以有不同起点',
+          heading: '生肖年与八字年柱，先说明用哪条界线',
           paragraphs: [
             '日常生肖常按农历新年理解，而传统八字年柱常以立春交节时刻为界。两者属于不同的约定，并不是把一个年份标签复制到所有场景里。',
             '如果一个人生于公历一月或二月，尤其需要确认问题是在问生肖，还是在计算四柱中的年柱。只根据公历年份做减法，可能忽略真正的边界。',
@@ -721,7 +836,7 @@ export const articles: Article[] = [
         {
           heading: '用 2024 年想一想',
           paragraphs: [
-            '2024 年春节为 2 月 10 日，立春则在 2 月 4 日。这两个日子之间出生的人，在不同生肖表述与八字年柱规则下，可能看到不同年份标签。',
+            '以香港时间计，2024 年春节为 2 月 10 日，立春在 2 月 4 日，可对照香港天文台日历。这两个日子之间出生的人，在不同生肖表述与八字年柱规则下，可能看到不同年份标签。',
             '这里最重要的不是争论哪个标签更讨喜，而是显示使用的历法边界。交节当天还需要准确时刻和时区，不能只比较日期。',
           ],
         },
@@ -729,13 +844,20 @@ export const articles: Article[] = [
           heading: '八字远不止一个生肖',
           paragraphs: [
             '生肖主要对应年支，而八字还包含年干及月、日、时三柱。日主是日干，不是生肖动物。把某生肖的通用描述直接套到整张八字，会遗漏其他结构。',
-            '问卜分别显示农历日期、生肖和四柱，并在计算方法里注明年、月柱的交节规则。读到不同标签时，先检查它们分别回答什么问题。',
+            '问卜显示农历日期和四柱，并在计算方法里注明年、月柱的交节规则。讨论民俗生肖与八字年柱时，先说明各自采用的年份界线。',
+          ],
+        },
+        {
+          heading: '比较时先写清问题',
+          paragraphs: [
+            '如果你只问“我属什么”，先说明想采用民俗生肖的春节界线，还是查看八字年柱的立春界线。接近年初的生日可能因此得到不同标签，差异本身不证明某一方把日期算错。',
+            '在问卜查看四柱时，以年柱说明为准；不要把按春节划分的民俗生肖直接替代年柱地支。想追问边界，请给出示例日期和时区，并要求保留交节时刻。',
           ],
         },
       ],
     },
     en: {
-      title: 'Chinese zodiac and BaZi do not use one universal new year',
+      title: 'Chinese zodiac and BaZi: which new year counts?',
       description:
         'Understand Lunar New Year, the beginning-of-spring solar term and why births in January or February need a clear year-boundary convention.',
       sections: [
@@ -749,7 +871,7 @@ export const articles: Article[] = [
         {
           heading: 'Consider early February 2024',
           paragraphs: [
-            'Lunar New Year in 2024 fell on February 10; the beginning-of-spring term occurred on February 4. A birth between them may receive different year labels under the two conventions.',
+            'In Hong Kong time, Lunar New Year in 2024 fell on February 10 and the beginning-of-spring term on February 4, as shown in the Hong Kong Observatory calendar. A birth between them may receive different year labels under the two conventions.',
             'The useful response is to show the calendar rule, not to select the label that sounds more appealing. A birth on the transition day also requires the time and time zone, not just the date.',
           ],
         },
@@ -757,7 +879,14 @@ export const articles: Article[] = [
           heading: 'A zodiac animal is only one part of a chart',
           paragraphs: [
             'The animal corresponds to the year branch. BaZi also includes the year stem and three more pillars. The Day Master is the day stem, not the zodiac animal. Applying a general animal description to the entire chart omits the rest of its structure.',
-            'Wenbu shows lunar date, zodiac and four pillars as separate fields. Its methodology identifies the solar-term rule used for year and month pillars, so you can understand why labels may differ.',
+            'Wenbu shows the lunar date and four pillars. Its calculation notes explain the solar-term boundaries for the year and month pillars. State the relevant year boundary when comparing a folk-zodiac label with a BaZi year pillar.',
+          ],
+        },
+        {
+          heading: 'State which boundary you are comparing',
+          paragraphs: [
+            'When asking for a zodiac animal, specify whether you mean the Lunar New Year convention or the beginning-of-spring boundary used for the BaZi year pillar. A date near the start of the year can receive different labels without either calendar conversion being wrong.',
+            'In Wenbu, follow the year-pillar convention when reading the four pillars. Do not substitute a folk-zodiac label based on Lunar New Year for the BaZi year branch. For a boundary example, provide a sample date and zone and ask for the solar-term instant.',
           ],
         },
       ],
@@ -808,17 +937,24 @@ export const articles: Article[] = [
             '不必把多种工具的类似说法当作相互独立的验证。它们可能共享宽泛描述，也可能因为你带入了同一段背景而产生相似文字。',
           ],
         },
+        {
+          heading: '想比较两种解释，可以先限定一个问题',
+          paragraphs: [
+            '例如：“请说明两种体系各需要哪些出生资料，哪些结果会受时刻误差影响。”这比把两份完整解读放在一起判断谁更像自己，更容易核对。',
+            '问卜目前提供八字、易经、塔罗与紫微工具，不提供西方行星星盘计算。需要行星位置或宫位时，请使用明确列出星历与宫制的相应工具，再分别保留两套计算约定。',
+          ],
+        },
       ],
     },
     en: {
-      title: 'BaZi and Western astrology: different maps, different calculations',
+      title: 'BaZi and Western astrology: what each chart calculates',
       description:
         'Compare stems and branches with planetary charts, including inputs, calculation conventions and the limits of interpreting precise data.',
       sections: [
         {
           heading: 'What does each system calculate?',
           paragraphs: [
-            'BaZi maps a birth moment into four stem–branch pairs, organizing relationships through elements, polarity and solar terms. Western natal astrology commonly calculates planetary positions and interprets signs, aspects and houses.',
+            'BaZi maps a birth moment into four stem-branch pairs, organizing relationships through elements, polarity and solar terms. Western natal astrology commonly calculates planetary positions and interprets signs, aspects and houses.',
             'Both use birth information, but one is not a translation of the other. Wood cannot simply be substituted for a planet, and the Day Master is not the same concept as a Sun sign.',
           ],
         },
@@ -843,6 +979,13 @@ export const articles: Article[] = [
             'Do not treat similar wording across several tools as independent confirmation. They may share broad descriptions or respond similarly to the same personal context.',
           ],
         },
+        {
+          heading: 'Make a comparison specific enough to check',
+          paragraphs: [
+            'For example: “What birth details does each system require, and which chart features can change when the recorded time is uncertain?” That is easier to examine than deciding which of two long interpretations sounds more like you.',
+            'Wenbu currently offers BaZi, I Ching, tarot and Zi Wei; it does not calculate Western planetary charts. Use a suitable astrology tool that discloses its ephemeris and house system, and keep each system’s conventions with its results.',
+          ],
+        },
       ],
     },
   },
@@ -861,7 +1004,7 @@ export const articles: Article[] = [
           heading: '想认识一套出生符号：八字',
           paragraphs: [
             '如果想了解干支、五行和日主之间的关系，可以从八字入门。需要出生日期，已知时间能补足时柱。好处是结构明确，容易把计算与解释分开。',
-            '它不适合替代职业测评、医疗判断或真实关系沟通。第一次使用，先核对输入，读懂四柱，再考虑是否需要额外解读。',
+            '先准备公历生日和出生地时区；时刻不确定就保留未知。第一次可以打开示例，认出年、月、日、时四柱，再决定是否输入自己的资料。',
           ],
         },
         {
@@ -875,7 +1018,7 @@ export const articles: Article[] = [
           heading: '愿意深入宫位与星曜：紫微斗数',
           paragraphs: [
             '紫微提供十二宫与星曜的关系图，信息较多，通常需要更长学习时间，也需要明确出生时辰。建议先了解命宫、身宫和空宫，再逐步读宫位之间的联系。',
-            '不要因为界面复杂就认为结论更精确。复杂度只表示符号和规则更多，并不自动证明对现实的预测能力。',
+            '问卜保留中文宫名和星名，方便与资料核对。初次可以先点选两个宫位，配合十二宫入门阅读；若出生时刻仍不确定，可以先用不含时柱的八字，或通过对话整理问题。',
           ],
         },
         {
@@ -883,6 +1026,13 @@ export const articles: Article[] = [
           paragraphs: [
             '选一种工具，写一个问题，保存一份记录。隔一段时间回看：哪部分有帮助、哪部分不符合、最后采取了什么行动。',
             '问卜让四种工具共用一份本地手记，方便记录与比较，不需要为了保留历史而注册账户。',
+          ],
+        },
+        {
+          heading: '还是拿不定主意，就从对话开始',
+          paragraphs: [
+            '如果眼下只是有点困惑，打开 Agent 选“还没想好”，再选“帮我把困惑变成问题”。你不需要先决定工具，也不必填写出生资料；引导会生成可以修改的草稿，确认后才发送。',
+            '只想学习术语时，可以直接问“用一个例子解释十神”或“带我认一次上下卦”。先完成这个小目标，再根据兴趣进入对应工具。',
           ],
         },
       ],
@@ -893,31 +1043,38 @@ export const articles: Article[] = [
         'Choose a tool by the question you have, the information you want to share and the symbolic system you want to learn.',
       sections: [
         {
-          heading: 'For a birth-based symbolic structure: BaZi',
+          heading: 'To learn stems, branches and elements: BaZi',
           paragraphs: [
             'Begin with BaZi if you want to learn the relationship between stems, branches, elements and the Day Master. A birth date is required, while a known time adds the hour pillar. Its clear structure makes it possible to separate calculation from interpretation.',
-            'It is not a substitute for career assessment, diagnosis or communication with another person. On a first visit, check the inputs and learn the four pillars before requesting additional interpretation.',
+            'Prepare a Gregorian birth date and the time zone at the birthplace; leave the hour unknown if necessary. Start with the example chart to recognize the four pillars before deciding whether to enter your own details.',
           ],
         },
         {
           heading: 'For a present question: I Ching or tarot',
           paragraphs: [
-            'I Ching organizes a reflection through six yin–yang lines and their changes. Tarot uses card themes and spread positions. Neither needs birth information, so both can begin with a concrete question you have now.',
+            'I Ching organizes a reflection through six yin-yang lines and their changes. Tarot uses card themes and spread positions. Neither needs birth information, so both can begin with a concrete question you have now.',
             'Choose I Ching if you prefer structures and changing relationships. Try tarot if images and narrative associations feel more accessible. Randomness selects the symbols; you remain responsible for what you infer and do.',
           ],
         },
         {
-          heading: 'For a detailed palace-and-star map: Zi Wei',
+          heading: 'To explore palaces and stars: Zi Wei',
           paragraphs: [
             'Zi Wei Dou Shu offers twelve palaces and their stars. It requires a known birth time and usually takes longer to learn. Begin with the Life and Body palaces and the meaning of an empty palace before reading the relationships between them.',
-            'A complex interface does not make an interpretation more accurate. More symbols and rules do not automatically establish stronger real-world predictive ability.',
+            'Wenbu keeps palace and star names in Chinese for comparison with source texts. Begin by opening two palaces alongside the introductory guide. If your birth time is unknown, consider BaZi without an hour pillar or start with a conversation.',
           ],
         },
         {
-          heading: 'Make the first session small',
+          heading: 'Start with one question and one tool',
           paragraphs: [
             'Choose one tool, write one question and save one entry. Return later to note what helped, what did not fit and which action you took.',
             'Wenbu brings the four tools into a local journal, so you can compare your own reflections without creating an account to keep them.',
+          ],
+        },
+        {
+          heading: 'Still unsure? Start with a conversation',
+          paragraphs: [
+            'Open the Agent, choose “Not sure yet,” then “Help me frame a question.” You do not need to pick a tool or supply birth details. The guide creates an editable draft for you to review and send.',
+            'For a learning goal, ask directly: “Explain the Ten Gods with one example,” or “Show me how to identify the upper and lower trigrams.” Finish that small task, then decide which tool you want to try.',
           ],
         },
       ],
@@ -968,15 +1125,22 @@ export const articles: Article[] = [
             '这也意味着清理浏览器数据会丢失记录。导出的文件包含个人信息，保存到你信任的位置。需要交给 Agent 时，使用可预览的上下文导出，并重新确认包含哪些信息。',
           ],
         },
+        {
+          heading: '一条简短的示例手记',
+          paragraphs: [
+            '问题：是否报名一门周末课程。最初理解：先做小范围尝试。行动：周六试听一节并记录耗时。回看：课程内容有吸引力，但通勤超过预期，先选线上练习。',
+            '这条示例留下了决定如何形成的过程，既能保留牌面带来的启发，也能看到现实信息起了什么作用。你可以把这个结构放进笔记，不必等积累很多记录后才开始复盘。',
+          ],
+        },
       ],
     },
     en: {
-      title: 'What belongs in a reading you will actually return to?',
+      title: 'How to keep a useful reading journal',
       description:
         'A simple journal structure that records questions, symbols, interpretation and later actions without turning every coincidence into confirmation.',
       sections: [
         {
-          heading: 'Saving a result is not the same as saving your thinking',
+          heading: 'Record what you thought at the time',
           paragraphs: [
             'A long reading is easy to screenshot and forget. What often matters later is the question you actually had, the sentence you noticed and the action you eventually took.',
             'A journal need not become a collection of apparent predictions that came true. Its value can be in showing how your understanding changed, including when a reading did not fit.',
@@ -1008,6 +1172,13 @@ export const articles: Article[] = [
           paragraphs: [
             'Saving creates a record in the current browser. You can search entries, add notes, remove and undo, or export a JSON backup. There is no required account and no automatic cloud journal sync.',
             'Clearing browser data therefore removes the records. Exports contain personal information and should be stored somewhere you trust. If you want an agent to help, preview the separate context export and choose which birth details to include.',
+          ],
+        },
+        {
+          heading: 'A short example entry',
+          paragraphs: [
+            'Question: should I enroll in a weekend course? Initial interpretation: try a small version first. Action: take a trial lesson on Saturday and note the time involved. Review: the subject appealed to me, but the commute was longer than expected, so I chose online practice for now.',
+            'This example records how a decision took shape, including both the initial prompt and the practical information that mattered. You can use the structure in a note today; a useful review does not require a large collection of readings.',
           ],
         },
       ],
@@ -1044,17 +1215,24 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: '免费，也要有可以持续的边界',
+          heading: 'AI 达到额度后，哪些功能还能用？',
           paragraphs: [
             '排盘、起卦、抽牌和本地手记无需付费。AI 解读有公开的每日请求额度，以及全站总额度。达到额度后，已经完成的图表和记录仍然可用。',
             '这样设计是为了让计算与记录不依赖一次模型请求是否成功。模型超时、服务繁忙或预算用完，都不应让用户失去已经看到的结果。',
           ],
         },
         {
-          heading: '把选择权留在最后一步',
+          heading: '由你决定保存和分享什么',
           paragraphs: [
-            '保存手记、请求 AI 和导出上下文，都是用户主动动作。我们不在背景中扫描聊天历史，也不把个人问题做成公开链接。',
+            '保存工具手记、请求 AI 和导出上下文，都由你操作。Agent 会随请求使用本会话最近的消息和你选择的上下文；它不能读取其他应用的聊天，也不会自动把个人问题做成公开链接。',
             '问卜还在持续改进。若发现两种计算结果不一致，最有帮助的反馈是明确的输入范围、规则和差异；提交公开问题时，请使用示例资料或去除私人信息。',
+          ],
+        },
+        {
+          heading: '看一个具体例子',
+          paragraphs: [
+            '同一份八字输入如果只修改换日规则，应该能指出改变了哪一柱；同一副已经抽出的塔罗，追问时应该沿用原结果，而不是悄悄换一组牌。用户能看见这些细节，才有办法判断对话是否还在讨论同一件事。',
+            '研究模式也遵循类似原则：先说明实际读到哪些资料，再整理结论。你可以要求修改报告的结构或语气，同时保留经过核对的出处和计算约定。',
           ],
         },
       ],
@@ -1079,17 +1257,24 @@ export const articles: Article[] = [
           ],
         },
         {
-          heading: 'Free access needs a sustainable boundary',
+          heading: 'What stays available when an AI limit is reached',
           paragraphs: [
             'Charts, casts, draws and the local journal do not require payment. Optional AI readings have a published per-network daily allowance and a site-wide budget. When a limit is reached, the existing chart and journal remain usable.',
             'The calculation and record should survive a failed model call. A timeout, busy provider or exhausted daily budget should not remove the result you already have.',
           ],
         },
         {
-          heading: 'Keep the last step with the person',
+          heading: 'You decide what to save and share',
           paragraphs: [
-            'Saving a journal entry, requesting an AI reading and exporting context are deliberate actions. Wenbu does not scan conversation history in the background or put personal questions in public links.',
+            'You choose when to save a tool reading, request AI interpretation or export context. Agent requests include recent messages from the current conversation and the context you select. The Agent cannot read chats in other apps and does not automatically publish personal questions.',
             'The product will continue to improve. If two calculations disagree, a useful report identifies the input range, conventions and exact discrepancy. Use synthetic examples or remove personal information before posting publicly.',
+          ],
+        },
+        {
+          heading: 'What this looks like in practice',
+          paragraphs: [
+            'If you change only a BaZi day-boundary setting, you should be able to identify the affected pillar. If you ask a follow-up about a tarot spread, the conversation should keep the original cards rather than silently drawing again. Visible results let you check that you are still discussing the same material.',
+            'Research follows the same principle: identify what was actually read before presenting conclusions. You can ask for a different report structure or tone while preserving the verified sources and calculation conventions.',
           ],
         },
       ],

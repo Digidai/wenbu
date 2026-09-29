@@ -1,5 +1,8 @@
 # Wenbu 文档导航
 
+- [知识手册、双语表达与新手路径](plans/2026-09-29-library-content-design.md)
+- [知识手册升级：团队审稿、浏览器与发布验证](reviews/library-content-release.md)
+- [知识内容审核](reviews/knowledge-content-review.md)、[GTM 语言审核](reviews/gtm-language-review.md)、[文档准确性审核](reviews/docs-accuracy-review.md)
 - [中英文界面审查：换行、提示与克制动效](plans/2026-09-29-interface-polish.md)
 - [界面优化上线与验证](reviews/interface-polish-release.md)
 - [Agent 提问引导：意图、渐进选择与可编辑澄清](plans/2026-09-29-agent-guidance-design.md)
