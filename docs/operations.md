@@ -8,11 +8,11 @@
 
 发布前完成 `verify` 与 `lint`，核对当前分支和 Cloudflare 账户。发布后分别检查页面、计算接口、MCP 和真实浏览器体验；只有需要验证模型时才发起有额度成本的 AI 请求。GitHub CI 通过不等于已部署，`/api/health` 显示已配置也不等于上游模型已经实测。
 
-数据有三个不同去处：会话/手记在用户浏览器，AI 额度在 Durable Object，粗粒度使用事件在 D1。请求处理时 Cloudflare 与 DeepSeek 仍会接收相关数据；不要把“应用不存对话”写成“资料不出设备”。统计日报按 UTC 分组，AI 额度按上海时间零点重置。
+会话/手记保存在用户浏览器，AI 额度在 Durable Object，近期使用事件与主动提交的反馈在 D1，长期事件归档在私有 R2。反馈摘录只有用户主动勾选并预览后才上传；行为事件不含对话正文。请求处理时 Cloudflare 与 DeepSeek 仍会接收相关数据；不要把“行为统计不存对话”写成“资料不出设备”。统计日报按 UTC 分组，AI 额度按上海时间零点重置。
 
 ## Runtime
 
-Astro static pages and React islands are built locally or in CI. One Cloudflare Worker serves static assets, POST APIs and stateless Streamable HTTP MCP. A named SQLite Durable Object atomically reserves global and per-network daily AI allowances. Cloudflare D1 stores first-party product events, and separate rate-limit bindings protect public computation, event collection and admin reports. Optional model calls use DeepSeek's official API. There is no separate application server or third-party analytics script.
+Astro static pages and React islands are built locally or in CI. One Cloudflare Worker serves static assets, POST APIs and stateless Streamable HTTP MCP. A named SQLite Durable Object atomically reserves global and per-network daily AI allowances. Cloudflare D1 stores recent first-party product events and private feedback; private R2 retains event archives. Separate rate-limit bindings protect public computation, feedback, event collection and admin reports. Optional model calls use DeepSeek's official API. There is no separate application server or third-party analytics script.
 
 ## Commands
 
@@ -45,7 +45,7 @@ The public limiter is configured for 60 requests per IP per minute; event collec
 
 Disconnecting cancels the remaining Agent work. Streams emit assistant text, public actions, sources and artifacts, without model reasoning. Sessions are stored in browser localStorage rather than Durable Object storage. Selected request data still passes through Cloudflare to DeepSeek. Research reads the Wenbu library and allowlisted public reference URLs. Citation validation checks that a source was read; it does not establish that the model's claims are supported by that text.
 
-A daily salted HMAC groups IPv4 addresses and IPv6 /64 networks. Shared networks share the allowance. No raw IP or birth chart is persisted by application storage. Current counters are kept through the day; stale days are deleted during reservation and by alarm. Infrastructure providers may maintain operational records under their own policies. Observability payload logging is not enabled.
+A daily salted HMAC groups IPv4 addresses and IPv6 /64 networks. Shared networks share the allowance. Quota and behavioral event storage exclude raw IPs and birth charts. The separate private feedback store can contain text or a chart excerpt explicitly submitted by its author; excerpt sharing is off by default. Current counters are kept through the day; stale days are deleted during reservation and by alarm. Infrastructure providers may maintain operational records under their own policies. Observability payload logging is not enabled.
 
 ## Availability
 
@@ -91,7 +91,7 @@ Private R2 bucket `wenbu-analytics-archive` is bound as `ANALYTICS_ARCHIVE`. Do 
 
 QA sets `X-Wenbu-Test: true` for native requests or `sessionStorage['wenbu.analytics.test']='true'` in the dedicated QA browser tab before loading the page. Test traffic is excluded from the default dashboard. Automated smoke now sets this header, including MCP. Do not clear production tables to reset QA.
 
-Worker rollback does not roll back D1 schema or data. Migrations are additive; old code can continue reading the original columns. However, code rollback must preserve the new archive-before-prune maintenance path: an old cron handler would delete unarchived events. Disable the trigger before rolling back to pre-archive code. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [deck-analytics-release.md](reviews/deck-analytics-release.md).
+Worker rollback does not roll back D1 schema or data. Migrations are additive; old code can continue reading the original columns. However, code rollback must preserve the new archive-before-prune maintenance path: an old cron handler would delete unarchived events. Disable the trigger before rolling back to pre-archive code. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [feedback-history-release.md](reviews/feedback-history-release.md).
 
 ## Keep documentation in sync
 

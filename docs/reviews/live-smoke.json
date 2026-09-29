@@ -1,6 +1,6 @@
 {
   "base": "https://wenbu.genedai.me",
-  "checkedAt": "2026-09-28T12:19:22.877Z",
+  "checkedAt": "2026-09-29T07:36:32.156Z",
   "pages": [
     {
       "path": "/",
@@ -119,7 +119,15 @@
       "status": 200
     },
     {
+      "path": "/en/learn/ask-a-better-question/",
+      "status": 200
+    },
+    {
       "path": "/en/learn/bazi-basics/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/bazi-ten-gods/",
       "status": 200
     },
     {
@@ -139,6 +147,10 @@
       "status": 200
     },
     {
+      "path": "/en/learn/first-reading/",
+      "status": 200
+    },
+    {
       "path": "/en/learn/five-elements/",
       "status": 200
     },
@@ -147,11 +159,39 @@
       "status": 200
     },
     {
+      "path": "/en/learn/iching-trigrams/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/prepare-birth-details/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/read-ai-with-sources/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/review-a-reading/",
+      "status": 200
+    },
+    {
       "path": "/en/learn/tarot-beginner/",
       "status": 200
     },
     {
+      "path": "/en/learn/tarot-reversals/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/tarot-suits-and-court-cards/",
+      "status": 200
+    },
+    {
       "path": "/en/learn/unknown-birth-time/",
+      "status": 200
+    },
+    {
+      "path": "/en/learn/ziwei-four-transformations/",
       "status": 200
     },
     {
@@ -172,6 +212,10 @@
     },
     {
       "path": "/en/tarot/",
+      "status": 200
+    },
+    {
+      "path": "/en/tarot/deck/",
       "status": 200
     },
     {
@@ -203,7 +247,15 @@
       "status": 200
     },
     {
+      "path": "/learn/ask-a-better-question/",
+      "status": 200
+    },
+    {
       "path": "/learn/bazi-basics/",
+      "status": 200
+    },
+    {
+      "path": "/learn/bazi-ten-gods/",
       "status": 200
     },
     {
@@ -223,6 +275,10 @@
       "status": 200
     },
     {
+      "path": "/learn/first-reading/",
+      "status": 200
+    },
+    {
       "path": "/learn/five-elements/",
       "status": 200
     },
@@ -231,11 +287,39 @@
       "status": 200
     },
     {
+      "path": "/learn/iching-trigrams/",
+      "status": 200
+    },
+    {
+      "path": "/learn/prepare-birth-details/",
+      "status": 200
+    },
+    {
+      "path": "/learn/read-ai-with-sources/",
+      "status": 200
+    },
+    {
+      "path": "/learn/review-a-reading/",
+      "status": 200
+    },
+    {
       "path": "/learn/tarot-beginner/",
       "status": 200
     },
     {
+      "path": "/learn/tarot-reversals/",
+      "status": 200
+    },
+    {
+      "path": "/learn/tarot-suits-and-court-cards/",
+      "status": 200
+    },
+    {
       "path": "/learn/unknown-birth-time/",
+      "status": 200
+    },
+    {
+      "path": "/learn/ziwei-four-transformations/",
       "status": 200
     },
     {
@@ -279,6 +363,10 @@
       "status": 200
     },
     {
+      "path": "/tarot/deck/",
+      "status": 200
+    },
+    {
       "path": "/terms/",
       "status": 200
     },
@@ -316,6 +404,18 @@
     "calculate_ziwei",
     "search_library",
     "read_library"
+  ],
+  "library": [
+    {
+      "locale": "zh",
+      "id": "guide-first-reading",
+      "title": "第一次用问卜：从一个小问题开始"
+    },
+    {
+      "locale": "en",
+      "id": "guide-first-reading",
+      "title": "Your first visit: start with one small question"
+    }
   ],
   "ai": null,
   "health": {

@@ -1,0 +1,102 @@
+{
+  "verifiedDate": "2026-09-29",
+  "runtimeCommit": "7174048c383f4ae787c53e618338d4f4fe77b409",
+  "workerVersion": "f392904e-89ff-4191-a20a-344a770dad9a",
+  "qaOnly": true,
+  "feedback": {
+    "feedbackSaved": true,
+    "correlationMatches": true,
+    "noExcerpt": true,
+    "test": 1,
+    "events": [
+      {
+        "event": "feedback_opened",
+        "origin": "client",
+        "status": "none"
+      },
+      {
+        "event": "result_viewed",
+        "origin": "client",
+        "status": "complete"
+      },
+      {
+        "event": "calculation_succeeded",
+        "origin": "server",
+        "status": "complete"
+      },
+      {
+        "event": "tool_started",
+        "origin": "client",
+        "status": "none"
+      }
+    ]
+  },
+  "archive": {
+    "archiveRun": {
+      "archived": 1
+    },
+    "files": 1,
+    "syntheticFixtureArchived": true,
+    "hashVerified": true
+  },
+  "agent": {
+    "status": 200,
+    "operation": "f5739efa-8f56-4289-9e33-722f8690eb07",
+    "toolNames": [
+      "search_library",
+      "search_library",
+      "read_library"
+    ],
+    "final": {
+      "type": "done",
+      "status": "complete",
+      "servedModel": "deepseek-flash",
+      "requestedModel": "deepseek-v4-flash",
+      "modelCalls": 3,
+      "toolCalls": 3
+    },
+    "served": []
+  },
+  "agentEventEvidenceBeforeReadLibraryLabelFix": [
+    {
+      "event": "agent_finished",
+      "action": "none",
+      "status": "complete",
+      "duration": 4219
+    },
+    {
+      "event": "agent_tool_finished",
+      "action": "none",
+      "status": "complete",
+      "duration": 0
+    },
+    {
+      "event": "agent_tool_finished",
+      "action": "agent-search",
+      "status": "complete",
+      "duration": 0
+    },
+    {
+      "event": "agent_tool_finished",
+      "action": "agent-search",
+      "status": "complete",
+      "duration": 0
+    }
+  ],
+  "browserChecks": {
+    "englishViewport": 390,
+    "englishDocumentWidth": 390,
+    "englishDialogWidth": 354,
+    "liveFeedbackToHistory": true,
+    "liveArchiveListed": true,
+    "localOfflineReloadReceivedOnce": true,
+    "localOptOutClearedOutbox": true
+  },
+  "grokReview": "Incomplete: substantive review and final follow-up timed out; no verdict received.",
+  "notes": [
+    "Only the synthetic archive fixture was backdated to exercise the one-day archive threshold.",
+    "The read_library event label was fixed after the recorded live model turn; the old QA event was not rewritten.",
+    "Test fixtures remain excluded from default reports.",
+    "No private user text, contact details or credentials are included."
+  ]
+}

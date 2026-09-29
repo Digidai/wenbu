@@ -1,5 +1,9 @@
 # Quality and review evidence
 
+## Latest: private feedback and retained usage history (2026-09-29)
+
+The [feedback and history release](feedback-history-release.md) records bilingual feedback, linked event history, private D1/R2 storage, authenticated exports and administration. Evidence includes 150 passing tests, CI, offline delivery recovery, live feedback correlation, a verified R2 archive and real DeepSeek tool phases. Grok CLI did not return a completed review; that limitation is separate from the successful tests and production checks.
+
 ## Latest: article covers and browsing views (2026-09-29)
 
 The [cover release](library-covers-release.md) restores illustrated covers across the library, homepage and notes, adds a thumbnail list view, and records a reproduced search regression, its repair, two Grok reviews and responsive browser checks. See the [cover design](../plans/2026-09-29-library-covers.md) for image, motion and accessibility choices.
