@@ -1,0 +1,13 @@
+{
+  "sourceCommit": "b0b571ef1b7f7d4ebe43038042ddfa2a3bcf8f87",
+  "deploymentId": "261c5513-ed6b-48d2-b279-5b8a1705d213",
+  "workerVersion": "0bd9e365-99e5-443c-8223-944ee1a90127",
+  "percentage": 100,
+  "createdOn": "2026-09-29T05:56:44.67284Z",
+  "hostname": "wenbu.genedai.me",
+  "initialCommandExitCode": 1,
+  "initialIssue": "Cron schedule configuration fetch failed after Worker and domain deployment.",
+  "repairCommand": "wrangler triggers deploy",
+  "repairExitCode": 0,
+  "verifiedTriggers": ["wenbu.genedai.me (custom domain)", "15 19 * * *"]
+}

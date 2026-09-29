@@ -28,4 +28,10 @@
 
 ## 发布与线上复验
 
-发布结果在完成部署后追加，当前本地记录不代表已经上线。
+- 实现提交 `b0b571ef1b7f7d4ebe43038042ddfa2a3bcf8f87` 已推送，[GitHub Quality CI](https://github.com/Digidai/wenbu/actions/runs/36528547667) 通过；[源提交回执](library-covers-source-ci.json)保留精确 SHA。
+- Cloudflare Worker `0bd9e365-99e5-443c-8223-944ee1a90127` 已 100% 部署到 [wenbu.genedai.me](https://wenbu.genedai.me/learn/)。首次发布在代码和资源部署成功后，同步现有 cron 遇到网络失败；随后 `wrangler triggers deploy` 成功核对自定义域名与 `15 19 * * *` 定时任务。没有把首次退出码 1 当成完整发布成功。
+- [线上资源比对](library-covers-live-assets.json)：首页、手册、札记两种语言，共六页的应用 HTML 与本地构建一致；四个 CSS / JS 资源及六张牌面缩略图 SHA-256 一致。Cloudflare 注入的 JS Detections 脚本单独识别后剔除，不声称原始 HTML 字节相同。
+- [线上 smoke](library-covers-live-smoke.json)：94 个网页/公开资源、四类计算 API、六个 MCP 工具列表、固定乾卦、双语新手全文与请求边界通过。没有调用 DeepSeek。
+- [线上浏览器](library-covers-live-browser.json)：中文桌面有 21 个封面，搜索“逆位”后列表恰好显示 2 篇，被隐藏项目没有重新绘制。英文 390px 搜索 reversals 也为 2 篇，无页级溢出；首页与札记两种语言封面数量正确。
+- 实际视图切换产生 `library-view` 的 1 / 0 事件，服务端返回 HTTP 200，均有 `test: true`；记录只保存白名单字段名称与事件维度，不保存会话或访客 ID。初始全量网络缓冲出现截断，随后重开游标专项采集的视图事件无截断。HTTP 回执不代表真实访客采用率或业务转化。
+- 保存[中文封面网格](screenshots/library-covers-zh-desktop.png)、[塔罗封面](screenshots/library-covers-tarot-desktop.png)、[英文手机封面](screenshots/library-covers-en-mobile.png)与[英文手机列表](screenshots/library-covers-en-list.png)。临时视口、减少动效覆盖与统计测试标记已清理。

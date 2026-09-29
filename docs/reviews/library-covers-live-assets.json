@@ -1,0 +1,102 @@
+{
+  "sourceCommit": "b0b571ef1b7f7d4ebe43038042ddfa2a3bcf8f87",
+  "checkedAt": "2026-09-29T05:58:43.987Z",
+  "pages": [
+    {
+      "path": "/",
+      "rawHtmlSha256": "a19e1f6058d5dff6bb8615bbe202043b5bd65be924c02a00d6148483150bb3ae",
+      "sourceHtmlSha256": "298f5f11bb84d0a7bf18b365b100620b53866b383f7482fa448ebd382fd7f351",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 3
+    },
+    {
+      "path": "/en/",
+      "rawHtmlSha256": "7078e9447476185a186265a8fd74506e9565c8ca7e6760c4fa9ddebcbc7accf8",
+      "sourceHtmlSha256": "b65550bda95fb587baf28b975cccc217433e967162307be42d94576e2ff75ce2",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 3
+    },
+    {
+      "path": "/learn/",
+      "rawHtmlSha256": "8cc1d5e2bc686b98c3f334f914c96c2c7988ceefb8dd980b6032219e42fbc666",
+      "sourceHtmlSha256": "ba7f35a200573fe125d5fcd0d27a87af9319bab206621cd88c8a98007a250512",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 21
+    },
+    {
+      "path": "/en/learn/",
+      "rawHtmlSha256": "a3628fa3573e32faf4b61df63348c397746987a18c09901ae38a960de2ddee6c",
+      "sourceHtmlSha256": "33d684655d6cfd94b03ede29e42b391d66725d530ee9b17e82ec1a25933bd0bb",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 21
+    },
+    {
+      "path": "/blog/",
+      "rawHtmlSha256": "73038d33724b5f3bb677225af193b28f9b0ad78a6c001af32e1dd35f06c8fd51",
+      "sourceHtmlSha256": "89ff8b3d5404109d53cadb06291b44cc8df3c32b00f4a6a209cffc99b8584f5a",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 2
+    },
+    {
+      "path": "/en/blog/",
+      "rawHtmlSha256": "3e38cd05d258d059387ddb133e74cbfd358a4c67c54b2ad8e9725509ae4afc78",
+      "sourceHtmlSha256": "ff74d5575b24da4335307a7cbcf5096767626fa2cdb73fd80ccfc7ebe71c98ff",
+      "cloudflareInjectionExcluded": 1,
+      "coverCount": 2
+    }
+  ],
+  "assets": [
+    {
+      "path": "/_astro/Layout.C6Q3wCz5.css",
+      "bytes": 58134,
+      "sha256": "78e489daa6b308f299d38c69ec06dd96aec82e40955bae530b9e659de7d1fef5"
+    },
+    {
+      "path": "/_astro/_..DxUeV9Zt.css",
+      "bytes": 73376,
+      "sha256": "9f1679768c4a199b2e0e31ec3a59246a88a855858a49acd9beb46c0b11516213"
+    },
+    {
+      "path": "/_astro/Layout.astro_astro_type_script_index_0_lang.CyeHlHnh.js",
+      "bytes": 597,
+      "sha256": "bbe1441d2bcc09795baf35204df02d87f1da6dd8c4139312c2f1f4423e713f7e"
+    },
+    {
+      "path": "/images/tarot/00-fool-small.webp",
+      "bytes": 32084,
+      "sha256": "bc050af607c9b457c2d931933254167abe8ab66fd5faf2e0dcee66f1dc1be837"
+    },
+    {
+      "path": "/images/tarot/17-star-small.webp",
+      "bytes": 30466,
+      "sha256": "8146c82a102aab1fb59c181d81f297d1fc65f4a56bf7658eba02d84680524dca"
+    },
+    {
+      "path": "/_astro/KnowledgeLibrary.astro_astro_type_script_index_0_lang.CyWG8scB.js",
+      "bytes": 1825,
+      "sha256": "78f0ea3e536903d2feee8fd54e99664814ebe60945a5d234fb7e9f0c858b3aba"
+    },
+    {
+      "path": "/images/tarot/49-king-cups-small.webp",
+      "bytes": 29452,
+      "sha256": "c4089c6b5aac3a86ba7edbcd40de1cca49dfee4c4c6ed081275ec83b705a7340"
+    },
+    {
+      "path": "/images/tarot/62-queen-swords-small.webp",
+      "bytes": 26084,
+      "sha256": "e108d5ee777dfbfc0066a2f828da2ae6590720ee662dfd67df7b06db98159312"
+    },
+    {
+      "path": "/images/tarot/18-moon-small.webp",
+      "bytes": 31620,
+      "sha256": "789c1c92163738e1538067a9e4395fe6a16bd99a74fabfcdb94dc362b49a40c0"
+    },
+    {
+      "path": "/images/tarot/19-sun-small.webp",
+      "bytes": 28986,
+      "sha256": "c96a9681f334e2eef3cae4ae555117ed179f5b68ee3b92bda9271d3d15ac3dab"
+    }
+  ],
+  "result": "passed",
+  "workerVersion": "0bd9e365-99e5-443c-8223-944ee1a90127"
+}

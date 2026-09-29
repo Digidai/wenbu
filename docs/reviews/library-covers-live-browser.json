@@ -1,0 +1,116 @@
+{
+  "sourceCommit": "b0b571ef1b7f7d4ebe43038042ddfa2a3bcf8f87",
+  "workerVersion": "0bd9e365-99e5-443c-8223-944ee1a90127",
+  "checkedAt": "2026-09-29T06:03:33.745Z",
+  "checks": [
+    {
+      "covers": 21,
+      "overflow": false,
+      "test": "zh-desktop-covers",
+      "view": "covers",
+      "viewport": 1280
+    },
+    {
+      "hiddenPainted": 0,
+      "status": "找到 2 篇指南",
+      "test": "zh-live-filter-list",
+      "view": "list",
+      "visible": 2
+    },
+    {
+      "count": 2,
+      "inputWidth": 284,
+      "overflow": false,
+      "status": "2 guides found",
+      "test": "en-live-mobile-list",
+      "view": "list"
+    },
+    {
+      "path": "/",
+      "brokenImages": 0,
+      "coverCount": 3,
+      "overflow": false,
+      "test": "shared-live-cover",
+      "viewport": 1280
+    },
+    {
+      "path": "/en/",
+      "brokenImages": 0,
+      "coverCount": 3,
+      "overflow": false,
+      "test": "shared-live-cover",
+      "viewport": 390
+    },
+    {
+      "path": "/blog/",
+      "brokenImages": 0,
+      "coverCount": 2,
+      "overflow": false,
+      "test": "shared-live-cover",
+      "viewport": 1280
+    },
+    {
+      "path": "/en/blog/",
+      "brokenImages": 0,
+      "coverCount": 2,
+      "overflow": false,
+      "test": "shared-live-cover",
+      "viewport": 390
+    }
+  ],
+  "viewEventReceipts": [
+    {
+      "status": 200,
+      "events": [
+        {
+          "event": "cta_click",
+          "action": "library-view",
+          "value": 1,
+          "locale": "en",
+          "page": "/learn/",
+          "test": true,
+          "keys": [
+            "action",
+            "campaign",
+            "entry",
+            "event",
+            "id",
+            "locale",
+            "medium",
+            "page",
+            "session",
+            "source",
+            "test",
+            "value",
+            "visitor"
+          ]
+        },
+        {
+          "event": "cta_click",
+          "action": "library-view",
+          "value": 0,
+          "locale": "en",
+          "page": "/learn/",
+          "test": true,
+          "keys": [
+            "action",
+            "campaign",
+            "entry",
+            "event",
+            "id",
+            "locale",
+            "medium",
+            "page",
+            "session",
+            "source",
+            "test",
+            "value",
+            "visitor"
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": "Dedicated test flag enabled before live page reload. HTTP200 is receipt, not actual user adoption. Initial wide network buffer truncated; targeted view-event collection restarted with a fresh cursor and was not truncated.",
+  "result": "passed"
+}
