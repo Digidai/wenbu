@@ -294,6 +294,7 @@ export async function agentResponse(
   const activityActions: Record<string, ServiceMetric['action']> = {
     search_library: 'agent-search',
     read_reference: 'agent-read',
+    read_library: 'agent-read',
     write_report: 'agent-report',
     ask_user: 'agent-clarify',
     calculate_bazi: 'agent-calculate',

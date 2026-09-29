@@ -1,4 +1,5 @@
 import FeedbackTrigger from './FeedbackTrigger';
+import { openFeedback } from '../lib/feedback-contract';
 import { analyticsHeaders, track } from '../lib/analytics';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
@@ -692,6 +693,14 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
             <span className="agent-beta">{t('研习室', 'STUDIO')}</span>
           </div>
           <div className="agent-toolbar-actions">
+            <button
+              className="agent-icon-button"
+              aria-label={t('反馈', 'Feedback')}
+              title={t('反馈', 'Feedback')}
+              onClick={() => openFeedback({ tool: 'agent', conversation: activeId })}
+            >
+              <MessageSquare size={16} />
+            </button>
             <button
               className="agent-motion-toggle"
               aria-label={

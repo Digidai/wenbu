@@ -297,3 +297,8 @@
     font-size: 16px;
   }
 }
+
+/* The Agent has an inline toolbar entry, so the composer and result controls remain unobstructed. */
+.agent-page .feedback-launch {
+  display: none;
+}
