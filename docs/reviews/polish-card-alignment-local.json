@@ -1,0 +1,80 @@
+{
+  "checks": [
+    {
+      "focus": {
+        "element": "tarot-face illustrated reversed",
+        "outline": "rgb(171, 73, 54) solid 3px"
+      },
+      "name": "english-390-aligned-titles",
+      "overflow": false,
+      "rows": [
+        {
+          "grid": "subgrid [] [] [] [] [] []",
+          "keywordTop": 529.4921875,
+          "orientationTop": 509.296875,
+          "title": "Two of Pentacles",
+          "titleHeight": 44.1875
+        },
+        {
+          "grid": "subgrid [] [] [] [] [] []",
+          "keywordTop": 529.4921875,
+          "orientationTop": 509.296875,
+          "title": "Knight of Pentacles",
+          "titleHeight": 44.1875
+        },
+        {
+          "grid": "subgrid [] [] [] [] [] []",
+          "keywordTop": 529.4921875,
+          "orientationTop": 509.296875,
+          "title": "Ten of Swords",
+          "titleHeight": 44.1875
+        }
+      ],
+      "width": 390
+    },
+    {
+      "name": "english-320-aligned-titles",
+      "overflow": false,
+      "rows": [
+        {
+          "keywordTop": 494.7890625,
+          "orientationTop": 474.59375,
+          "title": "Two of Pentacles",
+          "titleHeight": 44.1875
+        },
+        {
+          "keywordTop": 494.7890625,
+          "orientationTop": 474.59375,
+          "title": "Knight of Pentacles",
+          "titleHeight": 44.1875
+        },
+        {
+          "keywordTop": 494.7890625,
+          "orientationTop": 474.59375,
+          "title": "Ten of Swords",
+          "titleHeight": 44.1875
+        }
+      ],
+      "width": 320
+    },
+    {
+      "name": "english-1280-aligned-titles",
+      "overflow": false,
+      "rows": [
+        {
+          "keywordTop": -11.609375,
+          "orientationTop": -31.8046875
+        },
+        {
+          "keywordTop": -11.609375,
+          "orientationTop": -31.8046875
+        },
+        {
+          "keywordTop": -11.609375,
+          "orientationTop": -31.8046875
+        }
+      ],
+      "width": 1280
+    }
+  ]
+}

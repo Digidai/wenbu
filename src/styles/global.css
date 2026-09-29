@@ -3094,7 +3094,7 @@ html[lang='en'] .section-heading h2 {
   box-shadow: 0 12px 24px -8px #312a1940;
 }
 .tarot-face.illustrated:focus-visible {
-  outline: 3px solid var(--vermillion);
+  outline: 3px solid var(--red);
   outline-offset: 5px;
 }
 .card-inspect {
@@ -3696,4 +3696,17 @@ html[lang='en'] .section-heading h2 {
 }
 .agent-chart .reading-hint {
   font-size: 10px;
+}
+/* Share content rows so translated card titles can wrap without staggering the metadata. */
+@supports (grid-template-rows: subgrid) {
+  .drawn-cards,
+  .agent-chart .tarot-result .drawn-cards {
+    row-gap: 0;
+  }
+  .drawn-card-wrap {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    min-width: 0;
+  }
 }
