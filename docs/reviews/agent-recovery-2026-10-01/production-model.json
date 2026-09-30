@@ -1,0 +1,234 @@
+{
+  "base": "https://wenbu.app",
+  "checkedAt": "2026-09-30T18:05:20.402Z",
+  "synthetic": true,
+  "result": "passed",
+  "sourceCommit": "8771ac29f2928fa8abd8b3418af95090f4acefec",
+  "workerVersion": "9a8a095f-c849-4b31-a784-6176c3cf7443",
+  "turns": [
+    {
+      "locale": "zh",
+      "events": [
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:0",
+            "name": "read_library",
+            "label": "核验报告依据",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:0",
+          "status": "complete",
+          "detail": "已重新读取来源，接下来整理报告。"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:1",
+            "name": "read_library",
+            "label": "核验报告依据",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:1",
+          "status": "complete",
+          "detail": "已重新读取来源，接下来整理报告。"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_00_AiJEz517z0EaCK7832Ds1391",
+            "name": "read_library",
+            "label": "阅读资料",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_00_AiJEz517z0EaCK7832Ds1391",
+          "status": "complete",
+          "detail": "已完成"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_01_b8uiB8Jie1342PvRZ6It3619",
+            "name": "read_library",
+            "label": "阅读资料",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_01_b8uiB8Jie1342PvRZ6It3619",
+          "status": "complete",
+          "detail": "已完成"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "2:call_00_kFuEKiMRkFBkfhafWCY82360",
+            "name": "write_report",
+            "label": "整理研究报告",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "2:call_00_kFuEKiMRkFBkfhafWCY82360",
+          "status": "complete",
+          "detail": "已完成",
+          "artifactId": "b558cc44-891a-4714-bb91-6c62af2868b3"
+        },
+        {
+          "type": "done",
+          "status": "complete",
+          "servedModel": "deepseek-flash",
+          "requestedModel": "deepseek-v4-flash",
+          "modelCalls": 3,
+          "toolCalls": 5
+        }
+      ],
+      "reports": 1
+    },
+    {
+      "locale": "en",
+      "events": [
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:0",
+            "name": "read_library",
+            "label": "Verify report source",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:0",
+          "status": "complete",
+          "detail": "Source re-read before preparing the report."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:1",
+            "name": "read_library",
+            "label": "Verify report source",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:1",
+          "status": "complete",
+          "detail": "Source re-read before preparing the report."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_00_wKnXmYhRZIREhWQp1hAR8600",
+            "name": "read_library",
+            "label": "Read a library note",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_00_wKnXmYhRZIREhWQp1hAR8600",
+          "status": "complete",
+          "detail": "Completed"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_01_dxbFmYFJvQsccoNRjp0K6051",
+            "name": "read_library",
+            "label": "Read a library note",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_01_dxbFmYFJvQsccoNRjp0K6051",
+          "status": "complete",
+          "detail": "Completed"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "2:call_00_hSjGgKNXdsJldtI4POsG0866",
+            "name": "write_report",
+            "label": "Write the report",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "2:call_00_hSjGgKNXdsJldtI4POsG0866",
+          "status": "error",
+          "issue": "report_invalid",
+          "detail": "This draft did not meet the report structure or length requirements and was not saved."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "3:call_00_KMLJS4lrqJhgLGJDdzMV7503",
+            "name": "write_report",
+            "label": "Write the report",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "3:call_00_KMLJS4lrqJhgLGJDdzMV7503",
+          "status": "error",
+          "issue": "report_invalid",
+          "detail": "This draft did not meet the report structure or length requirements and was not saved."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "4:call_00_95f72lv8gEwq4nQP15kx4447",
+            "name": "write_report",
+            "label": "Write the report",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "4:call_00_95f72lv8gEwq4nQP15kx4447",
+          "status": "complete",
+          "detail": "Completed",
+          "artifactId": "12c59df9-d448-4d88-9c94-a704b888a73c"
+        },
+        {
+          "type": "tool_recovered",
+          "id": "2:call_00_hSjGgKNXdsJldtI4POsG0866",
+          "toolId": "4:call_00_95f72lv8gEwq4nQP15kx4447",
+          "artifactId": "12c59df9-d448-4d88-9c94-a704b888a73c"
+        },
+        {
+          "type": "tool_recovered",
+          "id": "3:call_00_KMLJS4lrqJhgLGJDdzMV7503",
+          "toolId": "4:call_00_95f72lv8gEwq4nQP15kx4447",
+          "artifactId": "12c59df9-d448-4d88-9c94-a704b888a73c"
+        },
+        {
+          "type": "done",
+          "status": "complete",
+          "servedModel": "deepseek-flash",
+          "requestedModel": "deepseek-v4-flash",
+          "modelCalls": 5,
+          "toolCalls": 7
+        }
+      ],
+      "reports": 1
+    }
+  ]
+}

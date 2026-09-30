@@ -1,0 +1,33 @@
+{
+  "base": "https://wenbu.app",
+  "results": [
+    {
+      "locale": "zh",
+      "width": 390,
+      "summary": "报告已修复并生成",
+      "overflow": false
+    },
+    {
+      "locale": "zh",
+      "width": 1440,
+      "summary": "报告已修复并生成",
+      "overflow": false
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "summary": "Report corrected and saved",
+      "overflow": false
+    },
+    {
+      "locale": "en",
+      "width": 1440,
+      "summary": "Report corrected and saved",
+      "overflow": false
+    }
+  ],
+  "mixed": "1 failed attempt\nReport corrected and saved",
+  "syntheticLocalHistoryFixtures": true,
+  "liveDeployment": true,
+  "consoleFinding": "Cloudflare-injected beacon.min.js is blocked by the existing script-src CSP; no Agent runtime exception observed. This separate analytics integration issue was not changed."
+}

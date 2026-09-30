@@ -27,4 +27,10 @@ A real DeepSeek test found a second reproducible class: English report arguments
 
 ## Release
 
-Production deployment and live checks are recorded after release. Local checks alone do not establish deployment or production behavior. These safeguards cover the reproduced failures; external providers, network interruptions, and future invalid model outputs can still fail and must remain visible.
+- PR [#4](https://github.com/Digidai/wenbu/pull/4) merged. Deployed source: `8771ac29f2928fa8abd8b3418af95090f4acefec`.
+- GitHub Quality [36755742569](https://github.com/Digidai/wenbu/actions/runs/36755742569): passed on that exact merged source.
+- Cloudflare Worker version `9a8a095f-c849-4b31-a784-6176c3cf7443` deployed to `wenbu.app` and existing domains.
+- Production real DeepSeek smoke passed in both languages: Chinese 3 model calls / 5 tools, no rejected report; English 5 calls / 7 tools, two format rejections both explicitly recovered by the saved replacement. See `production-model.json`.
+- Production Playwright fixtures passed at 390/1440px in both languages. A mixed recovered/unresolved trace correctly retains “1 failed attempt”. See `production-browser.json` and the inspected mobile screenshots. These are isolated synthetic browser histories, separate from the real production model calls.
+- Production browser console has a separate existing CSP rejection for Cloudflare's injected analytics beacon. The Agent UI rendered and its interactions passed; no claim of a completely empty console is made.
+- Deployment's IndexNow hook respected upstream backoff (`submitted: 0`); this is not an indexing receipt. These safeguards cover the reproduced failures; external providers, network interruptions, and future invalid model outputs can still fail and must remain visible.
