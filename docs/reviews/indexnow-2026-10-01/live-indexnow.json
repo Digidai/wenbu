@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-09-30T17:02:22.407Z",
+  "base": "https://wenbu.app",
+  "manifestRevision": "9376e896edeb1eade5f92ca8ffd3f83d37053cc78ebac14adbeea32acccf9dd5",
+  "pages": 84,
+  "checks": [
+    "public verification file exact and text/plain",
+    "live manifest matches built release and is noindex",
+    "private status requires authentication",
+    "rate-limited URLs remain pending",
+    "manual run respects retry window without a new external request",
+    "latest deployment records backoff checks without overriding Retry-After or submitting again"
+  ],
+  "status": {
+    "available": true,
+    "origin": "https://wenbu.app",
+    "schedule": "*/15 * * * *",
+    "trackedPages": 0,
+    "state": {
+      "last_checked": 1790787741746,
+      "last_status": "backoff",
+      "last_error": "http_429",
+      "retry_at": 1790790770874,
+      "failures": 3
+    },
+    "receipts": [
+      {
+        "id": "12f57504-fcd2-4fa0-a754-2f29821dd0dc",
+        "submitted_at": 1790787170874,
+        "revision": "9376e896edeb1eade5f92ca8ffd3f83d37053cc78ebac14adbeea32acccf9dd5",
+        "http_status": 429,
+        "outcome": "retrying",
+        "url_count": 84
+      },
+      {
+        "id": "e3a64db7-c097-4396-9c2b-84c4bc7542a5",
+        "submitted_at": 1790787003980,
+        "revision": "9376e896edeb1eade5f92ca8ffd3f83d37053cc78ebac14adbeea32acccf9dd5",
+        "http_status": null,
+        "outcome": "retrying",
+        "url_count": 84
+      },
+      {
+        "id": "035ee4f6-a330-4cba-853a-a6aac9cb6e02",
+        "submitted_at": 1790786741684,
+        "revision": "9376e896edeb1eade5f92ca8ffd3f83d37053cc78ebac14adbeea32acccf9dd5",
+        "http_status": null,
+        "outcome": "retrying",
+        "url_count": 84
+      }
+    ],
+    "note": "HTTP 200 is a submission receipt; HTTP 202 means key validation is pending. Neither confirms indexing."
+  },
+  "manualRetry": {
+    "status": "backoff",
+    "submitted": 0,
+    "retryAt": 1790790770874
+  },
+  "sourceCommit": "6bcfa4f2579e151058c9d986856e436efc50eff8"
+}

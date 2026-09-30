@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-30T16:56:36.687Z",
+  "sourceCommit": "6bcfa4f2579e151058c9d986856e436efc50eff8",
+  "domain": "https://wenbu.app",
+  "schedules": {
+    "schedules": [
+      {
+        "cron": "*/15 * * * *",
+        "created_on": "2026-09-30T16:45:37.698901Z",
+        "modified_on": "2026-09-30T16:55:42.247162Z"
+      },
+      {
+        "cron": "15 * * * *",
+        "created_on": "2026-09-29T07:20:34.088712Z",
+        "modified_on": "2026-09-30T16:55:42.247162Z"
+      }
+    ]
+  },
+  "deployments": [
+    {
+      "id": "00b52a50-57ae-47ac-9b41-2cd48cc5f0ed",
+      "source": "wrangler",
+      "strategy": "percentage",
+      "versions": [
+        {
+          "version_id": "552c2451-2856-4bd6-b902-3d0c6b0a8f9f",
+          "percentage": 100
+        }
+      ],
+      "created_on": "2026-09-30T16:55:38.17549Z"
+    }
+  ]
+}
