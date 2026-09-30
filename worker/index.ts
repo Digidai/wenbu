@@ -16,6 +16,7 @@ import {
 } from './analytics';
 import { submitFeedback, updateFeedback } from './feedback';
 import { historyReport, feedbackDetail, storageStatus, archiveAnalytics, archiveDownload } from './history';
+import { INDEXNOW_CRON, indexNowStatus, submitIndexNow } from './indexnow';
 export { UsageGate } from './quota';
 
 const apiHeaders = {
@@ -134,6 +135,7 @@ export default {
         if (!(await authorizedAnalytics(request, env))) return json({ error: { code: 'unauthorized' } }, 401);
         if (!env.ANALYTICS) return json({ error: { code: 'analytics_unavailable' } }, 503);
         if (request.method === 'GET') {
+          if (path === '/api/admin/indexnow') return json(await indexNowStatus(env));
           if (path === '/api/admin/analytics') return json(await analyticsReport(url, env));
           if (path === '/api/admin/events') return json(await historyReport(url, env, 'events'));
           if (path === '/api/admin/feedback') return json(await historyReport(url, env, 'feedback'));
@@ -154,6 +156,11 @@ export default {
           if (request.headers.get('Origin') !== url.origin)
             return json({ error: { code: 'origin_denied' } }, 403);
           return json(await archiveAnalytics(env));
+        }
+        if (request.method === 'POST' && path === '/api/admin/indexnow/run') {
+          if (url.origin !== env.SITE_URL || request.headers.get('Origin') !== url.origin)
+            return json({ error: { code: 'origin_denied' } }, 403);
+          return json(await submitIndexNow(env));
         }
         return json({ error: { code: 'not_found' } }, 404);
       }
@@ -290,7 +297,8 @@ export default {
       );
     }
   },
-  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(archiveAnalytics(env));
+  async scheduled(event: ScheduledController, env: Env, ctx: ExecutionContext) {
+    if (event.cron === '15 * * * *') ctx.waitUntil(archiveAnalytics(env));
+    if (event.cron === INDEXNOW_CRON) ctx.waitUntil(submitIndexNow(env));
   },
 } satisfies ExportedHandler<Env>;
