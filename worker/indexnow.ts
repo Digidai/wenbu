@@ -124,11 +124,12 @@ export async function submitIndexNow(env: Env) {
     if (!ownership.results.length) return { status: 'lease_lost', submitted: 0 };
     let httpStatus: number | null = null,
       retryAfter = 0;
+    let transportError: string | null = null;
     try {
       const response = await fetch(config.endpoint, {
         method: 'POST',
         redirect: 'error',
-        signal: AbortSignal.timeout(15_000),
+        signal: AbortSignal.timeout(30_000),
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({
           host: new URL(config.origin).host,
@@ -141,12 +142,19 @@ export async function submitIndexNow(env: Env) {
       const header = response.headers.get('Retry-After');
       if (header) retryAfter = /^\d+$/.test(header) ? Number(header) * 1000 : Date.parse(header) - now;
       await response.body?.cancel();
-    } catch {
+    } catch (cause) {
       // Retain the changed URLs for the next attempt. Do not record remote response bodies.
+      // This exception belongs to the fixed public endpoint, not visitor data or credentials.
+      transportError =
+        cause instanceof Error ? `${cause.name}: ${cause.message}`.slice(0, 240) : 'unknown_transport_error';
     }
     const received = httpStatus === 200 || httpStatus === 202;
     const outcome = httpStatus === 200 ? 'submitted' : httpStatus === 202 ? 'pending_validation' : 'retrying';
-    const error = received ? null : httpStatus === null ? 'network_error' : `http_${httpStatus}`;
+    const error = received
+      ? null
+      : httpStatus === null
+        ? `network_error: ${transportError}`
+        : `http_${httpStatus}`;
     const delay = Math.max(
       Math.min(86400_000, 15 * 60_000 * 2 ** Math.min(failures, 7)),
       Number.isFinite(retryAfter) ? Math.min(Math.max(0, retryAfter), 7 * 86400_000) : 0,
@@ -206,6 +214,7 @@ export async function submitIndexNow(env: Env) {
       remaining: changes.length - (received ? urls.length : 0),
       revision,
       retryAt,
+      ...(transportError ? { transportError } : {}),
     };
   } catch (cause) {
     const diagnosticCodes = new Set([
