@@ -1,0 +1,41 @@
+
+ ⛅️ wrangler 4.142.0 (update available 4.145.0)
+───────────────────────────────────────────────
+╭ Deploy Worker Versions by splitting traffic between multiple versions
+│
+├ Fetching latest deployment
+│
+├ Your current deployment has 1 version(s):
+│
+│ (100%) a981f577-74d8-412d-91ad-e2c4ad2dab3a
+│       Created:  2026-09-29T09:00:21.774982Z
+│           Tag:  -
+│       Message:  -
+│
+├ Fetching versions
+│
+├ Which version(s) do you want to deploy?
+├ 1 Worker Version(s) selected
+│
+├     Worker Version 1:  a154be89-876b-45b3-abec-b233cfa3f7df
+│              Created:  2026-09-30T14:50:52.458422Z
+│                  Tag:  wenbu-app
+│              Message:  Prepare wenbu.app migration; activate after DNS and TLS verification
+│
+├ What percentage of traffic should Worker Version 1 receive?
+├ 100% of traffic
+├
+├ Add a deployment message
+│ Deployment message Activate wenbu.app primary domain after DNS and trusted HTTPS verification
+│
+├ Deploying 1 version(s)
+│
+├ Syncing non-versioned settings
+│
+│ Synced non-versioned settings:
+│                      logpush:  false
+│                observability:  <skipped>
+│               tail_consumers:  <skipped>
+│     streaming_tail_consumers:  <skipped>
+│
+╰  SUCCESS  Deployed wenbu version a154be89-876b-45b3-abec-b233cfa3f7df at 100% (1.26 sec)

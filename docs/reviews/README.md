@@ -1,6 +1,6 @@
 # Quality and review evidence
 
-- [wenbu.app domain migration: DNS binding, local validation and pending cutover](domain-migration-2026-09-30.md)
+- [wenbu.app domain migration: live DNS, HTTPS, redirects and compatibility verification](domain-migration-2026-09-30.md)
 
 ## Latest: analytics trends and multidimensional filters (2026-09-29)
 

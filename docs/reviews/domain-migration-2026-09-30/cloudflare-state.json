@@ -1,13 +1,14 @@
 {
-  "checkedAt": "2026-09-30T14:50:59.024802+00:00",
+  "checkedAt": "2026-09-30T15:04:26.364226+00:00",
   "zone": {
     "id": "e935a40316b130626d3c1d847c1d6f24",
     "name": "wenbu.app",
-    "status": "pending",
+    "status": "active",
     "name_servers": [
       "buck.ns.cloudflare.com",
       "maya.ns.cloudflare.com"
-    ]
+    ],
+    "activated_on": "2026-09-30T15:03:06.939555Z"
   },
   "domains": [
     {
@@ -45,7 +46,7 @@
     }
   ],
   "registrarNameservers": [
-    "aaden.ns.cloudflare.com",
-    "dayana.ns.cloudflare.com"
+    "buck.ns.cloudflare.com",
+    "maya.ns.cloudflare.com"
   ]
 }

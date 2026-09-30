@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-09-30T15:11:22.344530+00:00",
+  "deployment": {
+    "id": "7107ddfa-cb34-43c5-a751-698620497807",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "daiq@live.cn",
+    "annotations": {
+      "workers/message": "Activate wenbu.app primary domain after DNS and trusted HTTPS verification",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "a154be89-876b-45b3-abec-b233cfa3f7df",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-09-30T15:06:30.748999Z"
+  },
+  "sourceCommit": "341e9ebf2e54b22906ef13b04bd9b60656a80a32",
+  "ci": "https://github.com/Digidai/wenbu/actions/runs/36733639429"
+}

@@ -1,0 +1,204 @@
+{
+  "checkedAt": "2026-09-30T15:08:12.324Z",
+  "redirects": [
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/",
+      "status": 301,
+      "location": "https://wenbu.app/"
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/en/agent/?from=domain-check",
+      "status": 301,
+      "location": "https://wenbu.app/en/agent/?from=domain-check"
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/learn/?topic=bazi",
+      "status": 301,
+      "location": "https://wenbu.app/learn/?topic=bazi"
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/sitemap.xml",
+      "status": 301,
+      "location": "https://wenbu.app/sitemap.xml"
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/robots.txt",
+      "status": 301,
+      "location": "https://wenbu.app/robots.txt"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/",
+      "status": 301,
+      "location": "https://wenbu.app/"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/en/agent/?from=domain-check",
+      "status": 301,
+      "location": "https://wenbu.app/en/agent/?from=domain-check"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/learn/?topic=bazi",
+      "status": 301,
+      "location": "https://wenbu.app/learn/?topic=bazi"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/sitemap.xml",
+      "status": 301,
+      "location": "https://wenbu.app/sitemap.xml"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/robots.txt",
+      "status": 301,
+      "location": "https://wenbu.app/robots.txt"
+    },
+    {
+      "host": "wenbu.app",
+      "path": "/learn/?from=https-check",
+      "scheme": "http",
+      "status": 301,
+      "location": "https://wenbu.app/learn/?from=https-check"
+    },
+    {
+      "host": "www.wenbu.app",
+      "path": "/learn/?from=https-check",
+      "scheme": "http",
+      "status": 301,
+      "location": "https://www.wenbu.app/learn/?from=https-check"
+    }
+  ],
+  "seo": [
+    {
+      "path": "/",
+      "status": 200,
+      "canonical": "https://wenbu.app/"
+    },
+    {
+      "path": "/en/",
+      "status": 200,
+      "canonical": "https://wenbu.app/en/"
+    },
+    {
+      "path": "/agent/",
+      "status": 200,
+      "canonical": "https://wenbu.app/agent/"
+    },
+    {
+      "path": "/en/agent/",
+      "status": 200,
+      "canonical": "https://wenbu.app/en/agent/"
+    },
+    {
+      "path": "/learn/",
+      "status": 200,
+      "canonical": "https://wenbu.app/learn/"
+    },
+    {
+      "path": "/en/learn/",
+      "status": 200,
+      "canonical": "https://wenbu.app/en/learn/"
+    },
+    {
+      "path": "/tarot/",
+      "status": 200,
+      "canonical": "https://wenbu.app/tarot/"
+    },
+    {
+      "path": "/journal/",
+      "status": 200,
+      "canonical": "https://wenbu.app/journal/"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/llms.txt",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/openapi.json",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/SKILL.md",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/wenbu.mjs",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/feed.xml",
+      "status": 200,
+      "primaryOrigin": true
+    },
+    {
+      "path": "/en/feed.xml",
+      "status": 200,
+      "primaryOrigin": true
+    }
+  ],
+  "compatibility": [
+    {
+      "host": "wenbu.app",
+      "path": "/move/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/move/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "host": "wenbu.app",
+      "path": "/en/move/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/en/move/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "host": "wenbu.app",
+      "path": "/api/v1/iching",
+      "status": 200
+    },
+    {
+      "host": "wenbu.app",
+      "path": "/mcp",
+      "status": 200
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/api/v1/iching",
+      "status": 200
+    },
+    {
+      "host": "wenbu.genedai.me",
+      "path": "/mcp",
+      "status": 200
+    }
+  ],
+  "result": "passed",
+  "httpsCheckedAt": "2026-09-30T15:10:03.902Z"
+}
