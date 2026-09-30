@@ -127,6 +127,10 @@ describe('deployed IndexNow submissions', () => {
       retryAt: Date.now() + 3600_000,
     });
     expect(await submitIndexNow(f.env)).toMatchObject({ status: 'backoff' });
+    expect((await indexNowStatus(f.env)).state).toMatchObject({
+      last_status: 'backoff',
+      last_error: 'http_429',
+    });
     expect(f.sql.prepare('SELECT COUNT(*) AS n FROM indexnow_pages').get()?.n).toBe(0);
     vi.advanceTimersByTime(3600_001);
     expect(await submitIndexNow(f.env)).toMatchObject({ status: 'submitted', submitted: 2 });

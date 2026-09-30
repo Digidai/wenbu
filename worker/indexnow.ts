@@ -73,7 +73,16 @@ export async function submitIndexNow(env: Env) {
       await db.prepare('SELECT lease_owner, retry_at, failures FROM indexnow_state WHERE id = 1').all<State>()
     ).results[0];
     failures = state.failures;
-    if (state.retry_at > now) return { status: 'backoff', submitted: 0, retryAt: state.retry_at };
+    if (state.retry_at > now) {
+      await db
+        .prepare(
+          `UPDATE indexnow_state SET last_checked = ?, last_status = 'backoff'
+        WHERE id = 1 AND lease_owner = ?`,
+        )
+        .bind(now, owner)
+        .run();
+      return { status: 'backoff', submitted: 0, retryAt: state.retry_at };
+    }
     const asset = await env.ASSETS.fetch(
       new Request(config.origin + config.manifestPath, { signal: AbortSignal.timeout(10_000) }),
     );
