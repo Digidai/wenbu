@@ -49,3 +49,9 @@ Browser evidence: [route checks](browser-routes.json), [tarot on mobile](tarot-m
 - [Live browser checks](live-browser.json): Chinese BaZi, English interactive I Ching (change/reset) and English tarot at 390 px; all three tarot images fully decoded at 600×900, no horizontal overflow.
 - Live captures: [BaZi](live-bazi.png), [I Ching](live-iching.png), [mobile tarot](live-tarot-mobile.png).
 - GSC submission, actual indexing, search rankings, AI citations and traffic changes were not measured or claimed.
+
+### Final typography adjustment
+
+Live visual inspection caught unequal position-label baselines when the English card name “Eight of Pentacles” wrapped. A four-line CSS change reserves equal name height for the teaching spread. [Live alignment](live-alignment.json) verifies all three baselines within 1 px at 390 px, with no document overflow; the mobile screenshot above now shows the final version.
+
+Final runtime source: `f8166cebe8cf5e9e80177a1a2a0c7037093103bf`; [exact-source CI](https://github.com/Digidai/wenbu/actions/runs/36741001304) passed. Active Worker version: `537ca6b9-95c9-44ca-88e9-ca1ba775a58a` at 100%, recorded in [deployment.json](deployment.json). This final change only adjusts CSS; the earlier full API, content-export and source-scope checks remain applicable. Subsequent evidence-only commits do not change the deployed runtime.

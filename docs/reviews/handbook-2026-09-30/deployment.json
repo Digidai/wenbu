@@ -1,0 +1,20 @@
+{
+  "source": "f8166cebe8cf5e9e80177a1a2a0c7037093103bf",
+  "ci": "https://github.com/Digidai/wenbu/actions/runs/36741001304",
+  "deployment": {
+    "id": "d6426149-7ad7-4e72-a5f0-9f670f1dc365",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "daiq@live.cn",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "537ca6b9-95c9-44ca-88e9-ca1ba775a58a",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-09-30T16:01:21.559246Z"
+  }
+}
