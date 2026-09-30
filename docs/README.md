@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [图解知识手册升级（21 篇双语、完整案例、Agent 全文读取）](reviews/handbook-2026-09-30/README.md)
+
 - [wenbu.app 主域名迁移与验证](reviews/domain-migration-2026-09-30.md)
 
 - [封面、配图与文章列表设计](plans/2026-09-29-library-covers.md)

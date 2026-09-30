@@ -1,3 +1,4 @@
+import { guideMarkdown, guideOutline, knowledgeLinks } from '../src/lib/knowledge';
 import { articles } from '../src/data/articles';
 import { pages } from '../src/data/pages';
 import { sources } from '../src/data/sources';
@@ -34,7 +35,7 @@ export function libraryDocuments(locale: Locale): Document[] {
     url: `https://wenbu.app${prefix}${a.category}/${a.slug}/`,
     kind: 'guide',
     level: 'editorial',
-    content: copyText(a[locale]),
+    content: a.category === 'learn' ? guideMarkdown(a, locale) : copyText(a[locale]),
     keywords: `${a.tool} ${a.slug} ${a.zh.title} ${a.en.title}`,
   }));
   for (const key of ['methodology', 'free']) {
@@ -107,15 +108,56 @@ export function searchLibrary(query: string, locale: Locale, limit = 6) {
     nextTool: d.kind === 'reference' ? 'read_reference' : 'read_library',
   }));
 }
-export function readLibrary(id: string, locale: Locale): { source: AgentSource; content: string } {
-  const doc = libraryDocuments(locale).find((d) => d.id === id && d.kind !== 'reference');
+export function readLibrary(id: string, locale: Locale, section?: string) {
+  const [documentId, savedSection, ...extra] = id.split('#');
+  if (
+    extra.length ||
+    (id.includes('#') && !savedSection) ||
+    (savedSection && section && savedSection !== section)
+  )
+    throw new Error('Conflicting or invalid section citation ID.');
+  section ??= savedSection;
+  const doc = libraryDocuments(locale).find((d) => d.id === documentId && d.kind !== 'reference');
   if (!doc)
     throw new Error('Unknown library document. Search the library first; references use read_reference.');
-  const { content, keywords: _, ...rest } = doc;
+  const { content: fullContent, keywords: _, ...rest } = doc;
+  const guide = articles.find((a) => 'guide-' + a.slug === documentId && a.category === 'learn');
+  if (section && !guide) throw new Error('Section reads are available for handbook guides only.');
+  const content = guide && section ? guideMarkdown(guide, locale, section) : fullContent;
   return {
-    source: { ...rest, excerpt: content.slice(0, 280), readAt: new Date().toISOString() },
-    content: content.slice(0, 9000),
+    source: {
+      ...rest,
+      id: section ? `${documentId}#${section}` : documentId,
+      title:
+        rest.title +
+        (section && guide ? ' · ' + guideOutline(guide, locale).find((s) => s.id === section)!.title : ''),
+      url: rest.url + (section ? '#' + section : ''),
+      excerpt: content.slice(0, 280),
+      readAt: new Date().toISOString(),
+    },
+    documentId,
+    content,
+    format: guide ? 'text/markdown' : 'text/plain',
+    scope: section ? 'section' : 'full',
+    section: section ?? null,
+    truncated: false,
+    ...(guide ? { outline: guideOutline(guide, locale), links: knowledgeLinks(guide.slug, locale) } : {}),
   };
+}
+// Restore focused receipts exactly. Full-guide previews carry no citation authority
+// until the agent explicitly reads the relevant content again in this turn.
+export function libraryContextSnapshot(id: string, locale: Locale) {
+  const doc = readLibrary(id, locale);
+  if (doc.scope === 'full' && doc.content.length > 1800)
+    return {
+      ...doc,
+      content: doc.content.slice(0, 1800),
+      scope: 'preview',
+      truncated: true,
+      fullContentLength: doc.content.length,
+      requiresReadBeforeCitation: true,
+    };
+  return { ...doc, requiresReadBeforeCitation: false };
 }
 export function referenceMetadata(id: string) {
   const ref = refDocs.find((r) => r.id === id);

@@ -71,6 +71,8 @@ export const actions = [
   'tool-entry',
   'navigation',
   'article-tool',
+  'guide-markdown',
+  'guide-json',
   'library-start',
   'library-article',
   'library-search',

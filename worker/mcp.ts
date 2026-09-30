@@ -5,6 +5,7 @@ import { calculateBazi } from '../src/lib/bazi';
 import { castIching } from '../src/lib/iching';
 import { drawTarot } from '../src/lib/tarot';
 import { calculateZiwei } from '../src/lib/ziwei';
+import { knowledgeIndex } from '../src/lib/knowledge';
 import { searchLibrary, readLibrary } from './agent-library';
 import type { ToolKind } from '../src/lib/schema';
 type ToolReceipt = (tool: ToolKind | 'mcp', success: boolean, duration: number) => void;
@@ -19,7 +20,7 @@ const pack = (data: Record<string, unknown>) => ({
 
 export function createMcpServer(receipt?: ToolReceipt) {
   const server = new McpServer(
-    { name: 'wenbu', version: '1.1.0' },
+    { name: 'wenbu', version: '1.2.0' },
     {
       instructions:
         'Wenbu provides cultural reflection tools, not factual predictions. Only send birth details the user explicitly chooses to share. Preserve all calculation conventions and warnings. Use your host model to interpret the returned data; Wenbu MCP does not need an AI key.',
@@ -66,7 +67,10 @@ export function createMcpServer(receipt?: ToolReceipt) {
             content: [
               {
                 type: 'text' as const,
-                text: 'Invalid input. Check the date, timezone and required fields. No chart was generated.',
+                text:
+                  name === 'read_library'
+                    ? 'Unknown document or section. Use an ID from search_library and a section ID from the returned outline.'
+                    : 'Invalid input. Check the date, timezone and required fields. No chart was generated.',
               },
             ],
           };
@@ -129,11 +133,11 @@ export function createMcpServer(receipt?: ToolReceipt) {
   );
   register(
     'read_library',
-    'Read original Wenbu guide or symbol content by an ID returned by search_library. External reference entries are metadata only; use your host browsing capability to verify them.',
-    { id: z.string().min(1).max(100), locale: language },
+    'Read a complete Wenbu guide or symbol by search_library ID. Handbook guides return Markdown, outline and export links without truncation. Optionally provide a section ID from the outline; the returned scope makes partial reads explicit. External reference entries are metadata only; use your host browsing capability to verify them.',
+    { id: z.string().min(1).max(100), locale: language, section: z.string().min(1).max(80).optional() },
     (a) => {
-      const { id, locale } = a as { id: string; locale: 'zh' | 'en' };
-      return readLibrary(id, locale);
+      const { id, locale, section } = a as { id: string; locale: 'zh' | 'en'; section?: string };
+      return readLibrary(id, locale, section);
     },
   );
   server.registerResource('methodology', 'wenbu://methodology', { mimeType: 'text/plain' }, async () => ({
@@ -145,6 +149,19 @@ export function createMcpServer(receipt?: ToolReceipt) {
       },
     ],
   }));
+  server.registerResource(
+    'knowledge-index',
+    'wenbu://knowledge',
+    {
+      mimeType: 'application/json',
+      description: 'Bilingual handbook catalogue with canonical, full Markdown and structured JSON links.',
+    },
+    async () => ({
+      contents: [
+        { uri: 'wenbu://knowledge', mimeType: 'application/json', text: JSON.stringify(knowledgeIndex()) },
+      ],
+    }),
+  );
   return server;
 }
 export async function handleMcp(request: Request, receipt?: ToolReceipt) {

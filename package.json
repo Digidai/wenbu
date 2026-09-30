@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "Wenbu · 问卜 — free, transparent tools for Eastern wisdom and reflection.",
+  "description": "Wenbu \u00b7 \u95ee\u535c \u2014 free, transparent tools for Eastern wisdom and reflection.",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build && node scripts/postbuild.mjs",
@@ -15,8 +15,9 @@
     "format": "prettier --write .",
     "audit:site": "node scripts/audit-site.mjs",
     "audit:art": "node scripts/audit-art.mjs",
-    "verify": "npm run check && npm test && npm run build && npm run audit:site && npm run audit:art",
-    "smoke": "node scripts/smoke.mjs"
+    "verify": "npm run check && npm test && npm run build && npm run audit:site && npm run audit:art && npm run audit:knowledge",
+    "smoke": "node scripts/smoke.mjs",
+    "audit:knowledge": "node scripts/audit-knowledge.mjs"
   },
   "dependencies": {
     "@astrojs/react": "7.0.0",

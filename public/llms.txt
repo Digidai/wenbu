@@ -38,3 +38,11 @@
 - [Privacy](https://wenbu.app/en/privacy/)
 - [Free-use policy](https://wenbu.app/en/free/)
 - [Source code](https://github.com/Digidai/wenbu)
+
+## Complete public knowledge exports
+
+- [Bilingual knowledge index](https://wenbu.app/knowledge/index.json): all 21 guides, canonical URLs and language-specific full Markdown/JSON links.
+- [Example Markdown guide](https://wenbu.app/knowledge/en/bazi-basics.md): complete text, diagram description, comparison table, worked example, glossary, FAQs and annotated sources.
+- [Example structured guide](https://wenbu.app/knowledge/en/bazi-basics.json): schemaVersion, outline and the same editorial content.
+
+MCP resource `wenbu://knowledge` supplies the index. `read_library` returns full guides without implicit truncation; optional `section` selects an outline ID and returns `scope:section`. Each section has its own citation ID, `guide-<slug>#<section>`. Preserve canonical URL, language, update date, editorial status and source scope. Reading an editorial guide does not mean its external references were fetched or verified. These exports contain no personal context.

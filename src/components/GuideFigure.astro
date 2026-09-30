@@ -1,0 +1,250 @@
+---
+import type { Article } from '../data/articles';
+import { guideDepth } from '../data/guide-depth';
+import { trigrams, trigramBits } from '../data/hexagrams';
+import type { Locale } from '../lib/schema';
+import HexagramLesson from './HexagramLesson';
+const { article, locale } = Astro.props as { article: Article; locale: Locale };
+const d = guideDepth[article.slug]?.[locale];
+const slug = article.slug;
+const t = (a: string, b: string) => (locale === 'zh' ? a : b);
+const trigramEn = ['Heaven', 'Lake', 'Fire', 'Thunder', 'Wind', 'Water', 'Mountain', 'Earth'];
+const cycle = ['木', '火', '土', '金', '水'];
+const cycleEn = ['Wood', 'Fire', 'Earth', 'Metal', 'Water'];
+const points = cycle.map((_, i) => ({
+  x: 320 + 135 * Math.sin((i * 2 * Math.PI) / 5),
+  y: 174 - 135 * Math.cos((i * 2 * Math.PI) / 5),
+}));
+const cards =
+  slug === 'tarot-reversals'
+    ? [
+        ['19-sun', t('太阳 · 正位', 'The Sun · upright')],
+        ['19-sun', t('太阳 · 逆位', 'The Sun · reversed')],
+      ]
+    : slug === 'tarot-suits-and-court-cards'
+      ? [
+          ['22-ace-wands', t('权杖', 'Wands')],
+          ['36-ace-cups', t('圣杯', 'Cups')],
+          ['50-ace-swords', t('宝剑', 'Swords')],
+          ['64-ace-pentacles', t('星币', 'Pentacles')],
+        ]
+      : [
+          ['01-magician', t('魔术师', 'The Magician')],
+          ['51-two-swords', t('宝剑二', 'Two of Swords')],
+          ['71-eight-pentacles', t('星币八', 'Eight of Pentacles')],
+        ];
+---
+
+{d && (
+  <figure class="knowledge-figure" id="guide-figure">
+    <div class="figure-heading">
+      <span>{t('图解笔记', 'ILLUSTRATED NOTE')}</span>
+      <span aria-hidden="true">01 / WENBU</span>
+    </div>
+    {slug === 'iching-three-coins' ? (
+      <HexagramLesson locale={locale} client:visible />
+    ) : slug === 'bazi-basics' ? (
+      <div
+        class="pillar-lesson"
+        role="img"
+        aria-label={t(
+          '教学例盘：年乙酉，月戊子，日辛巳，时壬辰；日主是辛。',
+          'Teaching chart: Yi You, Wu Zi, Xin Si, Ren Chen. Xin is the Day Master.',
+        )}
+      >
+        {['乙酉', '戊子', '辛巳', '壬辰'].map((p, i) => (
+          <div class:list={['lesson-pillar', { 'is-day': i === 2 }]}>
+            <span>{t(['年柱', '月柱', '日柱', '时柱'][i], ['Year', 'Month', 'Day', 'Hour'][i])}</span>
+            <b>{p[0]}</b>
+            <b>{p[1]}</b>
+            <small>
+              {i === 2 ? t('↑ 日主：辛', '↑ Day Master: Xin') : ['YI · YOU', 'WU · ZI', '', 'REN · CHEN'][i]}
+            </small>
+          </div>
+        ))}
+      </div>
+    ) : slug === 'five-elements' ? (
+      <svg
+        viewBox="0 0 640 360"
+        role="img"
+        aria-labelledby="element-title element-desc"
+        class="element-lesson"
+      >
+        <title id="element-title">{t('五行相生与相克','Generating and controlling cycles')}</title>
+        <desc id="element-desc">
+          {t(
+            '外圈木生火、火生土、土生金、金生水、水生木；虚线木克土、土克水、水克火、火克金、金克木。',
+            'Generating: Wood, Fire, Earth, Metal, Water, Wood. Controlling: Wood, Earth, Water, Fire, Metal, Wood.',
+          )}
+        </desc>
+        <defs>
+          <marker id="cycle-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+            <path d="M0 0L6 3L0 6" fill="#63795b" />
+          </marker>
+        </defs>
+        {points.map((p, i) => {
+          const q = points[(i + 1) % 5];
+          const z = points[(i + 2) % 5];
+          const a = 0.23,
+            b = 0.77;
+          return (
+            <>
+              <path
+                d={`M${p.x + (q.x - p.x) * a} ${p.y + (q.y - p.y) * a}L${p.x + (q.x - p.x) * b} ${p.y + (q.y - p.y) * b}`}
+                stroke="#63795b"
+                stroke-width="2"
+                marker-end="url(#cycle-arrow)"
+              />
+              <path
+                d={`M${p.x + (z.x - p.x) * a} ${p.y + (z.y - p.y) * a}L${p.x + (z.x - p.x) * b} ${p.y + (z.y - p.y) * b}`}
+                stroke="#b4533d"
+                stroke-dasharray="4 5"
+                marker-end="url(#cycle-arrow)"
+              />
+              <circle cx={p.x} cy={p.y} r="29" fill="#f6f3ec" stroke="#b8c0ad" />
+              <text
+                x={p.x}
+                y={p.y + 7}
+                text-anchor="middle"
+                font-size={locale === 'zh' ? 24 : 14}
+                fill="#344c39"
+              >
+                {locale === 'zh' ? cycle[i] : cycleEn[i]}
+              </text>
+            </>
+          );
+        })}
+        <text x="320" y="169" text-anchor="middle" font-size="13" fill="#63795b">
+          {t('实线：相生', 'Solid: generating')}
+        </text>
+        <text x="320" y="192" text-anchor="middle" font-size="13" fill="#98533d">
+          {t('虚线：相克', 'Dashed: controlling')}
+        </text>
+      </svg>
+    ) : slug === 'iching-trigrams' ? (
+      <div class="trigram-lesson">
+        {trigrams.map((tr, i) => (
+          <div>
+            <svg viewBox="0 0 100 65" role="img" aria-label={tr + ' / ' + trigramEn[i]}>
+              {[2, 1, 0].map((n, j) =>
+                trigramBits[i][n] === '1' ? (
+                  <path d={`M10 ${12 + j * 20}h80`} stroke="currentColor" stroke-width="8" />
+                ) : (
+                  <path d={`M10 ${12 + j * 20}h32m16 0h32`} stroke="currentColor" stroke-width="8" />
+                ),
+              )}
+            </svg>
+            <strong>{locale === 'zh' ? tr : trigramEn[i]}</strong>
+            <small>{trigramBits[i]}</small>
+          </div>
+        ))}
+      </div>
+    ) : article.tool === 'tarot' ? (
+      <div class:list={['tarot-lesson', { 'four-cards': cards.length === 4 }]}>
+        {cards.map(([id, label], i) => (
+          <div>
+            <img
+              src={`/images/tarot/${id}.webp`}
+              width="600"
+              height="900"
+              alt={label}
+              loading="lazy"
+              class:list={{ 'reversed-lesson': slug === 'tarot-reversals' && i === 1 }}
+            />
+            <strong>{label}</strong>
+            {slug === 'tarot-beginner' && (
+              <small class="tarot-position">
+                {t(['当下', '牵引', '下一步'][i], ['Situation', 'Tension', 'Next step'][i])}
+              </small>
+            )}
+          </div>
+        ))}
+      </div>
+    ) : slug === 'ziwei-twelve-palaces' ? (
+      <div class="palace-lesson">
+        <div class="palace-center">
+          <span>{t('命宫', 'Life')}</span>
+          <small>{t('观察起点', 'Starting point')}</small>
+        </div>
+        {[
+          [t('官禄', 'Career'), 'career'],
+          [t('迁移', 'Travel'), 'travel'],
+          [t('财帛', 'Wealth'), 'wealth'],
+        ].map(([label, cls]) => (
+          <div class={`palace-node ${cls}`}>
+            <span>{label}</span>
+            <small>{t('联合观察', 'Read together')}</small>
+          </div>
+        ))}
+        <svg viewBox="0 0 600 310" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M300 155 300 38M300 155 95 245M300 155 505 245"
+            stroke="#87967a"
+            stroke-width="2"
+            fill="none"
+          />
+        </svg>
+      </div>
+    ) : slug === 'ziwei-four-transformations' ? (
+      <div class="transformation-lesson">
+        <div class="transform-stem">
+          甲 <small>JIA</small>
+        </div>
+        <div class="transform-branches">
+          {[
+            [t('廉贞', 'Lian Zhen'), t('化禄', 'Lu')],
+            [t('破军', 'Po Jun'), t('化权', 'Quan')],
+            [t('武曲', 'Wu Qu'), t('化科', 'Ke')],
+            [t('太阳', 'Tai Yang'), t('化忌', 'Ji')],
+          ].map(([star, v]) => (
+            <div>
+              <span>{star}</span>
+              <strong>{v}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : ['bazi-ten-gods', 'bazi-vs-western-astrology'].includes(slug) ? (
+      <div class="relation-map">
+        {d.table.rows.slice(0, slug === 'bazi-ten-gods' ? 5 : 4).map((r) => (
+          <div>
+            <strong>{r[0]}</strong>
+            <div>
+              {r.slice(1).map((cell, i) => (
+                <p>
+                  <span>{d.table.columns[i + 1]}</span>
+                  {cell}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="concept-map">
+        {d.table.rows.slice(0, 4).map((r, i) => (
+          <div>
+            <span class="concept-index">{String(i + 1).padStart(2, '0')}</span>
+            <strong>{r[0]}</strong>
+            <p>{r[1]}</p>
+          </div>
+        ))}
+      </div>
+    )}
+    <figcaption>
+      <strong>
+        {slug === 'iching-three-coins' ? t('默认案例 · ', 'Default example · ') : ''}
+        {d.figure.caption}
+      </strong>
+      <p>{d.figure.description}</p>
+      {article.tool === 'tarot' && (
+        <small>
+          {t(
+            '问卜原创 AI 插画，教学选牌；此处没有进行随机抽取。',
+            'Original AI illustrations by Wenbu. Cards selected for teaching; no random draw occurs here.',
+          )}
+        </small>
+      )}
+    </figcaption>
+  </figure>
+)}

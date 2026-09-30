@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import DomainMove from '../components/DomainMove.astro';
 import '../styles/library.css';
+import '../styles/handbook.css';
+import GuideDepth from '../components/GuideDepth.astro';
+import GuideFigure from '../components/GuideFigure.astro';
+import { guideDepth, handbookUpdated } from '../data/guide-depth';
+import { guideOutline, guideMinutes, knowledgeDocument, knowledgeLinks } from '../lib/knowledge';
 import KnowledgeLibrary from '../components/KnowledgeLibrary.astro';
 import ArticleCompanion from '../components/ArticleCompanion.astro';
 import { newGuideSlugs, topicForGuide } from '../data/learning-paths';
@@ -71,7 +76,10 @@ const titles: Record<string, [string, string]> = {
   sources: ['参考资料与研究来源', 'Sources & further reading'],
 };
 const descriptions: Record<string, [string, string]> = {
-  move: ['把旧站保存在浏览器里的手记和 Agent 对话复制到 wenbu.app。原记录保留，数据不上传到服务器。', 'Copy the journal and Agent conversations stored in your browser to wenbu.app. Original records stay intact and no history is uploaded to a server.'],
+  move: [
+    '把旧站保存在浏览器里的手记和 Agent 对话复制到 wenbu.app。原记录保留，数据不上传到服务器。',
+    'Copy the journal and Agent conversations stored in your browser to wenbu.app. Original records stay intact and no history is uploaded to a server.',
+  ],
   '': [
     '免费探索八字命盘、易经问卦、78 张塔罗和紫微星盘。无需注册，计算依据透明，可选 AI 解读、本地手记和 MCP Agent 接口。',
     'Explore free BaZi charts, I Ching casts, a full 78-card tarot deck and Zi Wei. No account needed. Transparent methods, optional AI and a local journal.',
@@ -125,6 +133,11 @@ const description =
 const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
 const articlePublished =
   article && (newGuideSlugs as readonly string[]).includes(article.slug) ? '2026-09-29' : '2026-09-28';
+const depth = article ? guideDepth[article.slug]?.[locale] : undefined;
+const outline = article ? guideOutline(article, locale) : [];
+const articleUpdated = depth ? handbookUpdated : '2026-09-29';
+const articleSources = article ? knowledgeDocument(article, locale).sources : [];
+const exports = article && depth ? knowledgeLinks(article.slug, locale) : undefined;
 const articleTopic = article ? topicForGuide(article.slug) : undefined;
 const nextArticles = article
   ? articleTopic
@@ -154,7 +167,9 @@ const ctaLabels: Record<string, [string, string]> = {
   noindex={path === 'journal' || path === 'insights' || path === 'move'}
   article={Boolean(article)}
   published={articlePublished}
-  modified={article ? '2026-09-29' : undefined}
+  modified={article ? articleUpdated : undefined}
+  knowledge={exports}
+  citations={articleSources.map((s) => s.url)}
   collection={
     path === 'learn'
       ? articles
@@ -223,9 +238,12 @@ const ctaLabels: Record<string, [string, string]> = {
         {article && (
           <div class="article-meta">
             <span>Wenbu · {t('AI 辅助编辑', 'AI-assisted editorial')}</span>
-            <time datetime="2026-09-29">{t('更新于 2026.09.29', 'Updated Sep 29, 2026')}</time>
+            <time datetime={articleUpdated}>
+              {t('更新于 ', 'Updated ')}
+              {articleUpdated}
+            </time>
             <span>
-              {article.minutes} {t('分钟阅读', 'min read')}
+              {guideMinutes(article, locale)} {t('分钟阅读', 'min read')}
             </span>
           </div>
         )}
@@ -334,33 +352,47 @@ const ctaLabels: Record<string, [string, string]> = {
             <details class="article-mobile-toc">
               <summary>{t('这一篇讲什么', 'On this page')}</summary>
               <nav aria-label={t('文章目录', 'Article contents')}>
-                {article[locale].sections.map((s, i) => (
-                  <a href={`#section-${i}`}>{s.heading}</a>
+                {outline.map((s) => (
+                  <a href={`#${s.id}`}>{s.title}</a>
                 ))}
               </nav>
             </details>
-            <ArticleCompanion slug={article.slug} locale={locale} />
+            {depth ? (
+              <>
+                <GuideDepth copy={depth} locale={locale} part="answer" />
+                <GuideFigure article={article} locale={locale} />
+              </>
+            ) : (
+              <ArticleCompanion slug={article.slug} locale={locale} />
+            )}
             {article[locale].sections.map((section, i) => (
-              <section id={`section-${i}`}>
-                <h2>{section.heading}</h2>
-                {section.paragraphs.map((p) => (
-                  <p>{p}</p>
-                ))}
-                {section.bullets && (
-                  <ul>
-                    {section.bullets.map((b) => (
-                      <li>{b}</li>
-                    ))}
-                  </ul>
-                )}
-              </section>
+              <>
+                <section id={`section-${i}`}>
+                  <h2>{section.heading}</h2>
+                  {section.paragraphs.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                  {section.bullets && (
+                    <ul>
+                      {section.bullets.map((b) => (
+                        <li>{b}</li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+                {depth && i === 1 && <GuideDepth copy={depth} locale={locale} part="table" />}
+              </>
             ))}
-            <div class="source-list">
-              <h2>{t('来源与进一步阅读', 'Sources & further reading')}</h2>
-              {article.sources.map((s) => (
-                <a href={s.url} target="_blank" rel="noreferrer">
-                  {s.title} ↗
-                </a>
+            {depth && <GuideDepth copy={depth} locale={locale} part="practice" />}
+            <div class="source-list" id="sources">
+              <h2>{t('来源与适用范围', 'Sources and their scope')}</h2>
+              {articleSources.map((s) => (
+                <div class="annotated-source">
+                  <a href={s.url} target="_blank" rel="noreferrer">
+                    {s.title} ↗
+                  </a>
+                  <p>{s.scope}</p>
+                </div>
               ))}
               <p>
                 {t(
@@ -369,6 +401,29 @@ const ctaLabels: Record<string, [string, string]> = {
                 )}
               </p>
             </div>
+            {exports && (
+              <section
+                class="knowledge-downloads"
+                aria-label={t('把文章带给你的 Agent', 'Read with your agent')}
+              >
+                <h2>{t('把这篇文章带给你的 Agent', 'Read this guide with your agent')}</h2>
+                <p>
+                  {t(
+                    '完整正文、图示说明与来源，提供可直接读取的开放格式。仅包含公开知识内容。',
+                    'Get the complete text, diagram descriptions and sources in an open format. These files contain public knowledge only.',
+                  )}
+                </p>
+                <div>
+                  <a href={exports.markdown} data-track="guide-markdown">
+                    Markdown ↗
+                  </a>
+                  <a href={exports.json} data-track="guide-json">
+                    JSON ↗
+                  </a>
+                  <a href={href(locale, 'agents')}>{t('MCP 与 CLI 用法', 'MCP & CLI instructions')} ↗</a>
+                </div>
+              </section>
+            )}
             <div class="article-try">
               <p>{t('读到这里，可以试一试。', 'Ready to put this into practice?')}</p>
               <a class="button primary" href={href(locale, article.tool)} data-track="article-tool">
@@ -390,8 +445,8 @@ const ctaLabels: Record<string, [string, string]> = {
           </article>
           <aside class="article-aside">
             <span>{t('这一页', 'ON THIS PAGE')}</span>
-            {article[locale].sections.map((s, i) => (
-              <a href={`#section-${i}`}>{s.heading}</a>
+            {outline.map((s) => (
+              <a href={`#${s.id}`}>{s.title}</a>
             ))}
             <p>
               {t(

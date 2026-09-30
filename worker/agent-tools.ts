@@ -25,6 +25,7 @@ const searchSchema = z
   .object({ query: z.string().trim().min(1).max(160), limit: z.number().int().min(1).max(8).default(6) })
   .strict();
 const readSchema = z.object({ id: z.string().min(1).max(120) }).strict();
+const libraryReadSchema = readSchema.extend({ section: z.string().min(1).max(80).optional() });
 const questionSchema = z
   .object({
     question: z.string().min(1).max(700),
@@ -39,7 +40,7 @@ const schemas = {
   draw_tarot: tarotSchema,
   calculate_ziwei: ziweiSchema,
   search_library: searchSchema,
-  read_library: readSchema,
+  read_library: libraryReadSchema,
   read_reference: readSchema,
   ask_user: questionSchema,
   write_report: reportSchema,
@@ -58,7 +59,7 @@ const descriptions: Record<keyof typeof schemas, string> = {
   search_library:
     'Search Wenbu original guides, methodology, all hexagram/card notes and the curated source catalogue. This is catalogue search, NOT general web search. Use short focused queries. Returns IDs; search snippets alone are not fully read sources.',
   read_library:
-    'Read an original Wenbu guide or symbol note by ID from search_library. Returns a citable source and its contents. These are modern editorial notes, not classical quotations. Reference IDs require read_reference.',
+    'Read an original Wenbu guide or symbol note by ID from search_library. Returns full Markdown, an outline, source scope and export URLs for handbook guides. Optionally supply a section ID from the outline for a focused read; cite only that section as read. These are modern editorial notes, not classical quotations. Reference IDs require read_reference.',
   read_reference:
     'Fetch and read a PUBLIC WEB excerpt of an exact reference ID from the curated catalogue. No arbitrary URLs or general internet search. Can fail for blocked, large, PDF or private pages. Failed references are NOT read and cannot be cited as reviewed.',
   ask_user:
@@ -127,8 +128,9 @@ export async function executeAgentTool(name: string, raw: unknown, ctx: ToolCont
     };
   }
   if (key === 'read_library' || key === 'read_reference') {
-    const { id } = readSchema.parse(input);
-    const doc = key === 'read_library' ? readLibrary(id, ctx.locale) : await readReference(id, ctx.signal);
+    const { id, section } = libraryReadSchema.parse(input);
+    const doc =
+      key === 'read_library' ? readLibrary(id, ctx.locale, section) : await readReference(id, ctx.signal);
     ctx.sources.set(doc.source.id, doc.source);
     ctx.emit({ type: 'source', source: doc.source });
     return doc;
