@@ -9,6 +9,7 @@ import type {
 import type { Locale } from './schema';
 import type { Reading } from './tools';
 import { readReportVisual, reportSourceIds } from './agent-report';
+export { hasLaterReport } from './agent-outcome';
 
 const KEY = 'wenbu.agent.sessions.v1';
 export function newSession(locale: Locale): AgentSession {
@@ -99,27 +100,6 @@ export function persistSessions(sessions: AgentSession[]) {
   if (json.length > 3600000) throw new Error('storage_full');
   localStorage.setItem(KEY, json);
 }
-// A historical failed attempt stays failed in the transcript/export. The UI
-// can describe the later observable outcome without claiming that attempt
-// succeeded or treating unrelated tool errors as recovered.
-export function hasLaterReport(message: AgentMessage, toolId: string): boolean {
-  if (message.status !== 'complete' || message.artifacts.filter((a) => a.type === 'report').length !== 1)
-    return false;
-  const reports = message.tools.filter((tool) => tool.name === 'write_report');
-  if (
-    reports.length !== 2 ||
-    reports[0].id !== toolId ||
-    reports[0].status !== 'error' ||
-    reports[1].status !== 'complete'
-  )
-    return false;
-  if (!reports[0].detail?.startsWith('A citation was not read or verified.')) return false;
-  const start = message.tools.indexOf(reports[0]);
-  const finish = message.tools.indexOf(reports[1]);
-  return message.tools
-    .slice(start + 1, finish)
-    .some((tool) => tool.name === 'read_reference' && tool.status === 'complete');
-}
 export function updateMessage(message: AgentMessage, event: AgentEvent): AgentMessage {
   if (event.type === 'delta') return { ...message, text: message.text + event.text };
   if (event.type === 'tool_start') return { ...message, tools: [...message.tools, event.tool] };
@@ -127,7 +107,24 @@ export function updateMessage(message: AgentMessage, event: AgentEvent): AgentMe
     return {
       ...message,
       tools: message.tools.map((t) =>
-        t.id === event.id ? { ...t, status: event.status, detail: event.detail } : t,
+        t.id === event.id
+          ? {
+              ...t,
+              status: event.status,
+              detail: event.detail,
+              ...(event.issue ? { issue: event.issue } : {}),
+              ...(event.artifactId ? { artifactId: event.artifactId } : {}),
+            }
+          : t,
+      ),
+    };
+  if (event.type === 'tool_recovered')
+    return {
+      ...message,
+      tools: message.tools.map((tool) =>
+        tool.id === event.id
+          ? { ...tool, recovery: { toolId: event.toolId, artifactId: event.artifactId } }
+          : tool,
       ),
     };
   if (event.type === 'plan') return { ...message, plan: event.steps };

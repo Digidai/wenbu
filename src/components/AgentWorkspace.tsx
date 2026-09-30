@@ -1,4 +1,5 @@
 import FeedbackTrigger from './FeedbackTrigger';
+import { toolDetail } from '../lib/agent-outcome';
 import { openFeedback } from '../lib/feedback-contract';
 import { analyticsHeaders, track } from '../lib/analytics';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
@@ -887,13 +888,11 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                                   <Circle size={12} />
                                 )}
                                 <span>
-                                  {laterReport
-                                    ? t('报告整理 · 早先尝试', 'Report · earlier attempt')
-                                    : tool.label}
+                                  {laterReport ? t('报告整理 · 已修复', 'Report · recovered') : tool.label}
                                 </span>
                                 <small>
                                   {laterReport
-                                    ? t('后续已生成报告', 'Report generated later')
+                                    ? t('报告已生成', 'Report saved')
                                     : tool.status === 'running'
                                       ? t('进行中', 'Running')
                                       : tool.status === 'error'
@@ -907,12 +906,12 @@ export default function AgentWorkspace({ locale }: { locale: Locale }) {
                               {laterReport && (
                                 <p className="agent-attempt-outcome">
                                   {t(
-                                    '这次尝试未保存报告。之后已补读参考资料，并生成了下方的报告；此处保留当时的过程记录。',
-                                    'This attempt did not save a report. Reference reading and a saved report followed; the original attempt remains recorded below.',
+                                    '最初的稿件未通过检查。之后已修正问题并保存报告；这里保留修复前的过程记录。',
+                                    'The original draft did not pass its checks. A corrected report was saved; this entry preserves the earlier attempt.',
                                   )}
                                 </p>
                               )}
-                              <p>{tool.detail ?? t('请求正在处理中。', 'The request is in progress.')}</p>
+                              {!laterReport && <p>{toolDetail(tool, locale)}</p>}
                             </details>
                           );
                         })}
