@@ -85,6 +85,7 @@ describe('deployed IndexNow submissions', () => {
       keyLocation: `${origin}/${config.key}.txt`,
       urlList: f.entries.map((p) => p.url),
     });
+    expect(f.send.mock.calls[0][1].redirect).toBe('manual');
     expect(await submitIndexNow(f.env)).toMatchObject({ status: 'unchanged', submitted: 0 });
     expect(f.send).toHaveBeenCalledTimes(1);
     expect(await indexNowStatus(f.env)).toMatchObject({
@@ -137,18 +138,21 @@ describe('deployed IndexNow submissions', () => {
     expect(await submitIndexNow(f.env)).toMatchObject({ status: 'retrying', httpStatus: null });
     expect((await indexNowStatus(f.env)).trackedPages).toBe(0);
   });
-  it.each([400, 403, 422, 500])('does not lose changes after an HTTP %i failure', async (status) => {
-    const f = fixture();
-    f.send.mockResolvedValueOnce(new Response(null, { status }));
-    expect(await submitIndexNow(f.env)).toMatchObject({
-      status: 'retrying',
-      submitted: 0,
-      httpStatus: status,
-    });
-    expect((await indexNowStatus(f.env)).trackedPages).toBe(0);
-    f.sql.prepare('UPDATE indexnow_state SET retry_at = 0').run();
-    expect(await submitIndexNow(f.env)).toMatchObject({ status: 'submitted', submitted: 2 });
-  });
+  it.each([301, 302, 307, 400, 403, 422, 500])(
+    'does not lose changes after an HTTP %i failure',
+    async (status) => {
+      const f = fixture();
+      f.send.mockResolvedValueOnce(new Response(null, { status }));
+      expect(await submitIndexNow(f.env)).toMatchObject({
+        status: 'retrying',
+        submitted: 0,
+        httpStatus: status,
+      });
+      expect((await indexNowStatus(f.env)).trackedPages).toBe(0);
+      f.sql.prepare('UPDATE indexnow_state SET retry_at = 0').run();
+      expect(await submitIndexNow(f.env)).toMatchObject({ status: 'submitted', submitted: 2 });
+    },
+  );
   it('does not claim a persisted receipt after losing its lease during the outbound request', async () => {
     const f = fixture();
     f.send.mockImplementationOnce(async () => {

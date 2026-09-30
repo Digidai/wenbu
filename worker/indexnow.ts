@@ -128,7 +128,8 @@ export async function submitIndexNow(env: Env) {
     try {
       const response = await fetch(config.endpoint, {
         method: 'POST',
-        redirect: 'error',
+        // workerd rejects redirect: 'error'. Do not follow a redirect with our POST body.
+        redirect: 'manual',
         signal: AbortSignal.timeout(30_000),
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({
