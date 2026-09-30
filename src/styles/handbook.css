@@ -616,3 +616,7 @@
 .lesson-line {
   min-height: 36px;
 }
+/* Keep spread positions aligned when an English card name wraps to two lines. */
+html[lang='en'] .tarot-lesson:has(.tarot-position) strong {
+  min-height: 3.4em;
+}
