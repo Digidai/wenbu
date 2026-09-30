@@ -1,5 +1,6 @@
 ---
 import { ArrowUpRight, ArrowRight, BookOpen, Search, X, Compass, LayoutGrid, Rows3 } from 'lucide-react';
+import { guideMinutes } from '../lib/knowledge';
 import ArticleCover from './ArticleCover.astro';
 import { articles } from '../data/articles';
 import { learningTopics } from '../data/learning-paths';
@@ -55,8 +56,8 @@ const startingPoints = [
       </a>
       <p class="library-edition">
         {t(
-          `${guides.length} 篇双语指南 · 免费阅读`,
-          `${guides.length} guides in Chinese and English · Free to read`,
+          `${guides.length} 篇双语图解指南 · 案例与来源 · 免费阅读`,
+          `${guides.length} illustrated guides · Examples and sources · Free to read`,
         )}
       </p>
     </div>
@@ -182,7 +183,7 @@ const startingPoints = [
                     <div class="library-guide-meta">
                       <span>{t(topic.zh, topic.en)}</span>
                       <span>
-                        {a.minutes} {t('分钟', 'min')}
+                        {guideMinutes(a, locale)} {t('分钟', 'min')}
                       </span>
                     </div>
                     <h4>{a[locale].title}</h4>

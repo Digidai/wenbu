@@ -153,8 +153,27 @@ const cli = [
     </p>
     <p>
       {t(
-        '建议每次明确传 locale:"zh" 或 locale:"en"。MCP 默认英文，REST 和 CLI 默认中文；紫微宫位、星曜等传统名称仍保留中文。',
-        'Set locale:"zh" or locale:"en" explicitly. MCP defaults to English; REST and CLI default to Chinese. Traditional labels such as Zi Wei palaces and stars remain in Chinese.',
+        '建议每次明确传 locale:"zh" 或 locale:"en"。MCP 与知识 CLI 默认英文，计算 REST 和 CLI 默认中文；紫微宫位、星曜等传统名称仍保留中文。',
+        'Set locale:"zh" or locale:"en" explicitly. MCP and the guide CLI default to English; calculation REST and CLI default to Chinese. Traditional labels such as Zi Wei palaces and stars remain in Chinese.',
+      )}
+    </p>
+    <h2>{t('公开知识库：完整读取，按需取章', 'Public knowledge: complete guides or focused sections')}</h2>
+    <p>
+      {t(
+        '全部 21 篇指南提供中英文 HTML、Markdown 和结构化 JSON，来自同一份内容。JSON 保留目录、图示说明、表格、案例、FAQ 与来源支持范围；不包含任何个人对话或出生资料。',
+        'All 21 guides have Chinese and English HTML, Markdown and structured JSON editions drawn from the same content. JSON preserves the outline, diagram descriptions, tables, examples, FAQs and source scope. It contains no personal conversations or birth details.',
+      )}
+    </p>
+    <p>
+      <a href="/knowledge/index.json">{t('打开双语知识索引', 'Open the bilingual knowledge index')} ↗</a>
+    </p>
+    <pre><code>{`node wenbu.mjs library
+node wenbu.mjs guide bazi-basics ${locale}
+node wenbu.mjs guide bazi-basics ${locale} --json`}</code></pre>
+    <p>
+      {t(
+        'MCP 的 wenbu://knowledge 资源提供同一份索引。read_library 默认返回完整正文、outline、links 和 truncated:false；加入 section:"worked-example" 可只读案例，scope 会标为 section。章节编号请以返回的目录为准，引用时保留范围。',
+        'The MCP resource wenbu://knowledge provides the same index. read_library returns the complete text, outline, links and truncated:false by default. Add section:"worked-example" to read the example only; scope will be section. Use IDs from the returned outline and preserve the scope when citing.',
       )}
     </p>
     <h2>{t('CLI：先跑通一个无隐私示例', 'CLI: try a non-personal example')}</h2>

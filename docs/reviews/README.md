@@ -1,5 +1,7 @@
 # Quality and review evidence
 
+- [Illustrated handbook release](handbook-2026-09-30/README.md): all 21 bilingual guides, worked examples, accessible figures and complete Markdown/JSON/MCP/CLI reading.
+
 - [wenbu.app domain migration: live DNS, HTTPS, redirects and compatibility verification](domain-migration-2026-09-30.md)
 
 ## Latest: analytics trends and multidimensional filters (2026-09-29)

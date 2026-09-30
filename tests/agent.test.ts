@@ -781,3 +781,36 @@ describe('report revision source preparation', () => {
     expect(result.at(-1)).toMatchObject({ type: 'done', toolCalls: 3, modelCalls: 1 });
   });
 });
+
+it('restores section citations without overwriting them or granting full-guide preview authority', async () => {
+  const { env } = testEnv();
+  const fetcher = vi
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValueOnce(model('The example and questions remain separate.'));
+  await events(
+    await agentResponse(
+      {
+        message: 'Review the sources',
+        locale: 'en',
+        consent: true,
+        context: {
+          sourceIds: ['guide-bazi-basics#worked-example', 'guide-bazi-basics#questions', 'guide-bazi-basics'],
+        },
+      },
+      request(),
+      env,
+    ),
+  );
+  const body = JSON.parse(fetcher.mock.calls[0][1]?.body as string);
+  const snapshot = JSON.parse(body.messages[1].content.split('\n').slice(1).join('\n'));
+  expect(snapshot.verifiedLibrarySources.map((s: { scope: string }) => s.scope)).toEqual([
+    'section',
+    'section',
+    'preview',
+  ]);
+  expect(snapshot.verifiedLibrarySources[0].content).toContain('08:37');
+  expect(snapshot.verifiedLibrarySources[2]).toMatchObject({
+    truncated: true,
+    requiresReadBeforeCitation: true,
+  });
+});

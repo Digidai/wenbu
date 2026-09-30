@@ -1,0 +1,82 @@
+---
+import type { GuideEdition } from '../data/guide-types';
+import type { Locale } from '../lib/schema';
+const {
+  copy: d,
+  locale,
+  part,
+} = Astro.props as { copy: GuideEdition; locale: Locale; part: 'answer' | 'table' | 'practice' };
+const t = (a: string, b: string) => (locale === 'zh' ? a : b);
+---
+
+{part === 'answer' && (
+  <section id="quick-answer" class="guide-answer">
+    <p class="eyebrow">{t('先把结论说清楚', 'THE SHORT ANSWER')}</p>
+    <p class="answer-lead">{d.answer}</p>
+    <ul>
+      {d.takeaways.map((x) => (
+        <li>{x}</li>
+      ))}
+    </ul>
+  </section>
+)}
+{part === 'table' && (
+  <section id="reference-table" class="guide-reference">
+    <h2>{d.table.title}</h2>
+    <div class="knowledge-table" role="region" aria-label={d.table.title} tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            {d.table.columns.map((c) => (
+              <th scope="col">{c}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {d.table.rows.map((r) => (
+            <tr>{r.map((c, i) => (i === 0 ? <th scope="row">{c}</th> : <td>{c}</td>))}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">{t('小屏幕可横向滑动表格。', 'On a small screen, scroll the table sideways.')}</p>
+  </section>
+)}
+{part === 'practice' && (
+  <>
+    <section id="worked-example" class="worked-example">
+      <span class="eyebrow">{t('跟着做一次', 'WORKED EXAMPLE')}</span>
+      <h2>{d.example.title}</h2>
+      <p>{d.example.intro}</p>
+      <ol>
+        {d.example.steps.map((step, i) => (
+          <li>
+            <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="example-conclusion">{d.example.conclusion}</p>
+    </section>
+    <section id="glossary" class="guide-glossary">
+      <h2>{t('读懂这些词', 'Key terms')}</h2>
+      <dl>
+        {d.glossary.map((g) => (
+          <div>
+            <dt>{g.term}</dt>
+            <dd>{g.definition}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+    <section id="questions" class="guide-questions">
+      <h2>{t('常见问题', 'Common questions')}</h2>
+      {d.faq.map((f) => (
+        <details>
+          <summary>{f.question}</summary>
+          <p>{f.answer}</p>
+        </details>
+      ))}
+    </section>
+  </>
+)}
