@@ -18,7 +18,7 @@
 ```
 
 ```sh
-curl -N -sS https://wenbu.genedai.me/api/v1/agent \
+curl -N -sS https://wenbu.app/api/v1/agent \
   -H 'Content-Type: application/json' \
   --data-binary @request.json
 ```
@@ -50,7 +50,7 @@ curl -N -sS https://wenbu.genedai.me/api/v1/agent \
 | 易经的 `calculation.lines`       | `context.readings[].input.lines`          | 保留六个原始数字                                                   |
 | 塔罗的 `calculation.cards`       | `context.readings[].input.cards`          | 只提取每张牌的 `id` 与 `reversed`，不传整张牌的其他字段            |
 
-不要直接把 `schema`、`instructions` 等资料包字段传入请求；接口拒绝未定义字段。会话导出同样不是请求格式。客户端应先核对 [Agent 请求结构](https://wenbu.genedai.me/agent-request.schema.json)。
+不要直接把 `schema`、`instructions` 等资料包字段传入请求；接口拒绝未定义字段。会话导出同样不是请求格式。客户端应先核对 [Agent 请求结构](https://wenbu.app/agent-request.schema.json)。
 
 ### 资料范围、保存和额度
 
@@ -66,7 +66,7 @@ The independent workspace lives at `/agent/` and `/en/agent/`. All four original
 
 ## One explicit turn
 
-POST `/api/v1/agent` with JSON. See [the request schema](https://wenbu.genedai.me/agent-request.schema.json) or [OpenAPI](https://wenbu.genedai.me/openapi.json) for fields and limits. Save this non-personal example as `request.json` after the person chooses to send it:
+POST `/api/v1/agent` with JSON. See [the request schema](https://wenbu.app/agent-request.schema.json) or [OpenAPI](https://wenbu.app/openapi.json) for fields and limits. Save this non-personal example as `request.json` after the person chooses to send it:
 
 ```json
 {
@@ -78,7 +78,7 @@ POST `/api/v1/agent` with JSON. See [the request schema](https://wenbu.genedai.m
 ```
 
 ```sh
-curl -N -sS https://wenbu.genedai.me/api/v1/agent \
+curl -N -sS https://wenbu.app/api/v1/agent \
   -H 'Content-Type: application/json' \
   --data-binary @request.json
 ```

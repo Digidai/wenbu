@@ -28,7 +28,7 @@ function context() {
   };
 }
 const request = (headers: Record<string, string> = {}) =>
-  new Request('https://wenbu.genedai.me/api/v1/tarot', { headers });
+  new Request('https://wenbu.app/api/v1/tarot', { headers });
 describe('closed analytics contract', () => {
   it('summarizes guidance steps without collecting topic or answer content and excludes test traffic', async () => {
     const { sql, env } = database();
@@ -45,7 +45,7 @@ describe('closed analytics contract', () => {
     ].map((e) => ({ ...session, ...e, id: crypto.randomUUID(), tool: 'agent', page: '/agent/' }));
     await collectEvents({ events }, request(), env);
     await collectEvents({ events: [{ ...events[0], id: crypto.randomUUID(), test: true }] }, request(), env);
-    const report = await analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics'), env);
+    const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics'), env);
     expect(report.data.guidance).toEqual(
       expect.arrayContaining([
         { label: 'guide_opened', count: 1, sessions: 1 },
@@ -69,7 +69,7 @@ describe('closed analytics contract', () => {
     ] as const) {
       const pending: Promise<unknown>[] = [];
       const response = await worker.fetch(
-        new Request('https://wenbu.genedai.me/api/v1/tarot', {
+        new Request('https://wenbu.app/api/v1/tarot', {
           method: 'POST',
           headers: { 'Content-Type': contentType },
           body,
@@ -80,7 +80,7 @@ describe('closed analytics contract', () => {
       expect(response.status).toBe(status);
       await Promise.all(pending);
     }
-    const report = await analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics'), env);
+    const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics'), env);
     expect(report.data.summary[0]).toMatchObject({ invalid_inputs: 3, failures: 0 });
     expect(sql.prepare('SELECT COUNT(*) n FROM events WHERE status=?').get('invalid_input')?.n).toBe(3);
     sql.close();
@@ -101,10 +101,10 @@ describe('closed analytics contract', () => {
       expect(pagePaths).toContain(path);
     expect(safePage('/en/tarot/?question=private#name')).toBe('/tarot/');
     expect(safePage('/private-person-1988/')).toBe('/other/');
-    expect(referrerSource('https://www.google.com/search?q=private', 'https://wenbu.genedai.me')).toBe(
+    expect(referrerSource('https://www.google.com/search?q=private', 'https://wenbu.app')).toBe(
       'google',
     );
-    expect(referrerSource('https://someone.example/private', 'https://wenbu.genedai.me')).toBe('other');
+    expect(referrerSource('https://someone.example/private', 'https://wenbu.app')).toBe('other');
   });
   it('deduplicates receipts in actual SQLite and stores no raw request data', async () => {
     const { sql, env } = database();
@@ -166,11 +166,11 @@ describe('closed analytics contract', () => {
       request(),
       env,
     );
-    const report = await analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics?days=7'), env);
+    const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics?days=7'), env);
     expect(report.data.summary[0]).toMatchObject({ pageviews: 1, calculations: 1, sessions: 1 });
     expect(report.data.funnel[0]).toMatchObject({ visited: 1, started: 1, succeeded: 1, saved: 1 });
     const include = await analyticsReport(
-      new URL('https://wenbu.genedai.me/api/admin/analytics?test=true'),
+      new URL('https://wenbu.app/api/admin/analytics?test=true'),
       env,
     );
     expect(include.data.summary[0]).toMatchObject({ pageviews: 2 });
@@ -181,13 +181,13 @@ describe('closed analytics contract', () => {
     const event = { ...context(), id: crypto.randomUUID(), event: 'page_view' };
     await collectEvents({ events: [event] }, request(), env);
     const report = await analyticsReport(
-      new URL('https://wenbu.genedai.me/api/admin/analytics?source=github'),
+      new URL('https://wenbu.app/api/admin/analytics?source=github'),
       env,
     );
     expect(report.data.summary[0].events).toBe(0);
     await expect(
       analyticsReport(
-        new URL("https://wenbu.genedai.me/api/admin/analytics?source=';DROP%20TABLE%20events;--"),
+        new URL("https://wenbu.app/api/admin/analytics?source=';DROP%20TABLE%20events;--"),
         env,
       ),
     ).rejects.toMatchObject({ status: 400 });
@@ -215,7 +215,7 @@ describe('closed analytics contract', () => {
       status: 'cancelled',
       duration: 10,
     });
-    const report = await analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics'), env);
+    const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics'), env);
     expect(report.data.summary[0]).toMatchObject({
       calculations: 0,
       examples: 1,

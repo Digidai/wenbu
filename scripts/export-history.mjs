@@ -16,7 +16,7 @@ if (!['events', 'feedback', 'archives', 'all'].includes(kind) || !output || !isA
   throw new Error(
     'Use --kind=events|feedback|archives|all --out=/absolute/private/directory. Optional --days=90 --test=true --operation=UUID.',
   );
-const base = args.get('--base') || 'https://wenbu.genedai.me';
+const base = args.get('--base') || 'https://wenbu.app';
 if (!/^https:\/\/wenbu\.genedai\.me$/.test(base) && !/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(base))
   throw new Error('Only the production origin or local preview is supported.');
 const token = (

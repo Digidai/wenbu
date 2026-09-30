@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-const base = process.env.WENBU_URL || 'https://wenbu.genedai.me';
+const base = process.env.WENBU_URL || 'https://wenbu.app';
 const evidence = {
   base,
   checkedAt: new Date().toISOString(),

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 
-const base = process.env.WENBU_URL || 'https://wenbu.genedai.me';
+const base = process.env.WENBU_URL || 'https://wenbu.app';
 const token = (
   await readFile(process.env.WENBU_ANALYTICS_TOKEN_FILE || '.analytics-admin-token', 'utf8')
 ).trim();

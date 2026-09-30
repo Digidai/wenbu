@@ -83,7 +83,7 @@ export function agentContext(result: Reading, question: string, context: string,
     };
   else calculation = result;
   return {
-    schema: 'https://wenbu.genedai.me/context.schema.json',
+    schema: 'https://wenbu.app/context.schema.json',
     version: 1,
     kind: result.kind,
     createdAt: new Date().toISOString(),

@@ -12,7 +12,7 @@ if (!['bazi', 'iching', 'tarot', 'ziwei', 'agent'].includes(command))
   throw new Error('Unknown tool. Run --help.');
 try {
   const maxBytes = command === 'agent' ? 98304 : 8192;
-  const base = new URL(process.env.WENBU_URL || 'https://wenbu.genedai.me');
+  const base = new URL(process.env.WENBU_URL || 'https://wenbu.app');
   if (
     base.protocol !== 'https:' &&
     !(base.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(base.hostname))

@@ -3,7 +3,7 @@ import { choose, href } from '../lib/i18n';
 import type { Locale } from '../lib/schema';
 const { locale } = Astro.props as { locale: Locale };
 const t = (zh: string, en: string) => choose(locale, zh, en);
-const origin = Astro.site?.origin || 'https://wenbu.genedai.me';
+const origin = Astro.site?.origin || 'https://wenbu.app';
 const config = JSON.stringify({ mcpServers: { wenbu: { url: origin + '/mcp' } } }, null, 2);
 const cli = [
   'curl -fsS ' + origin + '/wenbu.mjs -o wenbu.mjs',

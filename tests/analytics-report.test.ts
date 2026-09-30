@@ -39,7 +39,7 @@ function event(db: DB, time: string, patch: Record<string, string | number | nul
     .run(...Object.values(row));
 }
 function report(db: DB, query = '') {
-  return analyticsReport(new URL('https://wenbu.genedai.me/api/admin/analytics?' + query), db.env);
+  return analyticsReport(new URL('https://wenbu.app/api/admin/analytics?' + query), db.env);
 }
 afterEach(() => vi.restoreAllMocks());
 describe('calendar-based analytics visualizations', () => {

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 
-const base = (process.env.WENBU_URL || 'https://wenbu.genedai.me').replace(/\/$/, '');
+const base = (process.env.WENBU_URL || 'https://wenbu.app').replace(/\/$/, '');
 const token = (
   process.env.WENBU_ANALYTICS_ADMIN_TOKEN ||
   (await readFile(process.env.WENBU_ANALYTICS_TOKEN_FILE || '.analytics-admin-token', 'utf8'))

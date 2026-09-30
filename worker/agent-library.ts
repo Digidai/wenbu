@@ -31,7 +31,7 @@ export function libraryDocuments(locale: Locale): Document[] {
   const guideDocs: Document[] = articles.map((a) => ({
     id: 'guide-' + a.slug,
     title: a[locale].title,
-    url: `https://wenbu.genedai.me${prefix}${a.category}/${a.slug}/`,
+    url: `https://wenbu.app${prefix}${a.category}/${a.slug}/`,
     kind: 'guide',
     level: 'editorial',
     content: copyText(a[locale]),
@@ -43,7 +43,7 @@ export function libraryDocuments(locale: Locale): Document[] {
       guideDocs.push({
         id: 'guide-' + key,
         title: p.title,
-        url: `https://wenbu.genedai.me${prefix}${key}/`,
+        url: `https://wenbu.app${prefix}${key}/`,
         kind: 'guide',
         level: 'editorial',
         content: copyText(p),
@@ -64,7 +64,7 @@ export function libraryDocuments(locale: Locale): Document[] {
     ...hexagrams.map((h) => ({
       id: 'hexagram-' + h.number,
       title: `${h.number} · ${h.zh} / ${h.en}`,
-      url: `https://wenbu.genedai.me${prefix}iching/`,
+      url: `https://wenbu.app${prefix}iching/`,
       kind: 'symbol' as const,
       level: 'editorial',
       content: JSON.stringify(h),
@@ -73,7 +73,7 @@ export function libraryDocuments(locale: Locale): Document[] {
     ...tarotDeck.map((c) => ({
       id: 'tarot-' + c.id,
       title: `${c.zh} / ${c.en}`,
-      url: `https://wenbu.genedai.me${prefix}tarot/`,
+      url: `https://wenbu.app${prefix}tarot/`,
       kind: 'symbol' as const,
       level: 'editorial',
       content: JSON.stringify(c),
@@ -157,7 +157,7 @@ export async function readReference(
       signal: combined,
       headers: {
         Accept: 'text/html, text/plain;q=0.9',
-        'User-Agent': 'WenbuSourceReader/1.0 (+https://wenbu.genedai.me/agents/)',
+        'User-Agent': 'WenbuSourceReader/1.0 (+https://wenbu.app/agents/)',
       },
     });
     if ([301, 302, 303, 307, 308].includes(response.status)) {

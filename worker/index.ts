@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { domainRedirect } from './domain';
 import { calculate } from '../src/lib/tools';
 import { InputError, type ToolKind } from '../src/lib/schema';
 import { ApiError, interpret } from './ai';
@@ -80,6 +81,8 @@ export function originAllowed(request: Request, env: Env) {
 export default {
   async fetch(request: Request, env: Env, ctx?: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    const redirect = domainRedirect(request, env.SITE_URL);
+    if (redirect) return redirect;
     const path = url.pathname;
     if (!path.startsWith('/api/') && path !== '/mcp' && path !== '/mcp/') return env.ASSETS.fetch(request);
     if (!originAllowed(request, env))

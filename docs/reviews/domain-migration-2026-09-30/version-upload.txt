@@ -1,0 +1,139 @@
+⛅️ wrangler 4.142.0 (update available 4.145.0)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 416 files from the assets directory /Users/dai/Developer/wenbu-feedback-history/dist
+🌀 Starting asset upload...
+🌀 Found 117 new or modified static assets to upload. Proceeding with upload...
++ /robots.txt
++ /feed.xml
++ /_astro/KnowledgeLibrary.astro_astro_type_script_index_0_lang.DSPOe6Tg.js
++ /_astro/FeedbackWidget.astro_astro_type_script_index_0_lang.djb0r25Q.js
++ /sitemap.xml
++ /_astro/analytics.o0D3e0Oy.js
++ /agent-request.schema.json
++ /about/index.html
++ /en/about/index.html
++ /_astro/TarotGallery.CHnpnCMo.js
++ /compare/fatetell/index.html
++ /en/compare/chatbot/index.html
++ /en/compare/labyrinthos/index.html
++ /_astro/ReadingView.CSnV50Lx.js
++ /learn/tarot-reversals/index.html
++ /learn/review-a-reading/index.html
++ /learn/ziwei-four-transformations/index.html
++ /learn/ask-a-better-question/index.html
++ /learn/tarot-suits-and-court-cards/index.html
++ /en/learn/unknown-birth-time/index.html
++ /en/learn/ziwei-four-transformations/index.html
++ /en/learn/five-elements/index.html
++ /learn/ai-divination/index.html
++ /journal/index.html
++ /en/journal/index.html
++ /learn/iching-three-coins/index.html
++ /en/learn/choose-a-tool/index.html
++ /learn/prepare-birth-details/index.html
++ /agent-protocol.md
++ /en/learn/ziwei-twelve-palaces/index.html
++ /en/learn/tarot-beginner/index.html
++ /en/sources/index.html
++ /en/iching/index.html
++ /en/tarot/index.html
++ /bazi/index.html
++ /openapi.json
++ /agent/index.html
++ /en/learn/index.html
++ /en/tarot/deck/index.html
++ /_astro/Layout.astro_astro_type_script_index_0_lang.CxefpvzA.js
++ /_astro/AnalyticsPreference.ClGsTjL1.js
++ /llms.txt
++ /_astro/DomainMove.astro_astro_type_script_index_0_lang.BBVp4XIZ.js
++ /_astro/Journal.BoiFsRlS.js
++ /move/index.html
++ /SKILL.md
++ /terms/index.html
++ /en/free/index.html
++ /compare/chatbot/index.html
++ /compare/labyrinthos/index.html
++ /insights/index.html
++ /en/insights/index.html
++ /learn/chinese-zodiac-vs-bazi/index.html
++ /en/methodology/index.html
++ /learn/bazi-ten-gods/index.html
++ /blog/a-reading-you-can-return-to/index.html
++ /learn/bazi-vs-western-astrology/index.html
++ /en/learn/tarot-reversals/index.html
++ /en/blog/a-reading-you-can-return-to/index.html
++ /blog/why-calculation-comes-first/index.html
++ /learn/birth-time-timezone/index.html
++ /en/learn/bazi-vs-western-astrology/index.html
++ /en/learn/birth-time-timezone/index.html
++ /learn/read-ai-with-sources/index.html
++ /learn/ziwei-twelve-palaces/index.html
++ /en/learn/read-ai-with-sources/index.html
++ /learn/first-reading/index.html
++ /en/learn/first-reading/index.html
++ /en/agents/index.html
++ /sources/index.html
++ /iching/index.html
++ /en/ziwei/index.html
++ /privacy/index.html
++ /en/bazi/index.html
++ /index.html
++ /en/agent/index.html
++ /_astro/_..CJja-RQ6.css
++ /_astro/AgentWorkspace.HxpeO7H7.js
++ /en/feed.xml
++ /context.schema.json
++ /_astro/analytics-contract.BCNzMEb7.js
++ /wenbu.mjs
++ /_astro/TarotCard.CvLZhAyE.js
++ /en/move/index.html
++ /404.html
++ /free/index.html
++ /en/terms/index.html
++ /en/blog/index.html
++ /blog/index.html
++ /en/compare/fatetell/index.html
++ /methodology/index.html
++ /learn/iching-trigrams/index.html
++ /learn/unknown-birth-time/index.html
++ /learn/five-elements/index.html
++ /en/learn/iching-trigrams/index.html
++ /en/learn/chinese-zodiac-vs-bazi/index.html
++ /en/learn/ask-a-better-question/index.html
++ /en/learn/review-a-reading/index.html
++ /en/learn/tarot-suits-and-court-cards/index.html
++ /en/learn/bazi-ten-gods/index.html
+   (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
+Uploaded 39 of 117 assets
+Uploaded 78 of 117 assets
+Uploaded 117 of 117 assets
+✨ Success! Uploaded 117 files (204 already uploaded) (1.76 sec)
+
+Total Upload: 3286.70 KiB / gzip: 686.81 KiB
+Worker Startup Time: 63 ms
+Your Worker has access to the following bindings:
+Binding                                                       Resource
+env.QUOTA (UsageGate)                                         Durable Object
+env.ANALYTICS (wenbu-analytics)                               D1 Database
+env.ANALYTICS_ARCHIVE (wenbu-analytics-archive)               R2 Bucket
+env.FEEDBACK_LIMITER (5 requests/60s)                         Rate Limit
+env.ADMIN_LIMITER (60 requests/60s)                           Rate Limit
+env.ANALYTICS_LIMITER (30 requests/60s)                       Rate Limit
+env.RATE_LIMITER (60 requests/60s)                            Rate Limit
+env.ASSETS                                                    Assets
+env.SITE_URL ("https://wenbu.app")                            Environment Variable
+env.DEEPSEEK_MODEL ("deepseek-v4-flash")                      Environment Variable
+env.AI_DAILY_LIMIT ("1000")                                   Environment Variable
+env.AI_PER_USER_DAILY_LIMIT ("5")                             Environment Variable
+env.AGENT_PER_USER_DAILY_LIMIT ("12")                         Environment Variable
+env.AGENT_GLOBAL_DAILY_LIMIT ("600")                          Environment Variable
+
+Uploaded wenbu (6.09 sec)
+Worker Version ID: a154be89-876b-45b3-abec-b233cfa3f7df
+
+To deploy this version to production traffic use the command wrangler versions deploy
+
+Changes to non-versioned settings (config properties 'logpush' or 'tail_consumers') take effect after your next deployment using the command wrangler versions deploy
+
+Changes to triggers (routes, custom domains, cron schedules, etc) must be applied with the command wrangler triggers deploy

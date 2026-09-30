@@ -2,9 +2,9 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import worker, { boundedBody, originAllowed } from '../worker/index';
 import { identityHash, interpret } from '../worker/ai';
 import type { Env } from '../worker/types';
-const env = { SITE_URL: 'https://wenbu.genedai.me', DEEPSEEK_MODEL: 'deepseek-v4-flash' } as Env;
+const env = { SITE_URL: 'https://wenbu.app', DEEPSEEK_MODEL: 'deepseek-v4-flash' } as Env;
 const req = (body: unknown, origin?: string, path = 'bazi') =>
-  new Request('https://wenbu.genedai.me/api/v1/' + path, {
+  new Request('https://wenbu.app/api/v1/' + path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(origin ? { Origin: origin } : {}) },
     body: JSON.stringify(body),
@@ -53,7 +53,7 @@ describe('public edge API', () => {
     ).rejects.toMatchObject({ status: 400 });
   });
   it('requires POST', async () =>
-    expect((await worker.fetch(new Request('https://wenbu.genedai.me/api/v1/bazi'), env)).status).toBe(405));
+    expect((await worker.fetch(new Request('https://wenbu.app/api/v1/bazi'), env)).status).toBe(405));
   it('requires AI consent before provider work', async () =>
     expect(
       (

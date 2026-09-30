@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 
 // Opt-in live model check: two real turns, synthetic context only, marked as test traffic.
-const base = process.env.WENBU_URL || 'https://wenbu.genedai.me';
+const base = process.env.WENBU_URL || 'https://wenbu.app';
 const evidence = { base, checkedAt: new Date().toISOString(), synthetic: true, turns: [] };
 async function turn(message, history = []) {
   const response = await fetch(base + '/api/v1/agent', {

@@ -9,7 +9,7 @@ import { consumeSse, type AgentEvent, type AgentSource } from '../src/lib/agent-
 import type { Env } from '../worker/types';
 
 const request = (body: unknown = {}) =>
-  new Request('https://wenbu.genedai.me/api/v1/agent', {
+  new Request('https://wenbu.app/api/v1/agent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -24,7 +24,7 @@ function testEnv() {
     DEEPSEEK_API_KEY: 'synthetic-test-key',
     QUOTA_SALT: 'test-salt',
     DEEPSEEK_MODEL: 'deepseek-v4-flash',
-    SITE_URL: 'https://wenbu.genedai.me',
+    SITE_URL: 'https://wenbu.app',
     QUOTA: { idFromName: () => 'global', get: () => ({ reserveAgent, reserveAgentStep }) },
   } as unknown as Env;
   return { env, reserveAgent, reserveAgentStep };

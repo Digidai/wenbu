@@ -60,7 +60,7 @@ CSV 导出完整时间序列，时间边界为带 Z 的 UTC ISO 时间，未来�
 
 只接受枚举值，防止私人文本进入统计。完整字典见 `src/lib/analytics-contract.ts`。
 
-示例：`https://wenbu.genedai.me/tarot/deck/?utm_source=github&utm_medium=referral&utm_campaign=tarot-deck`。
+示例：`https://wenbu.app/tarot/deck/?utm_source=github&utm_medium=referral&utm_campaign=tarot-deck`。
 
 允许的 campaign：`launch`、`tarot-deck`、`agent-studio`、`bazi-guide`、`developer-tools`、`none`。新增推广活动时先更新字典和测试。未知值归入默认分类，原始查询字符串不落库。一次会话保留首次入口归因，30 分钟无活动后重建。
 

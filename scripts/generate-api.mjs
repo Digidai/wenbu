@@ -305,7 +305,7 @@ await writeFile(
   JSON.stringify(
     {
       $schema: 'https://json-schema.org/draft/2020-12/schema',
-      $id: 'https://wenbu.genedai.me/agent-request.schema.json',
+      $id: 'https://wenbu.app/agent-request.schema.json',
       title: 'Wenbu Agent turn',
       ...agentSchema,
     },
@@ -324,7 +324,7 @@ await writeFile(
         description: 'Free, transparent cultural calculation tools. No predictive validity claims.',
         license: { name: 'MIT', identifier: 'MIT' },
       },
-      servers: [{ url: 'https://wenbu.genedai.me' }],
+      servers: [{ url: 'https://wenbu.app' }],
       paths,
     },
     null,
@@ -336,7 +336,7 @@ await writeFile(
   JSON.stringify(
     {
       $schema: 'https://json-schema.org/draft/2020-12/schema',
-      $id: 'https://wenbu.genedai.me/context.schema.json',
+      $id: 'https://wenbu.app/context.schema.json',
       title: 'Wenbu user-selected context',
       type: 'object',
       additionalProperties: false,
@@ -352,7 +352,7 @@ await writeFile(
         'instructions',
       ],
       properties: {
-        schema: { const: 'https://wenbu.genedai.me/context.schema.json' },
+        schema: { enum: ['https://wenbu.app/context.schema.json', 'https://wenbu.genedai.me/context.schema.json'] },
         version: { const: 1 },
         kind: { enum: Object.keys(schemas) },
         createdAt: { type: 'string', format: 'date-time' },

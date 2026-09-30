@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [wenbu.app 主域名迁移与验证](reviews/domain-migration-2026-09-30.md)
+
 - [封面、配图与文章列表设计](plans/2026-09-29-library-covers.md)
 - [封面升级：Grok 审查、布局与发布验证](reviews/library-covers-release.md)
 - [知识手册、双语表达与新手路径](plans/2026-09-29-library-content-design.md)

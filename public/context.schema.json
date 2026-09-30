@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wenbu.genedai.me/context.schema.json",
+  "$id": "https://wenbu.app/context.schema.json",
   "title": "Wenbu user-selected context",
   "type": "object",
   "additionalProperties": false,
@@ -17,7 +17,7 @@
   ],
   "properties": {
     "schema": {
-      "const": "https://wenbu.genedai.me/context.schema.json"
+      "enum": ["https://wenbu.app/context.schema.json", "https://wenbu.genedai.me/context.schema.json"]
     },
     "version": {
       "const": 1

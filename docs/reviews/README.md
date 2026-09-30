@@ -1,5 +1,7 @@
 # Quality and review evidence
 
+- [wenbu.app domain migration: DNS binding, local validation and pending cutover](domain-migration-2026-09-30.md)
+
 ## Latest: analytics trends and multidimensional filters (2026-09-29)
 
 The [analytics visualization release](analytics-trends-release.md) records hourly/daily curves, 1/3/7/14/30/90-day and custom-date filters, ranked distributions, exports, 178 tests, local fixture/browser evidence and the separate release checks. The Grok CLI attempts did not return a verdict.

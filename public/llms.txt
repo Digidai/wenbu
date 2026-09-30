@@ -4,37 +4,37 @@
 
 ## Tools
 
-- [Agent workspace](https://wenbu.genedai.me/en/agent/): DeepSeek conversations, calculated charts and research from the Wenbu library and selected references. History is saved in this browser; sending a message shares the conversation and selected context with DeepSeek
-- [BaZi calculator](https://wenbu.genedai.me/en/bazi/): date, time, timezone and explicit calendar conventions
-- [I Ching](https://wenbu.genedai.me/en/iching/): three-coin method with all changing lines
-- [Tarot](https://wenbu.genedai.me/en/tarot/): full 78-card deck, one or three cards
-- [Zi Wei](https://wenbu.genedai.me/en/ziwei/): twelve palaces and named calculation conventions
+- [Agent workspace](https://wenbu.app/en/agent/): DeepSeek conversations, calculated charts and research from the Wenbu library and selected references. History is saved in this browser; sending a message shares the conversation and selected context with DeepSeek
+- [BaZi calculator](https://wenbu.app/en/bazi/): date, time, timezone and explicit calendar conventions
+- [I Ching](https://wenbu.app/en/iching/): three-coin method with all changing lines
+- [Tarot](https://wenbu.app/en/tarot/): full 78-card deck, one or three cards
+- [Zi Wei](https://wenbu.app/en/ziwei/): twelve palaces and named calculation conventions
 
 ## Getting started
 
-- [First reading](https://wenbu.genedai.me/en/learn/first-reading/): a complete first session with a worked example
-- [Choose a tool](https://wenbu.genedai.me/en/learn/choose-a-tool/): conversation, symbolic draws or birth charts
-- [Ask a better question](https://wenbu.genedai.me/en/learn/ask-a-better-question/): examples you can adapt
-- [Prepare birth details](https://wenbu.genedai.me/en/learn/prepare-birth-details/): dates, recorded times and tool-specific inputs
-- [Read AI answers with sources](https://wenbu.genedai.me/en/learn/read-ai-with-sources/): calculation facts, traditional interpretations and generated suggestions
-- [Review a reading](https://wenbu.genedai.me/en/learn/review-a-reading/): save a note and return to it
-- [Chinese library](https://wenbu.genedai.me/learn/): the same guides in Chinese
+- [First reading](https://wenbu.app/en/learn/first-reading/): a complete first session with a worked example
+- [Choose a tool](https://wenbu.app/en/learn/choose-a-tool/): conversation, symbolic draws or birth charts
+- [Ask a better question](https://wenbu.app/en/learn/ask-a-better-question/): examples you can adapt
+- [Prepare birth details](https://wenbu.app/en/learn/prepare-birth-details/): dates, recorded times and tool-specific inputs
+- [Read AI answers with sources](https://wenbu.app/en/learn/read-ai-with-sources/): calculation facts, traditional interpretations and generated suggestions
+- [Review a reading](https://wenbu.app/en/learn/review-a-reading/): save a note and return to it
+- [Chinese library](https://wenbu.app/learn/): the same guides in Chinese
 
 ## Agent integration
 
-- [Agent event protocol](https://wenbu.genedai.me/agent-protocol.md): explicit consent, selected context, SSE events and bounded execution
-- [MCP endpoint](https://wenbu.genedai.me/mcp): stateless Streamable HTTP
-- [Agent guide](https://wenbu.genedai.me/en/agents/)
-- [OpenAPI schema](https://wenbu.genedai.me/openapi.json)
-- [Skill](https://wenbu.genedai.me/SKILL.md)
-- [CLI](https://wenbu.genedai.me/wenbu.mjs)
-- [Context schema](https://wenbu.genedai.me/context.schema.json)
+- [Agent event protocol](https://wenbu.app/agent-protocol.md): explicit consent, selected context, SSE events and bounded execution
+- [MCP endpoint](https://wenbu.app/mcp): stateless Streamable HTTP
+- [Agent guide](https://wenbu.app/en/agents/)
+- [OpenAPI schema](https://wenbu.app/openapi.json)
+- [Skill](https://wenbu.app/SKILL.md)
+- [CLI](https://wenbu.app/wenbu.mjs)
+- [Context schema](https://wenbu.app/context.schema.json)
 
 ## Sources and policies
 
-- [Methodology](https://wenbu.genedai.me/en/methodology/)
-- [Reference sources](https://wenbu.genedai.me/en/sources/)
-- [Learning library](https://wenbu.genedai.me/en/learn/)
-- [Privacy](https://wenbu.genedai.me/en/privacy/)
-- [Free-use policy](https://wenbu.genedai.me/en/free/)
+- [Methodology](https://wenbu.app/en/methodology/)
+- [Reference sources](https://wenbu.app/en/sources/)
+- [Learning library](https://wenbu.app/en/learn/)
+- [Privacy](https://wenbu.app/en/privacy/)
+- [Free-use policy](https://wenbu.app/en/free/)
 - [Source code](https://github.com/Digidai/wenbu)
