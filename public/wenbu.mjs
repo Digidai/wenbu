@@ -22,19 +22,20 @@ try {
     throw new Error('WENBU_URL must be an origin without credentials or a path.');
   if (command === 'library' || command === 'guide') {
     if (command === 'library' && (arg || extra.length)) throw new Error('library takes no arguments.');
-    const locale = extra[0] || 'en';
+    const asJson = extra.at(-1) === '--json';
+    const localeArgs = asJson ? extra.slice(0, -1) : extra;
+    const locale = localeArgs[0] || 'en';
     if (
       command === 'guide' &&
       (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(arg || '') ||
         !['zh', 'en'].includes(locale) ||
-        extra.length > 2 ||
-        (extra[1] && extra[1] !== '--json'))
+        localeArgs.length > 1)
     )
       throw new Error('Usage: guide <slug> [zh|en] [--json]. List slugs with library.');
     const path =
       command === 'library'
         ? '/knowledge/index.json'
-        : `/knowledge/${locale}/${arg}.${extra[1] === '--json' ? 'json' : 'md'}`;
+        : `/knowledge/${locale}/${arg}.${asJson ? 'json' : 'md'}`;
     const res = await fetch(new URL(path, base), { signal: AbortSignal.timeout(15000) });
     if (!res.ok) throw new Error('Guide request failed: HTTP ' + res.status);
     const mime = res.headers.get('content-type') || '';
