@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wenbu.genedai.me/agent-request.schema.json",
+  "$id": "https://wenbu.app/agent-request.schema.json",
   "title": "Wenbu Agent turn",
   "type": "object",
   "additionalProperties": false,

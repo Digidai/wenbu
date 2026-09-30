@@ -1,6 +1,6 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
-const site = (process.env.SITE_URL || 'https://wenbu.genedai.me').replace(/\/$/, '');
+const site = (process.env.SITE_URL || 'https://wenbu.app').replace(/\/$/, '');
 async function walk(d) {
   const out = [];
   for (const f of await readdir(d, { withFileTypes: true })) {
@@ -58,7 +58,7 @@ for (const f of htmlFiles) {
 const robots = await readFile('dist/robots.txt', 'utf8');
 if (!robots.includes('Sitemap: ' + site + '/sitemap.xml')) errors.push('Sitemap missing from robots');
 const sitemap = await readFile('dist/sitemap.xml', 'utf8');
-if (sitemap.includes('/journal/') || sitemap.includes('/404/'))
+if (sitemap.includes('/journal/') || sitemap.includes('/404/') || sitemap.includes('/move/'))
   errors.push('Private/noindex pages in sitemap');
 if (errors.length) {
   console.error(errors.join('\n'));

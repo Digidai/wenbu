@@ -23,7 +23,7 @@ describe('public learning catalogue', () => {
         const reading = readLibrary(doc.id, locale);
         expect(reading.content).toContain(article[locale].sections.at(-1)!.paragraphs[0]);
         expect(reading.source.url).toBe(
-          `https://wenbu.genedai.me/${locale === 'en' ? 'en/' : ''}learn/${slug}/`,
+          `https://wenbu.app/${locale === 'en' ? 'en/' : ''}learn/${slug}/`,
         );
       }
     }

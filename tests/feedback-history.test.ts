@@ -4,7 +4,7 @@ import { collectEvents, recordService, pruneAnalytics } from '../worker/analytic
 import { submitFeedback, updateFeedback } from '../worker/feedback';
 import { archiveAnalytics, archiveDownload, historyReport, feedbackDetail } from '../worker/history';
 import worker from '../worker/index';
-const origin = 'https://wenbu.genedai.me';
+const origin = 'https://wenbu.app';
 const req = (headers: Record<string, string> = {}) => new Request(origin + '/api/feedback', { headers });
 const context = () => ({
   session: crypto.randomUUID(),

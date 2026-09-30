@@ -69,9 +69,15 @@ npm run smoke
 
 Deployment is through the CLI under the user's existing Cloudflare account. GitHub CI validates every change; automatic production deployment is deliberately not claimed until GitHub Cloudflare credentials have been configured. The included workflow needs no deployment secret.
 
-## Future domain
+## Domain and local-history migration
 
-See [brand-and-growth.md](research/brand-and-growth.md). Change all absolute identifiers together and preserve old links with permanent redirects. A hostname change does not automatically migrate localStorage journals; users should export records before switching domains.
+Primary origin: `https://wenbu.app`. The Worker also binds `www.wenbu.app` and the legacy `wenbu.genedai.me` host. Ordinary legacy pages and www requests redirect to the primary host, preserving their path and query. Legacy `/api/*` and `/mcp` remain served by the same Worker for installed native clients. The two `/move/` locale routes and their `/_astro/*` assets stay accessible on the old origin to recover local browser history. Recovery pages are noindex and excluded from the sitemap. Bundled scripts, styles, fonts and image assets use direct asset routing to avoid unnecessary Worker invocations.
+
+Canonical links, hreflang, structured data, social metadata, sitemap, feeds, robots, source citations, CLI, MCP instructions and public schema IDs use the primary domain. The context schema also accepts the legacy schema identifier for previously downloaded files. Historical release evidence retains the host used at the time.
+
+Users with old browser records open `https://wenbu.app/move/` (English: `/en/move/`) in the same browser/profile. They open the old-site window, review record counts and confirm copying there. `postMessage` uses exact origins and the specific opened window. Only journal entries, Agent sessions and analytics opt-out are copied, directly between browser windows. No credentials, visitor IDs or history are uploaded. IDs are deduplicated, existing destination records win, and originals remain intact. Capacity failures reject the copy without truncation; a failed destination write restores previous values. The old page can download a full backup.
+
+Keep the existing Worker, D1, R2, quota namespace and secrets. Domain setup requires an active Cloudflare zone and ready HTTPS for the primary hostname before turning on legacy redirects. A deployment can disable redirects by restoring the previous `SITE_URL`, but the matching old-origin static build must also be restored. See [domain migration evidence](reviews/domain-migration-2026-09-30.md) for deployment status and checks.
 
 ## Product analytics
 

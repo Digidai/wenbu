@@ -32,7 +32,7 @@ const {
   workspace = false,
 } = Astro.props;
 const t = (zh: string, en: string) => choose(locale, zh, en);
-const site = Astro.site?.origin || 'https://wenbu.genedai.me';
+const site = Astro.site?.origin || 'https://wenbu.app';
 const canonical = site + href(locale, path);
 const schema = {
   '@context': 'https://schema.org',
@@ -265,16 +265,17 @@ const schema = {
       <div class="footer-bottom">
         <span>© 2026 Wenbu · {t('问而有思，行而有度', 'Ask thoughtfully. Act with care.')}</span>
         <div>
+          <a href={href(locale, 'move')}>{t('迁移旧站记录', 'Move old-site history')}</a>
           <a href={href(locale, 'privacy')}>{t('隐私', 'Privacy')}</a>
           <a href={href(locale, 'terms')}>{t('使用条款', 'Terms')}</a>
           <span>{t('文化探索与自我觉察，不作命运保证。', 'For cultural exploration and reflection.')}</span>
         </div>
       </div>
     </footer>
-    {path !== 'insights' && <FeedbackWidget locale={locale} />}
+    {path !== 'insights' && path !== 'move' && <FeedbackWidget locale={locale} />}
     <script>
       import { initializeAnalytics } from '../lib/analytics';
-      initializeAnalytics();
+      if (!/^\/(en\/)?move\/$/.test(location.pathname)) initializeAnalytics();
       const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const nav = document.getElementById('mobile-nav');
       menu?.addEventListener('click', () => {

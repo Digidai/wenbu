@@ -1,0 +1,228 @@
+---
+import { choose } from '../lib/i18n';
+import type { Locale } from '../lib/schema';
+const { locale } = Astro.props as { locale: Locale };
+const t = (zh: string, en: string) => choose(locale, zh, en);
+---
+
+<section class="shell move-shell" data-domain-move data-locale={locale}>
+  <p class="eyebrow">WENBU.APP</p>
+  <h1>{t('把探索记录带到新家', 'Bring your history to Wenbu.app')}</h1>
+  <p class="move-intro">
+    {t(
+      '问卜的主域名已改为 wenbu.app。手记和对话保存在浏览器里，需要在同一个浏览器中复制一次。',
+      'Wenbu’s new home is wenbu.app. Your journal and conversations are stored in your browser, so they need to be copied once in the same browser.',
+    )}
+  </p>
+  <div class="move-panel">
+    <h2>{t('保留手记，也保留对话', 'Keep your journal and conversations')}</h2>
+    <p>
+      {t(
+        '复制只发生在两个问卜页面之间，不会上传到服务器或发送给模型。原站记录不会删除，同一条记录会保留新站版本。统计关闭偏好也会保留；管理员凭据和访问标识不会复制。',
+        'The copy passes directly between the two Wenbu pages. It is not uploaded to a server or sent to a model. Old records stay intact, existing records with the same ID on the new site are kept, and analytics opt-out is preserved. Admin credentials and visitor identifiers are never copied.',
+      )}
+    </p>
+    <p id="move-status" role="status" aria-live="polite">
+      {t('正在检查当前站点…', 'Checking this site…')}
+    </p>
+    <div class="move-actions">
+      <button id="move-open" class="button primary" hidden>
+        {t('从旧站复制记录', 'Copy history from the old site')}
+      </button>
+      <button id="move-send" class="button primary" hidden>
+        {t('确认复制到 wenbu.app', 'Copy to wenbu.app')}
+      </button>
+      <button id="move-backup" class="button" hidden>
+        {t('下载完整备份', 'Download a full backup')}
+      </button>
+      <a id="move-new" class="button" href={`https://wenbu.app/${locale === 'en' ? 'en/' : ''}move/`} hidden>
+        {t('在新站开始迁移', 'Start on the new site')}
+      </a>
+    </div>
+    <nav id="move-finish" hidden aria-label={t('继续探索', 'Continue exploring')}>
+      <a href={locale === 'en' ? '/en/journal/' : '/journal/'}>{t('查看我的手记', 'Open my journal')} ↗</a>
+      <a href={locale === 'en' ? '/en/agent/' : '/agent/'}>
+        {t('继续 Agent 对话', 'Continue in Wenbu Agent')} ↗
+      </a>
+    </nav>
+  </div>
+  <p class="move-note">
+    {t(
+      '请使用之前保存记录的浏览器和个人资料。无痕模式、清除过的数据或其他设备上的记录无法从这里找回。迁移不会覆盖新站记录；达到容量上限时会停止并提示备份。',
+      'Use the browser and profile where you saved your records. This cannot recover cleared data, a closed private session, or records on another device. If the combined history exceeds storage limits, the copy stops and you can keep a backup.',
+    )}
+  </p>
+</section>
+<style>
+  .move-shell {
+    max-width: 840px;
+    padding-block: clamp(44px, 7vw, 88px);
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.2;
+    margin-block: 18px 24px;
+  }
+  .move-intro {
+    font-size: 17px;
+    line-height: 1.85;
+    max-width: 680px;
+  }
+  .move-panel {
+    margin-block: 32px;
+    padding: clamp(22px, 4vw, 36px);
+    border: 1px solid #d9d5c9;
+    background: #efeee5;
+  }
+  .move-panel h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+  }
+  .move-panel p,
+  .move-note {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #4c584e;
+  }
+  #move-status {
+    margin-block: 22px;
+    font-weight: 500;
+    color: #263d30;
+  }
+  .move-actions,
+  #move-finish {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .move-actions .button {
+    white-space: normal;
+    text-align: center;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  #move-finish {
+    margin-top: 24px;
+  }
+</style>
+<script>
+  import {
+    PRIMARY_ORIGIN,
+    LEGACY_ORIGIN,
+    localHistory,
+    isHistoryMessage,
+    mergeHistory,
+  } from '../lib/domain-move';
+  const root = document.querySelector<HTMLElement>('[data-domain-move]')!;
+  const zh = root.dataset.locale === 'zh';
+  const t = (a: string, b: string) => (zh ? a : b);
+  const status = document.getElementById('move-status')!;
+  const open = document.getElementById('move-open') as HTMLButtonElement;
+  const send = document.getElementById('move-send') as HTMLButtonElement;
+  const backup = document.getElementById('move-backup') as HTMLButtonElement;
+  const error = () => {
+    status.textContent = t(
+      '未完成复制，原记录仍然保留。请检查浏览器存储权限和剩余空间；合并手记不能超过 100 条，对话不能超过 3.6 MB。可以先在旧站下载完整备份。',
+      'The copy did not complete. Your original records are still available. Check browser storage permissions and space; the combined journal is limited to 100 entries and conversations to 3.6 MB. You can download a full backup on the old site.',
+    );
+  };
+  const counts = () => {
+    const history = localHistory(localStorage);
+    return t(
+      `本页所在域名保存了 ${history.journal.length} 条手记、${history.sessions.length} 个对话。`,
+      `This domain has ${history.journal.length} journal entries and ${history.sessions.length} conversations.`,
+    );
+  };
+  let popup: Window | null = null;
+  let awaiting = false;
+  if (location.origin === PRIMARY_ORIGIN) {
+    try {
+      status.textContent =
+        counts() +
+        t(
+          ' 点击下方按钮打开旧站，并在旧站确认复制。',
+          ' Open the old site below, then confirm the copy there.',
+        );
+      open.hidden = false;
+    } catch {
+      error();
+    }
+    open.addEventListener('click', () => {
+      popup = window.open(`${LEGACY_ORIGIN}/${zh ? '' : 'en/'}move/`, 'wenbu-history-transfer');
+      if (!popup) status.textContent = t('请允许这次弹出窗口，再重试。', 'Allow this popup, then try again.');
+      else status.textContent = t('请在打开的旧站页面确认复制。', 'Confirm the copy in the old-site window.');
+    });
+    window.addEventListener('message', (event) => {
+      if (!isHistoryMessage(event, popup) || event.data?.type !== 'wenbu-domain-move-v1') return;
+      try {
+        const result = mergeHistory(localStorage, event.data);
+        popup!.postMessage({ type: 'wenbu-domain-move-complete' }, LEGACY_ORIGIN);
+        popup = null;
+        status.textContent = t(
+          `复制完成。新站现在有 ${result.journal} 条手记、${result.sessions} 个对话，旧站记录仍保留。`,
+          `Copied. The new site now has ${result.journal} journal entries and ${result.sessions} conversations. Old-site records are unchanged.`,
+        );
+        document.getElementById('move-finish')!.hidden = false;
+        open.hidden = true;
+      } catch {
+        error();
+      }
+    });
+  } else if (location.origin === LEGACY_ORIGIN) {
+    try {
+      status.textContent = counts();
+      backup.hidden = false;
+      send.hidden = !window.opener;
+      document.getElementById('move-new')!.hidden = Boolean(window.opener);
+    } catch {
+      error();
+    }
+    send.addEventListener('click', () => {
+      try {
+        if (!window.opener) return;
+        window.opener.postMessage(localHistory(localStorage), PRIMARY_ORIGIN);
+        awaiting = true;
+        status.textContent = t(
+          '已发送到新站窗口，正在等待保存确认。请回到新站查看结果。',
+          'Sent to the new-site window; waiting for confirmation. Return to that window to check the result.',
+        );
+      } catch {
+        error();
+      }
+    });
+    window.addEventListener('message', (event) => {
+      if (
+        !awaiting ||
+        event.origin !== PRIMARY_ORIGIN ||
+        event.source !== window.opener ||
+        event.data?.type !== 'wenbu-domain-move-complete'
+      )
+        return;
+      awaiting = false;
+      send.disabled = true;
+      status.textContent = t(
+        '新站已确认保存。你可以关闭此窗口，回到 wenbu.app 继续。原记录仍然保留。',
+        'The new site confirmed the save. You can close this window and continue on wenbu.app. The original records remain here.',
+      );
+    });
+    backup.addEventListener('click', () => {
+      try {
+        const url = URL.createObjectURL(
+          new Blob([JSON.stringify(localHistory(localStorage), null, 2)], { type: 'application/json' }),
+        );
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'wenbu-local-history-backup.json';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch {
+        error();
+      }
+    });
+  } else
+    status.textContent = t(
+      '请在 wenbu.app 打开迁移页面。',
+      'Open this page on wenbu.app to transfer your history.',
+    );
+</script>

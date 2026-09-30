@@ -180,6 +180,8 @@ export function referrerSource(referrer: string, origin: string): (typeof source
   try {
     const url = new URL(referrer);
     if (url.origin === origin) return 'internal';
+    const wenbuOrigins = ['https://wenbu.app', 'https://www.wenbu.app', 'https://wenbu.genedai.me'];
+    if (wenbuOrigins.includes(origin) && wenbuOrigins.includes(url.origin)) return 'internal';
     const host = url.hostname.replace(/^www\./, '');
     const known: Record<string, (typeof sources)[number]> = {
       'google.com': 'google',

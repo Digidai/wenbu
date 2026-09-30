@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DomainMove from '../components/DomainMove.astro';
 import '../styles/library.css';
 import KnowledgeLibrary from '../components/KnowledgeLibrary.astro';
 import ArticleCompanion from '../components/ArticleCompanion.astro';
@@ -28,6 +29,7 @@ export function getStaticPaths() {
     'tarot/deck',
     'ziwei',
     'journal',
+    'move',
     'learn',
     'blog',
     'agents',
@@ -60,6 +62,7 @@ const titles: Record<string, [string, string]> = {
   tarot: ['免费塔罗占卜，遇见新的视角', 'Free tarot reading · one & three cards'],
   ziwei: ['免费紫微斗数排盘，十二宫可视化', 'Free Zi Wei Dou Shu chart calculator'],
   journal: ['我的手记', 'Your reading journal'],
+  move: ['迁移本地记录', 'Move your local history'],
   learn: ['知识手册', 'The Wenbu library'],
   blog: ['问卜札记', 'Notes from Wenbu'],
   agents: ['与你的 Agent 一起探索', 'Wenbu for agents · MCP, CLI & Skills'],
@@ -68,6 +71,7 @@ const titles: Record<string, [string, string]> = {
   sources: ['参考资料与研究来源', 'Sources & further reading'],
 };
 const descriptions: Record<string, [string, string]> = {
+  move: ['把旧站保存在浏览器里的手记和 Agent 对话复制到 wenbu.app。原记录保留，数据不上传到服务器。', 'Copy the journal and Agent conversations stored in your browser to wenbu.app. Original records stay intact and no history is uploaded to a server.'],
   '': [
     '免费探索八字命盘、易经问卦、78 张塔罗和紫微星盘。无需注册，计算依据透明，可选 AI 解读、本地手记和 MCP Agent 接口。',
     'Explore free BaZi charts, I Ching casts, a full 78-card tarot deck and Zi Wei. No account needed. Transparent methods, optional AI and a local journal.',
@@ -147,7 +151,7 @@ const ctaLabels: Record<string, [string, string]> = {
   description={description}
   locale={locale}
   path={path}
-  noindex={path === 'journal' || path === 'insights'}
+  noindex={path === 'journal' || path === 'insights' || path === 'move'}
   article={Boolean(article)}
   published={articlePublished}
   modified={article ? '2026-09-29' : undefined}
@@ -162,6 +166,8 @@ const ctaLabels: Record<string, [string, string]> = {
 >
   {path === '' ? (
     <Home locale={locale} />
+  ) : path === 'move' ? (
+    <DomainMove locale={locale} />
   ) : path === 'tarot/deck' ? (
     <TarotGallery locale={locale} client:visible />
   ) : path === 'insights' ? (

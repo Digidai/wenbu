@@ -141,7 +141,7 @@ export function createMcpServer(receipt?: ToolReceipt) {
       {
         uri: 'wenbu://methodology',
         mimeType: 'text/plain',
-        text: 'Wenbu v1.1. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in fixed UTC+08:00 standard time; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.genedai.me/en/methodology/',
+        text: 'Wenbu v1.1. BaZi: lunar-typescript 1.8.6; solar-term year/month at the absolute instant in fixed UTC+08:00 standard time; day/hour in local civil or approximate solar time. I Ching: cryptographic three-coin probabilities 1/8,3/8,3/8,1/8; bottom-to-top lines; changing lines 6 and 9. Tarot: uniform selection without replacement, optional independent 50% reversals. Zi Wei: iztro 2.6.1 local civil time, fixLeap=true, default school. Details: https://wenbu.app/en/methodology/',
       },
     ],
   }));

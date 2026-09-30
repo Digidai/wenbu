@@ -111,7 +111,7 @@ createServer(async (req, res) => {
       const source = {
         id: 'guide-bazi-basics',
         title: zh ? '受控演示资料' : 'Scripted source',
-        url: 'https://wenbu.genedai.me/learn/bazi-basics/',
+        url: 'https://wenbu.app/learn/bazi-basics/',
         kind: 'guide',
         level: 'preview',
         excerpt: 'This is synthetic visual QA data, not an actual model response.',

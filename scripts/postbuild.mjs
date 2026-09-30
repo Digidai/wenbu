@@ -2,7 +2,7 @@ import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import sharp from 'sharp';
-const site = (process.env.SITE_URL || 'https://wenbu.genedai.me').replace(/\/$/, '');
+const site = (process.env.SITE_URL || 'https://wenbu.app').replace(/\/$/, '');
 async function walk(dir) {
   const out = [];
   for (const f of await readdir(dir, { withFileTypes: true })) {

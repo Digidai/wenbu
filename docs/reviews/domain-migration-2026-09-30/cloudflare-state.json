@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-09-30T14:50:59.024802+00:00",
+  "zone": {
+    "id": "e935a40316b130626d3c1d847c1d6f24",
+    "name": "wenbu.app",
+    "status": "pending",
+    "name_servers": [
+      "buck.ns.cloudflare.com",
+      "maya.ns.cloudflare.com"
+    ]
+  },
+  "domains": [
+    {
+      "id": "b113d68018f5a92a0e988950ac7dca7f80383be8",
+      "zone_id": "ce6ce01c1b4c947e6c59f69b7584a5ae",
+      "zone_name": "genedai.me",
+      "hostname": "wenbu.genedai.me",
+      "service": "wenbu",
+      "environment": "production",
+      "cert_id": "83ec4017-0366-411d-9edc-36f479ff1047",
+      "previews_enabled": false,
+      "enabled": true
+    },
+    {
+      "id": "f4d6e45cd2f138f7005b5ac8ef2ed1c20bfe18a6",
+      "zone_id": "e935a40316b130626d3c1d847c1d6f24",
+      "zone_name": "wenbu.app",
+      "hostname": "wenbu.app",
+      "service": "wenbu",
+      "environment": "production",
+      "cert_id": "7d335532-44ee-4f84-826e-a6e07c170e88",
+      "previews_enabled": false,
+      "enabled": true
+    },
+    {
+      "id": "e41cb5d72fbac88d7151b7217ec22f5fe863460b",
+      "zone_id": "e935a40316b130626d3c1d847c1d6f24",
+      "zone_name": "wenbu.app",
+      "hostname": "www.wenbu.app",
+      "service": "wenbu",
+      "environment": "production",
+      "cert_id": "1b2482ab-429f-4129-88ae-ac150b4a6800",
+      "previews_enabled": false,
+      "enabled": true
+    }
+  ],
+  "registrarNameservers": [
+    "aaden.ns.cloudflare.com",
+    "dayana.ns.cloudflare.com"
+  ]
+}

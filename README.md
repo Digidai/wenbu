@@ -4,16 +4,16 @@
 
 Free charts, tarot and source-based learning for a question you want to explore.
 
-[中文网站](https://wenbu.genedai.me/) · [English website](https://wenbu.genedai.me/en/) · [知识手册](https://wenbu.genedai.me/learn/) · [Documentation](docs/README.md)
+[中文网站](https://wenbu.app/) · [English website](https://wenbu.app/en/) · [知识手册](https://wenbu.app/learn/) · [Documentation](docs/README.md)
 
 ## 第一次用，从这里开始
 
 | 你想做什么               | 建议入口                                                                           | 需要准备什么                                         |
 | ------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 还不知道怎么问           | [Agent 对话](https://wenbu.genedai.me/agent/)                                      | 选一个主题和目标，再修改生成的草稿；点击发送后才开始 |
-| 围绕眼前一件事思考       | [塔罗](https://wenbu.genedai.me/tarot/) / [易经](https://wenbu.genedai.me/iching/) | 一个具体问题，不需要出生资料                         |
-| 看出生资料对应的传统命盘 | [八字](https://wenbu.genedai.me/bazi/) / [紫微](https://wenbu.genedai.me/ziwei/)   | 公历生日与当地时间；八字还需时区，紫微必须知道时刻   |
-| 弄懂术语与计算规则       | [知识手册](https://wenbu.genedai.me/learn/)                                        | 可以从入门内容读起，再核对结果里的计算约定           |
+| 还不知道怎么问           | [Agent 对话](https://wenbu.app/agent/)                                      | 选一个主题和目标，再修改生成的草稿；点击发送后才开始 |
+| 围绕眼前一件事思考       | [塔罗](https://wenbu.app/tarot/) / [易经](https://wenbu.app/iching/) | 一个具体问题，不需要出生资料                         |
+| 看出生资料对应的传统命盘 | [八字](https://wenbu.app/bazi/) / [紫微](https://wenbu.app/ziwei/)   | 公历生日与当地时间；八字还需时区，紫微必须知道时刻   |
+| 弄懂术语与计算规则       | [知识手册](https://wenbu.app/learn/)                                        | 可以从入门内容读起，再核对结果里的计算约定           |
 
 传统符号适合学习和自我反思。历法计算能否复核，与解释能否预测现实是两件事；问卜不把排盘结果当作人生结论。
 
@@ -28,15 +28,15 @@ Free charts, tarot and source-based learning for a question you want to explore.
 
 ### 免费与资料处理
 
-计算、抽取、学习内容、手记和 MCP 无需注册或付费。单次 AI 解读每个网络每天最多 5 次，Agent 每天最多 12 回合，上海时间零点重置；仍受全站共享预算限制。AI 不可用时，独立工具仍可使用。详见[免费额度](https://wenbu.genedai.me/free/)。
+计算、抽取、学习内容、手记和 MCP 无需注册或付费。单次 AI 解读每个网络每天最多 5 次，Agent 每天最多 12 回合，上海时间零点重置；仍受全站共享预算限制。AI 不可用时，独立工具仍可使用。详见[免费额度](https://wenbu.app/free/)。
 
-会话与手记保存在当前浏览器，没有自动云同步。计算请求会发送至问卜的 Cloudflare 服务；使用 AI 时，消息和所选上下文会经该服务发送给 DeepSeek。导出文件可能包含私人资料，下载不等于自动分享，也不等于匿名化。详见[隐私说明](https://wenbu.genedai.me/privacy/)。
+会话与手记保存在当前浏览器，没有自动云同步。计算请求会发送至问卜的 Cloudflare 服务；使用 AI 时，消息和所选上下文会经该服务发送给 DeepSeek。导出文件可能包含私人资料，下载不等于自动分享，也不等于匿名化。详见[隐私说明](https://wenbu.app/privacy/)。
 
 ## Start with a question
 
-Use [Wenbu Agent](https://wenbu.genedai.me/en/agent/) if you would like help framing a question. Choose a topic and an aim, edit the suggested draft, then send it. Choosing an option does not submit the draft for you.
+Use [Wenbu Agent](https://wenbu.app/en/agent/) if you would like help framing a question. Choose a topic and an aim, edit the suggested draft, then send it. Choosing an option does not submit the draft for you.
 
-For a question about the present, [tarot](https://wenbu.genedai.me/en/tarot/) and the [I Ching](https://wenbu.genedai.me/en/iching/) need no birth details. [BaZi](https://wenbu.genedai.me/en/bazi/) and [Zi Wei](https://wenbu.genedai.me/en/ziwei/) arrange traditional charts from birth information. The [handbook](https://wenbu.genedai.me/en/learn/) explains how to begin and what the results mean.
+For a question about the present, [tarot](https://wenbu.app/en/tarot/) and the [I Ching](https://wenbu.app/en/iching/) need no birth details. [BaZi](https://wenbu.app/en/bazi/) and [Zi Wei](https://wenbu.app/en/ziwei/) arrange traditional charts from birth information. The [handbook](https://wenbu.app/en/learn/) explains how to begin and what the results mean.
 
 The tools calculate or draw the symbols; AI can help discuss them. These are cultural and reflective practices, not scientifically established ways to predict a person's future. Visible element counts, for example, do not establish element strength or favorable elements.
 
@@ -56,7 +56,7 @@ AI is optional. To enable it locally, put server-only `DEEPSEEK_API_KEY` and `QU
 
 ## Connect your own agent / 接入自己的 Agent
 
-Use Streamable HTTP at `https://wenbu.genedai.me/mcp`. It exposes six tools:
+Use Streamable HTTP at `https://wenbu.app/mcp`. It exposes six tools:
 
 | Tool              | Purpose                                                                    |
 | ----------------- | -------------------------------------------------------------------------- |
@@ -69,7 +69,7 @@ Use Streamable HTTP at `https://wenbu.genedai.me/mcp`. It exposes six tools:
 
 MCP does not call DeepSeek or need your model key. Your host supplies its own interpretation. External reference search results are links and metadata; MCP has no `read_reference` tool, so the host must open those pages itself before citing their contents. Set `locale` explicitly to `zh` or `en`: MCP defaults to English, while REST and CLI calculations default to Chinese. Some traditional names remain in Chinese.
 
-中文接入说明与可复制示例见 [Agent 接入](https://wenbu.genedai.me/agents/)；英文说明见 [Agent integrations](https://wenbu.genedai.me/en/agents/)。
+中文接入说明与可复制示例见 [Agent 接入](https://wenbu.app/agents/)；英文说明见 [Agent integrations](https://wenbu.app/en/agents/)。
 
 ### Try the CLI
 
@@ -86,13 +86,13 @@ It returns a `kind: "iching"` JSON result with the six supplied lines and no cha
 node public/wenbu.mjs tarot '{"count":3,"reversals":true,"locale":"en"}'
 ```
 
-Keep personal inputs in a file or stdin rather than shell history: `node public/wenbu.mjs bazi --file birth.json`. The [integration page](https://wenbu.genedai.me/en/agents/) supplies a complete synthetic file. `WENBU_URL=http://127.0.0.1:8787` selects a local preview; `WENBU_ANALYTICS=off` opts out of coarse service analytics.
+Keep personal inputs in a file or stdin rather than shell history: `node public/wenbu.mjs bazi --file birth.json`. The [integration page](https://wenbu.app/en/agents/) supplies a complete synthetic file. `WENBU_URL=http://127.0.0.1:8787` selects a local preview; `WENBU_ANALYTICS=off` opts out of coarse service analytics.
 
 Read [the Skill](public/SKILL.md) before adding it to your host. It does not grant access to other conversations or files. A chart's context export and an Agent API request have different schemas; do not pass an export directly to the `agent` command.
 
 ## The built-in Agent
 
-[Open the workspace](https://wenbu.genedai.me/en/agent/) or use `node public/wenbu.mjs agent --file request.json`. This is a separate route that calls DeepSeek on Wenbu's account and requires the person's choice to share the supplied message and context. See the bilingual [Agent protocol](docs/agent-protocol.md) for a complete request and streaming examples.
+[Open the workspace](https://wenbu.app/en/agent/) or use `node public/wenbu.mjs agent --file request.json`. This is a separate route that calls DeepSeek on Wenbu's account and requires the person's choice to share the supplied message and context. See the bilingual [Agent protocol](docs/agent-protocol.md) for a complete request and streaming examples.
 
 The Agent can plan, calculate, read the curated library and available allowlisted pages, ask for missing details and write a report. It has no unrestricted web search or background execution. Reports and their citations are model-authored; a successful source read does not verify every interpretation. Follow-ups preserve the original cards or lines unless a new draw is requested.
 
@@ -115,7 +115,7 @@ Feedback is available from every public page and from reading/Agent results. Adm
 
 ## Check and contribute
 
-See [review evidence](docs/reviews/README.md), [calculation methodology](https://wenbu.genedai.me/en/methodology/) and [analytics definitions](docs/analytics.md). Type checks, automated tests, browser checks, deployed smoke tests and actual search traffic are separate kinds of evidence. Software tests do not validate divinatory predictions.
+See [review evidence](docs/reviews/README.md), [calculation methodology](https://wenbu.app/en/methodology/) and [analytics definitions](docs/analytics.md). Type checks, automated tests, browser checks, deployed smoke tests and actual search traffic are separate kinds of evidence. Software tests do not validate divinatory predictions.
 
 Report a problem with reproducible steps, the selected convention and a synthetic example. Keep birth details, private questions and credentials out of public issues.
 

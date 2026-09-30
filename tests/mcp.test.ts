@@ -2,7 +2,7 @@ import { it, expect } from 'vitest';
 import { handleMcp } from '../worker/mcp';
 const call = (method: string, params: unknown = {}, path = '/mcp') =>
   handleMcp(
-    new Request('https://wenbu.genedai.me' + path, {
+    new Request('https://wenbu.app' + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
       body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
