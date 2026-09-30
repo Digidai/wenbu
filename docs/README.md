@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [IndexNow 自动提交、回执、失败重试与运维](indexnow.md)
+
 - [图解知识手册升级（21 篇双语、完整案例、Agent 全文读取）](reviews/handbook-2026-09-30/README.md)
 
 - [wenbu.app 主域名迁移与验证](reviews/domain-migration-2026-09-30.md)

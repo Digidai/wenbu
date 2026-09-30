@@ -57,7 +57,7 @@
     },
   ],
   "r2_buckets": [{ "binding": "ANALYTICS_ARCHIVE", "bucket_name": "wenbu-analytics-archive" }],
-  "triggers": { "crons": ["15 * * * *"] },
+  "triggers": { "crons": ["15 * * * *", "*/15 * * * *"] },
   "observability": {
     "enabled": false,
   },

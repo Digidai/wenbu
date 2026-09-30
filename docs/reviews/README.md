@@ -122,3 +122,6 @@ The architecture review is complete. The full implementation review by grok-cli 
 ## Bounds of this release
 
 Calendar outputs follow the disclosed engine conventions; no “all schools agree” or prediction-accuracy claim. Live success is not search submission, indexing, ranking or traffic. No GSC/Bing submission, paid product testing, trademark clearance, registrar purchase, broad browser certification or uptime/SLA result is asserted.
+# IndexNow
+
+- [IndexNow 自动提交与验证](indexnow-2026-10-01/README.md)

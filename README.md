@@ -115,6 +115,8 @@ Feedback is available from every public page and from reading/Agent results. Adm
 
 ## Check and contribute
 
+Public page changes are automatically sent to IndexNow after deployment, with a Cloudflare check every 15 minutes as a fallback. Submission receipts and retries are stored in D1; a receipt is not proof of indexing. See [IndexNow operations](docs/indexnow.md).
+
 See [review evidence](docs/reviews/README.md), [calculation methodology](https://wenbu.app/en/methodology/) and [analytics definitions](docs/analytics.md). Type checks, automated tests, browser checks, deployed smoke tests and actual search traffic are separate kinds of evidence. Software tests do not validate divinatory predictions.
 
 Report a problem with reproducible steps, the selected convention and a synthetic example. Keep birth details, private questions and credentials out of public issues.

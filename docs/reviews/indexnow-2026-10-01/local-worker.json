@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-09-30T16:37:18.079Z",
+  "base": "http://127.0.0.1:8793",
+  "pages": 84,
+  "revision": "9376e896edeb1eade5f92ca8ffd3f83d37053cc78ebac14adbeea32acccf9dd5",
+  "result": "passed",
+  "checks": [
+    "verification file exact UTF-8 text and MIME",
+    "manifest matches build and is noindex",
+    "unauthenticated status rejected",
+    "authenticated D1 status available with no-store",
+    "local manual submissions refused"
+  ],
+  "externalSubmissions": 0
+}

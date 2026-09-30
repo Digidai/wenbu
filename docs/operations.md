@@ -101,6 +101,10 @@ QA sets `X-Wenbu-Test: true` for native requests or `sessionStorage['wenbu.analy
 
 Worker rollback does not roll back D1 schema or data. Migrations are additive; old code can continue reading the original columns. However, code rollback must preserve the new archive-before-prune maintenance path: an old cron handler would delete unarchived events. Disable the trigger before rolling back to pre-archive code. Keep the database through code rollback. The final deployment and actual receipt checks are recorded in [feedback-history-release.md](reviews/feedback-history-release.md).
 
+## IndexNow
+
+Apply additive migration `0003_indexnow.sql` before deploying the IndexNow Worker. `npm run deploy` attempts an immediate notification after checking the live build; an independent Cloudflare Cron checks deployed assets every 15 minutes. The existing hourly archive task remains separate. Only changed public canonical pages are submitted, with receipt history and retry state in D1. See [IndexNow operations](indexnow.md) for credentials, status commands, error handling and the distinction between notification receipt and indexing.
+
 ## Keep documentation in sync
 
 Edit `scripts/generate-api.mjs` when API documentation schemas change, then run `node scripts/generate-api.mjs`. It writes `public/openapi.json`, `public/agent-request.schema.json` and `public/context.schema.json`; a normal build does not run this generator. Validate those schemas against the Zod schemas and implementation rather than treating the generated file as the source of truth.
