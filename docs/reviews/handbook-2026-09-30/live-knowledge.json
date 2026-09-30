@@ -1,0 +1,436 @@
+{
+  "base": "https://wenbu.app",
+  "checkedAt": "2026-09-30T15:57:20.328Z",
+  "editions": 42,
+  "resources": 85,
+  "results": [
+    {
+      "path": "/knowledge/zh/first-reading.md",
+      "status": 200,
+      "characters": 3309
+    },
+    {
+      "path": "/knowledge/en/ask-a-better-question.md",
+      "status": 200,
+      "characters": 6846
+    },
+    {
+      "path": "/knowledge/en/first-reading.md",
+      "status": 200,
+      "characters": 7511
+    },
+    {
+      "path": "/knowledge/zh/ask-a-better-question.md",
+      "status": 200,
+      "characters": 2966
+    },
+    {
+      "path": "/knowledge/zh/first-reading.json",
+      "status": 200,
+      "characters": 5878
+    },
+    {
+      "path": "/knowledge/en/ask-a-better-question.json",
+      "status": 200,
+      "characters": 9372
+    },
+    {
+      "path": "/knowledge/en/first-reading.json",
+      "status": 200,
+      "characters": 10188
+    },
+    {
+      "path": "/knowledge/zh/ask-a-better-question.json",
+      "status": 200,
+      "characters": 5389
+    },
+    {
+      "path": "/knowledge/zh/read-ai-with-sources.md",
+      "status": 200,
+      "characters": 3264
+    },
+    {
+      "path": "/knowledge/en/prepare-birth-details.md",
+      "status": 200,
+      "characters": 7572
+    },
+    {
+      "path": "/knowledge/zh/prepare-birth-details.md",
+      "status": 200,
+      "characters": 3388
+    },
+    {
+      "path": "/knowledge/en/read-ai-with-sources.md",
+      "status": 200,
+      "characters": 7613
+    },
+    {
+      "path": "/knowledge/en/prepare-birth-details.json",
+      "status": 200,
+      "characters": 10325
+    },
+    {
+      "path": "/knowledge/en/read-ai-with-sources.json",
+      "status": 200,
+      "characters": 10277
+    },
+    {
+      "path": "/knowledge/zh/prepare-birth-details.json",
+      "status": 200,
+      "characters": 6008
+    },
+    {
+      "path": "/knowledge/zh/read-ai-with-sources.json",
+      "status": 200,
+      "characters": 5796
+    },
+    {
+      "path": "/knowledge/en/review-a-reading.md",
+      "status": 200,
+      "characters": 7605
+    },
+    {
+      "path": "/knowledge/zh/review-a-reading.md",
+      "status": 200,
+      "characters": 3313
+    },
+    {
+      "path": "/knowledge/en/bazi-ten-gods.md",
+      "status": 200,
+      "characters": 7993
+    },
+    {
+      "path": "/knowledge/zh/review-a-reading.json",
+      "status": 200,
+      "characters": 5880
+    },
+    {
+      "path": "/knowledge/zh/bazi-ten-gods.md",
+      "status": 200,
+      "characters": 2757
+    },
+    {
+      "path": "/knowledge/en/review-a-reading.json",
+      "status": 200,
+      "characters": 10319
+    },
+    {
+      "path": "/knowledge/en/bazi-ten-gods.json",
+      "status": 200,
+      "characters": 10504
+    },
+    {
+      "path": "/knowledge/zh/bazi-ten-gods.json",
+      "status": 200,
+      "characters": 5149
+    },
+    {
+      "path": "/knowledge/en/iching-trigrams.md",
+      "status": 200,
+      "characters": 6930
+    },
+    {
+      "path": "/knowledge/en/tarot-suits-and-court-cards.md",
+      "status": 200,
+      "characters": 7736
+    },
+    {
+      "path": "/knowledge/zh/tarot-suits-and-court-cards.md",
+      "status": 200,
+      "characters": 3075
+    },
+    {
+      "path": "/knowledge/en/iching-trigrams.json",
+      "status": 200,
+      "characters": 9786
+    },
+    {
+      "path": "/knowledge/en/tarot-suits-and-court-cards.json",
+      "status": 200,
+      "characters": 10491
+    },
+    {
+      "path": "/knowledge/zh/tarot-suits-and-court-cards.json",
+      "status": 200,
+      "characters": 5700
+    },
+    {
+      "path": "/knowledge/zh/iching-trigrams.md",
+      "status": 200,
+      "characters": 2699
+    },
+    {
+      "path": "/knowledge/zh/iching-trigrams.json",
+      "status": 200,
+      "characters": 5394
+    },
+    {
+      "path": "/knowledge/zh/ziwei-four-transformations.md",
+      "status": 200,
+      "characters": 2953
+    },
+    {
+      "path": "/knowledge/en/ziwei-four-transformations.md",
+      "status": 200,
+      "characters": 7809
+    },
+    {
+      "path": "/knowledge/en/tarot-reversals.md",
+      "status": 200,
+      "characters": 7874
+    },
+    {
+      "path": "/knowledge/zh/tarot-reversals.md",
+      "status": 200,
+      "characters": 2925
+    },
+    {
+      "path": "/knowledge/zh/ziwei-four-transformations.json",
+      "status": 200,
+      "characters": 5501
+    },
+    {
+      "path": "/knowledge/zh/tarot-reversals.json",
+      "status": 200,
+      "characters": 5383
+    },
+    {
+      "path": "/knowledge/en/ziwei-four-transformations.json",
+      "status": 200,
+      "characters": 10484
+    },
+    {
+      "path": "/knowledge/en/tarot-reversals.json",
+      "status": 200,
+      "characters": 10426
+    },
+    {
+      "path": "/knowledge/zh/bazi-basics.md",
+      "status": 200,
+      "characters": 3468
+    },
+    {
+      "path": "/knowledge/zh/five-elements.md",
+      "status": 200,
+      "characters": 3055
+    },
+    {
+      "path": "/knowledge/en/bazi-basics.md",
+      "status": 200,
+      "characters": 8770
+    },
+    {
+      "path": "/knowledge/en/five-elements.md",
+      "status": 200,
+      "characters": 8125
+    },
+    {
+      "path": "/knowledge/zh/bazi-basics.json",
+      "status": 200,
+      "characters": 6258
+    },
+    {
+      "path": "/knowledge/zh/five-elements.json",
+      "status": 200,
+      "characters": 5783
+    },
+    {
+      "path": "/knowledge/en/five-elements.json",
+      "status": 200,
+      "characters": 11015
+    },
+    {
+      "path": "/knowledge/en/bazi-basics.json",
+      "status": 200,
+      "characters": 11678
+    },
+    {
+      "path": "/knowledge/zh/birth-time-timezone.md",
+      "status": 200,
+      "characters": 3574
+    },
+    {
+      "path": "/knowledge/zh/iching-three-coins.md",
+      "status": 200,
+      "characters": 2961
+    },
+    {
+      "path": "/knowledge/en/birth-time-timezone.md",
+      "status": 200,
+      "characters": 9080
+    },
+    {
+      "path": "/knowledge/en/iching-three-coins.md",
+      "status": 200,
+      "characters": 7435
+    },
+    {
+      "path": "/knowledge/en/iching-three-coins.json",
+      "status": 200,
+      "characters": 10214
+    },
+    {
+      "path": "/knowledge/zh/birth-time-timezone.json",
+      "status": 200,
+      "characters": 6302
+    },
+    {
+      "path": "/knowledge/en/birth-time-timezone.json",
+      "status": 200,
+      "characters": 11965
+    },
+    {
+      "path": "/knowledge/zh/iching-three-coins.json",
+      "status": 200,
+      "characters": 5615
+    },
+    {
+      "path": "/knowledge/zh/tarot-beginner.md",
+      "status": 200,
+      "characters": 3227
+    },
+    {
+      "path": "/knowledge/en/tarot-beginner.md",
+      "status": 200,
+      "characters": 8339
+    },
+    {
+      "path": "/knowledge/en/ziwei-twelve-palaces.md",
+      "status": 200,
+      "characters": 8483
+    },
+    {
+      "path": "/knowledge/zh/ziwei-twelve-palaces.md",
+      "status": 200,
+      "characters": 3061
+    },
+    {
+      "path": "/knowledge/zh/tarot-beginner.json",
+      "status": 200,
+      "characters": 5885
+    },
+    {
+      "path": "/knowledge/en/tarot-beginner.json",
+      "status": 200,
+      "characters": 11129
+    },
+    {
+      "path": "/knowledge/zh/ziwei-twelve-palaces.json",
+      "status": 200,
+      "characters": 5976
+    },
+    {
+      "path": "/knowledge/en/ziwei-twelve-palaces.json",
+      "status": 200,
+      "characters": 11549
+    },
+    {
+      "path": "/knowledge/en/ai-divination.md",
+      "status": 200,
+      "characters": 8606
+    },
+    {
+      "path": "/knowledge/zh/ai-divination.md",
+      "status": 200,
+      "characters": 3717
+    },
+    {
+      "path": "/knowledge/zh/unknown-birth-time.md",
+      "status": 200,
+      "characters": 3226
+    },
+    {
+      "path": "/knowledge/en/unknown-birth-time.md",
+      "status": 200,
+      "characters": 8221
+    },
+    {
+      "path": "/knowledge/zh/unknown-birth-time.json",
+      "status": 200,
+      "characters": 5892
+    },
+    {
+      "path": "/knowledge/en/ai-divination.json",
+      "status": 200,
+      "characters": 11557
+    },
+    {
+      "path": "/knowledge/zh/ai-divination.json",
+      "status": 200,
+      "characters": 6530
+    },
+    {
+      "path": "/knowledge/en/unknown-birth-time.json",
+      "status": 200,
+      "characters": 11028
+    },
+    {
+      "path": "/knowledge/en/chinese-zodiac-vs-bazi.md",
+      "status": 200,
+      "characters": 7939
+    },
+    {
+      "path": "/knowledge/zh/chinese-zodiac-vs-bazi.md",
+      "status": 200,
+      "characters": 3012
+    },
+    {
+      "path": "/knowledge/zh/bazi-vs-western-astrology.md",
+      "status": 200,
+      "characters": 3199
+    },
+    {
+      "path": "/knowledge/en/bazi-vs-western-astrology.md",
+      "status": 200,
+      "characters": 9037
+    },
+    {
+      "path": "/knowledge/en/chinese-zodiac-vs-bazi.json",
+      "status": 200,
+      "characters": 10626
+    },
+    {
+      "path": "/knowledge/zh/chinese-zodiac-vs-bazi.json",
+      "status": 200,
+      "characters": 5552
+    },
+    {
+      "path": "/knowledge/zh/bazi-vs-western-astrology.json",
+      "status": 200,
+      "characters": 5884
+    },
+    {
+      "path": "/knowledge/en/bazi-vs-western-astrology.json",
+      "status": 200,
+      "characters": 11879
+    },
+    {
+      "path": "/knowledge/en/choose-a-tool.md",
+      "status": 200,
+      "characters": 7876
+    },
+    {
+      "path": "/knowledge/zh/choose-a-tool.md",
+      "status": 200,
+      "characters": 3331
+    },
+    {
+      "path": "/knowledge/zh/choose-a-tool.json",
+      "status": 200,
+      "characters": 6138
+    },
+    {
+      "path": "/knowledge/en/choose-a-tool.json",
+      "status": 200,
+      "characters": 10819
+    }
+  ],
+  "mcp": {
+    "catalogue": true,
+    "distinctSections": [
+      "guide-bazi-basics#worked-example",
+      "guide-bazi-basics#questions"
+    ]
+  },
+  "unknownGuide": 404
+}

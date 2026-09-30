@@ -35,6 +35,17 @@ The editorial approach follows [Google's helpful-content guidance](https://devel
 - Browser: all 42 article routes checked at 390 px and 1440 px (84 route/viewport checks), with no document overflow, missing diagrams/tables, broken loaded images or page errors. Selected figures inspected visually; interactive hexagram change/reset, native FAQ and table keyboard behavior checked separately.
 - CLI and local Cloudflare: full JSON guide read and Markdown content type / canonical response header verified.
 - Grok CLI: attempted read-only review with a bounded 160-second timeout. It returned no completed verdict; **not a passed Grok review**. Agent cross-review found and fixed two additional issues: section receipts previously overwrote one another, and follow-up source restoration silently dropped content. Regression checks cover both. Agent cross-review and executable checks are separate evidence.
-- Production: pending release; update the deployment receipt below after checking the actual version and live routes.
+- Production: deployed and verified at https://wenbu.app. See the receipt below. The release did not rerun paid DeepSeek conversations; mock-model harness regressions and live non-model MCP/CLI calls were checked separately.
 
 Browser evidence: [route checks](browser-routes.json), [tarot on mobile](tarot-mobile.png), [Zi Wei on mobile](ziwei-mobile.png), [interactive I Ching](iching-desktop.png).
+
+## Deployment receipt
+
+- Source: `1116631582dc71609524d6149c861657fcec70f0` ([merged PR #2](https://github.com/Digidai/wenbu/pull/2)).
+- Exact-source main CI: [36740529615](https://github.com/Digidai/wenbu/actions/runs/36740529615), success; PR CI [36740354112](https://github.com/Digidai/wenbu/actions/runs/36740354112), success.
+- Cloudflare Worker version: `8805071f-73cc-4106-baf3-d47bb4a9bca9`, 100%; deployment `28b82332-df82-4df6-854f-158f41fd5810`, 2026-09-30 15:56:41 UTC. Domains remain wenbu.app / www.wenbu.app / wenbu.genedai.me. No database, archive or secret changes.
+- [Live knowledge checks](live-knowledge.json): 42 editions / 85 resources (index + 84 full Markdown/JSON exports), byte-for-byte agreement with the local build, exact canonical headers and MIME types, MCP catalogue, distinct section receipts and unknown-guide 404.
+- [Live site smoke](live-site.json): 94 pages/resources, four calculation APIs, six MCP tools and bilingual library reads passed.
+- [Live browser checks](live-browser.json): Chinese BaZi, English interactive I Ching (change/reset) and English tarot at 390 px; all three tarot images fully decoded at 600×900, no horizontal overflow.
+- Live captures: [BaZi](live-bazi.png), [I Ching](live-iching.png), [mobile tarot](live-tarot-mobile.png).
+- GSC submission, actual indexing, search rankings, AI citations and traffic changes were not measured or claimed.

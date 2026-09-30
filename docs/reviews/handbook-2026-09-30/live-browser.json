@@ -1,0 +1,33 @@
+[
+  {
+    "url": "https://wenbu.app/learn/bazi-basics/",
+    "title": "八字入门：先读懂四柱，再谈解读 · Wenbu 问卜",
+    "figure": 1
+  },
+  {
+    "url": "https://wenbu.app/en/learn/iching-three-coins/",
+    "changed": "58 · Openness → 60 · Boundaries\nDiagram changed; the written example stays fixed. Vermilion marks changing lines. Line 1 is at the bottom.",
+    "reset": "47 · Constraint → 60 · Boundaries\nVermilion marks changing lines. Line 1 is at the bottom."
+  },
+  {
+    "url": "https://wenbu.app/en/learn/tarot-beginner/",
+    "overflow": false,
+    "images": [
+      {
+        "complete": true,
+        "width": 600,
+        "height": 900
+      },
+      {
+        "complete": true,
+        "width": 600,
+        "height": 900
+      },
+      {
+        "complete": true,
+        "width": 600,
+        "height": 900
+      }
+    ]
+  }
+]
