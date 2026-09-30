@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ChevronDown, CircleAlert, CirclePause } from 'lucide-react';
+import { ChevronDown, CircleAlert, CirclePause, Check } from 'lucide-react';
+import { traceOutcomes } from '../lib/agent-outcome';
 import type { AgentMessage } from '../lib/agent-protocol';
 import type { Locale } from '../lib/schema';
 import InstrumentGlyph, { type InstrumentKind } from './InstrumentGlyph';
@@ -26,8 +27,7 @@ export default function AgentTrace({
   children: ReactNode;
 }) {
   const tools = message.tools.filter((tool) => tool.name !== 'update_plan');
-  const failed = tools.filter((tool) => tool.status === 'error').length;
-  const stopped = tools.filter((tool) => tool.status === 'stopped').length;
+  const { failed, stopped, recovered } = traceOutcomes(message);
   const exceptions = failed + stopped;
   const [open, setOpen] = useState(exceptions > 0);
   const priorExceptions = useRef(exceptions);
@@ -65,7 +65,7 @@ export default function AgentTrace({
           {zh ? '过程' : 'Activity'}
           <ChevronDown size={13} />
         </span>
-        {(failed > 0 || stopped > 0) && (
+        {(failed > 0 || stopped > 0 || recovered > 0) && (
           <span className="trace-exceptions">
             {failed > 0 && (
               <span>
@@ -77,6 +77,12 @@ export default function AgentTrace({
               <span>
                 <CirclePause size={12} />
                 {zh ? `${stopped} 次已停止` : `${stopped} stopped`}
+              </span>
+            )}
+            {recovered > 0 && (
+              <span className="trace-recovered">
+                <Check size={12} />
+                {zh ? '报告已修复并生成' : 'Report corrected and saved'}
               </span>
             )}
           </span>

@@ -1,0 +1,121 @@
+{
+  "base": "http://localhost:8793",
+  "checkedAt": "2026-09-30T17:52:21.614Z",
+  "synthetic": true,
+  "result": "passed",
+  "error": null,
+  "turns": [
+    {
+      "locale": "en",
+      "events": [
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:0",
+            "name": "read_library",
+            "label": "Verify report source",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:0",
+          "status": "complete",
+          "detail": "Source re-read before preparing the report."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "context:source:1",
+            "name": "read_library",
+            "label": "Verify report source",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "context:source:1",
+          "status": "complete",
+          "detail": "Source re-read before preparing the report."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_00_vX4JuNf6zstaQbkJ9ETN4995",
+            "name": "read_library",
+            "label": "Read a library note",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_00_vX4JuNf6zstaQbkJ9ETN4995",
+          "status": "complete",
+          "detail": "Completed"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "1:call_01_tjacmtbnZtTfELB9Jubi8125",
+            "name": "read_library",
+            "label": "Read a library note",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "1:call_01_tjacmtbnZtTfELB9Jubi8125",
+          "status": "complete",
+          "detail": "Completed"
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "2:call_00_nG61DzMHelh5OMmu1e5W9556",
+            "name": "write_report",
+            "label": "Write the report",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "2:call_00_nG61DzMHelh5OMmu1e5W9556",
+          "status": "error",
+          "issue": "report_invalid",
+          "detail": "This draft did not meet the report structure or length requirements and was not saved."
+        },
+        {
+          "type": "tool_start",
+          "tool": {
+            "id": "3:call_00_Zb0s5ptgm3tRWVy0BPYQ6441",
+            "name": "write_report",
+            "label": "Write the report",
+            "status": "running"
+          }
+        },
+        {
+          "type": "tool_end",
+          "id": "3:call_00_Zb0s5ptgm3tRWVy0BPYQ6441",
+          "status": "complete",
+          "detail": "Completed",
+          "artifactId": "14632c39-23bc-4f2a-9f99-1318b68deffb"
+        },
+        {
+          "type": "tool_recovered",
+          "id": "2:call_00_nG61DzMHelh5OMmu1e5W9556",
+          "toolId": "3:call_00_Zb0s5ptgm3tRWVy0BPYQ6441",
+          "artifactId": "14632c39-23bc-4f2a-9f99-1318b68deffb"
+        },
+        {
+          "type": "done",
+          "status": "complete",
+          "servedModel": "deepseek-flash",
+          "requestedModel": "deepseek-v4-flash",
+          "modelCalls": 4,
+          "toolCalls": 6
+        }
+      ],
+      "reports": 1
+    }
+  ]
+}

@@ -109,6 +109,12 @@ type ToolContext = {
   allowNewDraw?: boolean;
   generatedRandom?: Set<string>;
 };
+export class CitationValidationError extends Error {
+  readonly code = 'citation_unread' as const;
+  constructor(readonly missingSourceIds: string[]) {
+    super('A citation was not read or verified. Read its source first, or remove the unsupported citation.');
+  }
+}
 export async function executeAgentTool(name: string, raw: unknown, ctx: ToolContext) {
   if (!(name in schemas) || !Object.hasOwn(schemas, name))
     throw new Error('Unknown tool. Use a listed capability.');
@@ -143,10 +149,8 @@ export async function executeAgentTool(name: string, raw: unknown, ctx: ToolCont
   if (key === 'write_report') {
     const report = reportSchema.parse(input);
     const ids = reportSourceIds(report);
-    if (ids.some((id) => !ctx.sources.has(id)))
-      throw new Error(
-        'A citation was not read or verified. Read its source first, or remove the unsupported citation.',
-      );
+    const missing = ids.filter((id) => !ctx.sources.has(id));
+    if (missing.length) throw new CitationValidationError(missing);
     const artifact = {
       ...report,
       type: 'report' as const,

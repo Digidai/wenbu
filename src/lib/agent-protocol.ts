@@ -53,18 +53,30 @@ export type ReportArtifact = {
   visual?: ReportVisual;
 };
 export type AgentArtifact = ChartArtifact | ReportArtifact;
+export type ReportIssue = 'citation_unread' | 'report_invalid';
 export type ToolTrace = {
   id: string;
   name: string;
   label: string;
   status: 'running' | 'complete' | 'error' | 'stopped';
   detail?: string;
+  issue?: ReportIssue;
+  artifactId?: string;
+  recovery?: { toolId: string; artifactId: string };
 };
 export type AgentEvent =
   | { type: 'start'; runId: string; remaining: number }
   | { type: 'delta'; text: string }
   | { type: 'tool_start'; tool: ToolTrace }
-  | { type: 'tool_end'; id: string; status: 'complete' | 'error'; detail: string }
+  | {
+      type: 'tool_end';
+      id: string;
+      status: 'complete' | 'error';
+      detail: string;
+      issue?: ReportIssue;
+      artifactId?: string;
+    }
+  | { type: 'tool_recovered'; id: string; toolId: string; artifactId: string }
   | { type: 'plan'; steps: PlanStep[] }
   | { type: 'source'; source: AgentSource }
   | { type: 'artifact'; artifact: AgentArtifact }

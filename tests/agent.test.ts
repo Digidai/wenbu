@@ -3,7 +3,15 @@ import worker from '../worker/index';
 import { agentResponse, streamDeepSeek } from '../worker/agent';
 import { requestsNewDraw } from '../worker/agent';
 import { executeAgentTool } from '../worker/agent-tools';
-import { libraryDocuments, readReference, searchLibrary, stripDocumentHtml } from '../worker/agent-library';
+import {
+  libraryDocuments,
+  readLibrary,
+  readReference,
+  searchLibrary,
+  stripDocumentHtml,
+} from '../worker/agent-library';
+import { newMessage, updateMessage } from '../src/lib/agent-session';
+import { traceOutcomes } from '../src/lib/agent-outcome';
 import { agentRequestSchema, restoreReading } from '../worker/agent-schema';
 import { consumeSse, type AgentEvent, type AgentSource } from '../src/lib/agent-protocol';
 import type { Env } from '../worker/types';
@@ -61,6 +69,181 @@ async function events(response: Response) {
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
+});
+
+describe('bounded citation recovery', () => {
+  const draft = (ids = ['guide-bazi-basics']) => ({
+    title: 'Read a chart',
+    summary: 'Counts alone do not establish element strength.',
+    sections: [{ heading: 'Start here', body: 'Separate counts from interpretation.', sourceIds: ids }],
+    questions: [],
+  });
+  const reduce = (result: AgentEvent[]) => result.reduce(updateMessage, newMessage('assistant', ''));
+  it('returns exact field violations and recovers a format error followed by a citation error', async () => {
+    const { env } = testEnv();
+    const invalid = { ...draft(), sections: [{ ...draft().sections[0], body: 'a'.repeat(701) }] };
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: invalid }]))
+      .mockImplementationOnce(async (_url, init) => {
+        const messages = JSON.parse(init?.body as string).messages;
+        const error = JSON.parse(messages.find((m: { role: string }) => m.role === 'tool').content);
+        expect(error).toMatchObject({
+          code: 'report_invalid',
+          validationErrors: [{ path: ['sections', 0, 'body'], code: 'too_big' }],
+        });
+        expect(error.validationErrors[0].message).toContain('700');
+        return model(null, [{ name: 'write_report', args: draft() }]);
+      })
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]))
+      .mockResolvedValueOnce(model('The corrected report is ready.'));
+    const result = await events(
+      await agentResponse({ message: 'Write a report', locale: 'en', consent: true }, request(), env),
+    );
+    expect(result.at(-1)).toMatchObject({ status: 'complete', modelCalls: 4, toolCalls: 4 });
+    const message = reduce(result);
+    expect(message.tools[0]).toMatchObject({ issue: 'report_invalid', status: 'error' });
+    expect(message.tools[1]).toMatchObject({ issue: 'citation_unread', status: 'error' });
+    expect(traceOutcomes(message)).toEqual({ failed: 0, recovered: 2, stopped: 0 });
+  });
+  it('bounds automatic reads to three sources and never grants authority to the fourth', async () => {
+    const { env } = testEnv();
+    const ids = [
+      'guide-bazi-basics',
+      'guide-birth-time-timezone',
+      'guide-five-elements',
+      'guide-unknown-birth-time',
+    ];
+    const fetcher = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft(ids) }]))
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft(ids) }]))
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft(ids) }]))
+      .mockResolvedValueOnce(model('Some citations remain unread.'));
+    const result = await events(
+      await agentResponse({ message: 'Write a report', consent: true }, request(), env),
+    );
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    expect(result.filter((e) => e.type === 'source').map((e) => e.source.id)).toEqual(ids.slice(0, 3));
+    expect(result.some((e) => e.type === 'artifact' || e.type === 'tool_recovered')).toBe(false);
+    expect(result.at(-1)).toMatchObject({ status: 'limited', toolCalls: 6 });
+  });
+  it('reads missing evidence, reconsiders the draft, and explicitly links the saved replacement', async () => {
+    const { env } = testEnv();
+    const fetcher = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]))
+      .mockImplementationOnce(async (_url, init) => {
+        const body = JSON.parse(init?.body as string);
+        expect(body.tool_choice.function.name).toBe('write_report');
+        const rejected = body.messages.find((m: { role: string }) => m.role === 'tool');
+        expect(JSON.parse(rejected.content)).toMatchObject({
+          code: 'citation_unread',
+          missingSourceIds: ['guide-bazi-basics'],
+        });
+        expect(body.messages[1].content).toContain(
+          JSON.stringify(readLibrary('guide-bazi-basics', 'zh').content),
+        );
+        return model(null, [
+          { name: 'write_report', args: { ...draft(), summary: 'Revised after reading the full guide.' } },
+        ]);
+      })
+      .mockResolvedValueOnce(model('已整理好。\n\n三点提要：'));
+    const result = await events(
+      await agentResponse({ message: 'Write a guide', consent: true }, request(), env),
+    );
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    const message = reduce(result);
+    expect(message.status).toBe('complete');
+    expect(message.artifacts).toHaveLength(1);
+    expect(message.text).toContain('Revised after reading');
+    expect(message.tools.map((t) => t.status)).toEqual(['error', 'complete', 'complete']);
+    expect(message.tools[0].detail).not.toContain('A citation');
+    expect(traceOutcomes(message)).toEqual({ failed: 0, recovered: 1, stopped: 0 });
+    expect(result.at(-1)).toMatchObject({ modelCalls: 3, toolCalls: 3 });
+    const firstArtifact = result.findIndex((e) => e.type === 'artifact');
+    expect(result.findIndex((e) => e.type === 'source')).toBeLessThan(firstArtifact);
+  });
+  it('reserves the last model slot for a report repair, with a grounded closing summary', async () => {
+    const { env } = testEnv();
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'search_library', args: { query: 'bazi' } }]))
+      .mockResolvedValueOnce(model(null, [{ name: 'read_library', args: { id: 'guide-bazi-basics' } }]))
+      .mockResolvedValueOnce(
+        model(null, [{ name: 'update_plan', args: { steps: [{ title: 'Report', status: 'active' }] } }]),
+      )
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft(['guide-five-elements']) }]))
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]));
+    const result = await events(
+      await agentResponse({ message: 'Research the chart', mode: 'research', consent: true }, request(), env),
+    );
+    const message = reduce(result);
+    expect(result.at(-1)).toMatchObject({ type: 'done', status: 'complete', modelCalls: 5 });
+    expect(message.text).toContain(draft().summary);
+    expect(traceOutcomes(message).recovered).toBe(1);
+  });
+  it('never fetches invented IDs and limits repeated unsuccessful repairs', async () => {
+    const { env } = testEnv();
+    const fetcher = vi.spyOn(globalThis, 'fetch');
+    for (let n = 0; n < 3; n++)
+      fetcher.mockResolvedValueOnce(
+        model(null, [{ name: 'write_report', args: draft(['reference-invented']) }]),
+      );
+    fetcher.mockResolvedValueOnce(model('The source is unavailable.'));
+    const result = await events(await agentResponse({ message: 'Research', consent: true }, request(), env));
+    expect(result.at(-1)).toMatchObject({ type: 'done', status: 'limited', modelCalls: 4, toolCalls: 3 });
+    expect(result.some((e) => ['artifact', 'source', 'tool_recovered'].includes(e.type))).toBe(false);
+    expect(fetcher.mock.calls.every(([url]) => url === 'https://api.deepseek.com/chat/completions')).toBe(
+      true,
+    );
+    expect(traceOutcomes(reduce(result)).failed).toBe(3);
+  });
+  it('does not hide a failed reference read when the repaired report discloses that evidence gap', async () => {
+    const { env } = testEnv();
+    const id = libraryDocuments('zh').find((d) => d.kind === 'reference')!.id;
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft([id]) }]))
+      .mockResolvedValueOnce(new Response('Unavailable', { status: 503 }))
+      .mockResolvedValueOnce(
+        model(null, [
+          {
+            name: 'write_report',
+            args: {
+              ...draft([]),
+              summary: 'The source could not be read; this report only records that limitation.',
+            },
+          },
+        ]),
+      )
+      .mockResolvedValueOnce(model('The report records the source limitation.'));
+    const result = await events(await agentResponse({ message: 'Research', consent: true }, request(), env));
+    expect(traceOutcomes(reduce(result))).toEqual({ failed: 1, recovered: 1, stopped: 0 });
+    expect(result.some((e) => e.type === 'source')).toBe(false);
+  });
+  it('keeps a report recovery distinct from a later truncated stream', async () => {
+    const { env } = testEnv();
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]))
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]))
+      .mockResolvedValueOnce(new Response('data: {"choices":[{"delta":{"content":"三点提要："}}]}\n\n'));
+    const result = await events(await agentResponse({ message: 'Research', consent: true }, request(), env));
+    const message = reduce(result);
+    expect(message.status).toBe('error');
+    expect(message.artifacts).toHaveLength(1);
+    expect(message.text).toBe('');
+    expect(traceOutcomes(message)).toEqual({ failed: 0, recovered: 1, stopped: 0 });
+    expect(result.some((e) => e.type === 'done')).toBe(false);
+  });
+  it('does not spend repair calls or claim recovery after the shared quota stops the turn', async () => {
+    const { env, reserveAgentStep } = testEnv();
+    reserveAgentStep.mockResolvedValue({ allowed: false, remaining: 0 });
+    const fetcher = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(model(null, [{ name: 'write_report', args: draft() }]));
+    const result = await events(await agentResponse({ message: 'Research', consent: true }, request(), env));
+    expect(result.at(-1)).toMatchObject({ status: 'limited', modelCalls: 1, toolCalls: 1 });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(traceOutcomes(reduce(result))).toEqual({ failed: 1, recovered: 0, stopped: 0 });
+  });
 });
 
 describe('DeepSeek Agent harness', () => {
@@ -632,6 +815,72 @@ describe('report revision source preparation', () => {
     summary: 'Revise this draft',
     sections: [{ heading: 'Rule', body: 'A draft is not verified evidence.', sourceIds: ids }],
     questions: [],
+  });
+  it.each(['zh', 'en'] as const)('prepares long handbook citations before revising in %s', async (locale) => {
+    const { env } = testEnv();
+    const id = 'guide-bazi-basics';
+    const full = readLibrary(id, locale);
+    expect(full.content.length).toBeGreaterThan(1800);
+    vi.spyOn(globalThis, 'fetch')
+      .mockImplementationOnce(async (_url, init) => {
+        const body = JSON.parse(init?.body as string);
+        const context = JSON.parse(body.messages[1].content.split('\n').slice(1).join('\n'));
+        expect(context.verifiedLibrarySources).toHaveLength(1);
+        expect(context.verifiedLibrarySources[0]).toMatchObject({ scope: 'full', content: full.content });
+        return model(null, [{ name: 'write_report', args: report([id]) }]);
+      })
+      .mockResolvedValueOnce(model(locale === 'zh' ? '已保存。\n\n三点提要：' : 'Ready.\n\nKey takeaways:'));
+    const result = await events(
+      await agentResponse(
+        {
+          message: 'Revise the report',
+          locale,
+          consent: true,
+          context: { reports: [report([id])], sourceIds: [id] },
+        },
+        request(),
+        env,
+      ),
+    );
+    expect(result.some((e) => e.type === 'tool_end' && e.status === 'error')).toBe(false);
+    expect(result.at(-1)).toMatchObject({ type: 'done', status: 'complete', modelCalls: 2, toolCalls: 2 });
+    const text = result
+      .filter((e) => e.type === 'delta')
+      .map((e) => e.text)
+      .join('');
+    expect(text).toContain(report([id]).summary);
+    expect(text).not.toMatch(/三点提要：|Key takeaways:/);
+  });
+  it('prepares the cited section without granting authority to its parent guide', async () => {
+    const { env } = testEnv();
+    const id = 'guide-bazi-basics#worked-example';
+    vi.spyOn(globalThis, 'fetch').mockImplementationOnce(async (_url, init) => {
+      const context = JSON.parse(
+        JSON.parse(init?.body as string)
+          .messages[1].content.split('\n')
+          .slice(1)
+          .join('\n'),
+      );
+      expect(
+        context.verifiedLibrarySources.map((s: { source: AgentSource; scope: string }) => [
+          s.source.id,
+          s.scope,
+        ]),
+      ).toEqual([[id, 'section']]);
+      return model('Section read.');
+    });
+    const result = await events(
+      await agentResponse(
+        {
+          message: 'Review the example',
+          consent: true,
+          context: { reports: [report([id])] },
+        },
+        request(),
+        env,
+      ),
+    );
+    expect(result.filter((e) => e.type === 'source').map((e) => e.source.id)).toEqual([id]);
   });
   it('revalidates external references cited only by a prior diagram', async () => {
     const { env } = testEnv();
