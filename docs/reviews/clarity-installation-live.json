@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-10-01T16:02:05.306Z",
+  "runtimeSource": "480bfe41aad014c2651a09e594b37f9253bd9f23",
+  "version": "a329a829-3df0-4335-9289-2d624b17dc9a",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    },
+    {
+      "path": "/en/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    },
+    {
+      "path": "/agent/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": true
+    },
+    {
+      "path": "/en/agent/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": true
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    },
+    {
+      "path": "/en/privacy/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    },
+    {
+      "path": "/insights/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    },
+    {
+      "path": "/move/",
+      "status": 200,
+      "csp": true,
+      "bodyMatchesBuild": true,
+      "privateMask": false
+    }
+  ],
+  "assets": [
+    {
+      "path": "/_astro/FeedbackWidget.astro_astro_type_script_index_0_lang.C4kAQ6mq.js",
+      "assetMatchesBuild": true,
+      "clarityLoader": false
+    },
+    {
+      "path": "/_astro/Layout.astro_astro_type_script_index_0_lang.BzsFxLc7.js",
+      "assetMatchesBuild": true,
+      "clarityLoader": true
+    }
+  ]
+}
