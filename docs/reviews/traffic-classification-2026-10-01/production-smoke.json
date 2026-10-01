@@ -1,0 +1,56 @@
+{
+  "base": "https://wenbu.app",
+  "checkedAt": "2026-10-01T15:07:58.106Z",
+  "synthetic": true,
+  "realCrawlerIdentityVerified": false,
+  "checks": [
+    "all seven declared actor/purpose probes recorded without raw query or visitor identity; HEAD separate; opt-out and private page excluded",
+    "event UUID deduplication, forged classification rejection, browser/bot PV separation, CLI classification and default test exclusion",
+    "summary, hourly curves and five classification rankings reconcile under combined filters"
+  ],
+  "probes": [
+    {
+      "type": "browser",
+      "purpose": "browse",
+      "path": "/learn/",
+      "status": 200
+    },
+    {
+      "type": "search_crawler",
+      "purpose": "search",
+      "path": "/en/learn/",
+      "status": 200
+    },
+    {
+      "type": "ai_crawler",
+      "purpose": "search",
+      "path": "/llms.txt",
+      "status": 200
+    },
+    {
+      "type": "ai_crawler",
+      "purpose": "training",
+      "path": "/knowledge/zh/bazi-basics.md",
+      "status": 200
+    },
+    {
+      "type": "ai_agent",
+      "purpose": "user_fetch",
+      "path": "/knowledge/en/bazi-basics.json",
+      "status": 200
+    },
+    {
+      "type": "automation",
+      "purpose": "other",
+      "path": "/learn/",
+      "status": 200
+    },
+    {
+      "type": "unknown",
+      "purpose": "unknown",
+      "path": "/knowledge/index.json",
+      "status": 200
+    }
+  ],
+  "result": "passed"
+}

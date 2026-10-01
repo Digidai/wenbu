@@ -13,6 +13,12 @@ Separate browser page views, public content requests and service outcomes. Add a
 
 ## Production release
 
-Pending source CI, additive D1 migration, Worker deployment and production verification. Update this section only after those actions complete.
+PR [#5](https://github.com/Digidai/wenbu/pull/5) merged. Source `f6e7e2b66f4120a5370c8e3595d8be914bbc56cf` deployed as Worker `0e8f6026-682d-449d-be6a-8ede374c4ef3`. PR Quality [36881387195](https://github.com/Digidai/wenbu/actions/runs/36881387195) passed; merged-source Quality is recorded below once confirmed. Remote D1 migration executed 14 commands successfully.
+
+Production synthetic collector probes and read-only report reconciliation passed, including all six date presets and combined classifier/resource filters. Headed production UI passed 1280/768/390 px, five preset controls, actor/purpose filters and CSV/JSON parity. Evidence contains declared-UA tests, not verified real crawler identities. New telemetry uses UA evidence when native CF bot fields are unavailable.
+
+Production console retains a pre-existing rejection of Cloudflare's injected optional beacon by CSP. The first-party collector and dashboard work independently, with no page exception. This external integration is not claimed fixed. IndexNow deploy hook respected existing backoff, submitted 0 in this run; no indexing/ranking claim.
+
+A production browser probe typed before the React panel hydrated and lost the input. Follow-up disables login controls until ready and displays a preparation state. A local delayed-component test confirmed disabled controls before hydration, enabled controls afterward, and preserved typing. Follow-up CI/deploy/live confirmation remains pending.
 
 Metric definitions, coverage and official references: [analytics.md](../../analytics.md). Operations: [operations.md](../../operations.md).
