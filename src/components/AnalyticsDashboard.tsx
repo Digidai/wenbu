@@ -21,6 +21,7 @@ export default function AnalyticsDashboard() {
   const [tab, setTab] = useState<'overview' | 'events' | 'feedback' | 'archives'>('overview');
   const [linked, setLinked] = useState({ operation: '', test: false });
   const [token, setToken] = useState('');
+  const [ready, setReady] = useState(false);
   const [report, setReport] = useState<AnalyticsReport>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -29,13 +30,13 @@ export default function AnalyticsDashboard() {
   const [selected, setSelected] = useState<ReportMetric[]>(['content_requests', 'pageviews']);
   const requestId = useRef(0),
     controller = useRef<AbortController | null>(null);
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    setReady(true);
+    return () => {
       requestId.current++;
       controller.current?.abort();
-    },
-    [],
-  );
+    };
+  }, []);
   function logout() {
     requestId.current++;
     controller.current?.abort();
@@ -208,14 +209,15 @@ export default function AnalyticsDashboard() {
             管理密钥
             <input
               type="password"
+              disabled={!ready || busy}
               autoComplete="off"
               value={token}
               onChange={(e) => setToken(e.target.value)}
               required
             />
           </label>
-          <button className="button" disabled={busy}>
-            {busy ? '正在验证…' : '查看统计'}
+          <button className="button" disabled={!ready || busy}>
+            {!ready ? '正在准备面板…' : busy ? '正在验证…' : '查看统计'}
           </button>
         </form>
       ) : (

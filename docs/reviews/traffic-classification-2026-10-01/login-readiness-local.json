@@ -1,0 +1,11 @@
+{
+  "before": {
+    "passwordDisabled": true,
+    "loadingButton": true
+  },
+  "after": {
+    "passwordEnabled": true,
+    "loginEnabled": true,
+    "entryPreserved": true
+  }
+}
