@@ -1,6 +1,14 @@
 # 访问与使用统计
 
-2026-10-01。Cloudflare Worker + D1 第一方统计，不引入外部追踪脚本。管理入口 `/insights/`；页面 noindex，所有管理 API 要求管理密钥。D1 保存最近 90 天事件明细；私有 R2 保存长期原始事件归档。每小时 UTC 第 15 分钟归档已接收超过一天的事件，仅已归档事件允许从近期表清理。文末提供英文指标与使用说明。
+2026-10-01。Cloudflare Worker + D1 第一方统计，另接入 Microsoft Clarity 分析公开网页交互。管理入口 `/insights/`；页面 noindex，所有管理 API 要求管理密钥。D1 保存最近 90 天事件明细；私有 R2 保存长期原始事件归档。每小时 UTC 第 15 分钟归档已接收超过一天的事件，仅已归档事件允许从近期表清理。文末提供英文指标与使用说明。
+
+## Microsoft Clarity
+
+生产域名 `wenbu.app` 使用项目 `yqzdf8z0sr` 的官方异步脚本，覆盖中英文公开页面。`/insights/`、`/move/`（及其英文页）、本地预览和已标记测试会话不加载。默认通过 `consentv2` 拒绝广告与统计 cookie 存储，以无 cookie 模式运行；不把第一方 visitor/session 标识、聊天或出生资料发送到 Clarity 的自定义 API。热力图与录屏在 Clarity 项目中查看，不能与本站 PV/UV 直接相加。
+
+工具、Agent 和手记的整个主内容区域使用 `data-clarity-mask="true"`，包含动态生成的内容。统计开关、DNT/GPC 和存储不可用状态共同阻止加载；运行中关闭会调用 `stop`，停止后续交互录制，已经传送的数据不会撤回。统计 cookie 同意始终保持 denied，重新开启也不授予广告 cookie 权限。CSP 仅对脚本、连接和图片放行 Clarity 官方子域与 `c.bing.com`，其余安全约束保留。Clarity 数据由 Microsoft 处理与保留，并不进入本站 D1/R2；遮罩不代表第三方无法处理网络 IP 或页面地址。
+
+参考：[CSP](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-csp)、[内容遮罩](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-masking)、[Cookie consent API](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2)。
 
 ## 第一次查看后台
 

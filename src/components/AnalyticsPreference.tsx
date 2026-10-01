@@ -24,7 +24,7 @@ export default function AnalyticsPreference({ locale }: { locale: Locale }) {
             setEnabled(analyticsEnabled());
           }}
         />
-        {locale === 'zh' ? '允许匿名使用统计' : 'Allow anonymous usage measurement'}
+        {locale === 'zh' ? '允许使用统计与交互分析' : 'Allow usage measurement and interaction analysis'}
       </label>
       <p role="status">
         {blocked
@@ -33,8 +33,8 @@ export default function AnalyticsPreference({ locale }: { locale: Locale }) {
             : 'Your browser privacy signal has disabled measurement.'
           : enabled
             ? locale === 'zh'
-              ? '已开启。仅记录功能使用，不记录你写下的内容。'
-              : 'Enabled. Records feature use, never what you write.'
+              ? '已开启。记录功能使用，并通过 Microsoft Clarity 分析页面交互；私人内容会遮罩。'
+              : 'Enabled. Measures feature use and page interactions with Microsoft Clarity. Private content is masked.'
             : locale === 'zh'
               ? '已关闭。工具和对话仍可正常使用。'
               : 'Disabled. Tools and conversations continue to work.'}

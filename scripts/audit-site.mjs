@@ -24,6 +24,11 @@ let links = 0;
 for (const f of htmlFiles) {
   const html = await readFile(f, 'utf8');
   const url = f === 'dist/404.html' ? '/404/' : '/' + f.slice(5).replace(/index.html$/, '');
+  if (
+    /^\/(en\/)?(agent|bazi|iching|tarot|ziwei|journal)\/$/.test(url) &&
+    !/<main\b[^>]*data-clarity-mask="true"/.test(html)
+  )
+    errors.push(f + ': missing Clarity private-content mask');
   const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/)?.[1];
   if (canonical !== site + url) errors.push(f + ': wrong canonical ' + canonical);
   if (!/<meta name="description" content="[^"]{25,}"/.test(html))
@@ -56,6 +61,16 @@ for (const f of htmlFiles) {
   }
 }
 const robots = await readFile('dist/robots.txt', 'utf8');
+const headers = await readFile('dist/_headers', 'utf8');
+const csp = headers.match(/Content-Security-Policy: ([^\n]+)/)?.[1] || '';
+for (const directive of ['script-src', 'connect-src', 'img-src']) {
+  const rule = csp.split(';').find((value) => value.trim().startsWith(directive + ' ')) || '';
+  if (!rule.includes('https://*.clarity.ms')) errors.push('Clarity missing from CSP ' + directive);
+  if (directive !== 'script-src' && !rule.includes('https://c.bing.com'))
+    errors.push('Clarity image/connection endpoint missing from CSP ' + directive);
+  if (directive === 'script-src' && rule.includes("'unsafe-inline'"))
+    errors.push('Inline script protection must be retained');
+}
 if (!robots.includes('Sitemap: ' + site + '/sitemap.xml')) errors.push('Sitemap missing from robots');
 const sitemap = await readFile('dist/sitemap.xml', 'utf8');
 if (sitemap.includes('/journal/') || sitemap.includes('/404/') || sitemap.includes('/move/'))

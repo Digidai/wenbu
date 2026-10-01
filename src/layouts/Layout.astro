@@ -250,7 +250,12 @@ const schema = {
         </a>
       ))}
     </nav>
-    <main id="main">
+    <main
+      id="main"
+      data-clarity-mask={
+        ['agent', 'bazi', 'iching', 'tarot', 'ziwei', 'journal'].includes(path) ? 'true' : undefined
+      }
+    >
       <slot />
     </main>
     <footer class="site-footer shell">
@@ -302,7 +307,9 @@ const schema = {
     {path !== 'insights' && path !== 'move' && <FeedbackWidget locale={locale} />}
     <script>
       import { initializeAnalytics } from '../lib/analytics';
+      import { initializeClarity } from '../lib/clarity';
       if (!/^\/(en\/)?move\/$/.test(location.pathname)) initializeAnalytics();
+      initializeClarity();
       const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const nav = document.getElementById('mobile-nav');
       menu?.addEventListener('click', () => {
