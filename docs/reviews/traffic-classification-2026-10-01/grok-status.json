@@ -1,0 +1,7 @@
+{
+  "result": "unverified",
+  "exitCode": 1,
+  "httpStatus": 402,
+  "reason": "Grok Build usage balance exhausted",
+  "mode": "read-only source review; no tools or subagents"
+}

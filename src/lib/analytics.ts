@@ -71,8 +71,17 @@ export function setAnalyticsEnabled(enabled: boolean) {
     visitor = '';
     clearTimeout(timer);
   }
+  syncAnalyticsPreference();
   window.dispatchEvent(new Event('wenbu:analytics-preference'));
   if (enabled) track('page_view');
+}
+// Preference only: no identity or tracking value is sent in this cookie.
+function syncAnalyticsPreference() {
+  try {
+    document.cookie = `wenbu_analytics=${analyticsEnabled() ? '' : 'off'}; Path=/; SameSite=Lax; Max-Age=${analyticsEnabled() ? 0 : 31536000}${location.protocol === 'https:' ? '; Secure' : ''}`;
+  } catch {
+    /* Cookie restrictions must not break tools or client opt-out. */
+  }
 }
 function identity() {
   if (!analyticsEnabled()) return;
@@ -219,6 +228,7 @@ async function flush() {
   }
 }
 export function initializeAnalytics() {
+  syncAnalyticsPreference();
   if (initialized || location.pathname.includes('/insights')) return;
   initialized = true;
   if (!analyticsEnabled()) void removeEvents();
@@ -226,6 +236,7 @@ export function initializeAnalytics() {
   window.addEventListener('storage', (e) => {
     if (e.key === preferenceKey) {
       memoryDisabled = e.newValue === 'true';
+      syncAnalyticsPreference();
       if (memoryDisabled) {
         void writes.then(() => removeEvents());
         session = undefined;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Env } from './types';
+import { classifyTraffic, contentTarget } from './traffic';
 import {
   actions,
   campaigns,
@@ -12,6 +13,7 @@ import {
   settings,
   variants,
   analyticsRelease,
+  referrerSource,
 } from '../src/lib/analytics-contract';
 
 export const contextSchema = z
@@ -71,15 +73,17 @@ export type ServiceMetric = {
 };
 
 export function requestDimensions(request: Request) {
-  const ua = request.headers.get('User-Agent') ?? '';
+  const ua = (request.headers.get('User-Agent') ?? '').slice(0, 2048);
+  const actor = classifyTraffic(request);
+  const browserLike = /Mozilla\/.*(?:Chrome\/|Safari\/|Firefox\/|Edg\/)/i.test(ua);
   return {
-    device: /bot|crawler|spider|headless/i.test(ua)
+    device: ['search_crawler', 'ai_crawler', 'ai_agent', 'automation'].includes(actor.actor_type)
       ? 'bot'
       : /iPad|Tablet/i.test(ua)
         ? 'tablet'
         : /Mobi|Android/i.test(ua)
           ? 'mobile'
-          : ua
+          : browserLike
             ? 'desktop'
             : 'unknown',
     browser: /Edg\//.test(ua)
@@ -102,16 +106,34 @@ export function requestDimensions(request: Request) {
             : /Linux/.test(ua)
               ? 'linux'
               : 'other',
+    ...actor,
     country: /^[A-Z]{2}$/.test(String(request.cf?.country ?? '')) ? String(request.cf?.country) : 'XX',
   };
 }
 const columns =
-  'id,occurred_at,event,origin,session_id,visitor_id,page,entry_page,locale,source,medium,campaign,device,browser,os,country,channel,tool,mode,action,status,value,duration_ms,model_calls,tool_calls,artifacts,is_test,received_at,client_at,page_id,operation_id,parent_operation_id,conversation_id,sequence,schema_version,release,destination_page,setting,variant';
-const insert = `INSERT OR IGNORE INTO events (${columns}) VALUES (${Array(39).fill('?').join(',')})`;
+  'id,occurred_at,event,origin,session_id,visitor_id,page,entry_page,locale,source,medium,campaign,device,browser,os,country,channel,tool,mode,action,status,value,duration_ms,model_calls,tool_calls,artifacts,is_test,received_at,client_at,page_id,operation_id,parent_operation_id,conversation_id,sequence,schema_version,release,destination_page,setting,variant,actor_type,actor_name,actor_purpose,classification_evidence,classification_version,bot_verified,signed_agent,bot_score,resource_type,http_status,http_method';
+const insert = `INSERT OR IGNORE INTO events (${columns}) VALUES (${Array(50).fill('?').join(',')})`;
 export const noTracking = (request: Request) =>
   request.headers.get('DNT') === '1' ||
   request.headers.get('Sec-GPC') === '1' ||
-  request.headers.get('X-Wenbu-Analytics') === 'off';
+  request.headers.get('X-Wenbu-Analytics') === 'off' ||
+  /(?:^|;\s*)wenbu_analytics=off(?:;|$)/.test(request.headers.get('Cookie') ?? '');
+function trafficValues(request: Request, resource: string, status: number | null = null) {
+  const c = classifyTraffic(request);
+  return [
+    c.actor_type,
+    c.actor_name,
+    c.actor_purpose,
+    c.classification_evidence,
+    c.classification_version,
+    c.bot_verified,
+    c.signed_agent,
+    c.bot_score,
+    resource,
+    status,
+    ['GET', 'HEAD', 'POST', 'OPTIONS'].includes(request.method) ? request.method : 'OTHER',
+  ];
+}
 export async function collectEvents(raw: unknown, request: Request, env: Env) {
   const { events } = eventBatch.parse(raw);
   if (noTracking(request)) return { accepted: 0 };
@@ -153,7 +175,7 @@ export async function collectEvents(raw: unknown, request: Request, env: Env) {
           0,
           0,
           0,
-          Number(e.test),
+          Number(e.test || request.headers.get('X-Wenbu-Test') === 'true'),
           received,
           e.occurredAt ?? null,
           e.pageId ?? null,
@@ -166,6 +188,7 @@ export async function collectEvents(raw: unknown, request: Request, env: Env) {
           e.destination,
           e.setting,
           e.variant,
+          ...trafficValues(request, 'client_event'),
         ),
     ),
   );
@@ -238,6 +261,75 @@ export async function recordService(request: Request, env: Env, metric: ServiceM
       '/other/',
       'none',
       'none',
+      ...trafficValues(request, 'service'),
+    )
+    .run();
+}
+
+/** Counts content requests only; never creates visitor/session identities or a second PV. */
+export async function recordContent(request: Request, response: Response, env: Env, duration: number) {
+  const target = contentTarget(request);
+  if (!env.ANALYTICS || noTracking(request) || !target) return;
+  const time = Date.now(),
+    meta = requestDimensions(request),
+    url = new URL(request.url);
+  const source =
+    sources.find((s) => s === url.searchParams.get('utm_source')) ??
+    referrerSource(request.headers.get('Referer') ?? '', url.origin);
+  const medium =
+    mediums.find((m) => m === url.searchParams.get('utm_medium')) ??
+    (['google', 'bing', 'baidu', 'duckduckgo'].includes(source)
+      ? 'organic'
+      : ['chatgpt', 'perplexity', 'claude', 'deepseek'].includes(source)
+        ? 'ai'
+        : source === 'direct'
+          ? 'none'
+          : 'referral');
+  await env.ANALYTICS.prepare(insert)
+    .bind(
+      crypto.randomUUID(),
+      time,
+      'page_request',
+      'edge',
+      null,
+      null,
+      target.page,
+      '/other/',
+      target.locale,
+      source,
+      medium,
+      campaigns.find((c) => c === url.searchParams.get('utm_campaign')) ?? 'none',
+      meta.device,
+      meta.browser,
+      meta.os,
+      meta.country,
+      'web',
+      'none',
+      'none',
+      'none',
+      'none',
+      0,
+      Math.min(3600000, Math.max(0, Math.round(duration))),
+      0,
+      0,
+      0,
+      Number(
+        request.headers.get('X-Wenbu-Test') === 'true' ||
+          /(?:^|;\s*)wenbu_analytics_test=1(?:;|$)/.test(request.headers.get('Cookie') ?? ''),
+      ),
+      time,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      2,
+      analyticsRelease,
+      '/other/',
+      'none',
+      'none',
+      ...trafficValues(request, target.resource, response.status),
     )
     .run();
 }

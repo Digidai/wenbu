@@ -1,3 +1,11 @@
+import {
+  actorTypes,
+  actorNames,
+  actorPurposes,
+  classificationEvidence,
+  resourceTypes,
+} from '../lib/traffic-contract';
+import { reportLabel } from '../lib/analytics-report';
 import { useEffect, useRef, useState } from 'react';
 import { Download, ArrowRight, RefreshCw, MessageSquare, CheckCircle2, Database, Search } from 'lucide-react';
 import { clientEvents, tools, statuses, sources, campaigns } from '../lib/analytics-contract';
@@ -57,6 +65,12 @@ export default function AnalyticsExplorer({
     campaign: '',
     locale: '',
     channel: '',
+    actor_type: '',
+    actor_name: '',
+    actor_purpose: '',
+    classification_evidence: '',
+    resource_type: '',
+    http_method: '',
   });
   const [page, setPage] = useState<Page>();
   const [storage, setStorage] = useState<Storage>();
@@ -274,7 +288,14 @@ export default function AnalyticsExplorer({
                 'agent_tool_finished',
                 'api_failed',
                 'mcp_finished',
+                'page_request',
               ])}
+              {select('actor_type', '访问者类型', actorTypes)}
+              {select('actor_name', '客户端标识', actorNames)}
+              {select('actor_purpose', '请求用途', actorPurposes)}
+              {select('classification_evidence', '分类依据', classificationEvidence)}
+              {select('resource_type', '资源类型', resourceTypes)}
+              {select('http_method', '请求方法', ['GET', 'HEAD', 'POST', 'OPTIONS', 'OTHER'])}
               {select('status', '结果', statuses)}
               {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
               {select('source', '来源', sources)}
@@ -351,7 +372,7 @@ export default function AnalyticsExplorer({
               <time>{when(row.occurred_at ?? row.created_at)}</time>
               <small>
                 {kind === 'events'
-                  ? `${row.origin === 'server' ? '服务端确认' : '浏览器上报'} · ${row.locale}`
+                  ? `${row.origin === 'server' ? '服务端操作' : row.origin === 'edge' ? '服务端请求' : '网页事件'} · ${row.locale}`
                   : kind === 'feedback'
                     ? `${row.category} · ${row.locale}`
                     : `${Number(row.event_count).toLocaleString()} 条事件`}
@@ -375,7 +396,9 @@ export default function AnalyticsExplorer({
                 <p className="history-preview">{row.message || '用户留下了评价。'}</p>
               ) : kind === 'events' ? (
                 <p>
-                  {row.page} · {row.tool} · {row.status}
+                  {row.page} · {reportLabel(String(row.actor_type))} · {reportLabel(String(row.actor_name))} ·{' '}
+                  {reportLabel(String(row.classification_evidence))} · {row.tool} · {row.status}
+                  {row.http_status ? ` · HTTP ${row.http_status}` : ''}
                   {row.action !== 'none' ? ` · ${row.action}` : ''}
                   {row.duration_ms ? ` · ${row.duration_ms} ms` : ''}
                   {row.setting !== 'none' ? ` · ${row.setting}: ${row.variant}` : ''}

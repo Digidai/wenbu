@@ -1,5 +1,5 @@
 import AnalyticsExplorer from './AnalyticsExplorer';
-import { AnalyticsTrend, AnalyticsBreakdownCharts } from './AnalyticsCharts';
+import { AnalyticsTrend, AnalyticsBreakdownCharts, AnalyticsTrafficCharts } from './AnalyticsCharts';
 import { useEffect, useRef, useState } from 'react';
 import { BarChart3, Download, LockKeyhole, RefreshCw, SlidersHorizontal, X } from 'lucide-react';
 import {
@@ -26,7 +26,7 @@ export default function AnalyticsDashboard() {
   const [error, setError] = useState('');
   const [filters, setFilters] = useState<ReportFilters>({ ...defaultReportFilters });
   const [customRange, setCustomRange] = useState(false);
-  const [selected, setSelected] = useState<ReportMetric[]>(['pageviews', 'sessions']);
+  const [selected, setSelected] = useState<ReportMetric[]>(['content_requests', 'pageviews']);
   const requestId = useRef(0),
     controller = useRef<AbortController | null>(null);
   useEffect(
@@ -143,7 +143,13 @@ export default function AnalyticsDashboard() {
     agent_started_example: '发送示例提问',
   };
   const breakdownNames: Record<string, string> = {
-    source: '访问来源',
+    actor_type: '访问者类型',
+    actor_name: '客户端标识',
+    actor_purpose: '请求用途',
+    classification_evidence: '分类依据',
+    resource_type: '资源类型',
+    http_method: '请求方法',
+    source: '引荐来源',
     medium: '渠道类型',
     campaign: '推广活动',
     page: '浏览页面',
@@ -351,16 +357,22 @@ export default function AnalyticsDashboard() {
                     </div>
                   )}
                   <div className="observatory-main-filters">
-                    {(['source', 'page', 'device', 'locale'] as const).map(select)}
+                    {(['actor_type', 'source', 'page', 'locale'] as const).map(select)}
                   </div>
                   <details className="observatory-more-filters">
                     <summary>
                       <SlidersHorizontal size={14} />
-                      更多筛选<span>渠道、功能、进入页、国家地区等</span>
+                      更多筛选<span>客户端、依据、资源、设备与渠道等</span>
                     </summary>
                     <div className="observatory-extra-grid">
                       {(
                         [
+                          'actor_name',
+                          'actor_purpose',
+                          'classification_evidence',
+                          'resource_type',
+                          'http_method',
+                          'device',
                           'medium',
                           'campaign',
                           'entry_page',
@@ -473,12 +485,47 @@ export default function AnalyticsDashboard() {
                     当前筛选下还没有记录。可以扩大时间范围或移除筛选条件；图表不会填入演示数据。
                   </p>
                 )}
+                <section className="insights-card observatory-traffic-note" aria-label="统计口径与分类覆盖">
+                  <span className="eyebrow">MEASUREMENT &amp; COVERAGE</span>
+                  <h2>浏览、抓取与调用，分别计数</h2>
+                  <p>
+                    浏览器页面浏览来自网页事件，排除已识别自动化；内容请求来自服务端
+                    GET，包含网页、手册和发现文件，不计入浏览量或访客数。服务调用排除内部工具阶段，MCP
+                    每个请求只计一次。问卜 Agent 完成是产品功能指标。
+                  </p>
+                  <div className="observatory-coverage-facts">
+                    <span>
+                      <b>{number(summary.classified_events)}</b> 新分类事件
+                    </span>
+                    <span>
+                      <b>{number(summary.legacy_events)}</b> 旧记录，无细分类依据
+                    </span>
+                    <span>
+                      <b>{number(summary.excluded_views)}</b> 自动化或未知浏览事件，未计 PV
+                    </span>
+                    <span>
+                      <b>{number(summary.unclassified_requests)}</b> 未识别内容请求
+                    </span>
+                    <span>
+                      <b>{number(summary.verified_requests)}</b> CF 验证自动化请求
+                    </span>
+                    <span>
+                      <b>{number(summary.signed_requests)}</b> CF 签名 Agent 请求
+                    </span>
+                  </div>
+                  <small>
+                    UA 和协议可伪装；浏览器特征不保证真人。Cloudflare
+                    验证只在边缘提供依据时标记，具体名称仍来自 UA。旧的非 bot
+                    网页记录保留在浏览指标中；历史抓取量无法补算。请求统计不覆盖边缘拦截、资源文件或后台页面。
+                  </small>
+                </section>
                 <AnalyticsTrend report={report} selected={selected} onToggle={toggle} />
                 <p className="insights-quality-note">
                   示例计算 {number(summary.examples)} 次 · 输入未通过 {number(summary.invalid_inputs)} 次 ·
                   额度 / 限速 {number(summary.throttled)} 次 · 用户中断 {number(summary.cancellations)} 次 ·
                   Agent 等待补充 {number(summary.agent_waiting)} 回合。与服务错误分开统计。
                 </p>
+                <AnalyticsTrafficCharts report={report} onFilter={pick} />
                 <AnalyticsBreakdownCharts report={report} onFilter={pick} />
                 <details className="observatory-detail-tables">
                   <summary>
@@ -526,6 +573,9 @@ export default function AnalyticsDashboard() {
                               <tr>
                                 <th>维度</th>
                                 <th>事件</th>
+                                <th>浏览量</th>
+                                <th>内容 GET</th>
+                                <th>服务调用</th>
                                 <th>会话</th>
                                 <th>成功</th>
                               </tr>
@@ -533,8 +583,11 @@ export default function AnalyticsDashboard() {
                             <tbody>
                               {report.data[key].map((row) => (
                                 <tr key={String(row.label)}>
-                                  <th>{String(row.label)}</th>
+                                  <th>{reportLabel(String(row.label))}</th>
                                   <td>{number(row.events)}</td>
+                                  <td>{number(row.views)}</td>
+                                  <td>{number(row.requests)}</td>
+                                  <td>{number(row.calls)}</td>
                                   <td>{number(row.sessions)}</td>
                                   <td>{number(row.successes)}</td>
                                 </tr>
@@ -610,7 +663,8 @@ export default function AnalyticsDashboard() {
       )}
       <p className="insights-footnote">
         近 N 天包含今天，按所选时区的自然日分组，今天仍在变化。匿名访客是 30
-        天有效的浏览器标识，不等于自然人数。拦截、关闭统计和延迟补发会影响覆盖；0 表示未记录到事件。最近 90
+        天有效的浏览器标识，不等于自然人数。拦截、关闭统计和延迟补发会影响覆盖；0
+        表示未记录到事件。服务端请求只记录公开内容路径、粗略类别和响应状态，不创建访客身份。最近 90
         天明细可在线查看，更早记录从私有归档导出。数据用于产品改进，不用于计费。
       </p>
     </section>

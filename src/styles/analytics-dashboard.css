@@ -627,3 +627,32 @@
     transition: none;
   }
 }
+
+.observatory-coverage-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.observatory-coverage-facts span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.observatory-coverage-facts b {
+  display: block;
+  font-size: 25px;
+  color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.observatory-traffic-note {
+  margin-bottom: 24px;
+}
+.observatory-traffic-note h2 {
+  font-size: 21px;
+  margin-top: 8px;
+}
+.observatory-traffic-note p,
+.observatory-traffic-note small {
+  line-height: 1.85;
+}

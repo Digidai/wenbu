@@ -31,9 +31,20 @@ async function report(params) {
   assert.equal(data.series.length, data.days * (data.range.granularity === 'hour' ? 24 : 1));
   assert.equal(data.data.hours.length, 24);
   const summary = data.data.summary[0];
-  for (const key of ['pageviews', 'calculations', 'agent_complete', 'failures']) {
+  for (const key of [
+    'content_requests',
+    'search_requests',
+    'ai_requests',
+    'service_requests',
+    'pageviews',
+    'calculations',
+    'agent_complete',
+    'failures',
+  ]) {
     assert.equal(sum(data.series, key), Number(summary[key] ?? 0));
   }
+  for (const key of ['actor_type', 'actor_name', 'actor_purpose', 'classification_evidence', 'resource_type'])
+    assert.equal(sum(data.data[key], 'requests'), Number(summary.content_requests ?? 0));
   for (const key of ['source', 'page', 'device']) {
     assert.equal(sum(data.data[key], 'views'), Number(summary.pageviews ?? 0));
   }
@@ -77,6 +88,10 @@ assert.equal(custom.range.startDate, start);
 assert.equal(custom.range.endDate, end);
 evidence.checks.push('inclusive custom date range');
 const filters = {
+  actor_type: 'browser',
+  classification_evidence: 'browser_hint',
+  resource_type: 'client_event',
+  http_method: 'POST',
   source: 'google',
   medium: 'organic',
   campaign: 'none',

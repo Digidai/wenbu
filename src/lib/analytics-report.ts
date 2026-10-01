@@ -1,15 +1,33 @@
+import { trafficDimensions } from './traffic-contract';
 import { campaigns, mediums, pagePaths, sources, tools } from './analytics-contract';
 
 export const reportPresets = [1, 3, 7, 14, 30, 90] as const;
 export const reportTimezones = ['Asia/Shanghai', 'UTC'] as const;
 export const reportDimensions: Record<string, readonly string[]> = {
+  ...trafficDimensions,
   source: sources,
   medium: mediums,
   campaign: campaigns,
   locale: ['zh', 'en'],
   device: ['mobile', 'desktop', 'tablet', 'bot', 'unknown'],
   channel: ['web', 'api', 'cli', 'mcp'],
-  page: [...pagePaths.map((p) => `/${p ? p + '/' : ''}`), '/other/'],
+  page: [
+    ...pagePaths.map((p) => `/${p ? p + '/' : ''}`),
+    '/other/',
+    '/robots.txt',
+    '/sitemap.xml',
+    '/sitemap-index.xml',
+    '/feed.xml',
+    '/en/feed.xml',
+    '/llms.txt',
+    '/llms-full.txt',
+    '/SKILL.md',
+    '/skill.md',
+    '/openapi.json',
+    '/.well-known/agent.json',
+    '/.well-known/mcp.json',
+    '/knowledge/index.json',
+  ],
   entry_page: [...pagePaths.map((p) => `/${p ? p + '/' : ''}`), '/other/'],
   tool: tools,
   mode: ['none', 'explore', 'research'],
@@ -17,6 +35,12 @@ export const reportDimensions: Record<string, readonly string[]> = {
   os: ['windows', 'macos', 'ios', 'android', 'linux', 'other', 'unknown'],
 };
 export type ReportFilters = {
+  actor_type: string;
+  actor_name: string;
+  actor_purpose: string;
+  classification_evidence: string;
+  resource_type: string;
+  http_method: string;
   days: string;
   start: string;
   end: string;
@@ -38,6 +62,12 @@ export type ReportFilters = {
   country: string;
 };
 export const defaultReportFilters: ReportFilters = {
+  actor_type: '',
+  actor_name: '',
+  actor_purpose: '',
+  classification_evidence: '',
+  resource_type: '',
+  http_method: '',
   days: '7',
   start: '',
   end: '',
@@ -59,11 +89,15 @@ export const defaultReportFilters: ReportFilters = {
   country: '',
 };
 export const reportMetrics = [
-  { key: 'pageviews', label: '页面浏览', color: '#47664d', dash: undefined },
+  { key: 'content_requests', label: '内容请求', color: '#3b6c78', dash: undefined },
+  { key: 'search_requests', label: '搜索爬虫请求', color: '#a67738', dash: '7 3' },
+  { key: 'ai_requests', label: 'AI 抓取 / Agent 请求', color: '#78678f', dash: '3 3' },
+  { key: 'service_requests', label: '服务调用', color: '#687461', dash: '7 3' },
+  { key: 'pageviews', label: '浏览器页面浏览', color: '#47664d', dash: undefined },
   { key: 'visitors', label: '匿名访客', color: '#896239', dash: '3 3' },
   { key: 'sessions', label: '访问会话', color: '#4e7383', dash: '7 3' },
   { key: 'calculations', label: '成功计算', color: '#9b573f', dash: undefined },
-  { key: 'agent_complete', label: 'Agent 完成', color: '#796783', dash: '3 3' },
+  { key: 'agent_complete', label: '问卜 Agent 完成', color: '#796783', dash: '3 3' },
   { key: 'failures', label: '服务错误', color: '#923f57', dash: '7 3' },
 ] as const;
 export type ReportMetric = (typeof reportMetrics)[number]['key'];
@@ -93,7 +127,57 @@ export type AnalyticsReport = {
   data: Record<string, ReportRow[]>;
 };
 export const reportLabels: Record<string, string> = {
-  source: '来源',
+  actor_type: '访问者类型',
+  actor_name: '客户端标识',
+  actor_purpose: '请求用途',
+  classification_evidence: '分类依据',
+  resource_type: '资源类型',
+  http_method: '请求方法',
+  search_crawler: '搜索爬虫',
+  ai_crawler: 'AI 抓取',
+  ai_agent: '用户委托 Agent',
+  automation: '其他自动化',
+  tool_client: '工具客户端',
+  legacy: '旧数据 · 无分类依据',
+  browse: '网页浏览',
+  search: '搜索检索',
+  training: '训练抓取',
+  user_fetch: '用户委托抓取',
+  ua_declared: 'UA 自报 · 未核实身份',
+  browser_hint: '浏览器特征 · 不等于真人',
+  tool_declared: '协议 / 客户端自报',
+  cf_verified: 'Cloudflare 已验证自动化',
+  cf_signed: 'Cloudflare 已验证签名 Agent',
+  cf_score: 'Cloudflare 自动化评分推断',
+  html: '网页 HTML',
+  markdown: 'Markdown 手册',
+  json: 'JSON 内容',
+  discovery: '发现文件',
+  service: '服务端操作',
+  client_event: '浏览器事件',
+  googlebot: 'Googlebot',
+  bingbot: 'Bingbot',
+  baiduspider: 'Baiduspider',
+  duckduckbot: 'DuckDuckBot',
+  yandexbot: 'YandexBot',
+  oai_searchbot: 'OAI-SearchBot',
+  gptbot: 'GPTBot',
+  chatgpt_user: 'ChatGPT-User',
+  claudebot: 'ClaudeBot',
+  claude_searchbot: 'Claude-SearchBot',
+  claude_user: 'Claude-User',
+  perplexitybot: 'PerplexityBot',
+  perplexity_user: 'Perplexity-User',
+  bytespider: 'Bytespider',
+  headless: '无头浏览器',
+  script: '脚本客户端',
+  generic_bot: '未识别自动化',
+  cf_bot: 'Cloudflare 已验证 Bot',
+  cf_agent: 'Cloudflare 签名 Agent',
+  mcp_client: 'MCP 客户端',
+  cli_client: 'CLI 客户端',
+  api_client: 'API 客户端',
+  source: '引荐来源',
   medium: '渠道类型',
   campaign: '活动',
   locale: '语言',

@@ -1,3 +1,4 @@
+import { trafficDimensions } from '../src/lib/traffic-contract';
 import { z } from 'zod';
 import { sources, campaigns, tools, statuses, clientEvents } from '../src/lib/analytics-contract';
 import { feedbackCategories, feedbackRatings, feedbackStates } from '../src/lib/feedback-contract';
@@ -14,6 +15,7 @@ const serverEvents = [
   'agent_tool_finished',
   'api_failed',
   'mcp_finished',
+  'page_request',
 ];
 const DAY = 86400000;
 function pageCursor(value: string | null): [number, string, number] | undefined {
@@ -58,6 +60,7 @@ export async function historyReport(url: URL, env: Env, kind: 'events' | 'feedba
     const filters: Record<string, readonly string[]> =
       kind === 'events'
         ? {
+            ...trafficDimensions,
             source: sources,
             campaign: campaigns,
             locale: ['zh', 'en'],
@@ -65,7 +68,7 @@ export async function historyReport(url: URL, env: Env, kind: 'events' | 'feedba
             channel: ['web', 'api', 'cli', 'mcp'],
             tool: tools,
             status: statuses,
-            origin: ['client', 'server'],
+            origin: ['client', 'server', 'edge'],
             event: [...clientEvents, ...serverEvents],
           }
         : {
@@ -176,11 +179,11 @@ export async function archiveAnalytics(env: Env) {
       const rows = result.results;
       const body = rows.map(({ archive_key: _key, ...row }) => JSON.stringify(row)).join('\n') + '\n';
       const hash = await sha256(body);
-      const key = `events/v2/${new Date(Number(rows[0].received_at)).toISOString().slice(0, 10)}/${hash}.ndjson`;
+      const key = `events/v3/${new Date(Number(rows[0].received_at)).toISOString().slice(0, 10)}/${hash}.ndjson`;
       const bytes = new TextEncoder().encode(body).byteLength;
       await env.ANALYTICS_ARCHIVE.put(key, body, {
         httpMetadata: { contentType: 'application/x-ndjson' },
-        customMetadata: { sha256: hash, count: String(rows.length), schema: '2' },
+        customMetadata: { sha256: hash, count: String(rows.length), schema: '3' },
       });
       const lease = await db
         .prepare('UPDATE analytics_maintenance SET lease_until=? WHERE id=1 AND lease_owner=?')

@@ -1,6 +1,6 @@
 # 访问与使用统计
 
-2026-09-29。Cloudflare Worker + D1 第一方统计，不引入外部追踪脚本。管理入口 `/insights/`；页面 noindex，所有管理 API 要求管理密钥。D1 保存最近 90 天事件明细；私有 R2 保存长期原始事件归档。每小时 UTC 第 15 分钟归档已接收超过一天的事件，仅已归档事件允许从近期表清理。文末提供英文指标与使用说明。
+2026-10-01。Cloudflare Worker + D1 第一方统计，不引入外部追踪脚本。管理入口 `/insights/`；页面 noindex，所有管理 API 要求管理密钥。D1 保存最近 90 天事件明细；私有 R2 保存长期原始事件归档。每小时 UTC 第 15 分钟归档已接收超过一天的事件，仅已归档事件允许从近期表清理。文末提供英文指标与使用说明。
 
 ## 第一次查看后台
 
@@ -14,13 +14,32 @@
 
 尚未到来的小时留空，不伪装成零流量；过去没有事件的时段补零；当前小时/日期标记“尚未结束”。页面明确显示数据截至时刻。当天数据仍在变化，不能与完整一天直接比较。**使用历史和反馈列表仍按截至查询时刻的 N × 24 小时窗口筛选**，不要直接与概览的日历范围对账。AI 额度始终按上海时间零点重置，不随报表时区改变。
 
+## 浏览器、搜索爬虫与 Agent 的区分
+
+新增六个组合筛选：访问者类型、客户端标识、请求用途、分类依据、资源类型、请求方法。原有设备、渠道与引荐维度保持独立：`source=chatgpt` 是引荐；`actor_name=chatgpt_user` 是 UA 声明的访问客户端；`agent_complete` 是问卜产品完成回合。三者不互相推断。
+
+- **浏览器页面浏览 / PV、匿名访客 / UV、会话**：来自网页事件。只计有浏览器特征的新记录，以及旧数据中非 bot 的网页记录。明确识别的自动化和无法识别的新浏览事件不计入这些指标。浏览器特征不保证真人，隐藏 UA 的自动化仍可能被漏分。
+- **内容请求**：服务端记录的公开内容 GET 请求，不需要 JavaScript；包含 HTML、知识手册 Markdown/JSON 和 robots、sitemap、llms、SKILL、OpenAPI 等发现文件。保留响应码和耗时，包含重定向及错误。HEAD 单独列示。它不建立 visitor/session，也不增加 PV。服务端引荐只归类当前请求的 Referer/UTM，不推断会话首次来源；进入页记 /other/。已在 Cloudflare 边缘被拦截、未执行 Worker 的请求、图片/脚本资源和后台不在此口径内。
+- **搜索爬虫请求**：Googlebot、Bingbot、Baiduspider 等传统搜索抓取；**AI 抓取 / Agent 请求**：AI 搜索、训练和用户委托的抓取合计，可按用途进一步筛选。没有 UA 或可信边缘依据的请求归未知。
+- **服务调用**：服务端完成或失败记录，排除 Agent 内部工具阶段。MCP 使用外层 `mcp_finished` 计一次请求，内部计算成功仍计入相应功能成功指标。CLI/MCP 是工具客户端的声明，不代表真实个人身份。
+
+“谁在请求内容”展示类型、客户端、用途、依据、资源和 HTTP 状态。各分类榜单的百分比以当前筛选内的内容 GET 总量为分母，不把客户端事件混进请求量。点击榜单应用筛选，趋势、总数和导出使用同一个已应用快照；CSV 保存时区、截止时间和完整筛选 JSON。明细可查询同样的六个分类字段，窗口仍是滚动 N 天。
+
+分类版本 `1`：名字与用途由有限 UA 签名匹配；UA/客户端头都是可伪装的声明。只有原生 `request.cf.botManagement` 才能提供 Cloudflare verifiedBot、signedAgent 和 score；客户端伪造的同名 HTTP 头不会被采信。评分低于 30 是自动化推断，不能当作已验证身份。签名 Agent 未声明用途时仍标未知；Cloudflare 验证不独立证明 UA 中的厂商名字。边缘没有字段时存 `null`，不假装已核实。未来调整规则时必须增加版本并更新回归矩阵。
+
+旧记录通过新增列默认标为 `legacy / version 0`，不会猜测它属于搜索、AI 或真人。历史静态抓取量没有采集，无法回补。“分类覆盖”显示旧记录、未识别请求、被排除的浏览事件及 CF 证据。不要把升级前后的内容请求曲线当作完整连续流量。
+
+公开请求不保存 IP、完整 UA、URL 参数、正文或新身份指纹，只保留白名单类别、匹配标识、规则版本和可用边缘依据。关闭统计设置不含标识的 `wenbu_analytics=off` 偏好 cookie，使后续网页请求也遵守选择；已接收事件不自动撤回。R2 新归档为 `events/v3/`，保留新增分类列，旧 `v2` 文件仍可下载。
+
+分类依据参考官方文档：[Cloudflare 边缘信号](https://developers.cloudflare.com/bots/reference/bot-management-variables/)、[OpenAI 抓取用途](https://developers.openai.com/api/docs/bots)、[Anthropic 三类客户端](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler)、[Perplexity 搜索与用户请求](https://docs.perplexity.ai/docs/resources/perplexity-crawlers)、[Google 抓取基础设施](https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers)。
+
 ## 看什么
 
 | 维度                                           | 用途                                 |
 | ---------------------------------------------- | ------------------------------------ |
 | 来源 / medium / campaign / 进入页              | 搜索、AI 引荐、社区和推广入口效果    |
 | 页面 / 语言 / 设备 / 浏览器 / 系统 / 国家地区  | 内容与响应式体验                     |
-| web / API / CLI / MCP                          | 人与 Agent 的使用方式                |
+| web / API / CLI / MCP                          | 请求使用的协议或客户端方式           |
 | 工具 / Agent 模式 / 入口动作                   | 功能偏好与开始位置                   |
 | 服务状态 / 耗时 / 模型调用 / 工具调用 / 产物数 | 完成率、限制、耗时和运行成本代理指标 |
 
@@ -30,7 +49,7 @@
 
 ## 曲线与可视化
 
-- 六个可切换趋势：页面浏览、匿名访客、访问会话、成功计算、Agent 完成、服务错误。线型与颜色共同区分指标；键盘可逐点读取，也可切换完整数据表。
+- 十个可切换趋势：内容请求、搜索爬虫请求、AI 抓取 / Agent 请求、服务调用，以及页面浏览、匿名访客、访问会话、成功计算、Agent 完成、服务错误。线型与颜色共同区分指标；键盘可逐点读取，也可切换完整数据表。
 - 来源、页面和设备使用横向条形图，显示实际数量和占比；默认前五项，可展开全部。分母包含当前筛选的全部类别，不只前五项。
 - 24 小时活跃分布把所选日期中的浏览量按钟点累加，用于看活跃时段；多天范围下不是某一天的实际曲线。
 - 功能完成、服务结果和会话覆盖分别展示使用、运行结果与行为覆盖。“完成调用”包含示例调用；顶部成功计算指标排除示例，两者口径不同。
@@ -84,7 +103,7 @@ API / MCP 可传 `X-Wenbu-Analytics: off`；CLI 用 `WENBU_ANALYTICS=off node we
 
 公开客户端事件与归因可被模拟，不能用于计费或反作弊；服务端成功事件禁止由收集接口写入。广告拦截、关闭统计、网络故障、机器人会影响覆盖。来源归因是可观察的引荐或 UTM，不是广告平台归因系统。
 
-D1 记录是实际写入而非采样估算；仍有读取 / 写入 / 数据库容量成本和账户限制。后台 22 组查询当前按 90 天内索引时间窗口汇总，流量增长后应增加按天预聚合、监控 D1 rows_read / rows_written、再决定迁移，不预先承诺无限容量或零成本。查询同时限制事件发生时间和接收时间，避免未来时间戳或查询后才接收的事件混入本次快照。当天无记录时显示空状态，不生成演示数字。
+D1 记录是实际写入而非采样估算；仍有读取 / 写入 / 数据库容量成本和账户限制。后台使用共享筛选的多组查询，当前按 90 天内索引时间窗口汇总，流量增长后应增加按天预聚合、监控 D1 rows_read / rows_written、再决定迁移，不预先承诺无限容量或零成本。查询同时限制事件发生时间和接收时间，避免未来时间戳或查询后才接收的事件混入本次快照。当天无记录时显示空状态，不生成演示数字。
 
 运维与迁移见 [operations.md](operations.md)，上线验证见 [图表与筛选质量记录](reviews/analytics-trends-release.md) 和 [反馈与历史存储质量记录](reviews/feedback-history-release.md)。
 
@@ -135,7 +154,6 @@ The privacy page offers an opt-out; the browser also honors DNT/GPC and disables
 
 Browser events can be blocked, lost or fabricated. Server success events cannot be submitted through the public collection endpoint, but analytics still is not a billing or fraud-detection ledger. QA requests use `X-Wenbu-Test: true`, or the dedicated browser tab sets `sessionStorage['wenbu.analytics.test']='true'` before loading product pages. Test events are excluded by default. See [operations](operations.md) for migration, access and retention procedures.
 
-
 ## 反馈、历史与归档（2026-09-29 升级）
 
 - 页面反馈按钮与工具/Agent 结果评价入口共用私密表单。评价与文字至少有一项；邮箱可选。摘录默认关闭，勾选后可编辑预览。只发送用户实际提交的文本。反馈独立于统计开关，关闭统计时不附带访客、会话、操作或对话 ID。
@@ -166,3 +184,11 @@ The History tab lets maintainers inspect individual events and follow session, o
 The Archive tab exposes authenticated NDJSON downloads. D1 keeps recent events for 90 days; only rows successfully archived to private R2 can be pruned. Run the export script above to follow every page and verify archive hashes. Combined files must be deduplicated by event ID and filtered for test traffic. Do not treat analytics as a billing ledger or proof of predictive accuracy.
 
 Technical references: [Cloudflare R2 Workers API](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/), [D1 limits](https://developers.cloudflare.com/d1/platform/limits/), [D1 querying](https://developers.cloudflare.com/d1/best-practices/query-d1/).
+
+## English: traffic classification
+
+The dashboard separates browser page views from server-observed public content GET requests. Content requests cover HTML, full Markdown/JSON guides and discovery files; they never create visitor/session IDs or add a second page view. HEAD requests and HTTP outcomes are listed separately. Edge-blocked requests, asset files and private pages are outside this measure.
+
+Actor type, declared client, purpose, evidence, resource format and method are separate filters. Traditional search crawlers, AI search/training crawlers, user-triggered fetchers, other automation and tool clients have distinct categories. A ChatGPT referral is not a ChatGPT crawler visit. Wenbu Agent completion remains a product outcome. Tool phases do not inflate service-call counts; an MCP request is counted by its enclosing completion record.
+
+Names are UA declarations and may be spoofed. Browser hints do not prove a human visitor. Cloudflare verified-bot, signed-agent and score evidence is accepted only from Worker metadata, when available. Missing signals remain null. Verification of automation does not independently verify the provider name in a UA. Older rows keep their legacy status, and pre-upgrade crawl traffic cannot be reconstructed. CSV/JSON exports retain the applied filters and cutoff; detail exports and new v3 R2 archives retain classification evidence and version.

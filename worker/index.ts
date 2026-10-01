@@ -10,6 +10,7 @@ import { AGENT_BODY_LIMIT } from '../src/lib/agent-protocol';
 import {
   collectEvents,
   recordService,
+  recordContent,
   authorizedAnalytics,
   analyticsReport,
   type ServiceMetric,
@@ -85,7 +86,16 @@ export default {
     const redirect = domainRedirect(request, env.SITE_URL);
     if (redirect) return redirect;
     const path = url.pathname;
-    if (!path.startsWith('/api/') && path !== '/mcp' && path !== '/mcp/') return env.ASSETS.fetch(request);
+    if (!path.startsWith('/api/') && path !== '/mcp' && path !== '/mcp/') {
+      const started = Date.now();
+      const response = await env.ASSETS.fetch(request);
+      const task = recordContent(request, response, env, Date.now() - started).catch(() =>
+        console.error('WENBU_ANALYTICS_WRITE_FAILED'),
+      );
+      if (ctx) ctx.waitUntil(task);
+      else await task;
+      return response;
+    }
     if (!originAllowed(request, env))
       return json({ error: { code: 'origin_denied', message: 'Origin not allowed.' } }, 403);
     const started = Date.now();
