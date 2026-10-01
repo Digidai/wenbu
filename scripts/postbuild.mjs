@@ -90,9 +90,9 @@ for (const locale of ['zh', 'en'])
     knowledgeHeaders += `/knowledge/${locale}/*.${extension}\n  Content-Type: ${mime}\n  Link: <${site}/${locale === 'en' ? 'en/' : ''}learn/:splat/>; rel="canonical"\n`;
   }
 const csp =
-  "default-src 'self'; script-src 'self' " +
+  "default-src 'self'; script-src 'self' https://*.clarity.ms " +
   [...hashes].join(' ') +
-  "; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+  "; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; font-src 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 await writeFile(
   'dist/_headers',
   '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Content-Security-Policy: ' +

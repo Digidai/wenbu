@@ -186,6 +186,14 @@ export const pages: Record<string, Page> = {
           ],
         },
         {
+          heading: '页面交互分析',
+          paragraphs: [
+            '我们使用 Microsoft Clarity 的热力图和会话回放，了解点击、滚动和页面交互，帮助发现难用的位置。Clarity 在无 cookie 模式下运行，不授予广告或统计 cookie 存储权限；Microsoft 仍会处理网络请求信息（包括 IP）、页面地址与设备信息，按其自己的隐私政策处理和保留数据。Clarity 数据不会存入本站 D1 或 R2。',
+            '工具、Agent 和手记的主内容区域设置了内容遮罩，包含聊天、出生资料、命盘、结果与笔记。输入框内容由 Clarity 默认遮罩；我们不使用自定义标识接口传送本站访客身份。管理后台、历史迁移页、本地预览和已标记测试会话不加载 Clarity。',
+            '本页的统计开关同时控制 Clarity，DNT / GPC 也会阻止加载。运行中关闭会停止后续交互录制，但已经传送的数据不会撤回；无 cookie 模式下的访客与会话统计不能直接与本站统计相加。',
+          ],
+        },
+        {
           heading: '免费额度与基础设施',
           paragraphs: [
             '为了控制滥用，Cloudflare 会处理请求的 IP。AI 额度使用每天变化的带密钥哈希，持久层只存日期、哈希和次数，按过期清理机制移除。边缘请求限速不等于真实用户识别，共享网络可能共用额度。',
@@ -228,6 +236,14 @@ export const pages: Record<string, Page> = {
             'Public page, Markdown/JSON guide and discovery-file GET/HEAD requests also record a known path category, response status, method, duration, client category and classification evidence, without browser visitor or session identifiers. Search crawling, AI search, training crawls and user-triggered fetches are classified separately. User agents can be spoofed; Cloudflare verification and scores are recorded only when supplied by the edge. Full user agents, URL queries and raw IPs are not stored.',
             'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events also carry timestamps and random page, operation and Agent-turn IDs so we can understand usage journeys. Recent detail stays in D1 for 90 days; private R2 archives currently have no automatic expiry. Reports, individual events and archives require administrator credentials. Pending events can stay on your device for up to seven days, with a 1,000-event limit.',
             'Disable measurement on this page at any time. A preference-only cookie also disables measurement of subsequent page requests. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; previously received events remain subject to the archive policy above. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
+          ],
+        },
+        {
+          heading: 'Page interaction analysis',
+          paragraphs: [
+            'We use Microsoft Clarity heatmaps and session replay to understand clicks, scrolling and page interactions, and identify usability problems. Clarity runs without analytics or advertising cookie storage permission. Microsoft still processes network request information, including IP addresses, page URLs and device information, under its own privacy and retention policies. Clarity data is not stored in our D1 database or R2 archive.',
+            'The main content of tool, Agent and journal pages is explicitly masked, including conversations, birth details, charts, results and notes. Clarity masks input fields by default. We do not share our visitor identifiers through its custom identity API. Clarity does not load on the admin dashboard, history migration pages, local previews or sessions marked as tests.',
+            'The measurement switch on this page also controls Clarity. Do Not Track and Global Privacy Control prevent it from loading. Disabling measurement during a visit stops further interaction recording; it does not withdraw data already sent. Clarity’s cookie-less visitor and session counts cannot be added to Wenbu’s own counts.',
           ],
         },
         {
