@@ -1,3 +1,9 @@
+import {
+  browserAudienceSQL,
+  browserViewSQL,
+  contentRequestSQL,
+  serviceRequestSQL,
+} from '../src/lib/traffic-contract';
 import type { Env } from './types';
 import { ApiError } from './ai';
 import {
@@ -82,11 +88,23 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
   const queries: [string, string][] = [
     [
       'summary',
-      `SELECT COUNT(*) events, SUM(event='page_view') pageviews, COUNT(DISTINCT CASE WHEN event='page_view' THEN session_id END) sessions, COUNT(DISTINCT CASE WHEN event='page_view' THEN visitor_id END) visitors, COUNT(DISTINCT CASE WHEN event='engaged' THEN session_id END) engaged_sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='interpret_succeeded') interpretations, SUM(event='agent_finished' AND status='complete') agent_complete, SUM(event='agent_finished' AND status='waiting') agent_waiting, SUM(event='agent_finished' AND status='limited') agent_limited, SUM((event='api_failed' AND status IN ('error','unavailable')) OR (event='agent_finished' AND status IN ('error','timeout'))) failures, SUM(origin='server' AND status='invalid_input') invalid_inputs, SUM(origin='server' AND status='rate_limited') throttled, SUM(event='agent_finished' AND status='cancelled') cancellations, SUM(model_calls) model_calls, SUM(tool_calls) tool_calls, MAX(occurred_at) last_event FROM events WHERE $WHERE`,
+      `SELECT COUNT(*) events,
+      SUM(${contentRequestSQL}) content_requests,
+      SUM(${contentRequestSQL} AND actor_type='search_crawler') search_requests,
+      SUM(${contentRequestSQL} AND actor_type IN ('ai_crawler','ai_agent')) ai_requests,
+      SUM(${serviceRequestSQL}) service_requests,
+      SUM(event='page_request' AND http_method='HEAD') head_requests,
+      SUM(event='page_request' AND http_status>=400) content_errors,
+      SUM(classification_version>0) classified_events, SUM(classification_version=0) legacy_events,
+      SUM(event='page_view' AND NOT ${browserAudienceSQL}) excluded_views,
+      SUM(${contentRequestSQL} AND actor_type='unknown') unclassified_requests,
+      SUM(${contentRequestSQL} AND bot_verified=1) verified_requests,
+      SUM(${contentRequestSQL} AND signed_agent=1) signed_requests,
+      SUM(${browserViewSQL}) pageviews, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN visitor_id END) visitors, COUNT(DISTINCT CASE WHEN (event='engaged' AND ${browserAudienceSQL}) THEN session_id END) engaged_sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='interpret_succeeded') interpretations, SUM(event='agent_finished' AND status='complete') agent_complete, SUM(event='agent_finished' AND status='waiting') agent_waiting, SUM(event='agent_finished' AND status='limited') agent_limited, SUM((event='api_failed' AND status IN ('error','unavailable')) OR (event='agent_finished' AND status IN ('error','timeout'))) failures, SUM(origin='server' AND status='invalid_input') invalid_inputs, SUM(origin='server' AND status='rate_limited') throttled, SUM(event='agent_finished' AND status='cancelled') cancellations, SUM(model_calls) model_calls, SUM(tool_calls) tool_calls, MAX(occurred_at) last_event FROM events WHERE $WHERE`,
     ],
     [
       'daily',
-      `SELECT strftime('%Y-%m-%d', (occurred_at + ${offset})/1000, 'unixepoch') label, SUM(event='page_view') views, COUNT(DISTINCT CASE WHEN event='page_view' THEN session_id END) sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='agent_finished' AND status='complete') agent FROM events WHERE $WHERE GROUP BY label ORDER BY label`,
+      `SELECT strftime('%Y-%m-%d', (occurred_at + ${offset})/1000, 'unixepoch') label, SUM(${browserViewSQL}) views, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='agent_finished' AND status='complete') agent FROM events WHERE $WHERE GROUP BY label ORDER BY label`,
     ],
     [
       'events',
@@ -94,11 +112,11 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
     ],
     [
       'performance',
-      `SELECT tool label, status, COUNT(*) count, ROUND(AVG(duration_ms)) average_ms, MAX(duration_ms) max_ms FROM events WHERE $WHERE AND origin='server' AND event!='agent_tool_finished' GROUP BY tool,status ORDER BY count DESC`,
+      `SELECT tool label, status, COUNT(*) count, ROUND(AVG(duration_ms)) average_ms, MAX(duration_ms) max_ms FROM events WHERE $WHERE AND origin='server' AND ${serviceRequestSQL} GROUP BY tool,status ORDER BY count DESC`,
     ],
     [
       'funnel',
-      `WITH steps AS (SELECT session_id, MIN(CASE WHEN event='page_view' THEN occurred_at END) visit, MIN(CASE WHEN (event='agent_started' OR (event='tool_started' AND action!='example')) THEN occurred_at END) start, MIN(CASE WHEN (event IN ('calculation_succeeded','interpret_succeeded') AND action!='example') OR (event='agent_finished' AND status='complete') THEN occurred_at END) success, MAX(CASE WHEN event='journal_saved' THEN occurred_at END) saved FROM events WHERE $WHERE AND session_id IS NOT NULL GROUP BY session_id) SELECT COUNT(visit) visited, SUM(visit IS NOT NULL AND start IS NOT NULL) started, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL) succeeded, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL AND saved IS NOT NULL) saved FROM steps`,
+      `WITH steps AS (SELECT session_id, MIN(CASE WHEN ${browserViewSQL} THEN occurred_at END) visit, MIN(CASE WHEN (event='agent_started' OR (event='tool_started' AND action!='example')) THEN occurred_at END) start, MIN(CASE WHEN (event IN ('calculation_succeeded','interpret_succeeded') AND action!='example') OR (event='agent_finished' AND status='complete') THEN occurred_at END) success, MAX(CASE WHEN event='journal_saved' THEN occurred_at END) saved FROM events WHERE $WHERE AND session_id IS NOT NULL AND ${browserAudienceSQL} GROUP BY session_id) SELECT COUNT(visit) visited, SUM(visit IS NOT NULL AND start IS NOT NULL) started, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL) succeeded, SUM(visit IS NOT NULL AND start IS NOT NULL AND success IS NOT NULL AND saved IS NOT NULL) saved FROM steps`,
     ],
     [
       'guidance',
@@ -106,6 +124,12 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
     ],
   ];
   for (const key of [
+    'actor_type',
+    'actor_name',
+    'actor_purpose',
+    'classification_evidence',
+    'resource_type',
+    'http_method',
     'source',
     'medium',
     'campaign',
@@ -123,25 +147,33 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
   ]) {
     queries.push([
       key,
-      `SELECT ${key} label, COUNT(*) events, SUM(event='page_view') views, COUNT(DISTINCT session_id) sessions, SUM((event='calculation_succeeded' AND action!='example') OR event='interpret_succeeded' OR (event='agent_finished' AND status='complete')) successes FROM events WHERE $WHERE GROUP BY ${key} ORDER BY views DESC,events DESC`,
+      `SELECT ${key} label, COUNT(*) events, SUM(${contentRequestSQL}) requests, SUM(${serviceRequestSQL}) calls, SUM(${browserViewSQL}) views, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, SUM((event='calculation_succeeded' AND action!='example') OR event='interpret_succeeded' OR (event='agent_finished' AND status='complete')) successes FROM events WHERE $WHERE GROUP BY ${key} ORDER BY requests DESC,views DESC,events DESC`,
     ]);
   }
   queries.push(
     [
       'trend',
       `SELECT CAST((occurred_at - ${since}) / ${step} AS INTEGER) bucket,
-      SUM(event='page_view') pageviews,
-      COUNT(DISTINCT CASE WHEN event='page_view' THEN visitor_id END) visitors,
-      COUNT(DISTINCT CASE WHEN event='page_view' THEN session_id END) sessions,
+      SUM(${contentRequestSQL}) content_requests,
+      SUM(${contentRequestSQL} AND actor_type='search_crawler') search_requests,
+      SUM(${contentRequestSQL} AND actor_type IN ('ai_crawler','ai_agent')) ai_requests,
+      SUM(${serviceRequestSQL}) service_requests,
+      SUM(${browserViewSQL}) pageviews,
+      COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN visitor_id END) visitors,
+      COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions,
       SUM(event='calculation_succeeded' AND action!='example') calculations,
       SUM(event='agent_finished' AND status='complete') agent_complete,
       SUM((event='api_failed' AND status IN ('error','unavailable')) OR (event='agent_finished' AND status IN ('error','timeout'))) failures
       FROM events WHERE $WHERE GROUP BY bucket ORDER BY bucket`,
     ],
     [
+      'http_status',
+      `SELECT http_status label, http_method method, COUNT(*) requests FROM events WHERE $WHERE AND event='page_request' GROUP BY http_status,http_method ORDER BY requests DESC`,
+    ],
+    [
       'hours',
       `SELECT CAST(strftime('%H', (occurred_at + ${offset})/1000, 'unixepoch') AS INTEGER) label,
-      SUM(event='page_view') views FROM events WHERE $WHERE GROUP BY label ORDER BY label`,
+      SUM(${browserViewSQL}) views FROM events WHERE $WHERE GROUP BY label ORDER BY label`,
     ],
   );
   const results = await env.ANALYTICS.batch<ReportRow>(queries.map(([, sql]) => query(sql)));

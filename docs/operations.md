@@ -116,3 +116,9 @@ When adding a public article route, add its path to `src/lib/analytics-contract.
 ## Issue reporting
 
 Use GitHub issues with synthetic data. Never post birth details or keys in public bug reports. Reproduce calendar issues with exact timezone, date, chosen convention and expected independent reference.
+
+## Traffic classification migration (2026-10-01)
+
+Apply `0004_traffic_classification.sql` locally and remotely before deploying the new Worker. It adds nullable CF evidence and versioned actor/resource fields without rewriting existing rows. Old code still inserts legacy defaults during the migration/deploy window. New archives use `events/v3/`; retain the existing v2 manifest and files. The private dashboard can filter actors and evidence without treating UA declarations as verified identities.
+
+Run `node scripts/smoke-traffic.mjs` with `WENBU_URL` and optional `WENBU_EVIDENCE` to send marked synthetic requests and reconcile collector, summary, curve and history. Test data is excluded by default; do not use crawler-spoof probes as evidence of real Google/OpenAI visits. Also run the read-only `scripts/smoke-analytics-trends.mjs` for calendar presets and applied-filter parity.

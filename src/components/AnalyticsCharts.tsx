@@ -90,15 +90,29 @@ export function AnalyticsTrend({
         }).format(time)
       : formatReportTime(time, report.timezone, hourly);
   function download() {
-    const headers = ['时段开始 UTC', '时段结束 UTC', '状态', ...reportMetrics.map((m) => m.label)];
+    const headers = [
+      '时段开始 UTC',
+      '时段结束 UTC',
+      '状态',
+      '统计时区',
+      '数据截至 UTC',
+      '已应用筛选 JSON',
+      ...reportMetrics.map((m) => m.label),
+    ];
     const rows = report.series.map((p) => [
       new Date(p.bucket).toISOString(),
       new Date(p.end).toISOString(),
       p.state,
+      report.timezone,
+      report.generatedAt,
+      JSON.stringify(report.filters),
       ...reportMetrics.map((m) => p[m.key] ?? ''),
     ]);
     saveFile(
-      '\uFEFF' + [headers, ...rows].map((row) => row.join(',')).join('\n'),
+      '\uFEFF' +
+        [headers, ...rows]
+          .map((row) => row.map((v) => '"' + String(v).replaceAll('"', '""') + '"').join(','))
+          .join('\n'),
       'text/csv;charset=utf-8',
       `wenbu-trend-${report.range.startDate}-${report.range.endDate}.csv`,
     );
@@ -285,6 +299,94 @@ function RankedBars({
       <p className="observatory-chart-note">
         比例以当前筛选下的{label}为分母。{onPick ? '点击名称进一步筛选。' : ''}
       </p>
+    </section>
+  );
+}
+
+export function AnalyticsTrafficCharts({
+  report,
+  onFilter,
+}: {
+  report: AnalyticsReport;
+  onFilter: (key: keyof ReportFilters, value: string) => void;
+}) {
+  return (
+    <section aria-label="抓取与 Agent 流量分类">
+      <div className="observatory-chart-heading">
+        <div>
+          <span className="eyebrow">CRAWLERS &amp; AGENTS</span>
+          <h2>谁在请求内容</h2>
+          <p>以下分布只使用内容 GET 请求；同一次请求只属于一个类型。</p>
+        </div>
+      </div>
+      <div className="observatory-two-column">
+        <RankedBars
+          title="访问者类型"
+          eyebrow="REQUEST ACTORS"
+          rows={report.data.actor_type}
+          metric="requests"
+          label="内容请求"
+          onPick={(v) => onFilter('actor_type', v)}
+        />
+        <RankedBars
+          title="客户端与抓取用途"
+          eyebrow="DECLARED CLIENTS"
+          rows={report.data.actor_name}
+          metric="requests"
+          label="内容请求"
+          onPick={(v) => onFilter('actor_name', v)}
+        />
+        <RankedBars
+          title="搜索、训练与用户委托"
+          eyebrow="REQUEST PURPOSE"
+          rows={report.data.actor_purpose}
+          metric="requests"
+          label="内容请求"
+          onPick={(v) => onFilter('actor_purpose', v)}
+        />
+        <RankedBars
+          title="分类依据"
+          eyebrow="CLASSIFICATION EVIDENCE"
+          rows={report.data.classification_evidence}
+          metric="requests"
+          label="内容请求"
+          onPick={(v) => onFilter('classification_evidence', v)}
+        />
+        <RankedBars
+          title="被读取的内容形式"
+          eyebrow="CONTENT FORMATS"
+          rows={report.data.resource_type}
+          metric="requests"
+          label="内容请求"
+          onPick={(v) => onFilter('resource_type', v)}
+        />
+        <section className="insights-card">
+          <span className="eyebrow">HTTP OUTCOMES</span>
+          <h2>内容响应状态</h2>
+          <p>包含重定向与失败，HEAD 单独列示，不计入内容 GET 曲线。</p>
+          <div className="insights-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>状态</th>
+                  <th>方法</th>
+                  <th>请求数</th>
+                </tr>
+              </thead>
+              <tbody>
+                {report.data.http_status.map((r) => (
+                  <tr key={`${r.label}-${r.method}`}>
+                    <th>{r.label}</th>
+                    <td>{r.method}</td>
+                    <td>{count(r.requests)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {!report.data.http_status.length && <p>当前筛选下暂无内容请求。</p>}
+        </section>
+      </div>
     </section>
   );
 }

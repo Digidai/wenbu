@@ -180,8 +180,9 @@ export const pages: Record<string, Page> = {
           heading: '使用统计，可随时关闭',
           paragraphs: [
             '为了了解哪些页面和功能真正有用，我们通过本站接口向 Cloudflare D1 发送页面路径、来源类别、预先定义的推广活动、语言、国家级区域、设备与浏览器类别、功能事件、成功状态和耗时。不会发送出生日期、问题、聊天、命盘内容、笔记、原始 IP、完整来源网址或网址参数。',
+            '公开网页、Markdown/JSON 手册和发现文件的 GET/HEAD 请求还会记录路径类别、响应状态、方法、耗时、客户端类别与分类依据，不附带浏览器访客或会话标识。搜索爬虫、AI 搜索、训练抓取和用户委托抓取分别归类；UA 自报可伪装，Cloudflare 验证和评分只在边缘提供时记录。不会保存完整 UA、网址参数或原始 IP。',
             '浏览器保存一个 30 天到期的随机访客标识和 30 分钟无活动后重置的会话标识。这些是浏览器访问估计，不等于真实人数。事件还记录时间、页面、操作与 Agent 回合的随机关联标识，帮助复盘使用过程。近期明细在 D1 保留 90 天；事件同时归档到私有 R2 长期保存，目前不设自动到期时间。明细、汇总和归档只对持有管理凭据的人开放。离线待发事件在本机最多暂存 7 天、1,000 条。',
-            '本页可关闭本浏览器的统计；同时尊重 Do Not Track 和 Global Privacy Control。关闭后不再发送后续统计，不影响排盘或对话；已接收记录不会自动撤回，历史归档继续按上述政策保存。必要的额度与限速仍会运行。API、CLI 和 MCP 默认只记不含浏览器标识的功能、状态、耗时、国家与设备类别；可发送 X-Wenbu-Analytics: off，CLI 也可设置 WENBU_ANALYTICS=off。',
+            '本页可关闭本浏览器的统计，并设置仅表示关闭偏好的 cookie，让后续页面请求也停止统计；同时尊重 Do Not Track 和 Global Privacy Control。关闭后不再发送后续统计，不影响排盘或对话；已接收记录不会自动撤回，历史归档继续按上述政策保存。必要的额度与限速仍会运行。API、CLI 和 MCP 默认只记不含浏览器标识的功能、状态、耗时、国家与设备类别；可发送 X-Wenbu-Analytics: off，CLI 也可设置 WENBU_ANALYTICS=off。',
           ],
         },
         {
@@ -194,7 +195,7 @@ export const pages: Record<string, Page> = {
         {
           heading: '反馈与更新',
           paragraphs: [
-            '本说明更新于 2026-09-29。页面上的反馈入口私密保存评价、建议、可选邮箱和反馈编号。相关问题或结果的摘录默认不发送；勾选分享后可预览和删改。关闭使用统计仍可主动发送反馈，但不会附带统计身份。反馈用于处理问题和产品改进，目前不设自动到期时间；可通过新的反馈提供原反馈编号，请求删除。私人摘录和邮箱不会进入事件归档。公开 GitHub 问题中请勿包含私人资料或密钥。本地记录可在手记中删除，或清除本站浏览器存储。',
+            '本说明更新于 2026-10-01。页面上的反馈入口私密保存评价、建议、可选邮箱和反馈编号。相关问题或结果的摘录默认不发送；勾选分享后可预览和删改。关闭使用统计仍可主动发送反馈，但不会附带统计身份。反馈用于处理问题和产品改进，目前不设自动到期时间；可通过新的反馈提供原反馈编号，请求删除。私人摘录和邮箱不会进入事件归档。公开 GitHub 问题中请勿包含私人资料或密钥。本地记录可在手记中删除，或清除本站浏览器存储。',
           ],
         },
       ],
@@ -224,8 +225,9 @@ export const pages: Record<string, Page> = {
           heading: 'Optional usage statistics',
           paragraphs: [
             'Our first-party endpoint records page paths, source categories, registered campaigns, language, country-level region, device/browser categories, feature events, outcomes and durations in Cloudflare D1. It excludes birth details, questions, chat, chart contents, notes, raw IPs, full referrer URLs and URL query parameters.',
+            'Public page, Markdown/JSON guide and discovery-file GET/HEAD requests also record a known path category, response status, method, duration, client category and classification evidence, without browser visitor or session identifiers. Search crawling, AI search, training crawls and user-triggered fetches are classified separately. User agents can be spoofed; Cloudflare verification and scores are recorded only when supplied by the edge. Full user agents, URL queries and raw IPs are not stored.',
             'A random browser identifier expires after 30 days; a session resets after 30 minutes of inactivity. These estimate browser visits, not individual people. Events also carry timestamps and random page, operation and Agent-turn IDs so we can understand usage journeys. Recent detail stays in D1 for 90 days; private R2 archives currently have no automatic expiry. Reports, individual events and archives require administrator credentials. Pending events can stay on your device for up to seven days, with a 1,000-event limit.',
-            'Disable measurement on this page at any time. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; previously received events remain subject to the archive policy above. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
+            'Disable measurement on this page at any time. A preference-only cookie also disables measurement of subsequent page requests. We also honor Do Not Track and Global Privacy Control. Disabling stops future analytics without affecting tools or conversations; previously received events remain subject to the archive policy above. Necessary quota and rate-limit controls continue. API, CLI and MCP record coarse feature, status, duration, country and device categories without browser identifiers by default. Send X-Wenbu-Analytics: off to disable; the CLI also accepts WENBU_ANALYTICS=off.',
           ],
         },
         {
@@ -238,7 +240,7 @@ export const pages: Record<string, Page> = {
         {
           heading: 'Feedback and updates',
           paragraphs: [
-            'Updated September 29, 2026. The feedback button privately stores your rating, note, optional email and receipt ID. Excerpts are off by default; you can review and edit one before choosing to share it. Feedback still works with analytics disabled, without analytics identifiers. Feedback currently has no automatic expiry and is used for issue resolution and product improvement. To request deletion, send a new note with the original receipt ID. Shared excerpts and email addresses are excluded from event archives. Keep private information and credentials out of public GitHub issues. Delete local records in the journal or clear this site’s browser storage.',
+            'Updated October 1, 2026. The feedback button privately stores your rating, note, optional email and receipt ID. Excerpts are off by default; you can review and edit one before choosing to share it. Feedback still works with analytics disabled, without analytics identifiers. Feedback currently has no automatic expiry and is used for issue resolution and product improvement. To request deletion, send a new note with the original receipt ID. Shared excerpts and email addresses are excluded from event archives. Keep private information and credentials out of public GitHub issues. Delete local records in the journal or clear this site’s browser storage.',
           ],
         },
       ],
@@ -309,7 +311,7 @@ export const pages: Record<string, Page> = {
           heading: 'Ownership and feedback',
           paragraphs: [
             'Source code is provided under the repository LICENSE; dependencies retain their own licenses. Product names belong to their respective holders, and comparisons do not imply a partnership or endorsement.',
-            'Updated September 29, 2026. Report calculation or content issues through GitHub with reproducible examples and private information removed.',
+            'Updated October 1, 2026. Report calculation or content issues through GitHub with reproducible examples and private information removed.',
           ],
         },
       ],

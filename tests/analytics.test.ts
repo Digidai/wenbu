@@ -28,7 +28,9 @@ function context() {
   };
 }
 const request = (headers: Record<string, string> = {}) =>
-  new Request('https://wenbu.app/api/v1/tarot', { headers });
+  new Request('https://wenbu.app/api/v1/tarot', {
+    headers: { 'User-Agent': 'Mozilla/5.0 Macintosh Chrome/130', ...headers },
+  });
 describe('closed analytics contract', () => {
   it('summarizes guidance steps without collecting topic or answer content and excludes test traffic', async () => {
     const { sql, env } = database();
@@ -101,9 +103,7 @@ describe('closed analytics contract', () => {
       expect(pagePaths).toContain(path);
     expect(safePage('/en/tarot/?question=private#name')).toBe('/tarot/');
     expect(safePage('/private-person-1988/')).toBe('/other/');
-    expect(referrerSource('https://www.google.com/search?q=private', 'https://wenbu.app')).toBe(
-      'google',
-    );
+    expect(referrerSource('https://www.google.com/search?q=private', 'https://wenbu.app')).toBe('google');
     expect(referrerSource('https://someone.example/private', 'https://wenbu.app')).toBe('other');
   });
   it('deduplicates receipts in actual SQLite and stores no raw request data', async () => {
@@ -169,10 +169,7 @@ describe('closed analytics contract', () => {
     const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics?days=7'), env);
     expect(report.data.summary[0]).toMatchObject({ pageviews: 1, calculations: 1, sessions: 1 });
     expect(report.data.funnel[0]).toMatchObject({ visited: 1, started: 1, succeeded: 1, saved: 1 });
-    const include = await analyticsReport(
-      new URL('https://wenbu.app/api/admin/analytics?test=true'),
-      env,
-    );
+    const include = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics?test=true'), env);
     expect(include.data.summary[0]).toMatchObject({ pageviews: 2 });
     sql.close();
   });
@@ -180,10 +177,7 @@ describe('closed analytics contract', () => {
     const { sql, env } = database();
     const event = { ...context(), id: crypto.randomUUID(), event: 'page_view' };
     await collectEvents({ events: [event] }, request(), env);
-    const report = await analyticsReport(
-      new URL('https://wenbu.app/api/admin/analytics?source=github'),
-      env,
-    );
+    const report = await analyticsReport(new URL('https://wenbu.app/api/admin/analytics?source=github'), env);
     expect(report.data.summary[0].events).toBe(0);
     await expect(
       analyticsReport(
