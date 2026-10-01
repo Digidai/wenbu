@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-10-01T15:26:50.008Z",
+  "requestsInspected": 16,
+  "nativeBotMetadataAvailable": false,
+  "evidenceClasses": ["unknown", "browser_hint", "ua_declared"],
+  "rulesVersions": [1]
+}

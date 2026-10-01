@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-01T15:22:01.748Z",
+  "pages": [
+    {
+      "path": "/insights/",
+      "status": 200,
+      "builtShellMatches": true,
+      "externalAppend": "Cloudflare injected scripts after built body prefix are allowed"
+    },
+    {
+      "path": "/en/insights/",
+      "status": 200,
+      "builtShellMatches": true,
+      "externalAppend": "Cloudflare injected scripts after built body prefix are allowed"
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "builtShellMatches": true,
+      "externalAppend": "Cloudflare injected scripts after built body prefix are allowed"
+    },
+    {
+      "path": "/en/privacy/",
+      "status": 200,
+      "builtShellMatches": true,
+      "externalAppend": "Cloudflare injected scripts after built body prefix are allowed"
+    }
+  ],
+  "assets": [
+    {
+      "path": "/_astro/Layout.BS53NfK5.css",
+      "bytes": 62622,
+      "sha256": "32392bee3ce04d33772d579a154129958c0150a9b7f1228c35345ec589d7999e",
+      "exactMatch": true
+    },
+    {
+      "path": "/_astro/_..DAkA_zZY.css",
+      "bytes": 97711,
+      "sha256": "c1a92849e69ebdf5f4a12e57bd082f53f46739c72080b9c1ba267386c8a9a9c1",
+      "exactMatch": true
+    },
+    {
+      "path": "/_astro/Layout.astro_astro_type_script_index_0_lang.H7Sd8s0Z.js",
+      "bytes": 642,
+      "sha256": "b673b7b51641c63f88046b3ed5f3196588161a5dd715c9d2b4e3208b54faec87",
+      "exactMatch": true
+    },
+    {
+      "path": "/_astro/FeedbackWidget.astro_astro_type_script_index_0_lang.C4kAQ6mq.js",
+      "bytes": 3309,
+      "sha256": "eea81c51feffcb64ed1d3988a05f75a8498db8fc902d8c0f251ce0e6c7aa4176",
+      "exactMatch": true
+    }
+  ],
+  "result": "passed"
+}
