@@ -2,6 +2,8 @@
 
 Status: implementation, CI, deployment, live reconciliation, GitHub Release and official MCP Registry publication verified. GitHub organization setup is prepared in an authenticated browser; the contact email and final Terms acceptance await the owner. A repository, submission receipt or local test does not establish traffic growth.
 
+2026-10-03 follow-up: the owner has created `wenbu-app`. Organization branding, the repository transfer and integration version 1.3.1 are covered by the [organization launch record](organization-launch-2026-10-03.md). The earlier organization status and release receipts below remain historical evidence.
+
 ## Changes
 
 - Single metric contract and calendar-range parser; confirmed-use browser IDs; audience cohorts and received-data quality checks; consistent overview/history dimensions and snapshot cutoffs.
