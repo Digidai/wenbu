@@ -1,3 +1,4 @@
+import { integrationArticles } from './integration-articles';
 import { beginnerArticles } from './beginner-articles';
 
 export type Copy = {
@@ -6,6 +7,8 @@ export type Copy = {
   sections: { heading: string; paragraphs: string[]; bullets?: string[] }[];
 };
 export type Article = {
+  published?: string;
+  updated?: string;
   slug: string;
   category: 'learn' | 'blog';
   symbol: string;
@@ -33,6 +36,7 @@ const tarot = {
   url: 'https://www.gutenberg.org/ebooks/43548',
 };
 export const articles: Article[] = [
+  ...integrationArticles,
   ...beginnerArticles,
   {
     slug: 'bazi-basics',

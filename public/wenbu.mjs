@@ -36,7 +36,14 @@ try {
       command === 'library'
         ? '/knowledge/index.json'
         : `/knowledge/${locale}/${arg}.${asJson ? 'json' : 'md'}`;
-    const res = await fetch(new URL(path, base), { signal: AbortSignal.timeout(15000) });
+    const res = await fetch(new URL(path, base), {
+      signal: AbortSignal.timeout(15000),
+      headers: {
+        'X-Wenbu-Client': 'cli',
+        ...(process.env.WENBU_ANALYTICS === 'off' ? { 'X-Wenbu-Analytics': 'off' } : {}),
+        ...(process.env.WENBU_TEST === 'true' ? { 'X-Wenbu-Test': 'true' } : {}),
+      },
+    });
     if (!res.ok) throw new Error('Guide request failed: HTTP ' + res.status);
     const mime = res.headers.get('content-type') || '';
     if (!(path.endsWith('.json') ? mime.includes('application/json') : mime.includes('text/markdown')))
@@ -67,6 +74,7 @@ try {
     headers: {
       'Content-Type': 'application/json',
       'X-Wenbu-Client': 'cli',
+      ...(process.env.WENBU_TEST === 'true' ? { 'X-Wenbu-Test': 'true' } : {}),
       ...(process.env.WENBU_ANALYTICS === 'off' ? { 'X-Wenbu-Analytics': 'off' } : {}),
     },
     body: JSON.stringify(input),

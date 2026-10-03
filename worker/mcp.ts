@@ -8,7 +8,12 @@ import { calculateZiwei } from '../src/lib/ziwei';
 import { knowledgeIndex } from '../src/lib/knowledge';
 import { searchLibrary, readLibrary } from './agent-library';
 import type { ToolKind } from '../src/lib/schema';
-type ToolReceipt = (tool: ToolKind | 'mcp', success: boolean, duration: number) => void;
+type ToolReceipt = (
+  tool: ToolKind | 'mcp',
+  success: boolean,
+  duration: number,
+  status?: 'complete' | 'invalid_input' | 'error',
+) => void;
 
 const language = z.enum(['zh', 'en']).default('en');
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -20,7 +25,7 @@ const pack = (data: Record<string, unknown>) => ({
 
 export function createMcpServer(receipt?: ToolReceipt) {
   const server = new McpServer(
-    { name: 'wenbu', version: '1.2.0' },
+    { name: 'wenbu', version: '1.3.0' },
     {
       instructions:
         'Wenbu provides cultural reflection tools, not factual predictions. Only send birth details the user explicitly chooses to share. Preserve all calculation conventions and warnings. Use your host model to interpret the returned data; Wenbu MCP does not need an AI key.',
@@ -54,14 +59,13 @@ export function createMcpServer(receipt?: ToolReceipt) {
               calculate_ziwei: 'ziwei',
               cast_iching: 'iching',
               draw_tarot: 'tarot',
-            } as Record<string, ToolKind>
+            } as Partial<Record<string, ToolKind>>
           )[name] ?? 'mcp';
         try {
           const result = fn(args);
-          receipt?.(kind, true, Date.now() - started);
+          if (kind !== 'mcp') receipt?.(kind, true, Date.now() - started);
           return pack(result);
         } catch {
-          receipt?.(kind, false, Date.now() - started);
           return {
             isError: true,
             content: [
@@ -165,6 +169,15 @@ export function createMcpServer(receipt?: ToolReceipt) {
   return server;
 }
 export async function handleMcp(request: Request, receipt?: ToolReceipt) {
+  const started = Date.now();
+  const body =
+    request.method === 'POST'
+      ? ((await request
+          .clone()
+          .json()
+          .catch(() => null)) as { method?: string } | null)
+      : null;
+  const isToolCall = body?.method === 'tools/call';
   const server = createMcpServer(receipt);
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
@@ -173,7 +186,24 @@ export async function handleMcp(request: Request, receipt?: ToolReceipt) {
   await server.connect(transport);
   // JSON-only stateless operation: no isolate-local session map or private-data storage.
   try {
-    return await transport.handleRequest(request);
+    const response = await transport.handleRequest(request);
+    if (isToolCall) {
+      const result = (await response
+        .clone()
+        .json()
+        .catch(() => null)) as { result?: { isError?: boolean }; error?: unknown } | null;
+      receipt?.(
+        'mcp',
+        response.ok && Boolean(result?.result) && !result?.error && !result?.result?.isError,
+        Date.now() - started,
+        !result || response.status >= 500
+          ? 'error'
+          : result.error || result.result?.isError
+            ? 'invalid_input'
+            : 'complete',
+      );
+    }
+    return response;
   } finally {
     await server.close();
   }

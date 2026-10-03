@@ -18,7 +18,11 @@ export function initializeClarity() {
   const host = window as Window & { clarity?: Clarity };
   const allowed = () => {
     try {
-      return analyticsEnabled() && sessionStorage.getItem('wenbu.analytics.test') !== 'true';
+      return (
+        analyticsEnabled() &&
+        sessionStorage.getItem('wenbu.analytics.test') !== 'true' &&
+        !/(?:^|;\s*)wenbu_analytics_test=1(?:;|$)/.test(document.cookie ?? '')
+      );
     } catch {
       return false;
     }

@@ -45,6 +45,7 @@ export const sources = [
   'claude',
   'deepseek',
   'github',
+  'mcp-registry',
   'x',
   'weibo',
   'xiaohongshu',
@@ -62,6 +63,9 @@ export const campaigns = [
   'agent-studio',
   'bazi-guide',
   'developer-tools',
+  'open-source-2026',
+  'mcp-registry',
+  'first-reading',
 ] as const;
 export const actions = [
   'none',
@@ -134,6 +138,7 @@ export const pagePaths = [
   'journal',
   'learn',
   'blog',
+  'blog/connect-your-agent',
   'agents',
   'agent',
   'sources',
@@ -197,6 +202,7 @@ export function referrerSource(referrer: string, origin: string): (typeof source
       'claude.ai': 'claude',
       'chat.deepseek.com': 'deepseek',
       'github.com': 'github',
+      'registry.modelcontextprotocol.io': 'mcp-registry',
       't.co': 'x',
       'x.com': 'x',
       'twitter.com': 'x',

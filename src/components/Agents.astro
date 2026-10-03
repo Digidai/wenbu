@@ -12,6 +12,71 @@ const cli = [
 ].join('\n');
 ---
 
+<section class="integration-paths" aria-label={t('开源接入方式', 'Open-source connections')}>
+  {[
+    {
+      id: 'mcp',
+      label: 'MCP',
+      path: 'M6 6h12v12H6zM12 2v4m0 12v4M2 12h4m12 0h4',
+      title: t('让你的 Agent 调用工具', 'Give your agent real tools'),
+      copy: t(
+        '六种计算与资料工具。你的宿主模型解释结果，无需问卜密钥。',
+        'Six calculation and library tools. Your host interprets the results. No Wenbu key required.',
+      ),
+    },
+    {
+      id: 'cli',
+      label: 'CLI',
+      path: 'm5 6 6 6-6 6m8 0h6',
+      title: t('从终端拿到一份结果', 'Get a result from your terminal'),
+      copy: t(
+        '零依赖，Node.js 22+。先试固定六爻，再读取完整手册。',
+        'No dependencies, Node.js 22+. Try six fixed lines, then read a full guide.',
+      ),
+    },
+    {
+      id: 'skill',
+      label: 'SKILL',
+      path: 'M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1m0-15c3-2 6-2 10-1v15c-4-1-7-1-10 1V5',
+      title: t('为 Agent 装上操作说明', 'Teach your agent the workflow'),
+      copy: t(
+        '选择工具、核验来源、保留约定。上下文由用户决定。',
+        'Choose tools, verify sources and preserve conventions. The person chooses the context.',
+      ),
+    },
+  ].map((item) => (
+    <a class="integration-path" href={'#' + item.id}>
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d={item.path} />
+      </svg>
+      <span class="eyebrow">{item.label}</span>
+      <h2>{item.title}</h2>
+      <p>{item.copy}</p>
+      <span class="read-link">{t('查看接入步骤', 'See the steps')} ↗</span>
+    </a>
+  ))}
+</section>
+<p class="integration-release">
+  <a href="https://github.com/Digidai/wenbu/tree/main/integrations">
+    {t('MIT 开源 · 源码与可复核示例', 'MIT open source · code and reproducible examples')} ↗
+  </a>
+  <a href="https://github.com/Digidai/wenbu/releases">
+    {t('下载 CLI / MCP / Skill 接入包', 'Download CLI / MCP / Skill bundles')} ↗
+  </a>
+  <a href={href(locale, 'blog/connect-your-agent')}>
+    {t('第一次接入：从六个 7 开始', 'Your first connection: start with six 7s')} ↗
+  </a>
+</p>
 <div class="prose-grid">
   <article class="prose">
     <h2>{t('先选一种接入方式', 'Choose how to connect')}</h2>
@@ -41,7 +106,7 @@ const cli = [
         'None requires a Wenbu account. Calculation requests reach Wenbu’s service. Using the built-in AI also sends selected content to DeepSeek; an external agent follows its own host’s data practices.',
       )}
     </p>
-    <h2>{t('连接 MCP：六种工具', 'Connect MCP: six tools')}</h2>
+    <h2 id="mcp">{t('连接 MCP：六种工具', 'Connect MCP: six tools')}</h2>
     <p>
       {t(
         'MCP 使用无会话的 Streamable HTTP。不需要问卜 API key，也不会调用问卜的 DeepSeek。你的 Agent 用自己的模型解释，问卜返回结构化结果与计算约定。',
@@ -176,7 +241,7 @@ node wenbu.mjs guide bazi-basics ${locale} --json`}</code></pre>
         'The MCP resource wenbu://knowledge provides the same index. read_library returns the complete text, outline, links and truncated:false by default. Add section:"worked-example" to read the example only; scope will be section. Use IDs from the returned outline and preserve the scope when citing.',
       )}
     </p>
-    <h2>{t('CLI：先跑通一个无隐私示例', 'CLI: try a non-personal example')}</h2>
+    <h2 id="cli">{t('CLI：先跑通一个无隐私示例', 'CLI: try a non-personal example')}</h2>
     <p>
       {t(
         'Node.js 22 或更高版本，无需安装依赖。下载后可以先查看源码，再运行。输入文件只读取你明确指定的那一个。',
@@ -228,12 +293,17 @@ node wenbu.mjs guide bazi-basics ${locale} --json`}</code></pre>
       <a href="/agent-protocol.md">{t('流式协议与上下文说明', 'Streaming protocol and context guide')} ↗</a> ·{' '}
       <a href={href(locale, 'agent')}>{t('打开网页工作台', 'Open the web workspace')} ↗</a>
     </p>
-    <h2>Agent Skill</h2>
+    <h2 id="skill">Agent Skill</h2>
     <p>
       {t(
         '先阅读 SKILL.md，再按宿主的安装方式放入技能目录。它提供工具选择和上下文处理说明；安装 Skill 不会自动配置 MCP，也不会授予其他聊天或文件的读取权限。',
         'Read SKILL.md, then follow your host’s skill installation instructions. It describes tool selection and context handling. Installing it does not configure MCP or grant access to other chats or files.',
       )}
+    </p>
+    <p>
+      <a href="https://github.com/Digidai/wenbu/tree/main/skills/wenbu">
+        {t('可安装的技能目录与 MIT 许可', 'Installable skill directory and MIT license')} ↗
+      </a>
     </p>
     <div class="agent-links">
       <a class="button secondary" href="/SKILL.md" download>

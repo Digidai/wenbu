@@ -230,3 +230,31 @@ describe('closed analytics contract', () => {
     sql.close();
   });
 });
+
+it('keeps forced QA headers and cookies marked despite an explicit false client context', async () => {
+  for (const marker of [{ 'X-Wenbu-Test': 'true' }, { Cookie: 'wenbu_analytics_test=1' }]) {
+    const { sql, env } = database();
+    const ctx = context();
+    await recordService(request({ ...marker, 'X-Wenbu-Analytics': JSON.stringify(ctx) }), env, {
+      event: 'calculation_succeeded',
+      tool: 'tarot',
+      status: 'complete',
+      duration: 1,
+    });
+    await collectEvents(
+      { events: [{ ...ctx, id: crypto.randomUUID(), event: 'page_view' }] },
+      request(marker),
+      env,
+    );
+    expect(
+      sql
+        .prepare('SELECT is_test FROM events')
+        .all()
+        .map((r) => r.is_test),
+    ).toEqual([1, 1]);
+    expect(
+      (await analyticsReport(new URL('https://wenbu.app/api/admin/analytics'), env)).data.summary[0].events,
+    ).toBe(0);
+    sql.close();
+  }
+});

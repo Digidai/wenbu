@@ -132,10 +132,11 @@ const description =
     : t(...(descriptions[path] || descriptions[''])));
 const displayHeading = kind ? t(tool!.zh, tool!.en) : title;
 const articlePublished =
-  article && (newGuideSlugs as readonly string[]).includes(article.slug) ? '2026-09-29' : '2026-09-28';
+  article?.published ??
+  (article && (newGuideSlugs as readonly string[]).includes(article.slug) ? '2026-09-29' : '2026-09-28');
 const depth = article ? guideDepth[article.slug]?.[locale] : undefined;
 const outline = article ? guideOutline(article, locale) : [];
-const articleUpdated = depth ? handbookUpdated : '2026-09-29';
+const articleUpdated = article?.updated ?? (depth ? handbookUpdated : '2026-09-29');
 const articleSources = article ? knowledgeDocument(article, locale).sources : [];
 const exports = article && depth ? knowledgeLinks(article.slug, locale) : undefined;
 const articleTopic = article ? topicForGuide(article.slug) : undefined;

@@ -1,6 +1,8 @@
-import { trafficDimensions } from '../src/lib/traffic-contract';
+import { reportDimensions } from '../src/lib/analytics-report';
+import { audiences, audienceSQL } from '../src/lib/measurement-contract';
+import { reportRange } from './report-range';
 import { z } from 'zod';
-import { sources, campaigns, tools, statuses, clientEvents } from '../src/lib/analytics-contract';
+import { tools, statuses, clientEvents } from '../src/lib/analytics-contract';
 import { feedbackCategories, feedbackRatings, feedbackStates } from '../src/lib/feedback-contract';
 import { ApiError } from './ai';
 import { sha256 } from './feedback';
@@ -43,7 +45,15 @@ export async function historyReport(url: URL, env: Env, kind: 'events' | 'feedba
   const time = kind === 'events' ? 'occurred_at' : 'created_at';
   const key = kind === 'archives' ? 'key' : 'id';
   const cursor = pageCursor(p.get('cursor'));
-  const asOf = cursor?.[2] ?? Date.now();
+  const snapshot = p.get('asOf');
+  if (
+    snapshot &&
+    (!/^\d+$/.test(snapshot) || Number(snapshot) > Date.now() || Number(snapshot) < Date.now() - 90 * DAY)
+  )
+    throw new ApiError(400, 'invalid_filter', 'Invalid snapshot.');
+  const asOf = cursor?.[2] ?? (snapshot ? Number(snapshot) : Date.now());
+  if (p.get('test') && !['true', 'false'].includes(p.get('test')!))
+    throw new ApiError(400, 'invalid_filter', 'Invalid test filter.');
   const conditions: string[] = [`${kind === 'events' ? 'received_at' : time} <= ?`];
   const values: (string | number)[] = [asOf];
   if (kind !== 'archives') {
@@ -55,18 +65,30 @@ export async function historyReport(url: URL, env: Env, kind: 'events' | 'feedba
       .min(1)
       .max(kind === 'events' ? 90 : 3650)
       .parse(p.get('days') || (kind === 'events' ? 7 : 3650));
-    conditions.push(`${time} >= ?`);
-    values.push(asOf - days * DAY);
+    if (kind === 'events' && (p.has('timezone') || p.get('start') || p.get('end'))) {
+      const range = reportRange(p, asOf);
+      conditions.push('occurred_at >= ? AND occurred_at < ?');
+      values.push(range.since, Math.min(range.end, asOf + 1));
+    } else {
+      conditions.push(`${time} >= ? AND ${time} <= ?`);
+      values.push(asOf - days * DAY, asOf);
+    }
+    if (kind === 'events') {
+      const audience = p.get('audience') || 'all';
+      if (!(audiences as readonly string[]).includes(audience))
+        throw new ApiError(400, 'invalid_filter', 'Invalid audience filter.');
+      conditions.push('(' + audienceSQL[audience as keyof typeof audienceSQL] + ')');
+      const country = p.get('country');
+      if (country) {
+        if (!/^[A-Z]{2}$/.test(country)) throw new ApiError(400, 'invalid_filter', 'Invalid country filter.');
+        conditions.push('country=?');
+        values.push(country);
+      }
+    }
     const filters: Record<string, readonly string[]> =
       kind === 'events'
         ? {
-            ...trafficDimensions,
-            source: sources,
-            campaign: campaigns,
-            locale: ['zh', 'en'],
-            device: ['mobile', 'desktop', 'tablet', 'bot', 'unknown'],
-            channel: ['web', 'api', 'cli', 'mcp'],
-            tool: tools,
+            ...reportDimensions,
             status: statuses,
             origin: ['client', 'server', 'edge'],
             event: [...clientEvents, ...serverEvents],

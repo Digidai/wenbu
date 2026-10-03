@@ -1,0 +1,43 @@
+# Wenbu MCP
+
+Six tools for BaZi, the I Ching, tarot, Zi Wei and source-based learning. Remote endpoint: **https://wenbu.app/mcp**. Stateless Streamable HTTP, no Wenbu account or API key. Wenbu MCP does not call DeepSeek; the connected host provides interpretation.
+
+中文说明：[接入问卜](https://wenbu.app/agents/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026)。计算约定、完整结果和不确定性会随工具结果返回，请保留这些信息。
+
+## Connect
+
+For hosts that support a remote URL in `mcpServers`:
+
+```json
+{ "mcpServers": { "wenbu": { "url": "https://wenbu.app/mcp" } } }
+```
+
+Use [mcp.json](mcp.json), or adapt it to your host's remote-MCP format. Installing the Skill does not configure this connection. There is no local stdio process in this configuration.
+
+## A first reproducible call
+
+```sh
+curl -fsS https://wenbu.app/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  --data-binary @integrations/mcp/examples/iching.json
+```
+
+The synthetic example supplies six fixed yang lines. Read `result.structuredContent`: the original hexagram is number 1 and the changing-line list is empty. Hosts should follow their normal initialization flow; the stateless server supports independent requests for compatibility.
+
+| Tool              | Inputs / behavior                                                                                         |
+| ----------------- | --------------------------------------------------------------------------------------------------------- |
+| `calculate_bazi`  | Gregorian date, nullable time, IANA timezone, day boundary and optional approximate solar-time correction |
+| `cast_iching`     | Six supplied values, bottom to top, or a new three-coin cast                                              |
+| `draw_tarot`      | One or three cards without replacement; optional reversals                                                |
+| `calculate_ziwei` | Known local civil date/time and the traditional sex calculation parameter                                 |
+| `search_library`  | A bounded catalogue of original learning content and curated reference metadata                           |
+| `read_library`    | Complete original guide/symbol content or a named section; preserves scope and source links               |
+
+Set `locale` to `zh` or `en`. Defaults to English. Some traditional names remain Chinese. Resources: `wenbu://methodology` and `wenbu://knowledge`.
+
+## Limits and privacy
+
+MCP calculates cultural symbols, not verified predictions. Calculations reach Wenbu's Cloudflare service. No prompts, birth inputs or chart contents enter the event analytics store. Coarse tool-call analytics can be disabled with `X-Wenbu-Analytics: off`. Your host controls its own history and model data practices. Back off on HTTP 429.
+
+[Source implementation](../../worker/mcp.ts) · [Registry manifest](server.json) · [English guide](https://wenbu.app/en/agents/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026) · [MIT license](../../LICENSE)

@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { database } from './helpers/analytics-db';
 import { analyticsReport } from '../worker/analytics-report';
+import { historyReport } from '../worker/history';
 
 const now = Date.parse('2026-09-29T06:35:00Z');
 type DB = ReturnType<typeof database>;
@@ -194,4 +195,75 @@ describe('calendar-based analytics visualizations', () => {
     await expect(report(db, query)).rejects.toMatchObject({ status: 400 });
     db.sql.close();
   });
+});
+
+it('deduplicates confirmed browser use while keeping unlinked and nonbrowser use explicit', async () => {
+  vi.spyOn(Date, 'now').mockReturnValue(now);
+  const db = database();
+  const success = {
+    origin: 'server',
+    event: 'calculation_succeeded',
+    status: 'complete',
+    action: 'calculate',
+    actor_type: 'browser',
+    classification_version: 1,
+  };
+  event(db, '2026-09-28T10:00:00Z', success);
+  event(db, '2026-09-29T01:00:00Z', success);
+  event(db, '2026-09-29T02:00:00Z', { ...success, action: 'example', visitor_id: 'example' });
+  event(db, '2026-09-29T02:00:00Z', { ...success, actor_type: 'tool_client', visitor_id: 'cli' });
+  event(db, '2026-09-29T02:00:00Z', { ...success, visitor_id: null, session_id: null });
+  event(db, '2026-09-29T02:00:00Z', {
+    event: 'mcp_finished',
+    origin: 'server',
+    channel: 'mcp',
+    tool: 'mcp',
+    status: 'invalid_input',
+  });
+  const r = await report(db, 'days=3');
+  expect(r.data.summary[0]).toMatchObject({ active_visitors: 1, active_sessions: 1, invalid_inputs: 1 });
+  expect(r.data.quality[0].unlinked_successes).toBe(1);
+  expect(r.series.reduce((sum, p) => sum + (p.active_visitors || 0), 0)).toBe(2);
+  expect(r.measurement.definitions.active_visitors.additive).toBe(false);
+  const browser = await report(db, 'days=3&audience=classified_browser');
+  expect(browser.data.summary[0]).toMatchObject({ calculations: 3, active_visitors: 1 });
+  db.sql.close();
+});
+
+it('reconciles calendar and dimension filters between overview and paginated history snapshots', async () => {
+  vi.spyOn(Date, 'now').mockReturnValue(now);
+  const db = database();
+  event(db, '2026-09-27T15:59:59Z');
+  event(db, '2026-09-27T16:00:00Z');
+  event(db, '2026-09-29T01:00:00Z');
+  event(db, '2026-09-29T01:00:00Z', { page: '/bazi/' });
+  event(db, '2026-09-29T07:00:00Z');
+  event(db, '2026-09-29T01:00:00Z', { received_at: now + 1 });
+  event(db, '2026-09-29T01:00:00Z', { is_test: 1 });
+  const query =
+    'start=2026-09-28&end=2026-09-29&timezone=Asia/Shanghai&page=/tarot/&medium=organic&browser=chrome&country=CN&audience=browser';
+  const overview = await report(db, query);
+  const first = await historyReport(
+    new URL('https://wenbu.app/api/admin/events?' + query + '&limit=1&asOf=' + now),
+    db.env,
+    'events',
+  );
+  expect(first.rows).toHaveLength(1);
+  expect(first.next).toBeTruthy();
+  const second = await historyReport(
+    new URL(
+      'https://wenbu.app/api/admin/events?' + query + '&limit=1&cursor=' + encodeURIComponent(first.next!),
+    ),
+    db.env,
+    'events',
+  );
+  expect(second.rows).toHaveLength(1);
+  expect(second.next).toBeNull();
+  expect(overview.data.summary[0].events).toBe(first.rows.length + second.rows.length);
+  for (const extra of ['audience=human', 'asOf=' + (now + 1), 'country=China', 'test=maybe']) {
+    await expect(
+      historyReport(new URL('https://wenbu.app/api/admin/events?timezone=UTC&' + extra), db.env, 'events'),
+    ).rejects.toMatchObject({ status: 400 });
+  }
+  db.sql.close();
 });

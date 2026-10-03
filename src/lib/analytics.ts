@@ -229,6 +229,10 @@ async function flush() {
 }
 export function initializeAnalytics() {
   syncAnalyticsPreference();
+  try {
+    if (sessionStorage.getItem('wenbu.analytics.test') === 'true')
+      document.cookie = 'wenbu_analytics_test=1; Path=/; SameSite=Lax; Max-Age=3600' + (location.protocol === 'https:' ? '; Secure' : '');
+  } catch { /* Test classification remains available through request headers. */ }
   if (initialized || location.pathname.includes('/insights')) return;
   initialized = true;
   if (!analyticsEnabled()) void removeEvents();

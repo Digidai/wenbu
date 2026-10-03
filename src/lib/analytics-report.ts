@@ -24,6 +24,9 @@ export const reportDimensions: Record<string, readonly string[]> = {
     '/SKILL.md',
     '/skill.md',
     '/openapi.json',
+    '/wenbu.mjs',
+    '/agent-protocol.md',
+    '/.well-known/mcp-registry-auth',
     '/.well-known/agent.json',
     '/.well-known/mcp.json',
     '/knowledge/index.json',
@@ -35,6 +38,7 @@ export const reportDimensions: Record<string, readonly string[]> = {
   os: ['windows', 'macos', 'ios', 'android', 'linux', 'other', 'unknown'],
 };
 export type ReportFilters = {
+  audience: string;
   actor_type: string;
   actor_name: string;
   actor_purpose: string;
@@ -62,6 +66,7 @@ export type ReportFilters = {
   country: string;
 };
 export const defaultReportFilters: ReportFilters = {
+  audience: 'all',
   actor_type: '',
   actor_name: '',
   actor_purpose: '',
@@ -94,8 +99,9 @@ export const reportMetrics = [
   { key: 'ai_requests', label: 'AI 抓取 / Agent 请求', color: '#78678f', dash: '3 3' },
   { key: 'service_requests', label: '服务调用', color: '#687461', dash: '7 3' },
   { key: 'pageviews', label: '浏览器页面浏览', color: '#47664d', dash: undefined },
-  { key: 'visitors', label: '匿名访客', color: '#896239', dash: '3 3' },
+  { key: 'visitors', label: '访问浏览器标识', color: '#896239', dash: '3 3' },
   { key: 'sessions', label: '访问会话', color: '#4e7383', dash: '7 3' },
+  { key: 'active_visitors', label: '完成使用的浏览器标识', color: '#37665b', dash: '3 3' },
   { key: 'calculations', label: '成功计算', color: '#9b573f', dash: undefined },
   { key: 'agent_complete', label: '问卜 Agent 完成', color: '#796783', dash: '3 3' },
   { key: 'failures', label: '服务错误', color: '#923f57', dash: '7 3' },
@@ -109,6 +115,10 @@ export type TrendPoint = Record<ReportMetric, number | null> & {
   state: 'observed' | 'partial' | 'future';
 };
 export type AnalyticsReport = {
+  measurement: {
+    version: string;
+    definitions: Record<string, { unit: string; definition: string; additive: boolean }>;
+  };
   generatedAt: string;
   days: number;
   includeTest: boolean;
@@ -127,6 +137,8 @@ export type AnalyticsReport = {
   data: Record<string, ReportRow[]>;
 };
 export const reportLabels: Record<string, string> = {
+  'Asia/Shanghai': '北京 · UTC+8',
+  UTC: 'UTC',
   actor_type: '访问者类型',
   actor_name: '客户端标识',
   actor_purpose: '请求用途',
@@ -177,6 +189,71 @@ export const reportLabels: Record<string, string> = {
   mcp_client: 'MCP 客户端',
   cli_client: 'CLI 客户端',
   api_client: 'API 客户端',
+  google: 'Google',
+  bing: 'Bing',
+  baidu: '百度',
+  duckduckgo: 'DuckDuckGo',
+  github: 'GitHub',
+  chatgpt: 'ChatGPT 引荐',
+  perplexity: 'Perplexity 引荐',
+  claude: 'Claude 引荐',
+  deepseek: 'DeepSeek 引荐',
+  x: 'X',
+  weibo: '微博',
+  xiaohongshu: '小红书',
+  youtube: 'YouTube',
+  newsletter: '邮件通讯',
+  page_view: '页面浏览',
+  page_exit: '页面离开',
+  setting_changed: '调整设置',
+  feedback_opened: '打开反馈',
+  telemetry_gap: '客户端报告丢弃',
+  engaged: '停留超过 30 秒',
+  scroll_depth: '阅读深度',
+  cta_click: '入口点击',
+  tool_started: '开始工具',
+  result_viewed: '展示结果',
+  ai_requested: '请求 AI 解读',
+  ai_result_viewed: '展示 AI 解读',
+  agent_started: '开始 Agent 回合',
+  agent_received: '接收 Agent 结果',
+  agent_stopped: '停止 Agent',
+  guide_opened: '打开引导',
+  guide_step: '完成引导步骤',
+  guide_skipped: '跳过引导',
+  guide_draft_created: '生成问题草稿',
+  suggestion_selected: '选择建议',
+  artifact_opened: '打开成果',
+  report_exported: '导出报告',
+  conversation_exported: '导出对话',
+  context_exported: '导出给 Agent',
+  journal_exported: '导出手记',
+  journal_saved: '保存手记',
+  context_opened: '打开上下文',
+  card_inspected: '查看卡牌',
+  source_opened: '打开来源',
+  form_started: '开始填写',
+  client_error: '客户端错误',
+  calculation_succeeded: '计算完成',
+  interpret_succeeded: '解读完成',
+  agent_finished: 'Agent 回合终态',
+  agent_tool_finished: 'Agent 工具阶段',
+  api_failed: '服务请求未完成',
+  mcp_finished: 'MCP 调用终态',
+  page_request: '公开内容请求',
+  event: '事件',
+  status: '结果',
+  session: '会话',
+  operation: '操作',
+  conversation: '对话',
+  visitor: '浏览器标识',
+  'mcp-registry': '官方 MCP Registry',
+  'open-source-2026': '开源接入推广',
+  'first-reading': '第一次使用',
+  audience: '统计人群',
+  all: '全部请求与事件',
+  classified_browser: '新分类浏览器',
+  automated: '已识别自动化 / 工具',
   source: '引荐来源',
   medium: '渠道类型',
   campaign: '活动',
@@ -190,7 +267,7 @@ export const reportLabels: Record<string, string> = {
   browser: '浏览器',
   os: '操作系统',
   country: '国家 / 地区',
-  direct: '直接访问',
+  direct: '无已知来源（含直接访问）',
   internal: '站内来源',
   other: '其他',
   unknown: '未知',

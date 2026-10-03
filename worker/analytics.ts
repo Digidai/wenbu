@@ -118,6 +118,9 @@ export const noTracking = (request: Request) =>
   request.headers.get('Sec-GPC') === '1' ||
   request.headers.get('X-Wenbu-Analytics') === 'off' ||
   /(?:^|;\s*)wenbu_analytics=off(?:;|$)/.test(request.headers.get('Cookie') ?? '');
+export const isTestRequest = (request: Request) =>
+  request.headers.get('X-Wenbu-Test') === 'true' ||
+  /(?:^|;\s*)wenbu_analytics_test=1(?:;|$)/.test(request.headers.get('Cookie') ?? '');
 function trafficValues(request: Request, resource: string, status: number | null = null) {
   const c = classifyTraffic(request);
   return [
@@ -175,7 +178,7 @@ export async function collectEvents(raw: unknown, request: Request, env: Env) {
           0,
           0,
           0,
-          Number(e.test || request.headers.get('X-Wenbu-Test') === 'true'),
+          Number(e.test || isTestRequest(request)),
           received,
           e.occurredAt ?? null,
           e.pageId ?? null,
@@ -248,7 +251,7 @@ export async function recordService(request: Request, env: Env, metric: ServiceM
       metric.modelCalls ?? 0,
       metric.toolCalls ?? 0,
       metric.artifacts ?? 0,
-      Number(context?.test ?? request.headers.get('X-Wenbu-Test') === 'true'),
+      Number(context?.test || isTestRequest(request)),
       Date.now(),
       null,
       context?.pageId ?? null,
@@ -313,10 +316,7 @@ export async function recordContent(request: Request, response: Response, env: E
       0,
       0,
       0,
-      Number(
-        request.headers.get('X-Wenbu-Test') === 'true' ||
-          /(?:^|;\s*)wenbu_analytics_test=1(?:;|$)/.test(request.headers.get('Cookie') ?? ''),
-      ),
+      Number(isTestRequest(request)),
       time,
       null,
       null,

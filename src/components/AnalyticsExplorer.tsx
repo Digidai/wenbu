@@ -5,7 +5,8 @@ import {
   classificationEvidence,
   resourceTypes,
 } from '../lib/traffic-contract';
-import { reportLabel } from '../lib/analytics-report';
+import { audiences } from '../lib/measurement-contract';
+import { reportLabel, reportDimensions } from '../lib/analytics-report';
 import { useEffect, useRef, useState } from 'react';
 import { Download, ArrowRight, RefreshCw, MessageSquare, CheckCircle2, Database, Search } from 'lucide-react';
 import { clientEvents, tools, statuses, sources, campaigns } from '../lib/analytics-contract';
@@ -42,15 +43,31 @@ export default function AnalyticsExplorer({
   kind,
   initialOperation = '',
   includeTest = false,
+  initialFilters,
   onFollowOperation,
 }: {
   token: string;
   kind: 'events' | 'feedback' | 'archives';
   initialOperation?: string;
   includeTest?: boolean;
+  initialFilters?: Record<string, string>;
   onFollowOperation?: (operation: string, kind: 'events' | 'feedback', test: boolean) => void;
 }) {
   const [filters, setFilters] = useState({
+    start: '',
+    end: '',
+    timezone: kind === 'events' ? 'Asia/Shanghai' : '',
+    granularity: 'auto',
+    asOf: '',
+    audience: 'all',
+    page: '',
+    entry_page: '',
+    medium: '',
+    device: '',
+    browser: '',
+    os: '',
+    country: '',
+    mode: '',
     days: kind === 'feedback' ? '3650' : initialOperation ? '90' : '7',
     test: String(includeTest),
     tool: '',
@@ -71,6 +88,7 @@ export default function AnalyticsExplorer({
     classification_evidence: '',
     resource_type: '',
     http_method: '',
+    ...initialFilters,
   });
   const [page, setPage] = useState<Page>();
   const [storage, setStorage] = useState<Storage>();
@@ -200,10 +218,10 @@ export default function AnalyticsExplorer({
     <label>
       {label}
       <select value={filters[name]} onChange={(e) => setFilters({ ...filters, [name]: e.target.value })}>
-        <option value="">全部</option>
+        {!['timezone', 'audience'].includes(name) && <option value="">全部</option>}
         {values.map((v) => (
           <option key={v} value={v}>
-            {stateNames[v] ?? v}
+            {stateNames[v] ?? reportLabel(v)}
           </option>
         ))}
       </select>
@@ -235,6 +253,13 @@ export default function AnalyticsExplorer({
           </p>
         </div>
       </div>
+      {kind === 'events' && (
+        <p className="insights-quality-note">
+          {initialFilters ? '已继承概览的时间、人群与维度筛选。' : '自然日与概览使用同一统计时区。'}
+          {filters.asOf ? ` 快照截至 ${when(Number(filters.asOf))}；点击回到最新可刷新快照。` : ''} 人群：
+          {reportLabel(filters.audience)}。导出只含本页，不代表全部历史。
+        </p>
+      )}
       {storage && (
         <div className="history-storage">
           <span>
@@ -268,52 +293,109 @@ export default function AnalyticsExplorer({
         >
           <label>
             时间范围
-            <select value={filters.days} onChange={(e) => setFilters({ ...filters, days: e.target.value })}>
+            <select
+              value={filters.start && filters.end ? 'custom' : filters.days}
+              onChange={(e) => {
+                if (e.target.value !== 'custom')
+                  setFilters({ ...filters, days: e.target.value, start: '', end: '', asOf: '' });
+              }}
+            >
+              {filters.start && filters.end && <option value="custom">自定义日期范围</option>}
               {[1, 3, 7, 14, 30, 90, ...(kind === 'feedback' ? [365, 3650] : [])].map((n) => (
                 <option key={n} value={n}>
-                  {n === 3650 ? '最近 10 年' : `最近 ${n} 天`}
+                  {n === 3650 ? '最近 10 年' : kind === 'events' ? `${n} 个自然日（含今天）` : `最近 ${n} 天`}
                 </option>
               ))}
             </select>
           </label>
+          {kind === 'events' && (
+            <>
+              <label>
+                开始日期
+                <input
+                  type="date"
+                  value={filters.start}
+                  onChange={(e) =>
+                    setFilters({ ...filters, start: e.target.value, asOf: '', granularity: 'auto' })
+                  }
+                />
+              </label>
+              <label>
+                结束日期
+                <input
+                  type="date"
+                  value={filters.end}
+                  onChange={(e) =>
+                    setFilters({ ...filters, end: e.target.value, asOf: '', granularity: 'auto' })
+                  }
+                />
+              </label>
+              {select('timezone', '统计时区', ['Asia/Shanghai', 'UTC'])}
+            </>
+          )}
           {select('tool', '功能', tools)}
           {select('locale', '语言', ['zh', 'en'])}
           {kind === 'events' ? (
             <>
-              {select('event', '事件', [
-                ...clientEvents,
-                'calculation_succeeded',
-                'interpret_succeeded',
-                'agent_finished',
-                'agent_tool_finished',
-                'api_failed',
-                'mcp_finished',
-                'page_request',
-              ])}
+              {select('audience', '统计人群', audiences)}
               {select('actor_type', '访问者类型', actorTypes)}
-              {select('actor_name', '客户端标识', actorNames)}
-              {select('actor_purpose', '请求用途', actorPurposes)}
-              {select('classification_evidence', '分类依据', classificationEvidence)}
-              {select('resource_type', '资源类型', resourceTypes)}
-              {select('http_method', '请求方法', ['GET', 'HEAD', 'POST', 'OPTIONS', 'OTHER'])}
-              {select('status', '结果', statuses)}
-              {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
               {select('source', '来源', sources)}
-              {select('campaign', '活动', campaigns)}
+              <details className="history-more-filters">
+                <summary>更多维度：事件、依据、资源、设备与渠道</summary>
+                <div className="history-extra-grid">
+                  {select('event', '事件', [
+                    ...clientEvents,
+                    'calculation_succeeded',
+                    'interpret_succeeded',
+                    'agent_finished',
+                    'agent_tool_finished',
+                    'api_failed',
+                    'mcp_finished',
+                    'page_request',
+                  ])}
+                  {select('actor_name', '客户端标识', actorNames)}
+                  {select('actor_purpose', '请求用途', actorPurposes)}
+                  {select('classification_evidence', '分类依据', classificationEvidence)}
+                  {select('resource_type', '资源类型', resourceTypes)}
+                  {select('http_method', '请求方法', ['GET', 'HEAD', 'POST', 'OPTIONS', 'OTHER'])}
+                  {select('status', '结果', statuses)}
+                  {select('channel', '使用方式', ['web', 'api', 'cli', 'mcp'])}
+                  {select('campaign', '活动', campaigns)}
+                  {(['page', 'entry_page', 'medium', 'device', 'browser', 'os', 'mode'] as const).map(
+                    (name) => (
+                      <div key={name}>{select(name, reportLabel(name), reportDimensions[name])}</div>
+                    ),
+                  )}
+                  <label>
+                    国家 / 地区
+                    <input
+                      value={filters.country}
+                      maxLength={2}
+                      placeholder="CN / US"
+                      onChange={(e) => setFilters({ ...filters, country: e.target.value.toUpperCase() })}
+                    />
+                  </label>
+                </div>
+              </details>
             </>
           ) : (
             select('state', '处理状态', feedbackStates)
           )}
-          {(['session', 'operation', 'conversation', 'visitor'] as const).map((name, i) => (
-            <label key={name}>
-              {['会话 ID', '操作 ID', '对话 ID', '访客 ID'][i]}
-              <input
-                value={filters[name]}
-                placeholder="UUID"
-                onChange={(e) => setFilters({ ...filters, [name]: e.target.value.trim() })}
-              />
-            </label>
-          ))}
+          <details className="history-more-filters">
+            <summary>关联会话、操作、对话或浏览器标识</summary>
+            <div className="history-extra-grid">
+              {(['session', 'operation', 'conversation', 'visitor'] as const).map((name, i) => (
+                <label key={name}>
+                  {['会话 ID', '操作 ID', '对话 ID', '访客 ID'][i]}
+                  <input
+                    value={filters[name]}
+                    placeholder="UUID"
+                    onChange={(e) => setFilters({ ...filters, [name]: e.target.value.trim() })}
+                  />
+                </label>
+              ))}
+            </div>
+          </details>
           <label className="insights-test">
             <input
               type="checkbox"
@@ -328,13 +410,34 @@ export default function AnalyticsExplorer({
           </button>
         </form>
       )}
+      <div className="history-applied" aria-label="明细已应用筛选">
+        {Object.entries(applied)
+          .filter(
+            ([key, value]) =>
+              value &&
+              !['days', 'start', 'end', 'timezone', 'granularity', 'asOf', 'test'].includes(key) &&
+              !(key === 'audience' && value === 'all'),
+          )
+          .map(([key, value]) => (
+            <span key={key}>
+              {reportLabel(key)}：{reportLabel(value)}
+            </span>
+          ))}
+      </div>
       <div className="insights-toolbar">
         <span>
           {page
             ? `本页 ${page.rows.length} 条 · ${kind === 'archives' ? '完整归档文件' : applied.test === 'true' ? '包含测试' : '已排除测试'}`
             : '正在读取…'}
         </span>
-        <button disabled={busy} onClick={() => void load()}>
+        <button
+          disabled={busy}
+          onClick={() => {
+            const next = { ...filters, asOf: '' };
+            setFilters(next);
+            void load('', next);
+          }}
+        >
           <RefreshCw size={14} />
           回到最新
         </button>
@@ -381,7 +484,7 @@ export default function AnalyticsExplorer({
             <div className="history-main">
               <strong>
                 {kind === 'events'
-                  ? row.event
+                  ? reportLabel(String(row.event))
                   : kind === 'feedback'
                     ? row.rating === 'none'
                       ? '一条新建议'

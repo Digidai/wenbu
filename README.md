@@ -6,14 +6,22 @@ Free charts, tarot and source-based learning for a question you want to explore.
 
 [中文网站](https://wenbu.app/) · [English website](https://wenbu.app/en/) · [知识手册](https://wenbu.app/learn/) · [Documentation](docs/README.md)
 
+## Open source / 开源接入
+
+[![Wenbu preview](https://wenbu.app/og.png)](https://wenbu.app/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026)
+
+[MCP quickstart](integrations/mcp/README.md) · [CLI](integrations/cli/README.md) · [Agent Skill](skills/wenbu/SKILL.md) · [Releases](https://github.com/Digidai/wenbu/releases) · [Contribute](CONTRIBUTING.md)
+
+Connect remote MCP at `https://wenbu.app/mcp`, use the dependency-free CLI, or install the Skill from `skills/wenbu/`. Read the [integration guide](integrations/README.md) to choose a connection and run a reproducible example. The full application and integrations are MIT licensed. This is a public repository, not an anonymous-data or feedback export.
+
 ## 第一次用，从这里开始
 
-| 你想做什么               | 建议入口                                                                           | 需要准备什么                                         |
-| ------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 还不知道怎么问           | [Agent 对话](https://wenbu.app/agent/)                                      | 选一个主题和目标，再修改生成的草稿；点击发送后才开始 |
+| 你想做什么               | 建议入口                                                             | 需要准备什么                                         |
+| ------------------------ | -------------------------------------------------------------------- | ---------------------------------------------------- |
+| 还不知道怎么问           | [Agent 对话](https://wenbu.app/agent/)                               | 选一个主题和目标，再修改生成的草稿；点击发送后才开始 |
 | 围绕眼前一件事思考       | [塔罗](https://wenbu.app/tarot/) / [易经](https://wenbu.app/iching/) | 一个具体问题，不需要出生资料                         |
 | 看出生资料对应的传统命盘 | [八字](https://wenbu.app/bazi/) / [紫微](https://wenbu.app/ziwei/)   | 公历生日与当地时间；八字还需时区，紫微必须知道时刻   |
-| 弄懂术语与计算规则       | [知识手册](https://wenbu.app/learn/)                                        | 可以从入门内容读起，再核对结果里的计算约定           |
+| 弄懂术语与计算规则       | [知识手册](https://wenbu.app/learn/)                                 | 可以从入门内容读起，再核对结果里的计算约定           |
 
 传统符号适合学习和自我反思。历法计算能否复核，与解释能否预测现实是两件事；问卜不把排盘结果当作人生结论。
 

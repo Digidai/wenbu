@@ -200,3 +200,19 @@ The dashboard separates browser page views from server-observed public content G
 Actor type, declared client, purpose, evidence, resource format and method are separate filters. Traditional search crawlers, AI search/training crawlers, user-triggered fetchers, other automation and tool clients have distinct categories. A ChatGPT referral is not a ChatGPT crawler visit. Wenbu Agent completion remains a product outcome. Tool phases do not inflate service-call counts; an MCP request is counted by its enclosing completion record.
 
 Names are UA declarations and may be spoofed. Browser hints do not prove a human visitor. Cloudflare verified-bot, signed-agent and score evidence is accepted only from Worker metadata, when available. Missing signals remain null. Verification of automation does not independently verify the provider name in a UA. Older rows keep their legacy status, and pre-upgrade crawl traffic cannot be reconstructed. CSV/JSON exports retain the applied filters and cutoff; detail exports and new v3 R2 archives retain classification evidence and version.
+
+## 2026-10-03：测量口径 v2 与概览 / 明细一致性
+
+口径以 `src/lib/measurement-contract.ts` 为唯一计算定义：总览、曲线、维度和导出共享筛选；上海 / UTC 的自然日解析由 `worker/report-range.ts` 提供。默认排除已标记测试。D1 是事件来源，R2 是私有保留归档；Clarity 是另一个第三方观察工具，其接收量不会拿来补齐或冒充 D1。
+
+- **访问浏览器标识**：有 PV 的去重随机 ID，30 天有效，不是自然人数。**完成使用的浏览器标识**：服务器确认非示例计算、解读或 Agent 完成的浏览器 ID；不要求同范围已有 PV。没有可关联 ID 的调用在质量面板单列，不虚构用户。每个时段和渠道分别去重，因此不能相加成为完整范围的去重值。
+- **服务调用**：API 终态 / MCP `tools/call` 终态计一次，排除 Agent 内部工具阶段及 MCP 内部计算阶段；正常 MCP 初始化和工具列表不计调用。此前 MCP 计算没有外层收尾，旧数据不能可靠补算。校准后的 MCP SDK 字段验证失败和未知工具也留下失败终态。输入错误、限速、取消、等待补充均与系统错误分开。
+- **统计人群**：全部、浏览器（兼容旧非 bot 网页记录）、新分类浏览器、已识别自动化 / 工具、未知、旧数据。人群与 actor/UA/evidence 等是独立条件并取交集，矛盾条件返回空数据。浏览器提示不保证真人；UA 可以伪装。新分类筛选可排除无依据的旧记录，不能重新赋予历史数据更高可信度。
+- **采集质量**：收到的客户端 / 服务端 / 内容请求、异常时钟替换、延迟超过 5 分钟、缺关联 ID、客户端报告的丢弃条数。这里只描述已收到记录，不能估计未收到的所有记录或承诺 100% 完整率。
+- **明细**：从总览切换使用历史会继承所有维度、自然日起止、时区与 `asOf`；固定快照排除之后接收和未来发生的记录，分页仍按 `(occurred_at,id,asOf)`。修改时间清除固定快照；「回到最新」刷新截止时刻。普通导出只含当前页，完整历史使用受保护的导出脚本。
+- **新增归因词汇**：GitHub `open-source-2026`、官方目录 `mcp-registry`、新手 `first-reading`。无已知来源包含真实直接访问和 referrer / UTM 丢失，不能当成准确的直接来源判断。
+- **验证请求**：CLI 用 `WENBU_TEST=true`，API 用 `X-Wenbu-Test: true`。浏览器测试在首次导航前同时设置测试 cookie `wenbu_analytics_test=1` 和 sessionStorage 的测试标记；只设置后者无法标记已完成的首次 HTML 请求。初始化会同步一小时测试 cookie，完成后应清除。请求头 / cookie 的测试标记不会被客户端 test:false 覆盖；Clarity 同时检查两种标记。发布 smoke 的所有内容请求均标记测试。CLI 的知识 GET 也遵守 `WENBU_ANALYTICS=off`。
+
+扩展事件或来源先修改闭合 contract、服务端验证、报表定义、UI 标签和真实路径测试。不要添加任意正文或查询字段；保持 archive 版本与旧客户端的兼容。写入失败使用不带请求内容的固定运维日志信号；这些日志不自动进入成功率分母。
+
+Cloudflare 运维日志已开启，仅持久化固定错误信号，关闭 invocation 请求日志与 traces。D1 写入失败可在 Cloudflare 日志中查找 `WENBU_ANALYTICS_WRITE_FAILED`；未将这些错误假设为已收到的产品事件。[Cloudflare Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/)。MCP 在解析前被拒绝的请求也计服务终态；正常初始化与列表不计调用。
