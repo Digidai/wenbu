@@ -2,7 +2,7 @@ import type { GuideExpansion } from './guide-types';
 
 const implementation = {
   title: 'Wenbu · BaZi calculation and declared conventions',
-  url: 'https://github.com/Digidai/wenbu/blob/main/src/lib/bazi.ts',
+  url: 'https://github.com/wenbu-app/wenbu/blob/main/src/lib/bazi.ts',
 };
 const mappings = {
   title: 'lunar-typescript · stem, branch and Ten Gods mappings',

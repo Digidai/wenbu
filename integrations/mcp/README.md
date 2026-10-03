@@ -42,4 +42,4 @@ MCP calculates cultural symbols, not verified predictions. Calculations reach We
 
 [Source implementation](../../worker/mcp.ts) · [Registry manifest](server.json) · [English guide](https://wenbu.app/en/agents/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026) · [MIT license](../../LICENSE)
 
-[Published official MCP Registry record](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/1.3.0): domain-authenticated `app.wenbu/mcp`, version 1.3.0. The record exposes the remote URL and source repository; it does not automatically configure your host or establish an endorsement.
+[Published official MCP Registry record](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/latest): domain-authenticated `app.wenbu/mcp`, latest published version. The record exposes the remote URL and source repository; it does not automatically configure your host or establish an endorsement.

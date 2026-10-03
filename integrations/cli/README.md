@@ -15,7 +15,7 @@ node wenbu.mjs guide bazi-basics en
 
 The fixed-lines example returns hexagram 1 with no changing lines. Calculations and guide reads do not call a model or require an account/key.
 
-Release tarballs also install locally: `npm install --global ./wenbu-cli-1.3.0.tgz`, then `wenbu --help`. Verify the release SHA256SUMS first. The downloadable archive is independent of npm registry publication.
+Release tarballs also install locally: `npm install --global ./wenbu-cli-1.3.1.tgz`, then `wenbu --help`. Verify the release SHA256SUMS first. The downloadable archive is independent of npm registry publication.
 
 ## Personal inputs
 

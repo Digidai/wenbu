@@ -10,9 +10,9 @@ Free charts, tarot and source-based learning for a question you want to explore.
 
 [![Wenbu preview](https://wenbu.app/og.png)](https://wenbu.app/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026)
 
-[MCP quickstart](integrations/mcp/README.md) · [CLI](integrations/cli/README.md) · [Agent Skill](skills/wenbu/SKILL.md) · [Releases](https://github.com/Digidai/wenbu/releases) · [Contribute](CONTRIBUTING.md)
+[MCP quickstart](integrations/mcp/README.md) · [CLI](integrations/cli/README.md) · [Agent Skill](skills/wenbu/SKILL.md) · [Releases](https://github.com/wenbu-app/wenbu/releases) · [Contribute](CONTRIBUTING.md)
 
-[Official MCP Registry record · app.wenbu/mcp v1.3.0](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/1.3.0). Domain ownership is verified; this directory record does not imply endorsement or an installation. 官方目录登记已完成，可核对远程地址、版本与源码。
+[Official MCP Registry record · app.wenbu/mcp](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/latest). Domain ownership is verified; this directory record does not imply endorsement or an installation. 官方目录登记已完成，可核对远程地址、版本与源码。
 
 Connect remote MCP at `https://wenbu.app/mcp`, use the dependency-free CLI, or install the Skill from `skills/wenbu/`. Read the [integration guide](integrations/README.md) to choose a connection and run a reproducible example. The full application and integrations are MIT licensed. This is a public repository, not an anonymous-data or feedback export.
 

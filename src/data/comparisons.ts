@@ -166,7 +166,7 @@ export const comparisons = [
         title: 'DeepSeek · how external tool calls work',
         url: 'https://api-docs.deepseek.com/guides/tool_calls/',
       },
-      { title: 'Wenbu · calculation source code', url: 'https://github.com/Digidai/wenbu/tree/main/src/lib' },
+      { title: 'Wenbu · calculation source code', url: 'https://github.com/wenbu-app/wenbu/tree/main/src/lib' },
     ],
     zh: {
       title: '直接问 AI，还是先用工具计算？',

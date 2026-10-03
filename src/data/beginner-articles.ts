@@ -2,7 +2,7 @@ import type { Article } from './articles';
 
 const productSource = (path: string, title: string) => ({
   title: `Wenbu · ${title}`,
-  url: `https://github.com/Digidai/wenbu/blob/main/${path}`,
+  url: `https://github.com/wenbu-app/wenbu/blob/main/${path}`,
 });
 const guidance = productSource('src/lib/agent-guidance.ts', 'guided conversation');
 const agent = productSource('worker/agent.ts', 'Agent modes and source handling');

@@ -7,7 +7,7 @@ const source = (title: string, url: string, noteZh: string, noteEn: string) => (
   noteEn,
 });
 const product = (path: string, noteZh: string, noteEn: string) =>
-  source(`Wenbu · ${path}`, `https://github.com/Digidai/wenbu/blob/main/${path}`, noteZh, noteEn);
+  source(`Wenbu · ${path}`, `https://github.com/wenbu-app/wenbu/blob/main/${path}`, noteZh, noteEn);
 const waite = source(
   'A. E. Waite · The Pictorial Key to the Tarot, Part III',
   'https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3',
