@@ -15,4 +15,6 @@ Wenbu brings BaZi, the I Ching, tarot and Zi Wei into a free bilingual workspace
 
 [Open-source application and integrations](https://github.com/Digidai/wenbu) · [Methodology](https://wenbu.app/en/methodology/) · [Privacy](https://wenbu.app/en/privacy/) · [Free allowance](https://wenbu.app/en/free/)
 
+The remote server is listed as `app.wenbu/mcp` in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/1.3.0), with domain verification, a public endpoint and source metadata.
+
 MIT licensed. Cloudflare-hosted. The MCP connection uses your host's model; only Wenbu's built-in AI forwards the context you choose to DeepSeek. These tools support cultural reflection, not scientifically established forecasts or medical, legal or financial decisions.

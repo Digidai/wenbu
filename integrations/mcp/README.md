@@ -41,3 +41,5 @@ Set `locale` to `zh` or `en`. Defaults to English. Some traditional names remain
 MCP calculates cultural symbols, not verified predictions. Calculations reach Wenbu's Cloudflare service. No prompts, birth inputs or chart contents enter the event analytics store. Coarse tool-call analytics can be disabled with `X-Wenbu-Analytics: off`. Your host controls its own history and model data practices. Back off on HTTP 429.
 
 [Source implementation](../../worker/mcp.ts) · [Registry manifest](server.json) · [English guide](https://wenbu.app/en/agents/?utm_source=github&utm_medium=referral&utm_campaign=open-source-2026) · [MIT license](../../LICENSE)
+
+[Published official MCP Registry record](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/1.3.0): domain-authenticated `app.wenbu/mcp`, version 1.3.0. The record exposes the remote URL and source repository; it does not automatically configure your host or establish an endorsement.
