@@ -59,7 +59,9 @@
   "r2_buckets": [{ "binding": "ANALYTICS_ARCHIVE", "bucket_name": "wenbu-analytics-archive" }],
   "triggers": { "crons": ["15 * * * *", "*/15 * * * *"] },
   "observability": {
-    "enabled": false,
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1, "invocation_logs": false },
+    "traces": { "enabled": false },
   },
   "preview_urls": false,
   "routes": [

@@ -1,5 +1,9 @@
 # Wenbu 文档导航
 
+- [开源发布、增长渠道与 7 / 14 / 30 天验证](growth/2026-10-03-launch.md)
+- [MCP / CLI / Skill 接入包](../integrations/README.md)
+- [2026-10-03 统计校准与增长发布核验](reviews/growth-measurement-release.md)
+
 - [IndexNow 自动提交、回执、失败重试与运维](indexnow.md)
 
 - [图解知识手册升级（21 篇双语、完整案例、Agent 全文读取）](reviews/handbook-2026-09-30/README.md)

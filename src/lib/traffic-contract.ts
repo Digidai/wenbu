@@ -79,6 +79,6 @@ export const browserAudienceSQL =
   "(actor_type='browser' OR (actor_type='legacy' AND device!='bot' AND origin!='edge'))";
 export const browserViewSQL = `(event='page_view' AND ${browserAudienceSQL})`;
 export const contentRequestSQL = "(event='page_request' AND http_method='GET')";
-// MCP tool phases already have an enclosing mcp_finished record.
+// One terminal record per operation; MCP calculations have an enclosing tools/call receipt.
 export const serviceRequestSQL =
-  "(origin='server' AND event!='agent_tool_finished' AND (channel!='mcp' OR event='mcp_finished'))";
+  "(origin='server' AND event IN ('calculation_succeeded','interpret_succeeded','agent_finished','api_failed','mcp_finished') AND (channel!='mcp' OR event IN ('mcp_finished','api_failed')))";

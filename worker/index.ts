@@ -99,8 +99,11 @@ export default {
     if (!originAllowed(request, env))
       return json({ error: { code: 'origin_denied', message: 'Origin not allowed.' } }, 403);
     const started = Date.now();
-    const observedTool = path.match(/^\/api\/v1\/(bazi|iching|tarot|ziwei|agent|interpret)$/)?.[1] as
-      ServiceMetric['tool'] | undefined;
+    const observedTool = (
+      path === '/mcp' || path === '/mcp/'
+        ? 'mcp'
+        : path.match(/^\/api\/v1\/(bazi|iching|tarot|ziwei|agent|interpret)$/)?.[1]
+    ) as ServiceMetric['tool'] | undefined;
     let locale: 'zh' | 'en' = 'en';
     const record = (metric: ServiceMetric) => {
       const task = recordService(request, env, metric).catch(() => {
@@ -217,11 +220,11 @@ export default {
             body: JSON.stringify(body),
           });
         }
-        const response = await handleMcp(request, (tool, success, duration) =>
+        const response = await handleMcp(request, (tool, success, duration, status) =>
           record({
             event: tool === 'mcp' ? 'mcp_finished' : success ? 'calculation_succeeded' : 'api_failed',
             tool,
-            status: success ? 'complete' : 'invalid_input',
+            status: status ?? (success ? 'complete' : 'invalid_input'),
             duration,
           }),
         );

@@ -131,6 +131,9 @@ const discovery = new Set([
   '/SKILL.md',
   '/skill.md',
   '/openapi.json',
+  '/wenbu.mjs',
+  '/agent-protocol.md',
+  '/.well-known/mcp-registry-auth',
   '/.well-known/agent.json',
   '/.well-known/mcp.json',
 ]);

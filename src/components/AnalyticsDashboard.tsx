@@ -1,4 +1,5 @@
 import AnalyticsExplorer from './AnalyticsExplorer';
+import { audiences, metricDefinitions } from '../lib/measurement-contract';
 import { AnalyticsTrend, AnalyticsBreakdownCharts, AnalyticsTrafficCharts } from './AnalyticsCharts';
 import { useEffect, useRef, useState } from 'react';
 import { BarChart3, Download, LockKeyhole, RefreshCw, SlidersHorizontal, X } from 'lucide-react';
@@ -99,7 +100,7 @@ export default function AnalyticsDashboard() {
   const today = dateInTimezone(Date.now(), filters.timezone),
     earliest = dateInTimezone(Date.now() - 89 * 86400000, filters.timezone);
   function pick(key: keyof ReportFilters, value: string) {
-    const next = { ...filters, [key]: value };
+    const next = { ...(report?.filters ?? filters), [key]: value };
     setFilters(next);
     void load(next);
   }
@@ -251,7 +252,17 @@ export default function AnalyticsDashboard() {
               token={token.trim()}
               kind={tab}
               initialOperation={linked.operation}
-              includeTest={linked.test}
+              includeTest={linked.operation ? linked.test : report.includeTest}
+              initialFilters={
+                tab === 'events' && !linked.operation
+                  ? {
+                      ...report.filters,
+                      start: report.range.startDate,
+                      end: report.range.endDate,
+                      asOf: String(report.range.asOf),
+                    }
+                  : undefined
+              }
               onFollowOperation={(operation, destination, test) => {
                 setLinked({ operation, test });
                 setTab(destination);
@@ -359,6 +370,19 @@ export default function AnalyticsDashboard() {
                     </div>
                   )}
                   <div className="observatory-main-filters">
+                    <label>
+                      统计人群
+                      <select
+                        value={filters.audience}
+                        onChange={(e) => setFilters({ ...filters, audience: e.target.value })}
+                      >
+                        {audiences.map((value) => (
+                          <option key={value} value={value}>
+                            {value === 'browser' ? '浏览器（含兼容旧记录）' : reportLabel(value)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                     {(['actor_type', 'source', 'page', 'locale'] as const).map(select)}
                   </div>
                   <details className="observatory-more-filters">
@@ -475,10 +499,14 @@ export default function AnalyticsDashboard() {
                       aria-pressed={selected.includes(m.key)}
                       onClick={() => toggle(m.key)}
                       style={{ borderTopColor: m.color }}
+                      title={metricDefinitions[m.key].definition}
                     >
                       <span>{m.label}</span>
                       <strong>{number(summary[m.key])}</strong>
-                      <small>{selected.includes(m.key) ? '曲线已显示' : '点击显示曲线'}</small>
+                      <small>
+                        {metricDefinitions[m.key].unit} ·{' '}
+                        {selected.includes(m.key) ? '曲线已显示' : '点击显示曲线'}
+                      </small>
                     </button>
                   ))}
                 </div>
@@ -493,7 +521,7 @@ export default function AnalyticsDashboard() {
                   <p>
                     浏览器页面浏览来自网页事件，排除已识别自动化；内容请求来自服务端
                     GET，包含网页、手册和发现文件，不计入浏览量或访客数。服务调用排除内部工具阶段，MCP
-                    每个请求只计一次。问卜 Agent 完成是产品功能指标。
+                    tools/call 每次计一次，初始化与列表请求不计。问卜 Agent 完成是产品功能指标。
                   </p>
                   <div className="observatory-coverage-facts">
                     <span>
@@ -518,8 +546,62 @@ export default function AnalyticsDashboard() {
                   <small>
                     UA 和协议可伪装；浏览器特征不保证真人。Cloudflare
                     验证只在边缘提供依据时标记，具体名称仍来自 UA。旧的非 bot
-                    网页记录保留在浏览指标中；历史抓取量无法补算。请求统计不覆盖边缘拦截、资源文件或后台页面。
+                    网页记录保留在浏览指标中；历史抓取量无法补算，升级前缺少收尾记录的 MCP
+                    调用也无法可靠补算。请求统计不覆盖边缘拦截、资源文件或后台页面。
                   </small>
+                </section>
+                <section className="insights-card" aria-label="使用与数据质量">
+                  <span className="eyebrow">USAGE &amp; DATA QUALITY</span>
+                  <h2>完成使用与采集质量</h2>
+                  <p>
+                    完成使用的浏览器标识 <b>{number(summary.active_visitors)}</b> 个 · 关联会话{' '}
+                    <b>{number(summary.active_sessions)}</b>{' '}
+                    个。由服务器确认成功结果，排除示例；标识不是自然人数，自动化不能仅靠 UA 完全识别。
+                  </p>
+                  <div className="observatory-coverage-facts">
+                    <span>
+                      客户端 <b>{number(report.data.quality?.[0]?.client_events)}</b> 条
+                    </span>
+                    <span>
+                      服务端 <b>{number(report.data.quality?.[0]?.server_events)}</b> 条
+                    </span>
+                    <span>
+                      内容请求 <b>{number(report.data.quality?.[0]?.edge_events)}</b> 条
+                    </span>
+                    <span>
+                      时间校正 <b>{number(report.data.quality?.[0]?.adjusted_timestamps)}</b> 条
+                    </span>
+                    <span>
+                      延迟超过 5 分钟 <b>{number(report.data.quality?.[0]?.delayed_events)}</b> 条
+                    </span>
+                    <span>
+                      未关联标识的成功 <b>{number(report.data.quality?.[0]?.unlinked_successes)}</b> 次
+                    </span>
+                    <span>
+                      客户端报告丢弃 <b>{number(report.data.quality?.[0]?.reported_dropped_events)}</b> 条
+                    </span>
+                  </div>
+                  <small>
+                    只反映已收到记录；没有记录不等于没有丢失。隐私退出、脚本阻止和边缘拦截不在覆盖范围内。标记测试的事件默认排除，未标记的自测无法事后可靠识别。工具筛选只保留带该工具标签的事件，可能没有
+                    PV，不能据此计算转化率。
+                  </small>
+                  <details>
+                    <summary>查看全部指标定义与版本</summary>
+                    <p>
+                      口径版本：{report.measurement?.version ?? '旧版'}
+                      。浏览器标识和会话按完整范围去重，每小时 / 每天数字不能相加得到整体人数。
+                    </p>
+                    <dl>
+                      {reportMetrics.map((metric) => (
+                        <div key={metric.key}>
+                          <dt>
+                            {metric.label} · {metricDefinitions[metric.key].unit}
+                          </dt>
+                          <dd>{metricDefinitions[metric.key].definition}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </details>
                 </section>
                 <AnalyticsTrend report={report} selected={selected} onToggle={toggle} />
                 <p className="insights-quality-note">

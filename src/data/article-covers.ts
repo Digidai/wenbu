@@ -24,6 +24,7 @@ export type ArticleCover = {
 
 // A cover belongs to its article, so filtering or reordering never changes its identity.
 export const articleCovers: Record<string, ArticleCover> = {
+  'connect-your-agent': { motif: 'relations', tone: 'slate' },
   'first-reading': { motif: 'compass', tone: 'sage' },
   'choose-a-tool': { motif: 'compare', tone: 'ochre' },
   'ask-a-better-question': { motif: 'question', tone: 'rose' },

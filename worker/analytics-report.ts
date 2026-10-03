@@ -10,7 +10,6 @@ import {
   defaultReportFilters,
   reportDimensions,
   reportMetrics,
-  reportTimezones,
   dateInTimezone,
   type AnalyticsReport,
   type ReportFilters,
@@ -18,42 +17,26 @@ import {
   type TrendPoint,
 } from '../src/lib/analytics-report';
 
+import { reportRange } from './report-range';
+import {
+  measurementVersion,
+  metricDefinitions,
+  audiences,
+  audienceSQL,
+  activeBrowserSQL,
+  productSuccessSQL,
+  serviceFailureSQL,
+} from '../src/lib/measurement-contract';
+
 const DAY = 86400000;
 function invalid(message: string): never {
   throw new ApiError(400, 'invalid_filter', message);
-}
-function calendarDate(value: string, offset: number): number {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return invalid('Use dates in YYYY-MM-DD format.');
-  const time = Date.parse(value + 'T00:00:00Z');
-  if (!Number.isFinite(time) || new Date(time).toISOString().slice(0, 10) !== value)
-    return invalid('Invalid calendar date.');
-  return time - offset;
 }
 export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsReport> {
   if (!env.ANALYTICS) throw new ApiError(503, 'analytics_unavailable', 'Storage is unavailable.');
   const params = url.searchParams;
   const asOf = Date.now();
-  const timezone = params.get('timezone') || 'Asia/Shanghai';
-  if (!(reportTimezones as readonly string[]).includes(timezone)) invalid('Unsupported timezone.');
-  const offset = timezone === 'Asia/Shanghai' ? 8 * 3600000 : 0;
-  const today = Math.floor((asOf + offset) / DAY) * DAY - offset;
-  let days = Number(params.get('days') || 7);
-  if (!Number.isInteger(days) || days < 1 || days > 90) invalid('Choose between 1 and 90 days.');
-  const custom = (params.has('start') && Boolean(params.get('start'))) || Boolean(params.get('end'));
-  let end = today + DAY,
-    since = end - days * DAY;
-  if (custom) {
-    since = calendarDate(params.get('start') || '', offset);
-    end = calendarDate(params.get('end') || '', offset) + DAY;
-    days = (end - since) / DAY;
-    if (days < 1 || days > 90 || since < today - 89 * DAY || end > today + DAY)
-      invalid('Choose an ordered date range within the last 90 calendar days.');
-  }
-  const grain = params.get('granularity') || 'auto';
-  if (!['auto', 'hour', 'day'].includes(grain)) invalid('Unsupported time granularity.');
-  const granularity = grain === 'auto' ? (days <= 3 ? 'hour' : 'day') : (grain as 'hour' | 'day');
-  if (granularity === 'hour' && days > 7) invalid('Hourly detail supports up to 7 days.');
-  const step = granularity === 'hour' ? 3600000 : DAY;
+  const { timezone, offset, days, custom, end, since, grain, granularity, step } = reportRange(params, asOf);
   if (params.get('test') && !['true', 'false'].includes(params.get('test')!)) invalid('Invalid test filter.');
   const includeTest = params.get('test') === 'true';
   const applied: ReportFilters = {
@@ -77,6 +60,10 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
     values.push(value);
     applied[key as keyof ReportFilters] = value;
   }
+  const audience = params.get('audience') || 'all';
+  if (!(audiences as readonly string[]).includes(audience)) invalid('Invalid audience filter.');
+  applied.audience = audience;
+  where += ' AND (' + audienceSQL[audience as keyof typeof audienceSQL] + ')';
   const country = params.get('country') || '';
   if (country) {
     if (!/^[A-Z]{2}$/.test(country)) invalid('Country must use a two-letter code.');
@@ -100,7 +87,11 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
       SUM(${contentRequestSQL} AND actor_type='unknown') unclassified_requests,
       SUM(${contentRequestSQL} AND bot_verified=1) verified_requests,
       SUM(${contentRequestSQL} AND signed_agent=1) signed_requests,
-      SUM(${browserViewSQL}) pageviews, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN visitor_id END) visitors, COUNT(DISTINCT CASE WHEN (event='engaged' AND ${browserAudienceSQL}) THEN session_id END) engaged_sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='interpret_succeeded') interpretations, SUM(event='agent_finished' AND status='complete') agent_complete, SUM(event='agent_finished' AND status='waiting') agent_waiting, SUM(event='agent_finished' AND status='limited') agent_limited, SUM((event='api_failed' AND status IN ('error','unavailable')) OR (event='agent_finished' AND status IN ('error','timeout'))) failures, SUM(origin='server' AND status='invalid_input') invalid_inputs, SUM(origin='server' AND status='rate_limited') throttled, SUM(event='agent_finished' AND status='cancelled') cancellations, SUM(model_calls) model_calls, SUM(tool_calls) tool_calls, MAX(occurred_at) last_event FROM events WHERE $WHERE`,
+      COUNT(DISTINCT CASE WHEN ${activeBrowserSQL} THEN visitor_id END) active_visitors, COUNT(DISTINCT CASE WHEN ${activeBrowserSQL} THEN session_id END) active_sessions, SUM(${browserViewSQL}) pageviews, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN visitor_id END) visitors, COUNT(DISTINCT CASE WHEN (event='engaged' AND ${browserAudienceSQL}) THEN session_id END) engaged_sessions, SUM(event='calculation_succeeded' AND action!='example') calculations, SUM(event='calculation_succeeded' AND action='example') examples, SUM(event='interpret_succeeded') interpretations, SUM(event='agent_finished' AND status='complete') agent_complete, SUM(event='agent_finished' AND status='waiting') agent_waiting, SUM(event='agent_finished' AND status='limited') agent_limited, SUM(${serviceFailureSQL}) failures, SUM(${serviceRequestSQL} AND status='invalid_input') invalid_inputs, SUM(${serviceRequestSQL} AND status='rate_limited') throttled, SUM(event='agent_finished' AND status='cancelled') cancellations, SUM(model_calls) model_calls, SUM(tool_calls) tool_calls, MAX(occurred_at) last_event FROM events WHERE $WHERE`,
+    ],
+    [
+      'quality',
+      `SELECT SUM(origin='client') client_events, SUM(origin='server') server_events, SUM(origin='edge') edge_events, SUM(origin='client' AND client_at IS NOT NULL AND client_at!=occurred_at) adjusted_timestamps, SUM(origin='client' AND received_at-occurred_at>300000) delayed_events, SUM(origin='client' AND (session_id IS NULL OR visitor_id IS NULL)) unlinked_client_events, SUM(${productSuccessSQL} AND (session_id IS NULL OR visitor_id IS NULL)) unlinked_successes, SUM(event='telemetry_gap') gap_reports, SUM(CASE WHEN event='telemetry_gap' THEN value ELSE 0 END) reported_dropped_events, MIN(occurred_at) first_event, MAX(received_at) last_received FROM events WHERE $WHERE`,
     ],
     [
       'daily',
@@ -147,7 +138,7 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
   ]) {
     queries.push([
       key,
-      `SELECT ${key} label, COUNT(*) events, SUM(${contentRequestSQL}) requests, SUM(${serviceRequestSQL}) calls, SUM(${browserViewSQL}) views, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, SUM((event='calculation_succeeded' AND action!='example') OR event='interpret_succeeded' OR (event='agent_finished' AND status='complete')) successes FROM events WHERE $WHERE GROUP BY ${key} ORDER BY requests DESC,views DESC,events DESC`,
+      `SELECT ${key} label, COUNT(*) events, SUM(${contentRequestSQL}) requests, SUM(${serviceRequestSQL}) calls, SUM(${browserViewSQL}) views, COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions, SUM(${productSuccessSQL}) successes FROM events WHERE $WHERE GROUP BY ${key} ORDER BY requests DESC,views DESC,events DESC`,
     ]);
   }
   queries.push(
@@ -159,11 +150,12 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
       SUM(${contentRequestSQL} AND actor_type IN ('ai_crawler','ai_agent')) ai_requests,
       SUM(${serviceRequestSQL}) service_requests,
       SUM(${browserViewSQL}) pageviews,
+      COUNT(DISTINCT CASE WHEN ${activeBrowserSQL} THEN visitor_id END) active_visitors,
       COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN visitor_id END) visitors,
       COUNT(DISTINCT CASE WHEN ${browserViewSQL} THEN session_id END) sessions,
       SUM(event='calculation_succeeded' AND action!='example') calculations,
       SUM(event='agent_finished' AND status='complete') agent_complete,
-      SUM((event='api_failed' AND status IN ('error','unavailable')) OR (event='agent_finished' AND status IN ('error','timeout'))) failures
+      SUM(${serviceFailureSQL}) failures
       FROM events WHERE $WHERE GROUP BY bucket ORDER BY bucket`,
     ],
     [
@@ -206,6 +198,7 @@ export async function analyticsReport(url: URL, env: Env): Promise<AnalyticsRepo
   }));
   delete data.trend;
   return {
+    measurement: { version: measurementVersion, definitions: metricDefinitions },
     generatedAt: new Date(asOf).toISOString(),
     days,
     includeTest,
