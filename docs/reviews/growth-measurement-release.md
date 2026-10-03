@@ -1,6 +1,6 @@
 # Growth and measurement release · 2026-10-03
 
-Status: local implementation complete; release evidence is recorded below as each stage is verified. A repository, submission receipt or local test does not establish traffic growth.
+Status: implementation, CI, deployment, live reconciliation, GitHub Release and official MCP Registry publication verified. GitHub organization creation remains pending browser login. A repository, submission receipt or local test does not establish traffic growth.
 
 ## Changes
 
@@ -11,7 +11,21 @@ Status: local implementation complete; release evidence is recorded below as eac
 
 ## Verification ledger
 
-Local gates passed: 282 tests in 21 suites, Astro/Worker type checks, lint, production build, 4,742 internal references, 78 cards, 42 complete knowledge editions and 86 indexable URLs. Local Worker UI at 390 and 1280 px used synthetic fixtures, with no horizontal overflow; overview source/date/snapshot carried into history and English integration cards wrapped. PR #8 CI must pass again after the QA-marker fix. Deployment, served-asset checks, production reconciliation, Release and Registry remain pending. Grok CLI returned HTTP 402 (usage balance exhausted), not a review verdict. The Clarity project tag GET returned HTTP 200; provider-side collection has not been verified. Organization creation requires the signed-in GitHub UI. No search indexing or incremental user growth has been verified.
+- Local: 282 tests in 21 suites; type checks, lint, build, 4,742 internal references, 78 cards, 42 full knowledge editions and 86 indexable URLs. No production data used in fixtures.
+- Local UI: 390 / 1280 px, no horizontal overflow; inherited source/date/snapshot in history, compact expandable filters, custom-date labels, English integration card wrapping and logout.
+- [PR #8](https://github.com/Digidai/wenbu/pull/8) merged as `d8a6f4d6858bdf512f4c1d478b969b79bea7a994`. [PR CI](https://github.com/Digidai/wenbu/actions/runs/37098011030) and [main CI](https://github.com/Digidai/wenbu/actions/runs/37098117436) passed.
+- Initial Worker version `72eda863-f27c-4183-9ad9-bb61bee33959`: production shell/asset bytes match for Chinese/English Agents, the new article and Insights. The original checkout's unrelated drafts are preserved.
+- [Read-only report reconciliation](growth-trends-live.json): all presets, calendar boundaries, dense buckets, additive totals, dimension filters and invalid-query rejection passed.
+- [Runtime verification](growth-runtime-live.json): public domain proof served exactly. Three synthetic MCP calls produce three enclosing terminal receipts plus one calculation phase. `test:false` context cannot override the forced test header, and ordinary history excludes these records.
+- [GitHub v1.3.0 Release](https://github.com/Digidai/wenbu/releases/tag/v1.3.0): CLI, MCP and Skill archives plus SHA256SUMS are public. The fixed-lines CLI also passed against production with telemetry off. No npm publication is claimed.
+- [Official MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/app.wenbu%2Fmcp/versions/1.3.0): domain-authenticated `app.wenbu/mcp`, version 1.3.0, public remote URL and branded icon. [Read-back receipt](growth-registry-live.json) verifies metadata retrieval. The registry is currently preview; publication is not an installation or adoption claim.
+- IndexNow: the deployed manifest matched; the provider returned HTTP 429 for 86 URLs, with 0 received and 86 pending. Cloudflare's existing cron retries after the stored backoff. This is not an accepted submission or indexing result.
+- Organization: `wenbu` belongs to another GitHub user; `wenbu-app` returned 404 when checked. Creation requires web sign-in. Profile is prepared in `community/profile/README.md`; no nonexistent organization link is published.
+- Grok: read-only CLI review returned HTTP 402, usage balance exhausted. No verdict was produced. Clarity project tag GET returned HTTP 200; dashboard-side collection remains unverified. No incremental traffic, search index status or rankings have been claimed.
+
+## Metadata follow-up
+
+Public health and MCP metadata read the application version from package.json; health also reports the measurement contract version. This removes a stale health version string without changing the calculation API. Final follow-up CI / Worker checks are recorded after release.
 
 ## Boundaries
 

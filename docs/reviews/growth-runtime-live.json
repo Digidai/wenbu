@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-03T04:56:23.710Z",
+  "synthetic": true,
+  "checks": [
+    "Live shell and asset bytes match /agents/",
+    "Live shell and asset bytes match /en/agents/",
+    "Live shell and asset bytes match /blog/connect-your-agent/",
+    "Live shell and asset bytes match /en/blog/connect-your-agent/",
+    "Live shell and asset bytes match /insights/",
+    "Public domain ownership verification served exactly",
+    "Three MCP calls produce three terminal receipts plus one calculation phase, all marked tests despite false context",
+    "These test calls are absent from ordinary history"
+  ],
+  "result": "passed"
+}

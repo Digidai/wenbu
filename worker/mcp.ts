@@ -1,3 +1,4 @@
+import { version as releaseVersion } from '../package.json';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { z } from 'zod';
@@ -25,7 +26,7 @@ const pack = (data: Record<string, unknown>) => ({
 
 export function createMcpServer(receipt?: ToolReceipt) {
   const server = new McpServer(
-    { name: 'wenbu', version: '1.3.0' },
+    { name: 'wenbu', version: releaseVersion },
     {
       instructions:
         'Wenbu provides cultural reflection tools, not factual predictions. Only send birth details the user explicitly chooses to share. Preserve all calculation conventions and warnings. Use your host model to interpret the returned data; Wenbu MCP does not need an AI key.',
