@@ -1,5 +1,7 @@
 # Quality and review evidence
 
+- [2026-10-03: calibrated measurement, open integration release and official MCP Registry](growth-measurement-release.md).
+
 - [IndexNow automatic submissions, retries and verification](indexnow-2026-10-01/README.md).
 
 - [Illustrated handbook release](handbook-2026-09-30/README.md): all 21 bilingual guides, worked examples, accessible figures and complete Markdown/JSON/MCP/CLI reading.

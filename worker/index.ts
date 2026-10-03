@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { version as releaseVersion } from '../package.json';
+import { measurementVersion } from '../src/lib/measurement-contract';
 import { domainRedirect } from './domain';
 import { calculate } from '../src/lib/tools';
 import { InputError, type ToolKind } from '../src/lib/schema';
@@ -180,7 +182,8 @@ export default {
       if (path === '/api/health' && request.method === 'GET')
         return json({
           status: 'ok',
-          version: '1.1.0',
+          version: releaseVersion,
+          measurementVersion,
           aiConfigured: Boolean(env.DEEPSEEK_API_KEY && env.QUOTA_SALT),
           requestedModel: env.DEEPSEEK_MODEL,
         });
