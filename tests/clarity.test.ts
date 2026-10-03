@@ -53,6 +53,11 @@ describe('Clarity privacy boundaries', () => {
     await start();
     expect(append).not.toHaveBeenCalled();
   });
+  it('excludes a marked QA cookie before the session flag exists', async () => {
+    Object.assign(document, { cookie: 'wenbu_analytics_test=1' });
+    await start();
+    expect(append).not.toHaveBeenCalled();
+  });
   it('honors initial opt-out and can start when measurement is enabled', async () => {
     enabled.mockReturnValue(false);
     await start();

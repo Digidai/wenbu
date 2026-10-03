@@ -211,7 +211,7 @@ Names are UA declarations and may be spoofed. Browser hints do not prove a human
 - **采集质量**：收到的客户端 / 服务端 / 内容请求、异常时钟替换、延迟超过 5 分钟、缺关联 ID、客户端报告的丢弃条数。这里只描述已收到记录，不能估计未收到的所有记录或承诺 100% 完整率。
 - **明细**：从总览切换使用历史会继承所有维度、自然日起止、时区与 `asOf`；固定快照排除之后接收和未来发生的记录，分页仍按 `(occurred_at,id,asOf)`。修改时间清除固定快照；「回到最新」刷新截止时刻。普通导出只含当前页，完整历史使用受保护的导出脚本。
 - **新增归因词汇**：GitHub `open-source-2026`、官方目录 `mcp-registry`、新手 `first-reading`。无已知来源包含真实直接访问和 referrer / UTM 丢失，不能当成准确的直接来源判断。
-- **验证请求**：CLI 用 `WENBU_TEST=true`，API 用 `X-Wenbu-Test: true`。浏览器测试在首次导航前同时设置测试 cookie `wenbu_analytics_test=1` 和 sessionStorage 的测试标记；只设置后者无法标记已完成的首次 HTML 请求。初始化会同步一小时测试 cookie，完成后应清除。CLI 的知识 GET 也遵守 `WENBU_ANALYTICS=off`。
+- **验证请求**：CLI 用 `WENBU_TEST=true`，API 用 `X-Wenbu-Test: true`。浏览器测试在首次导航前同时设置测试 cookie `wenbu_analytics_test=1` 和 sessionStorage 的测试标记；只设置后者无法标记已完成的首次 HTML 请求。初始化会同步一小时测试 cookie，完成后应清除。请求头 / cookie 的测试标记不会被客户端 test:false 覆盖；Clarity 同时检查两种标记。发布 smoke 的所有内容请求均标记测试。CLI 的知识 GET 也遵守 `WENBU_ANALYTICS=off`。
 
 扩展事件或来源先修改闭合 contract、服务端验证、报表定义、UI 标签和真实路径测试。不要添加任意正文或查询字段；保持 archive 版本与旧客户端的兼容。写入失败使用不带请求内容的固定运维日志信号；这些日志不自动进入成功率分母。
 

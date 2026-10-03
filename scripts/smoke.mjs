@@ -12,7 +12,12 @@ const evidence = {
   library: [],
   ai: null,
 };
-const fetchSafe = (url, init = {}) => fetch(url, { ...init, signal: AbortSignal.timeout(50000) });
+const fetchSafe = (url, init = {}) =>
+  fetch(url, {
+    ...init,
+    headers: { 'X-Wenbu-Test': 'true', ...init.headers },
+    signal: AbortSignal.timeout(50000),
+  });
 async function post(path, body, extra = {}) {
   return fetchSafe(base + path, {
     method: 'POST',

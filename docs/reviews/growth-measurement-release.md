@@ -11,7 +11,7 @@ Status: local implementation complete; release evidence is recorded below as eac
 
 ## Verification ledger
 
-Pending completion of local gates, responsive browser review, CI, deployment, served-asset comparison, production analytics reconciliation, release and registry publication. Organization creation requires the signed-in GitHub UI. No search indexing or incremental user growth has been verified.
+Local gates passed: 282 tests in 21 suites, Astro/Worker type checks, lint, production build, 4,742 internal references, 78 cards, 42 complete knowledge editions and 86 indexable URLs. Local Worker UI at 390 and 1280 px used synthetic fixtures, with no horizontal overflow; overview source/date/snapshot carried into history and English integration cards wrapped. PR #8 CI must pass again after the QA-marker fix. Deployment, served-asset checks, production reconciliation, Release and Registry remain pending. Grok CLI returned HTTP 402 (usage balance exhausted), not a review verdict. The Clarity project tag GET returned HTTP 200; provider-side collection has not been verified. Organization creation requires the signed-in GitHub UI. No search indexing or incremental user growth has been verified.
 
 ## Boundaries
 
