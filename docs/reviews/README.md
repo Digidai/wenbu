@@ -1,5 +1,7 @@
 # Quality and review evidence
 
+- [2026-10-03: GitHub organization and integration ownership migration](organization-launch-2026-10-03.md).
+
 - [2026-10-03: calibrated measurement, open integration release and official MCP Registry](growth-measurement-release.md).
 
 - [IndexNow automatic submissions, retries and verification](indexnow-2026-10-01/README.md).

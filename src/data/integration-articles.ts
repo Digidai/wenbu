@@ -11,7 +11,7 @@ export const integrationArticles: Article[] = [
     sources: [
       {
         title: 'Wenbu · open MCP implementation and reproducible examples',
-        url: 'https://github.com/Digidai/wenbu/tree/main/integrations/mcp',
+        url: 'https://github.com/wenbu-app/wenbu/tree/main/integrations/mcp',
       },
       {
         title: 'Model Context Protocol · remote servers',

@@ -30,7 +30,7 @@ await writeFile(
         'Free Wenbu calculations and complete learning content, with an explicit optional AI workflow.',
       engines: { node: '>=22.12.0' },
       homepage: 'https://wenbu.app/en/agents/',
-      repository: { type: 'git', url: 'https://github.com/Digidai/wenbu.git' },
+      repository: { type: 'git', url: 'https://github.com/wenbu-app/wenbu.git' },
     },
     null,
     2,

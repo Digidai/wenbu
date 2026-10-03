@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-03T05:54:22.600Z",
+  "repositoryId": 1392270977,
+  "oldRepository": "Digidai/wenbu",
+  "newRepository": "wenbu-app/wenbu",
+  "head": "69532f2915326dbf751dd1b2c6ad3d869307e081",
+  "checks": [
+    "Same repository ID",
+    "Same main commit",
+    "Public visibility retained",
+    "v1.3.0 asset IDs, names, sizes and digests preserved"
+  ],
+  "result": "passed"
+}

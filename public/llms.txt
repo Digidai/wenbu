@@ -37,7 +37,7 @@
 - [Learning library](https://wenbu.app/en/learn/)
 - [Privacy](https://wenbu.app/en/privacy/)
 - [Free-use policy](https://wenbu.app/en/free/)
-- [Source code](https://github.com/Digidai/wenbu)
+- [Source code](https://github.com/wenbu-app/wenbu)
 
 ## Complete public knowledge exports
 

@@ -1,5 +1,7 @@
 # Wenbu 文档导航
 
+- [GitHub 组织、仓库迁移与接入发布](reviews/organization-launch-2026-10-03.md)
+
 - [开源发布、增长渠道与 7 / 14 / 30 天验证](growth/2026-10-03-launch.md)
 - [MCP / CLI / Skill 接入包](../integrations/README.md)
 - [2026-10-03 统计校准与增长发布核验](reviews/growth-measurement-release.md)

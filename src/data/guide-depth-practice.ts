@@ -2,7 +2,7 @@ import type { GuideExpansion } from './guide-types';
 
 const product = (path: string, title: string, noteZh: string, noteEn: string) => ({
   title: `Wenbu · ${title}`,
-  url: `https://github.com/Digidai/wenbu/blob/main/${path}`,
+  url: `https://github.com/wenbu-app/wenbu/blob/main/${path}`,
   noteZh,
   noteEn,
 });
