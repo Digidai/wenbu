@@ -218,7 +218,7 @@ export default function AnalyticsExplorer({
     <label>
       {label}
       <select value={filters[name]} onChange={(e) => setFilters({ ...filters, [name]: e.target.value })}>
-        <option value="">全部</option>
+        {!['timezone', 'audience'].includes(name) && <option value="">全部</option>}
         {values.map((v) => (
           <option key={v} value={v}>
             {stateNames[v] ?? reportLabel(v)}
@@ -294,9 +294,13 @@ export default function AnalyticsExplorer({
           <label>
             时间范围
             <select
-              value={filters.days}
-              onChange={(e) => setFilters({ ...filters, days: e.target.value, start: '', end: '', asOf: '' })}
+              value={filters.start && filters.end ? 'custom' : filters.days}
+              onChange={(e) => {
+                if (e.target.value !== 'custom')
+                  setFilters({ ...filters, days: e.target.value, start: '', end: '', asOf: '' });
+              }}
             >
+              {filters.start && filters.end && <option value="custom">自定义日期范围</option>}
               {[1, 3, 7, 14, 30, 90, ...(kind === 'feedback' ? [365, 3650] : [])].map((n) => (
                 <option key={n} value={n}>
                   {n === 3650 ? '最近 10 年' : kind === 'events' ? `${n} 个自然日（含今天）` : `最近 ${n} 天`}

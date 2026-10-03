@@ -137,6 +137,8 @@ export type AnalyticsReport = {
   data: Record<string, ReportRow[]>;
 };
 export const reportLabels: Record<string, string> = {
+  'Asia/Shanghai': '北京 · UTC+8',
+  UTC: 'UTC',
   actor_type: '访问者类型',
   actor_name: '客户端标识',
   actor_purpose: '请求用途',
